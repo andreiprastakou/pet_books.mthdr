@@ -4,12 +4,10 @@
 // that code so it'll be compiled.
 
 import Rails from '@rails/ujs'
-import Turbolinks from 'turbolinks'
 import 'jquery'
 import 'lodash'
 
 Rails.start()
-Turbolinks.start()
 
 // Initialize React components
 const componentRequireContext = require.context('components', true)

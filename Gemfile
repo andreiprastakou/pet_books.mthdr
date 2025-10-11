@@ -22,7 +22,7 @@ gem 'kaminari'
 gem 'react-rails'
 gem 'sassc-rails'
 gem 'slim'
-gem 'turbolinks', '~> 5'
+gem 'turbo-rails'
 gem 'webpacker', '~> 5.0'
 
 # media storage

@@ -44,13 +44,14 @@ module.exports = function(api) {
       '@babel/plugin-syntax-dynamic-import',
       isTestEnv && 'babel-plugin-dynamic-import-node',
       '@babel/plugin-transform-destructuring',
-      ['@babel/plugin-proposal-private-methods', { 'loose': true }]
+      ['@babel/plugin-proposal-private-methods', { 'loose': true }],
       [
         '@babel/plugin-transform-class-properties',
         {
           loose: true
         }
       ],
+      ['@babel/plugin-transform-optional-chaining', { 'loose': true }],
       [
         '@babel/plugin-transform-object-rest-spread',
         {
