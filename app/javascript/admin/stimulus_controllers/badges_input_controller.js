@@ -10,7 +10,7 @@ export default class extends Controller {
   ]
 
   connect() {
-    this.fillInitialBadges();
+    this.fillInitialBadges()
     this.updateBadgeAddButton()
   }
 
