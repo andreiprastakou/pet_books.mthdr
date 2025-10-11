@@ -1,30 +1,19 @@
 <% admin_nav_crumbs "Books" %>
 
-<%= render "admin/books/search_form" %>
-
 <div class="container mt-4">
-  <%= admin_buttonly_link_to "New book", new_admin_book_path %>
+  <%= render "admin/books/search_form" %>
+  <%= admin_buttonly_link_to "New book", new_admin_book_path, class: "btn btn-link d-inline-block align-top" %>
 </div>
 
 <div class="container mt-4">
-  <div>
-    <%== pagy_bootstrap_nav(@pagy) %>
-  </div>
-  <table class="table">
-    <thead>
-      <th><%= sortable_table_column("ID", "id") %></th>
-      <th><%= sortable_table_column("TITLE", "title") %></th>
-      <th>AUTHOR</th>
-      <th>LINKS</th>
-      <th><%= sortable_table_column("YEAR", "year_published") %></th>
-      <th><%= sortable_table_column("WIKI VIEWS", "wiki_popularity") %></th>
-      <th><%= sortable_table_column("CREATED", "created_at") %></th>
-      <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
-    </thead>
-    <%= render partial: "admin/books/books_index_row", collection: @admin_books, as: :book %>
-  </table>
-  <div>
-    <%== pagy_bootstrap_nav(@pagy) %>
-  </div>
+  <%= render "admin/books/books_index_view_controls" %>
+
+  <% if current_index_view == 'table' %>
+    <%= render "admin/books/books_index_table" %>
+  <% elsif current_index_view == 'covers' %>
+    <%= render "admin/books/books_index_display" %>
+  <% end %>
+
+  <%= render "admin/books/books_index_view_controls" %>
 </div>
 

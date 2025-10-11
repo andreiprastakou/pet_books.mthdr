@@ -27,7 +27,7 @@ module Admin
     end
 
     def show
-      @admin_books = apply_sort(
+      @books = apply_sort(
         @genre.books.preload(:genres, :tags, :author),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }

@@ -50,7 +50,7 @@
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
     </thead>
-    <% @admin_books.each do |book| %>
+    <% @books.each do |book| %>
       <tr>
         <td>
           <%= admin_link_to book.id, admin_book_path(book) %>

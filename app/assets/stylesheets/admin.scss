@@ -19,3 +19,8 @@ a[href^='http'] {
     color: $green-700;
   }
 }
+
+.d-index-search-input {
+  display: inline-block;
+  width: 100px;
+}

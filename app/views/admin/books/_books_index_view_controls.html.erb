@@ -1,0 +1,12 @@
+<div class="row mt-4">
+  <div class="d-index-pagination col-md-6">
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+
+  <div class="d-index-view-switch col-md-6">
+    <div class="btn-group">
+      <a href="<%= url_for(books_index_view: 'table') %>" class="btn <%= current_index_view == 'table' ? 'btn-secondary' : 'btn-outline-secondary' %>">Table</a>
+      <a href="<%= url_for(books_index_view: 'covers') %>" class="btn <%= current_index_view == 'covers' ? 'btn-secondary' : 'btn-outline-secondary' %>">Covers</a>
+    </div>
+  </div>
+</div>

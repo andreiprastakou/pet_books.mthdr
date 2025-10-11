@@ -1,0 +1,9 @@
+<div class="row">
+  <% @books.each do |book| %>
+    <div class="col-md-2">
+      <%= link_to admin_book_path(book), class: 'b-admin-books-display-cover-link' do %>
+        <%= render "admin/books/standard_cover", book: book %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

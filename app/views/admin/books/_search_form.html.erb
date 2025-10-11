@@ -1,12 +1,4 @@
-<div class="container mt-4">
-  <%= form_tag admin_books_search_path, method: :post do %>
-    <div class="row">
-      <div class="col-2">
-        <%= text_field_tag :key, params[:key], class: "form-control", placeholder: "title" %>
-      </div>
-      <div class="col-2">
-        <%= submit_tag "Search", class: "btn btn-primary" %>
-      </div>
-    </div>
-  <% end %>
-</div>
+<%= form_tag admin_books_search_path, method: :post, class: "d-inline-block" do %>
+  <%= text_field_tag :key, params[:key], class: "form-control d-index-search-input d-inline-block", placeholder: "title" %>
+  <%= submit_tag "Search", class: "btn btn-primary d-inline-block align-top" %>
+<% end %>

@@ -44,7 +44,6 @@ Rails.application.routes.draw do
 
     namespace :books do
       resource :batch, only: %i[edit update], controller: 'batch'
-      resource :display, only: %i[show], controller: 'display'
       resource :search, only: %i[create], controller: 'search'
     end
     resources :books do
