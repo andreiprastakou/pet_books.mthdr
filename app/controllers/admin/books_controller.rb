@@ -11,7 +11,7 @@ module Admin
       updated_at
     ].index_by(&:to_s).freeze
 
-    DEFAULT_BOOKS_INDEX_VIEW = 'table'
+    DEFAULT_BOOKS_INDEX_VIEW = 'table'.freeze
 
     helper_method :current_index_view
 
@@ -21,7 +21,8 @@ module Admin
           Book.preload(:author),
           SORTING_MAP,
           defaults: { sort_by: 'id', sort_order: 'desc' }
-        )
+        ),
+        limit: 6 * 10
       )
     end
 

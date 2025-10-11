@@ -1,9 +1,8 @@
 <% admin_nav_crumbs "Books" %>
 
-<%= render "admin/books/search_form" %>
-
 <div class="container mt-4">
-  <%= admin_buttonly_link_to "New book", new_admin_book_path %>
+  <%= render "admin/books/search_form" %>
+  <%= admin_buttonly_link_to "New book", new_admin_book_path, class: "btn btn-link d-inline-block align-top" %>
 </div>
 
 <div class="container mt-4">
