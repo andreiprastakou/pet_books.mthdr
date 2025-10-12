@@ -26,12 +26,14 @@ module.exports = function(api) {
         }
       ],
       [
-        '@babel/preset-react'
+        '@babel/preset-react',
+        {
+          runtime: 'automatic' // Use new JSX transform
+        }
       ],
       (isProductionEnv || isDevelopmentEnv) && [
         '@babel/preset-env',
         {
-          forceAllTransforms: true,
           useBuiltIns: 'entry',
           corejs: 3,
           modules: false,
@@ -63,13 +65,8 @@ module.exports = function(api) {
       [
         '@babel/plugin-transform-runtime',
         {
-          helpers: false
-        }
-      ],
-      [
-        '@babel/plugin-transform-regenerator',
-        {
-          async: false
+          helpers: false,
+          regenerator: true
         }
       ],
       ["@babel/plugin-transform-private-property-in-object", { "loose": true }]
