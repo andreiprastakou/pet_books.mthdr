@@ -73,8 +73,8 @@
     }
   }
 
-  @mixin b-cover-image($image) {
-    background-image: image-url('covers/#{$image}.jpg');
+  @mixin b-cover-image($image, $fmt: 'jpg') {
+    background-image: image-url('covers/#{$image}.#{$fmt}');
   }
 
   &[data-cover-image='default'] {
@@ -95,7 +95,7 @@
   }
 
   &[data-cover-image='brown_skin'] {
-    @include b-cover-image('brown_skin_400');
+    @include b-cover-image('brown_skin_400', 'png');
   }
 
   &[data-cover-image='brown_wave'] {
@@ -103,7 +103,7 @@
   }
 
   &[data-cover-image='chalk_board'] {
-    @include b-cover-image('chalk_board_400');
+    @include b-cover-image('chalk_board_400', 'png');
   }
 
   &[data-cover-image='dark_red'] {
@@ -126,7 +126,7 @@
   }
 
   &[data-cover-image='hard_blue_texture'] {
-    @include b-cover-image('hard_blue_texture_400');
+    @include b-cover-image('hard_blue_texture_400', 'png');
   }
 
   &[data-cover-image='light_beam'] {
