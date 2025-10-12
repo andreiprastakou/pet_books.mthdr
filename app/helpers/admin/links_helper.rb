@@ -102,6 +102,15 @@ module Admin
       end
     end
 
+    def admin_link_to_data_fetch_task_verification_form(task)
+      case task
+      when Admin::BookSummaryTask
+        admin_buttonly_link_to "Apply Generative Summary", admin_book_generative_summary_path(task.book, task_id: task.id) if task.fetched?
+      else
+        raise NotImplementedError, "Verification form for #{task.type} is not implemented"
+      end
+    end
+
     private
 
     def admin_nav_crumbs_for_header(crumbs)
