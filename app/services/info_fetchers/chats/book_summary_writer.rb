@@ -15,14 +15,16 @@ module InfoFetchers
         4. print JSON output only.
         rules:
         1. all output should be in English;
-        2. output should be of format: [{"summary":"SUMMARY","themes":"MAIN_THEME1,MAIN_THEME2","genre":"GENRE1","form":"FORM","src":"SOURCE_NAME"}].
+        2. output should be of format: [["SUMMARY","MAIN_THEME1,MAIN_THEME2","GENRE1","FORM","SOURCE_NAME"]].
       INSTRUCTIONS
 
-      attr_reader :last_response
+      attr_reader :last_response, :errors
 
       def ask(book)
         @last_response = ask_chat(book)
-        JSON.parse(last_response.content).map(&:deep_symbolize_keys)
+        JSON.parse(last_response.content).map do |(summary, themes, genre, form, src)|
+          { summary: summary, themes: themes, genre: genre, form: form, src: src }
+        end
       rescue StandardError => e
         Rails.logger.error(e.message)
         @errors = [e]
@@ -33,16 +35,15 @@ module InfoFetchers
         @errors.present?
       end
 
-      private
-
-      def setup_chat
-        Ai::Chat.start.tap do |chat|
+      def chat
+        @chat ||= Ai::Chat.start.tap do |chat|
           chat.with_instructions(INSTRUCTIONS.gsub('<GENRES>', Genre.pluck(:name).join(',')))
         end
       end
 
+      private
+
       def ask_chat(book)
-        chat = setup_chat
         chat.ask([
           book.literary_form&.humanize,
           "\"#{book.title}\"",

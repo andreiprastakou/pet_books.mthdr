@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_08_182518) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_12_100322) do
+  create_table "admin_data_fetch_tasks", force: :cascade do |t|
+    t.integer "chat_id"
+    t.string "target_type", null: false
+    t.integer "target_id", null: false
+    t.string "type", null: false
+    t.string "status", null: false
+    t.json "input_data"
+    t.json "fetched_data"
+    t.string "fetch_error_details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_admin_data_fetch_tasks_on_chat_id"
+    t.index ["target_type", "target_id"], name: "index_admin_data_fetch_tasks_on_target"
+  end
+
   create_table "ai_chats", force: :cascade do |t|
     t.string "model_id"
     t.datetime "created_at", null: false
@@ -138,6 +153,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_182518) do
     t.index ["entity_type", "entity_id"], name: "index_wiki_page_stats_on_entity"
   end
 
+  add_foreign_key "admin_data_fetch_tasks", "ai_chats", column: "chat_id"
   add_foreign_key "ai_messages", "ai_chats", column: "chat_id"
   add_foreign_key "ai_messages", "ai_tool_calls", column: "tool_call_id"
   add_foreign_key "ai_tool_calls", "ai_messages", column: "message_id"

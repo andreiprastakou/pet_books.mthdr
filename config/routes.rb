@@ -49,13 +49,15 @@ Rails.application.routes.draw do
     resources :books do
       scope module: :books do
         resource :wiki_stats, only: %i[update], controller: 'wiki_stats'
-        resource :generative_summary, only: %i[create], controller: 'generative_summary'
+        resource :generative_summary, only: %i[create show], controller: 'generative_summary'
       end
     end
 
     namespace :covers do
       resources :cover_designs, except: %i[show]
     end
+
+    resources :data_fetch_tasks, only: %i[index show]
 
     resources :ai_chats, only: %i[index show], controller: 'ai/chats'
 
