@@ -55,7 +55,6 @@ Rails.application.routes.draw do
 
     namespace :covers do
       resources :cover_designs, except: %i[show]
-      resources :images, only: %i[index destroy]
     end
 
     resources :ai_chats, only: %i[index show], controller: 'ai/chats'
