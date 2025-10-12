@@ -26,12 +26,14 @@ module.exports = function(api) {
         }
       ],
       [
-        '@babel/preset-react'
+        '@babel/preset-react',
+        {
+          runtime: 'automatic' // Use new JSX transform
+        }
       ],
       (isProductionEnv || isDevelopmentEnv) && [
         '@babel/preset-env',
         {
-          forceAllTransforms: true,
           useBuiltIns: 'entry',
           corejs: 3,
           modules: false,
@@ -44,13 +46,16 @@ module.exports = function(api) {
       '@babel/plugin-syntax-dynamic-import',
       isTestEnv && 'babel-plugin-dynamic-import-node',
       '@babel/plugin-transform-destructuring',
-      ['@babel/plugin-proposal-private-methods', { 'loose': true }]
+      ['@babel/plugin-transform-private-methods', { 'loose': true }],
       [
         '@babel/plugin-transform-class-properties',
         {
           loose: true
         }
       ],
+      ['@babel/plugin-transform-optional-chaining', { 'loose': true }],
+      '@babel/plugin-transform-nullish-coalescing-operator',
+      '@babel/plugin-transform-logical-assignment-operators',
       [
         '@babel/plugin-transform-object-rest-spread',
         {
@@ -60,15 +65,11 @@ module.exports = function(api) {
       [
         '@babel/plugin-transform-runtime',
         {
-          helpers: false
+          helpers: false,
+          regenerator: true
         }
       ],
-      [
-        '@babel/plugin-transform-regenerator',
-        {
-          async: false
-        }
-      ]
+      ["@babel/plugin-transform-private-property-in-object", { "loose": true }]
     ].filter(Boolean)
   }
 }

@@ -1,11 +1,15 @@
 module Admin
   class AdminController < ApplicationController
-    layout 'admin'
+    layout :choose_layout
     include Pagy::Backend
 
     helper_method :sorting_params
 
     private
+
+    def choose_layout
+      turbo_frame_request? ? 'turbo_rails/frame' : 'admin'
+    end
 
     def apply_sort(scope, sorting_map, defaults: {})
       apply_sorting_defaults(defaults)
