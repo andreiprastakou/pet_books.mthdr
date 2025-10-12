@@ -561,7 +561,7 @@ DEPENDENCIES
   spring
   sqlite3 (~> 2.6)
   timecop
-  turbo-rails
+  turbo-rails (~> 2.0)
   tzinfo-data
   web-console (>= 4.1.0)
   webmock
