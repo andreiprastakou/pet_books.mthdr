@@ -8,7 +8,7 @@ module Admin
     private
 
     def choose_layout
-      turbo_frame_request? ? "turbo_rails/frame" : "admin"
+      turbo_frame_request? ? 'turbo_rails/frame' : 'admin'
     end
 
     def apply_sort(scope, sorting_map, defaults: {})
