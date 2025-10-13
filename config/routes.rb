@@ -1,9 +1,6 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
-  # Solid Queue web interface
-  mount SolidQueue::Engine, at: "/solid_queue"
-
   namespace :api do
     scope constraints: ->(req) { req.format == :json } do
       namespace :authors do
@@ -66,6 +63,8 @@ Rails.application.routes.draw do
 
     resources :genres
     resources :tags
+
+    mount MissionControl::Jobs::Engine, at: '/jobs'
 
     get '/', to: 'books#index', format: :html, as: :root
   end

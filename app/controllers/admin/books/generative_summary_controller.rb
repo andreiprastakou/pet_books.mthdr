@@ -6,8 +6,8 @@ module Admin
       def create
         fetch_book
         task = Admin::BookSummaryTask.setup(@book)
-        task.perform
-        redirect_to admin_book_generative_summary_path(@book, task_id: task.id)
+        Admin::DataFetchJob.perform_later(task.id)
+        redirect_to admin_book_path(@book), notice: 'Task has been queued for processing'
       end
 
       def show
