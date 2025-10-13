@@ -36,5 +36,10 @@ module Admin
       failed: 'failed',
       reviewed: 'reviewed'
     }, default: :requested
+
+    # Enqueue this task for background processing
+    def enqueue_for_processing!
+      Admin::DataFetchJob.perform_later(id)
+    end
   end
 end

@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   root to: 'home#index'
 
+  # Solid Queue web interface
+  mount SolidQueue::Engine, at: "/solid_queue"
+
   namespace :api do
     scope constraints: ->(req) { req.format == :json } do
       namespace :authors do
