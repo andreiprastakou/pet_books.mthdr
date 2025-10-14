@@ -25,7 +25,7 @@
 #
 require 'rails_helper'
 
-RSpec.describe Admin::BookSummaryTask, type: :model do
+RSpec.describe Admin::BookSummaryTask do
   describe 'validation' do
     it 'has a valid factory' do
       expect(build(:book_summary_task)).to be_valid
@@ -71,8 +71,7 @@ RSpec.describe Admin::BookSummaryTask, type: :model do
 
     context 'when there is an error' do
       before do
-        allow(writer).to receive(:errors?).and_return(true)
-        allow(writer).to receive(:errors).and_return([StandardError.new('ERROR_X')])
+        allow(writer).to receive_messages(errors?: true, errors: [StandardError.new('ERROR_X')])
         allow(writer).to receive(:ask).with(book).and_return([])
       end
 

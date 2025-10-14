@@ -53,6 +53,7 @@ Rails.application.routes.draw do
         resource :wiki_stats, only: %i[update], controller: 'wiki_stats'
         resource :generative_summary, only: %i[create show], controller: 'generative_summary' do
           put :reject
+          put :verify
         end
       end
     end
@@ -61,9 +62,13 @@ Rails.application.routes.draw do
       resources :cover_designs, except: %i[show]
     end
 
-    resources :data_fetch_tasks, only: %i[index show]
+    namespace :feed do
+      resource :books_review_widget, only: %i[show], controller: 'books_review_widget' do
+        post :request_summary
+      end
+    end
 
-    resource :feed, only: :show
+    resources :data_fetch_tasks, only: %i[index show]
 
     resources :genres
     resources :tags

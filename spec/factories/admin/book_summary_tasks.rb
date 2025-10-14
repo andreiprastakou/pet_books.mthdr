@@ -24,6 +24,5 @@
 #  chat_id  (chat_id => ai_chats.id)
 #
 FactoryBot.define do
-  factory :book_summary_task, class: 'Admin::BookSummaryTask', parent: :base_admin_data_fetch_task do
-  end
+  factory :book_summary_task, class: 'Admin::BookSummaryTask', parent: :base_admin_data_fetch_task
 end

@@ -35,7 +35,7 @@ module Admin
       fetched: 'fetched',
       failed: 'failed',
       rejected: 'rejected',
-      reviewed: 'reviewed'
+      verified: 'verified'
     }, default: :requested
 
     # Enqueue this task for background processing

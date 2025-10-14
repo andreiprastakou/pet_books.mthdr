@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::DataFetchTasksController, type: :request do
+RSpec.describe Admin::DataFetchTasksController do
   describe 'GET /admin/data_fetch_tasks' do
     let(:send_request) { get admin_data_fetch_tasks_path, headers: authorization_header }
     let(:tasks) { create_list(:book_summary_task, 3) }

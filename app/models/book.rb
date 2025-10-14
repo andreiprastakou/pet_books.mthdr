@@ -5,6 +5,7 @@
 # Table name: books
 #
 #  id                   :integer          not null, primary key
+#  data_filled          :boolean          default(FALSE), not null
 #  goodreads_popularity :integer
 #  goodreads_rating     :float
 #  goodreads_url        :string
@@ -24,6 +25,7 @@
 # Indexes
 #
 #  index_books_on_author_id            (author_id)
+#  index_books_on_data_filled          (data_filled)
 #  index_books_on_title_and_author_id  (title,author_id) UNIQUE
 #  index_books_on_year_published       (year_published)
 #
@@ -45,6 +47,7 @@ class Book < ApplicationRecord
   has_many :tags, through: :tag_connections, class_name: 'Tag'
   has_many :wiki_page_stats, as: :entity, class_name: 'WikiPageStat', dependent: :destroy
   has_many :genres, class_name: 'BookGenre', dependent: :destroy
+  has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
 
   accepts_nested_attributes_for :tag_connections, allow_destroy: true
   accepts_nested_attributes_for :genres, allow_destroy: true
@@ -60,6 +63,8 @@ class Book < ApplicationRecord
     includes(:tags).references(:tags).where(tags: { id: Array(tag_ids) })
   }
   scope :by_author, ->(author) { where(author_id: author) }
+  scope :not_filled, -> { where(data_filled: false) }
+  scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
 
   def tag_ids
     tag_connections.map(&:tag_id)

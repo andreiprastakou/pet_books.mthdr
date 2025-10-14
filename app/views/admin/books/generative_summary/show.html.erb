@@ -23,7 +23,8 @@
                 book_generated_summaries_src_param: summary[:src],
                 book_generated_summaries_genres_param: summary[:genre],
                 book_generated_summaries_themes_param: summary[:themes],
-                book_generated_summaries_form_param: summary[:form] } %>
+                book_generated_summaries_form_param: summary[:form],
+                book_generated_summaries_verification_url_param: verify_admin_book_generative_summary_path(@book, task_id: @task.id) } %>
           </div>
         </div>
       <% end %>

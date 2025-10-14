@@ -25,15 +25,17 @@
 #
 require 'rails_helper'
 
-RSpec.describe Admin::BaseDataFetchTask, type: :model do
+RSpec.describe Admin::BaseDataFetchTask do
   it { is_expected.to belong_to(:chat).class_name(Ai::Chat.name).optional }
   it { is_expected.to belong_to(:target) }
 
   specify do
-    expect(described_class.new).to define_enum_for(:status).
-      with_values(requested: 'requested', fetched: 'fetched', failed: 'failed', reviewed: 'reviewed').
-      with_default(:requested).
-      backed_by_column_of_type(:string)
+    expect(described_class.new).to define_enum_for(:status)
+      .with_values(
+        requested: 'requested', fetched: 'fetched', failed: 'failed', rejected: 'rejected', verified: 'verified'
+      )
+      .with_default(:requested)
+      .backed_by_column_of_type(:string)
   end
 
   describe 'validation' do

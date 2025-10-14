@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_12_100322) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_195143) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.string "target_type", null: false
@@ -96,7 +96,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_12_100322) do
     t.integer "wiki_popularity", default: 0
     t.string "literary_form", default: "novel", null: false
     t.string "summary_src"
+    t.boolean "data_filled", default: false
     t.index ["author_id"], name: "index_books_on_author_id"
+    t.index ["data_filled"], name: "index_books_on_data_filled"
     t.index ["title", "author_id"], name: "index_books_on_title_and_author_id", unique: true
     t.index ["year_published"], name: "index_books_on_year_published"
   end

@@ -5,6 +5,7 @@
 # Table name: books
 #
 #  id                   :integer          not null, primary key
+#  data_filled          :boolean          default(FALSE), not null
 #  goodreads_popularity :integer
 #  goodreads_rating     :float
 #  goodreads_url        :string
@@ -24,6 +25,7 @@
 # Indexes
 #
 #  index_books_on_author_id            (author_id)
+#  index_books_on_data_filled          (data_filled)
 #  index_books_on_title_and_author_id  (title,author_id) UNIQUE
 #  index_books_on_year_published       (year_published)
 #

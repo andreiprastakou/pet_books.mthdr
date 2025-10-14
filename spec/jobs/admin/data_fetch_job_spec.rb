@@ -1,8 +1,8 @@
 require 'rails_helper'
 
-RSpec.describe Admin::DataFetchJob, type: :job do
+RSpec.describe Admin::DataFetchJob do
   describe '#perform' do
-    subject(:call) { Admin::DataFetchJob.perform_now(task.id) }
+    subject(:call) { described_class.perform_now(task.id) }
 
     let(:task) { build_stubbed(:book_summary_task) }
 

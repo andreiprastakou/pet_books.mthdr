@@ -14,9 +14,9 @@ RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
     let(:response_text) do
       [
         ['The Great Gatsby is a novel by F. Scott Fitzgerald.', 'Love, Money, Society', 'social_realism', 'Novel',
-          'Goodreads'],
+         'Goodreads'],
         ['The Great Gatsby is not a novel by F. Scott Fitzgerald.', 'Society, Love, Money, Dreams', 'social_realism',
-          'Novel', 'Google Books' ]
+         'Novel', 'Google Books']
       ].to_json
     end
 

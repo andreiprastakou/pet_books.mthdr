@@ -29,14 +29,14 @@ module Admin
       create!(target: book)
     end
 
-    alias_method :book, :target
+    alias book target
 
     def perform
       writer = InfoFetchers::Chats::BookSummaryWriter.new
       writer.ask(book).tap do |summaries|
         if writer.errors?
           update!(status: :failed, chat: writer.chat, fetched_data: summaries,
-            fetch_error_details: writer.errors.map(&:message).join(', '))
+                  fetch_error_details: writer.errors.map(&:message).join(', '))
         else
           update!(status: :fetched, chat: writer.chat, fetched_data: summaries)
         end
