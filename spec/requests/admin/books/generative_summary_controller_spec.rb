@@ -12,9 +12,8 @@ RSpec.describe Admin::Books::GenerativeSummaryController do
     end
 
     it 'creates a task and redirects to the show page' do
-      send_request
-      expect(task).to have_received(:perform)
-      expect(response).to redirect_to(admin_book_generative_summary_path(book, task_id: task.id))
+      expect { send_request }.to have_enqueued_job(Admin::DataFetchJob).with(task.id)
+      expect(response).to redirect_to(admin_book_path(book))
     end
   end
 
@@ -44,6 +43,31 @@ RSpec.describe Admin::Books::GenerativeSummaryController do
       it 'redirects to book with an error message' do
         send_request
         expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      end
+    end
+  end
+
+  describe 'PUT /admin/books/:id/generative_summary/reject' do
+    let(:send_request) do
+      put reject_admin_book_generative_summary_path(book, task_id: task.id), headers: authorization_header
+    end
+    let(:book) { create(:book) }
+    let(:task) { create(:book_summary_task, target: book, status: :fetched) }
+
+    it 'rejects the task and redirects to the feed page' do
+      send_request
+      expect(task.reload).to be_rejected
+      expect(response).to redirect_to(admin_feed_path)
+    end
+
+    context 'when there are more fetched tasks' do
+      let(:task_b) { create(:book_summary_task, target: book, status: :fetched) }
+
+      before { task_b }
+
+      it 'redirects to its form' do
+        send_request
+        expect(response).to redirect_to(admin_book_generative_summary_path(book, task_id: task_b.id))
       end
     end
   end

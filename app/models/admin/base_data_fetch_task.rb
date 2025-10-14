@@ -34,6 +34,7 @@ module Admin
       requested: 'requested',
       fetched: 'fetched',
       failed: 'failed',
+      rejected: 'rejected',
       reviewed: 'reviewed'
     }, default: :requested
 

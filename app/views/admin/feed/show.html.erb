@@ -1,0 +1,27 @@
+<% admin_nav_crumbs "Admin Feed" %>
+
+<div class="container mt-4">
+  <h2>New summaries:</h2>
+  <table class="table table-sm">
+    <thead>
+      <th>BOOK</th>
+      <th>STATUS</th>
+      <th>LINKS</th>
+    </thead>
+    <% @generative_summaries.each do |task| %>
+      <tr>
+        <td>
+          <%= admin_link_to task.book.title, admin_book_path(task.book) %>
+        </td>
+        <td>
+          <%= "#{task.status.humanize} (#{admin_timestamp(task.updated_at)})" %>
+        </td>
+        <td>
+          <%= admin_link_to "Review", admin_book_generative_summary_path(task.book, task_id: task.id) if task.fetched? %>
+          <%= admin_link_to "See task", admin_data_fetch_task_path(task), class: "secondary" %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>
+

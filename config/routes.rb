@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :ai_chats, only: %i[index show], controller: 'ai/chats'
+
     resources :authors do
       scope module: :authors do
         resources :books, only: %i[new]
@@ -49,7 +51,9 @@ Rails.application.routes.draw do
     resources :books do
       scope module: :books do
         resource :wiki_stats, only: %i[update], controller: 'wiki_stats'
-        resource :generative_summary, only: %i[create show], controller: 'generative_summary'
+        resource :generative_summary, only: %i[create show], controller: 'generative_summary' do
+          put :reject
+        end
       end
     end
 
@@ -59,14 +63,14 @@ Rails.application.routes.draw do
 
     resources :data_fetch_tasks, only: %i[index show]
 
-    resources :ai_chats, only: %i[index show], controller: 'ai/chats'
+    resource :feed, only: :show
 
     resources :genres
     resources :tags
 
     mount MissionControl::Jobs::Engine, at: '/jobs'
 
-    get '/', to: 'books#index', format: :html, as: :root
+    get '/', to: 'feed#show', format: :html, as: :root
   end
 
   get '*path', to: 'home#index', format: :html

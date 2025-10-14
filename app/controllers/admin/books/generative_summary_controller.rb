@@ -18,6 +18,18 @@ module Admin
         @all_themes = @summaries.flat_map { |s| s[:themes].split(/,\s?/) }.uniq
       end
 
+      def reject
+        fetch_task
+        @task.rejected!
+        next_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first
+        if next_task.present?
+          redirect_to admin_book_generative_summary_path(next_task.book, task_id: next_task.id),
+            notice: 'Summaries rejected!'
+        else
+          redirect_to admin_feed_path, otice: 'No more fetched tasks'
+        end
+      end
+
       private
 
       def fetch_book
