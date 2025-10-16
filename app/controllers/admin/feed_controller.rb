@@ -1,6 +1,5 @@
 module Admin
   class FeedController < AdminController
-    def show
-    end
+    def show; end
   end
 end

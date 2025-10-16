@@ -66,8 +66,8 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
           summary_src: 'UPDATED_SUMMARY_SRC',
           literary_form: 'UPDATED_LITERARY_FORM',
           data_filled: true,
-          tag_names: ['tag_a', 'tag_b'],
-          genre_names: ['genre_a', 'genre_b']
+          tag_names: %w[tag_a tag_b],
+          genre_names: %w[genre_a genre_b]
         },
         summary_verified: true
       }

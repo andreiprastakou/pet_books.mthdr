@@ -5,15 +5,15 @@ module Admin
       before_action :fetch_task, only: %i[edit update reject]
       before_action :ensure_task_fetched, only: :edit
 
+      def edit
+        @form = Forms::BookForm.new(@book)
+        prepare_form_data
+      end
+
       def create
         task = Admin::BookSummaryTask.setup(@book)
         Admin::DataFetchJob.perform_later(task.id)
         redirect_to admin_book_path(@book), notice: t('notices.admin.generative_summaries.create.success')
-      end
-
-      def edit
-        @form = Forms::BookForm.new(@book)
-        prepare_form_data
       end
 
       def update
