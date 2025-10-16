@@ -1,0 +1,16 @@
+<div class="row mb-3" data-controller="external-link-preview">
+  <%= form.label :wiki_url, "Wiki URL", class: "form-label" %>
+  <div class="col-md-2 py-2">
+    <%= link_to "SEARCH", "#", target: "_blank",
+      data: { book_form_target: "wikiQueryLink", href_scaffold: "http://google.com/search?#{{q: "book TITLE by AUTHOR wikipedia"}.to_query}" } %>
+  </div>
+  <div class="col-md-1"> >> </div>
+  <div class="col-md-7">
+    <%= form.url_field :wiki_url, class: "form-control",
+      data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input" } %>
+    <div class="form-text">Enter the URL for the book's wiki page</div>
+  </div>
+  <div class="col-md-2 py-2">
+    <%= link_to "LINK", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
+  </div>
+</div>

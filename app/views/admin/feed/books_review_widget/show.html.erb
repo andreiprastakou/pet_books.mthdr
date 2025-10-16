@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-6">
         <div class="container mt-4">
-          <h3>Books to fill:</h3>
+          <h3>Books to fill: <%= @books_to_fill_count %></h3>
           <ul class="list-group">
             <% if @books_to_fill.empty? %>
               <li class="list-group-item">No books to fill</li>
@@ -21,7 +21,7 @@
 
       <div class="col-md-6">
         <div class="container mt-4">
-          <h3>Summaries to review:</h3>
+          <h3>Summaries to review: <%= @summaries_to_verify_count %></h3>
           <ul class="list-group">
             <% if @summaries_to_verify.empty? %>
               <li class="list-group-item">No summaries to review</li>
@@ -29,7 +29,7 @@
             <% @summaries_to_verify.each do |task| %>
               <li class="list-group-item">
                 <%= admin_link_to "#{task.book.title} (#{task.book.year_published}) by #{task.book.author.fullname}",
-                  admin_book_generative_summary_path(task.book, task_id: task.id) %>
+                  edit_admin_book_generative_summary_path(task.book, task.id) %>
               </li>
             <% end %>
           </ul>

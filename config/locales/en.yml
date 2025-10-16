@@ -48,9 +48,11 @@ en:
           success: "Cover design was successfully updated."
         destroy:
           success: "Cover design was successfully destroyed."
-      generative_summary:
+      generative_summaries:
         create:
-          success: "Task has been queued for processing"
+          success: "Task has been queued for processing."
+        update:
+          success: "Book was successfully updated."
         reject:
           success: "Summaries rejected!"
           nothing_else: "Nothing else to review"

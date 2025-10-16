@@ -32,6 +32,8 @@ export default class extends Controller {
   //
 
   syncGoodreadsQuery() {
+    if (!this.hasGoodreadsQueryLinkTarget) return
+
     const title = this.titleInputTarget.value.trim()
     const author = this.authorSelectTarget.selectedOptions[0]?.text.trim() || 'author'
     if (title) {
@@ -46,6 +48,8 @@ export default class extends Controller {
   //
 
   syncWikiQuery() {
+    if (!this.hasWikiQueryLinkTarget) return
+
     const title = this.titleInputTarget.value.trim()
     const author = this.authorSelectTarget.selectedOptions[0]?.text.trim() || 'author'
     if (title) {

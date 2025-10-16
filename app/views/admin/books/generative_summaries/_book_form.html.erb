@@ -1,4 +1,5 @@
 <%= form_with(model: [:admin, book], scope: "book", local: true, novalidate: true,
+  url: admin_book_generative_summary_path(book, @task), method: :put,
   data: { controller: "book-form",
     action: "book-generated-summaries:pickSummary@window->book-form#onSummaryPicked
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
@@ -24,30 +25,21 @@
     <%= form.text_field :original_title, class: "form-control", data: { behaviour: "indicateChanges", old_value: old_book.original_title } %>
   </div>
 
-  <div class="mb-3">
-    <%= form.label :year_published, class: "form-label" %>
-    <%= form.number_field :year_published, class: "form-control", min: 0, max: Time.current.year, required: true,
-      data: { behaviour: "indicateChanges", old_value: old_book.year_published } %>
-    <div class="invalid-feedback">
-      Please provide a valid year.
+  <div class="row">
+    <div class="mb-3 col-md-6">
+      <%= form.label :year_published, class: "form-label" %>
+      <%= form.number_field :year_published, class: "form-control", min: 0, max: Time.current.year, required: true,
+        data: { behaviour: "indicateChanges", old_value: old_book.year_published } %>
+      <div class="invalid-feedback">
+        Please provide a valid year.
+      </div>
     </div>
-  </div>
 
-  <%= render "admin/books/form/goodreads_input", form: form %>
-
-  <%= render "admin/books/form/wiki_input", form: form %>
-
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <%= form.label :wiki_popularity, class: "form-label" %>
-      <%= form.number_field :wiki_popularity, class: "form-control", disabled: true %>
+    <div class="mb-3 col-md-6">
+      <%= form.label :literary_form, class: "form-label" %>
+      <%= form.text_field :literary_form, class: "form-control",
+        data: { book_form_target: "literaryFormInput", behaviour: "indicateChanges", old_value: old_book.literary_form } %>
     </div>
-  </div>
-
-  <div class="mb-3">
-    <%= form.label :literary_form, class: "form-label" %>
-    <%= form.text_field :literary_form, class: "form-control",
-      data: { book_form_target: "literaryFormInput", behaviour: "indicateChanges", old_value: old_book.literary_form } %>
   </div>
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addGenres@window->badges-input#onNamesAdded">
@@ -63,6 +55,10 @@
   </div>
 
   <%= render "admin/books/form/summary_input", form: form, old_book: old_book %>
+
+  <%= form.hidden_field :data_filled, data: { book_generated_summaries_target: "datFilledInput" } %>
+
+  <%= hidden_field_tag :summary_verified, false, data: { book_generated_summaries_target: "summaryVerifiedInput" } %>
 
   <div class="mb-3">
     <%= form.submit class: "btn btn-primary", data: { book_form_target: "submitButton" } %>

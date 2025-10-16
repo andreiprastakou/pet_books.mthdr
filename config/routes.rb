@@ -51,9 +51,8 @@ Rails.application.routes.draw do
     resources :books do
       scope module: :books do
         resource :wiki_stats, only: %i[update], controller: 'wiki_stats'
-        resource :generative_summary, only: %i[create show], controller: 'generative_summary' do
-          put :reject
-          put :verify
+        resources :generative_summaries, only: %i[create edit update] do
+          put :reject, on: :member
         end
       end
     end

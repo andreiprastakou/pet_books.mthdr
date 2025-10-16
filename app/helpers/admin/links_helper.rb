@@ -107,7 +107,7 @@ module Admin
       when Admin::BookSummaryTask
         if task.fetched?
           admin_buttonly_link_to 'Apply Generative Summary',
-                                 admin_book_generative_summary_path(task.book, task_id: task.id)
+                                 edit_admin_book_generative_summary_path(task.book, task.id)
         end
       else
         raise NotImplementedError, "Verification form for #{task.type} is not implemented"

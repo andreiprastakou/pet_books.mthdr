@@ -4,7 +4,7 @@
   <div class="btn-group" role="group">
     <%= display_link_to "show", book_display_path(@book) %>
     <%= admin_buttonly_link_to "edit", edit_admin_book_path(@book) %>
-    <%= button_to "generate info", admin_book_generative_summary_path(@book), method: :post, class: "btn btn-primary me-1" %>
+    <%= button_to "generate info", admin_book_generative_summaries_path(@book), method: :post, class: "btn btn-primary me-1" %>
     <% if @book.wiki_url.present? %>
       <%= button_to "sync wiki stats", admin_book_wiki_stats_path(@book), method: :put, class: "btn btn-primary me-1" %>
     <% end %>
@@ -14,7 +14,8 @@
         admin_book_path(next_book) %>
     <% end %>
     <% if (next_summary_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first).present? %>
-      <%= admin_buttonly_link_to "next review: #{truncate(next_summary_task.book.title, length: 20, escape: false)} (#{next_summary_task.book.year_published})", admin_book_generative_summary_path(next_summary_task.book, task_id: next_summary_task.id) %>
+      <%= admin_buttonly_link_to "next review: #{truncate(next_summary_task.book.title, length: 20, escape: false)} (#{next_summary_task.book.year_published})",
+        edit_admin_book_generative_summary_path(next_summary_task.book, next_summary_task) %>
     <% end %>
   </div>
 </div>

@@ -2,8 +2,7 @@ module Admin
   module Feed
     class BooksReviewWidgetController < AdminController
       def show
-        fetch_books_to_fill
-        fetch_summaries_to_verify
+        fetch_view_data
       end
 
       def request_summary
@@ -11,19 +10,20 @@ module Admin
         task = Admin::BookSummaryTask.setup(book)
         Admin::DataFetchJob.perform_later(task.id)
 
-        fetch_books_to_fill
-        fetch_summaries_to_verify
+        fetch_view_data
         render :show
       end
 
       private
 
-      def fetch_books_to_fill
-        @books_to_fill = Book.not_filled.without_tasks.first(10)
-      end
+      def fetch_view_data
+        books_to_fill_scope = Book.not_filled.without_tasks
+        @books_to_fill = books_to_fill_scope.first(10)
+        @books_to_fill_count = books_to_fill_scope.count
 
-      def fetch_summaries_to_verify
-        @summaries_to_verify = Admin::BookSummaryTask.where(status: :fetched).first(10)
+        summaries_to_verify_scope = Admin::BookSummaryTask.where(status: :fetched)
+        @summaries_to_verify = summaries_to_verify_scope.first(10)
+        @summaries_to_verify_count = summaries_to_verify_scope.count
       end
     end
   end
