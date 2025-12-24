@@ -24,18 +24,17 @@
 #  chat_id  (chat_id => ai_chats.id)
 #
 module Admin
-  class BookSummaryTask < BaseDataFetchTask
-    def self.setup(book)
-      create!(target: book)
+  class AuthorBooksListParsingTask < BaseDataFetchTask
+    def self.setup(author, text:)
+      create!(target: author, input_data: { text: text })
     end
 
-    alias book target
+    alias author target
 
     def perform
-      writer = InfoFetchers::Chats::BookSummaryWriter.new
-      writer.ask(book).tap do |summaries|
-        save_results!(summaries, chat: writer.chat, errors: writer.errors)
-      end
+      parser = InfoFetchers::Chats::AuthorBooksListParser.new
+      books_data = parser.parse_books_list(input_data.fetch("text"))
+      save_results!(books_data, chat: parser.chat, errors: parser.errors)
     end
   end
 end

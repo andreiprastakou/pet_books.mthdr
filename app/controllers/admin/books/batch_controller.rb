@@ -4,7 +4,7 @@ module Admin
       def update
         if apply_updates
           flash.now[:success] = t('notices.admin.books_batch.updates_applied')
-          redirect_to @books.present? ? admin_book_path(@books.first) : admin_books_path
+          redirect_to @books.present? ? admin_author_path(@books.first.author) : admin_books_path
         else
           flash.now[:error] = t('notices.admin.books_batch.failed', errors: collect_errors(@books))
           render :edit

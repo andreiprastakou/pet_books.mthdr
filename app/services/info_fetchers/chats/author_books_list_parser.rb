@@ -1,6 +1,6 @@
 module InfoFetchers
   module Chats
-    class AuthorBooksListParser
+    class AuthorBooksListParser < InfoFetchers::Chats::BaseChat
       INSTRUCTIONS = <<-INSTRUCTIONS.freeze
         You are a books list parser.
 
@@ -14,29 +14,19 @@ module InfoFetchers
       INSTRUCTIONS
 
       def parse_books_list(text)
-        safe_wrap do
-          chat = setup_chat
-          response = chat.ask(text)
-          data = JSON.parse(response.content)
-          data.map do |item|
-            title, year, type = item
-            { title: title, year: year, type: type }
-          end
+        last_response = chat.ask(text)
+        data = JSON.parse(last_response.content)
+        data.map do |(title, year, type)|
+          { title: title, year: year, type: type }
         end
-      end
-
-      private
-
-      def safe_wrap
-        yield
       rescue StandardError => e
-        Rails.logger.error("Error parsing books list: #{e.message}")
-        Rails.logger.error(e.backtrace.join("\n"))
+        Rails.logger.error(e.message)
+        @errors = [e]
         []
       end
 
-      def setup_chat
-        Ai::Chat.start.tap do |chat|
+      def chat
+        @chat ||= Ai::Chat.start.tap do |chat|
           chat.with_instructions(INSTRUCTIONS)
         end
       end

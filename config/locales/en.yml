@@ -18,6 +18,12 @@ en:
           success: "Author was successfully destroyed."
         generate_info:
           success: "Author info was successfully generated."
+      author_books_list:
+        create:
+          success: "Task has been queued for processing."
+      author_books_list_parsing:
+        create:
+          success: "Task has been queued for processing."
       author_sync_status:
         update:
           success: "Sync status was updated."

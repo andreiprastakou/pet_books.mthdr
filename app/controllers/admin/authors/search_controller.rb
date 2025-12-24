@@ -2,6 +2,10 @@ module Admin
   module Authors
     class SearchController < AdminController
       def create
+        redirect_to admin_authors_search_path(key: params[:key])
+      end
+
+      def show
         @key = params[:key]
         @authors = perform_search
       end

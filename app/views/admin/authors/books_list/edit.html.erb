@@ -9,20 +9,6 @@
   <% end %>
 </div>
 
-<% if @error.present? %>
-  <div class="alert alert-danger">
-    <p>ERROR:</p>
-    <p><%= @error %></p>
-  </div>
-<% end %>
-
 <% if @books.present? %>
   <%= render 'admin/books/batch_edit', books: @books %>
-<% end %>
-
-<% if @raw_data.present? %>
-  <div class="alert alert-danger">
-    <p>DATA:</p>
-    <pre><%= @raw_data %></pre>
-  </div>
 <% end %>

@@ -1,6 +1,6 @@
 module InfoFetchers
   module Chats
-    class AuthorBooksListExpert
+    class AuthorBooksListExpert < InfoFetchers::Chats::BaseChat
       INSTRUCTIONS = <<-INSTRUCTIONS.freeze
         You are a meticulous bibliographer.
 
@@ -35,15 +35,24 @@ module InfoFetchers
       INSTRUCTIONS
 
       def ask_books_list(author)
-        chat = setup_chat
-        response = chat.ask("Author: #{author.fullname}")
-        response.content
+        last_response = chat.ask("Author: #{author.fullname}")
+        JSON.parse(last_response.content).fetch('works').map do |(title, original_title, year, form, wikipedia_url)|
+          {
+            title: title,
+            original_title: original_title,
+            year_published: year,
+            literary_form: form,
+            wiki_url: wikipedia_url
+          }.compact_blank
+        end
+      rescue StandardError => e
+        Rails.logger.error(e.message)
+        @errors = [e]
+        []
       end
 
-      private
-
-      def setup_chat
-        Ai::Chat.start.tap do |chat|
+      def chat
+        @chat ||= Ai::Chat.start.tap do |chat|
           chat.with_instructions(INSTRUCTIONS)
         end
       end

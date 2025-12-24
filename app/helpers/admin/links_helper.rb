@@ -106,8 +106,16 @@ module Admin
       case task
       when Admin::BookSummaryTask
         if task.fetched?
-          admin_buttonly_link_to 'Apply Generative Summary',
+          admin_buttonly_link_to 'Review updates',
                                  edit_admin_book_generative_summary_path(task.book, task.id)
+        end
+      when Admin::AuthorBooksListTask
+        if task.fetched?
+          admin_buttonly_link_to 'Review updates', edit_admin_author_books_list_path(task.author, task.id)
+        end
+      when Admin::AuthorBooksListParsingTask
+        if task.fetched?
+          admin_buttonly_link_to 'Review updates', edit_admin_author_list_parsing_path(task.author, task.id)
         end
       else
         raise NotImplementedError, "Verification form for #{task.type} is not implemented"

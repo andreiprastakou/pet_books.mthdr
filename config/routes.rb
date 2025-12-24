@@ -33,20 +33,23 @@ Rails.application.routes.draw do
   namespace :admin do
     resources :ai_chats, only: %i[index show], controller: 'ai/chats'
 
+    namespace :authors do
+      resource :search, only: %i[create show], controller: 'search'
+    end
     resources :authors do
       scope module: :authors do
         resources :books, only: %i[new]
-        resource :books_list, only: %i[create], controller: 'books_list'
-        resource :list_parsing, only: %i[new create], controller: 'list_parsing'
         resource :sync_status, only: %i[update], controller: 'sync_status'
         resource :wiki_stats, only: %i[update]
+
+        resources :books_list, only: %i[create edit]
+        resources :list_parsing, only: %i[new create edit]
       end
     end
-    resource :authors_search, only: %i[create], controller: 'authors/search'
 
     namespace :books do
       resource :batch, only: %i[edit update], controller: 'batch'
-      resource :search, only: %i[create], controller: 'search'
+      resource :search, only: %i[create show], controller: 'search'
     end
     resources :books do
       scope module: :books do
@@ -64,6 +67,10 @@ Rails.application.routes.draw do
     namespace :feed do
       resource :books_review_widget, only: %i[show], controller: 'books_review_widget' do
         post :request_summary
+      end
+      resource :authors_review_widget, only: %i[show], controller: 'authors_review_widget' do
+        post :request_books_list
+        post :fill_books_list
       end
     end
 

@@ -6,7 +6,7 @@
     <%= admin_buttonly_link_to "+book", new_admin_author_book_path(@author) %>
     <%= admin_buttonly_link_to "edit all books", edit_admin_books_batch_path(book_ids: @author.books.pluck(:id)) %>
     <%= admin_buttonly_link_to "parse list", new_admin_author_list_parsing_path(@author) %>
-    <%= button_to "sync all books", admin_author_books_list_path(@author), method: :post, class: 'btn btn-primary me-1' %>
+    <%= button_to "sync all books", admin_author_books_list_index_path(@author), method: :post, class: 'btn btn-primary me-1' %>
     <%= button_to "mark sync!", admin_author_sync_status_path(@author), method: :put, class: 'btn btn-primary me-1' %>
     <%= button_to "sync wiki views", admin_author_wiki_stats_path(@author), method: :put, class: 'btn btn-primary me-1' %>
     <%= button_to "delete", admin_author_path(@author), method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>

@@ -1,0 +1,54 @@
+<%= turbo_frame_tag "authors_review_widget", target: "_top" do %>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="container mt-4">
+          <h3>Authors to sync: <%= @authors_to_sync_count %></h3>
+          <ul class="list-group">
+            <% if @authors_to_sync.empty? %>
+              <li class="list-group-item">No authors to sync</li>
+            <% end %>
+            <% @authors_to_sync.each do |author| %>
+              <li class="list-group-item">
+                <%= admin_link_to "#{author.fullname}", admin_author_path(author), target: "_blank" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="container mt-4">
+          <h3>Fetched lists to review: <%= @fetched_lists_to_verify_count %></h3>
+          <ul class="list-group">
+            <% if @fetched_lists_to_verify.empty? %>
+              <li class="list-group-item">No fetched lists to review</li>
+            <% end %>
+            <% @fetched_lists_to_verify.each do |task| %>
+              <li class="list-group-item">
+                <%= admin_link_to "#{task.author.fullname}",
+                  edit_admin_author_books_list_path(task.author, task.id) %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="container mt-4">
+          <h3>Parsed lists to review: <%= @parsed_lists_to_verify_count %></h3>
+          <ul class="list-group">
+            <% if @parsed_lists_to_verify.empty? %>
+              <li class="list-group-item">No parsed lists to review</li>
+            <% end %>
+            <% @parsed_lists_to_verify.each do |task| %>
+              <li class="list-group-item">
+                <%= admin_link_to "#{task.author.fullname}",
+                  edit_admin_author_list_parsing_path(task.author, task.id) %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+    </div>
+  </div>
+<% end %>

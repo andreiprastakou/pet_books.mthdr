@@ -18,11 +18,11 @@ module Admin
 
       def fetch_view_data
         books_to_fill_scope = Book.not_filled.without_tasks
-        @books_to_fill = books_to_fill_scope.first(10)
+        @books_to_fill = books_to_fill_scope.first(5)
         @books_to_fill_count = books_to_fill_scope.count
 
         summaries_to_verify_scope = Admin::BookSummaryTask.where(status: :fetched)
-        @summaries_to_verify = summaries_to_verify_scope.first(10)
+        @summaries_to_verify = summaries_to_verify_scope.first(5)
         @summaries_to_verify_count = summaries_to_verify_scope.count
       end
     end

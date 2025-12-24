@@ -38,9 +38,17 @@ module Admin
       verified: 'verified'
     }, default: :requested
 
-    # Enqueue this task for background processing
     def enqueue_for_processing!
       Admin::DataFetchJob.perform_later(id)
+    end
+
+    def save_results!(data, chat:, errors: [])
+      if errors.present?
+        update!(status: :failed, chat: chat, fetched_data: data,
+                fetch_error_details: errors.map(&:message).join(', '))
+      else
+        update!(status: :fetched, chat: chat, fetched_data: data)
+      end
     end
   end
 end
