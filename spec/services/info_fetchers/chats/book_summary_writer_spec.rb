@@ -1,10 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
+  let(:writer) { described_class.new }
+
   describe '#ask' do
     subject(:result) { writer.ask(book) }
 
-    let(:writer) { described_class.new }
     let(:author) { build_stubbed(:author, fullname: 'F. Scott Fitzgerald') }
     let(:book) do
       build_stubbed(:book, title: 'The Great Gatsby', year_published: 1925, author: author, literary_form: 'novel')
@@ -36,8 +37,7 @@ RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
             themes: 'Society, Love, Money, Dreams', genre: 'social_realism', form: 'Novel', src: 'Google Books' }
         ]
       )
-      expect(writer.errors?).to be false
-      expect(writer.last_response).to eq(chat_response)
+      expect(writer.errors).to be_empty
     end
 
     context 'when chat response is not a valid JSON' do
@@ -45,8 +45,6 @@ RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
 
       it 'returns an empty array' do
         expect(result).to eq([])
-        expect(writer.errors?).to be true
-        expect(writer.last_response).to eq(chat_response)
         expect(writer.errors.map(&:message)).to match([/unexpected character/])
       end
     end
@@ -65,7 +63,6 @@ RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
   describe '#chat' do
     subject(:result) { writer.chat }
 
-    let(:writer) { described_class.new }
     let(:chat) { instance_double(Ai::Chat) }
 
     before do

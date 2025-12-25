@@ -25,20 +25,20 @@
 #
 require 'rails_helper'
 
-RSpec.describe Admin::BookSummaryTask do
+RSpec.describe Admin::AuthorBooksListTask do
   describe 'validation' do
     it 'has a valid factory' do
-      expect(build(:book_summary_task)).to be_valid
+      expect(build(:author_books_list_task)).to be_valid
     end
   end
 
   describe '.setup' do
-    let(:book) { create(:book) }
+    let(:author) { create(:author) }
 
-    it 'creates a new book summary task' do
-      expect { described_class.setup(book) }.to change(described_class, :count).by(1)
+    it 'creates a new author books list task' do
+      expect { described_class.setup(author) }.to change(described_class, :count).by(1)
       new_record = described_class.last
-      expect(new_record.target).to eq(book)
+      expect(new_record.target).to eq(author)
       expect(new_record.status).to eq('requested')
     end
   end
@@ -46,37 +46,37 @@ RSpec.describe Admin::BookSummaryTask do
   describe '#perform' do
     subject(:call) { task.perform }
 
-    let(:task) { build(:book_summary_task, target: book) }
-    let(:book) { build_stubbed(:book) }
-    let(:writer) { instance_double(InfoFetchers::Chats::BookSummaryWriter, chat: chat, errors: []) }
+    let(:task) { build(:author_books_list_task, target: author) }
+    let(:author) { build_stubbed(:author) }
+    let(:expert) { instance_double(InfoFetchers::Chats::AuthorBooksListExpert, chat: chat, errors: []) }
     let(:chat) { create(:ai_chat) }
-    let(:summaries) do
+    let(:books_data) do
       [
-        { 'summary' => 'SUMMARY_A', 'themes' => 'theme_a', 'genre' => 'genre_a', 'src' => 'src_a' },
-        { 'summary' => 'SUMMARY_B', 'themes' => 'theme_b', 'genre' => 'genre_b', 'src' => 'src_b' }
+        { title: 'Book A', original_title: 'Original A', year_published: 2000, literary_form: 'novel', wiki_url: 'https://example.com/a' },
+        { title: 'Book B', original_title: nil, year_published: 2001, literary_form: 'novel', wiki_url: nil }
       ]
     end
 
     before do
-      allow(InfoFetchers::Chats::BookSummaryWriter).to receive(:new).and_return(writer)
-      allow(writer).to receive(:ask).with(book).and_return(summaries)
+      allow(InfoFetchers::Chats::AuthorBooksListExpert).to receive(:new).and_return(expert)
+      allow(expert).to receive(:ask_books_list).with(author).and_return(books_data)
     end
 
-    it 'fetches the summary' do
-      expect(call).to eq(summaries)
+    it 'fetches the books list' do
+      call
       expect(task.status).to eq('fetched')
-      expect(task.fetched_data).to eq(summaries)
+      expect(task.fetched_data.to_json).to eq(books_data.to_json)
       expect(task.chat).to eq(chat)
     end
 
     context 'when there is an error' do
       before do
-        allow(writer).to receive(:errors).and_return([StandardError.new('ERROR_X')])
-        allow(writer).to receive(:ask).with(book).and_return([])
+        allow(expert).to receive(:errors).and_return([StandardError.new('ERROR_X')])
+        allow(expert).to receive(:ask_books_list).with(author).and_return([])
       end
 
       it 'updates the task with the error', :aggregate_failures do
-        expect(call).to eq([])
+        call
         expect(task.status).to eq('failed')
         expect(task.fetch_error_details).to eq('ERROR_X')
         expect(task.fetched_data).to eq([])
@@ -85,3 +85,4 @@ RSpec.describe Admin::BookSummaryTask do
     end
   end
 end
+

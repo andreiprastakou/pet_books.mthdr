@@ -17,8 +17,15 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListExpert do
       allow(chat).to receive(:ask).with('Author: David Copperfield').and_return(chat_response)
     end
 
-    it 'returns raw JSON response' do
-      expect(result).to eq(chat_output)
+    it 'returns hashes with book data' do
+      expect(result).to eq([
+        {
+          title: 'David Copperfield',
+          year_published: 1850,
+          literary_form: 'novel',
+          wiki_url: 'WIKI_URL'
+        }
+      ])
     end
 
     it 'sets up chat with instructions' do
@@ -29,8 +36,9 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListExpert do
     context 'when chat responds with bad JSON' do
       let(:chat_output) { 'invalid JSON' }
 
-      it 'returns raw JSON response' do
-        expect(result).to eq(chat_output)
+      it 'returns empty array and registers an error' do
+        expect(result).to eq([])
+        expect(expert.errors.map(&:message)).to match([/unexpected character/])
       end
     end
   end

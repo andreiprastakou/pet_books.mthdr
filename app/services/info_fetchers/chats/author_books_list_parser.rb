@@ -17,7 +17,9 @@ module InfoFetchers
         last_response = chat.ask(text)
         data = JSON.parse(last_response.content)
         data.map do |(title, year, type)|
-          { title: title, year: year, type: type }
+          {
+            title: title, year: year, type: type
+          }.compact_blank
         end
       rescue StandardError => e
         Rails.logger.error(e.message)

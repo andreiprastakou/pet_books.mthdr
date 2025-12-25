@@ -40,7 +40,7 @@ module InfoFetchers
           {
             title: title,
             original_title: original_title,
-            year_published: year,
+            year_published: Integer(year),
             literary_form: form,
             wiki_url: wikipedia_url
           }.compact_blank

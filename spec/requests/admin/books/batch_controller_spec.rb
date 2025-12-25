@@ -47,7 +47,7 @@ RSpec.describe Admin::Books::BatchController do
 
     it 'renders a successful response' do
       send_request
-      expect(response).to redirect_to admin_book_path(book_a)
+      expect(response).to redirect_to admin_author_path(book_a.author)
     end
 
     context 'with invalid params' do
