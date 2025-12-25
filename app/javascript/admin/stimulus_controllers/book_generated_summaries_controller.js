@@ -7,7 +7,8 @@ export default class extends Controller {
   ]
 
   onPick(event) {
-    const { verificationUrl, ...bookParams } = event.params
+    // eslint-disable-next-line no-unused-vars
+    const { verificationUrl: _, ...bookParams } = event.params
     this.datFilledInputTarget.value = true
     this.summaryVerifiedInputTarget.value = true
     this.dispatch('pickSummary', { detail: bookParams })

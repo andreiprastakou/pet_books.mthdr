@@ -29,7 +29,7 @@ Code style checks:
 ```sh
 pronto run
 rubocop
-yarn run eslint app/javascript/**/*.{js,jsx}
+yarn run eslint "app/javascript/**/*.{js,jsx}"
 yarn run stylelint "app/assets/stylesheets/**/*.{css,scss}"
 ```
 
