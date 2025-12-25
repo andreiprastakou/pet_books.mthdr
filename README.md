@@ -11,7 +11,8 @@ docker compose run shell
 
 ## Usage
 
-Server boot: `docker compose --profile web up`
+Server boot: `docker compose --profile web up`.
+You may use `bin/server_local` shortcut.
 
 Local access: <a href="http://localhost:3010/" target="_blank">http://localhost:3010/</a>
 
