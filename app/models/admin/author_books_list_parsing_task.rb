@@ -33,7 +33,7 @@ module Admin
 
     def perform
       parser = InfoFetchers::Chats::AuthorBooksListParser.new
-      books_data = parser.parse_books_list(input_data.fetch("text"))
+      books_data = parser.parse_books_list(input_data.fetch('text'))
       save_results!(books_data, chat: parser.chat, errors: parser.errors)
     end
   end

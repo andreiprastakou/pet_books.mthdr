@@ -36,15 +36,7 @@ module InfoFetchers
 
       def ask_books_list(author)
         last_response = chat.ask("Author: #{author.fullname}")
-        JSON.parse(last_response.content).fetch('works').map do |(title, original_title, year, form, wikipedia_url)|
-          {
-            title: title,
-            original_title: original_title,
-            year_published: Integer(year),
-            literary_form: form,
-            wiki_url: wikipedia_url
-          }.compact_blank
-        end
+        parse_works_from_response(last_response)
       rescue StandardError => e
         Rails.logger.error(e.message)
         @errors = [e]
@@ -54,6 +46,20 @@ module InfoFetchers
       def chat
         @chat ||= Ai::Chat.start.tap do |chat|
           chat.with_instructions(INSTRUCTIONS)
+        end
+      end
+
+      private
+
+      def parse_works_from_response(response)
+        JSON.parse(response.content).fetch('works').map do |(title, original_title, year, form, wikipedia_url)|
+          {
+            title: title,
+            original_title: original_title,
+            year_published: Integer(year),
+            literary_form: form,
+            wiki_url: wikipedia_url
+          }.compact_blank
         end
       end
     end

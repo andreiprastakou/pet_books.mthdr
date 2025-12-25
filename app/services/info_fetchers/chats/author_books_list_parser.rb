@@ -15,12 +15,7 @@ module InfoFetchers
 
       def parse_books_list(text)
         last_response = chat.ask(text)
-        data = JSON.parse(last_response.content)
-        data.map do |(title, year, type)|
-          {
-            title: title, year: year, type: type
-          }.compact_blank
-        end
+        parse_data_from_response(last_response)
       rescue StandardError => e
         Rails.logger.error(e.message)
         @errors = [e]
@@ -30,6 +25,17 @@ module InfoFetchers
       def chat
         @chat ||= Ai::Chat.start.tap do |chat|
           chat.with_instructions(INSTRUCTIONS)
+        end
+      end
+
+      private
+
+      def parse_data_from_response(response)
+        data = JSON.parse(response.content)
+        data.map do |(title, year, type)|
+          {
+            title: title, year: year, type: type
+          }.compact_blank
         end
       end
     end

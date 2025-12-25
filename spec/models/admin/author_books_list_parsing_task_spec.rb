@@ -88,4 +88,3 @@ RSpec.describe Admin::AuthorBooksListParsingTask do
     end
   end
 end
-

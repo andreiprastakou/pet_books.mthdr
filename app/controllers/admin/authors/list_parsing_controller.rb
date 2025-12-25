@@ -4,17 +4,16 @@ module Admin
       before_action :fetch_author, only: %i[new create edit]
       before_action :fetch_task, only: %i[edit]
 
-      def new
+      def new; end
+
+      def edit
+        prepare_form_data
       end
 
       def create
         task = Admin::AuthorBooksListParsingTask.setup(@author, text: params[:text])
         Admin::DataFetchJob.perform_later(task.id)
         redirect_to admin_author_path(@author), notice: t('notices.admin.author_books_list_parsing.create.success')
-      end
-
-      def edit
-        prepare_form_data
       end
 
       private

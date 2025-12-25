@@ -21,6 +21,8 @@ Local access: <a href="http://localhost:3010/" target="_blank">http://localhost:
 ![railsBadge](https://img.shields.io/badge/rails-8.0.3-green)
 
 Shell container is the default for running all of the commands below.
+You may use `bin/shell COMMAND` shortcut.
+
 Code style checks:
 
 ```sh

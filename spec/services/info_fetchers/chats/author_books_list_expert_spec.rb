@@ -19,13 +19,13 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListExpert do
 
     it 'returns hashes with book data' do
       expect(result).to eq([
-        {
-          title: 'David Copperfield',
-          year_published: 1850,
-          literary_form: 'novel',
-          wiki_url: 'WIKI_URL'
-        }
-      ])
+                             {
+                               title: 'David Copperfield',
+                               year_published: 1850,
+                               literary_form: 'novel',
+                               wiki_url: 'WIKI_URL'
+                             }
+                           ])
     end
 
     it 'sets up chat with instructions' do

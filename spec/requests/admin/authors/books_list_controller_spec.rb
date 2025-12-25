@@ -55,7 +55,9 @@ RSpec.describe Admin::Authors::BooksListController do
       send_request
       expect(response).to be_successful
       expect(response).to render_template 'admin/authors/books_list/edit'
-      expect(assigns(:books).map { |b| [b.id, b.title, b.original_title, b.year_published, b.literary_form, b.wiki_url] }).to eq(
+      expect(assigns(:books).map do |b|
+        [b.id, b.title, b.original_title, b.year_published, b.literary_form, b.wiki_url]
+      end).to eq(
         [
           [books[0].id, 'BOOK_1', 'ORIGINAL_1', 2025, 'type_11', 'WIKI_URL_11'],
           [books[1].id, 'BOOK_2_DIFFERENT', 'ORIGINAL_2', 2025, 'type_22', 'WIKI_URL_22'],

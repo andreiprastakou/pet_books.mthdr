@@ -24,9 +24,9 @@
 #  chat_id  (chat_id => ai_chats.id)
 #
 FactoryBot.define do
-  factory :author_books_list_parsing_task, class: 'Admin::AuthorBooksListParsingTask', parent: :base_admin_data_fetch_task do
+  factory :author_books_list_parsing_task, class: 'Admin::AuthorBooksListParsingTask',
+                                           parent: :base_admin_data_fetch_task do
     target factory: %i[author], strategy: :create
     input_data { { text: 'books: book_a, book_b' } }
   end
 end
-

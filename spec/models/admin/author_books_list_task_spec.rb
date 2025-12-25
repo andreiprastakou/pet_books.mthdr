@@ -52,7 +52,8 @@ RSpec.describe Admin::AuthorBooksListTask do
     let(:chat) { create(:ai_chat) }
     let(:books_data) do
       [
-        { title: 'Book A', original_title: 'Original A', year_published: 2000, literary_form: 'novel', wiki_url: 'https://example.com/a' },
+        { title: 'Book A', original_title: 'Original A', year_published: 2000, literary_form: 'novel',
+          wiki_url: 'https://example.com/a' },
         { title: 'Book B', original_title: nil, year_published: 2001, literary_form: 'novel', wiki_url: nil }
       ]
     end
@@ -85,4 +86,3 @@ RSpec.describe Admin::AuthorBooksListTask do
     end
   end
 end
-

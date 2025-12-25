@@ -20,15 +20,7 @@ module InfoFetchers
 
       def ask(book)
         last_response = ask_chat(book)
-        JSON.parse(last_response.content).map do |(summary, themes, genre, form, src)|
-          {
-            summary: summary,
-            themes: themes,
-            genre: genre,
-            form: form,
-            src: src
-          }.compact_blank
-        end
+        parse_summary_from_response(last_response)
       rescue StandardError => e
         Rails.logger.error(e.message)
         @errors = [e]
@@ -42,6 +34,18 @@ module InfoFetchers
       end
 
       private
+
+      def parse_summary_from_response(response)
+        JSON.parse(response.content).map do |(summary, themes, genre, form, src)|
+          {
+            summary: summary,
+            themes: themes,
+            genre: genre,
+            form: form,
+            src: src
+          }.compact_blank
+        end
+      end
 
       def ask_chat(book)
         chat.ask([
