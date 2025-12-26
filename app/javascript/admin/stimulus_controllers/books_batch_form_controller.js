@@ -3,8 +3,22 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = [
     'booksList',
-    'bookTemplate'
+    'bookEntry',
+    'bookTemplate',
   ]
+
+  connect() {
+    this.nullifyRedundantOriginalTitles()
+  }
+
+  nullifyRedundantOriginalTitles() {
+    this.bookEntryTargets.forEach(bookEntry => {
+      const title = bookEntry.querySelector('[data-name="title"]')
+      const originalTitle = bookEntry.querySelector('[data-name="original_title"]')
+      if (title.value == originalTitle.value)
+        originalTitle.value = null
+    })
+  }
 
   removeBook(event) {
     const bookRow = event.target.closest('[data-name="book-row"]')

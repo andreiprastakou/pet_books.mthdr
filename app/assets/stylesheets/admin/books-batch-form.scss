@@ -7,4 +7,12 @@
       width: 55px;
     }
   }
+
+  .b-batch-external-link {
+    text-decoration: none;
+
+    &:not([href]) {
+      display: none;
+    }
+  }
 }

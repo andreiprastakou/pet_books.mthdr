@@ -1,0 +1,63 @@
+
+<div class="card">
+  <div class="card-header">
+    Task:
+  </div>
+  <div class="card-body">
+    <div class="b-genre-page container mt-4">
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Type:</div>
+        <div class="col-md-9"><%= task.type %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Status:</div>
+        <div class="col-md-9"><%= task.status.humanize %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
+        <div class="col-md-9"><%= admin_timestamp(task.updated_at) %></div>
+      </div>
+
+      <%= link_to "toggle details", nil, role: "button", class: "float-end b-task-toggle-details",
+        data: { bs_toggle: "collapse", bs_target: "#task-more-details" } %>
+
+      <div class="collapse" id="task-more-details">
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Target:</div>
+          <div class="col-md-9">
+            <%= admin_link_to_data_fetch_task_target(task) %>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Chat:</div>
+          <div class="col-md-9"><%= admin_link_to task.chat_id, admin_ai_chat_path(task.chat_id) if task.chat_id.present? %></div>
+        </div>
+
+        <% if task.failed? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Error:</div>
+            <div class="col-md-9"><%= task.fetch_error_details %></div>
+          </div>
+        <% end %>
+
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Input:</div>
+          <div class="col-md-9"><%= task.input_data.to_json %></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Output:</div>
+          <div class="col-md-9"><%= task.fetched_data.to_json %></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Created At:</div>
+          <div class="col-md-9"><%= admin_timestamp(task.created_at) %></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

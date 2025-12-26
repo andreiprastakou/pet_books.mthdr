@@ -74,7 +74,10 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :data_fetch_tasks, only: %i[index show]
+    resources :data_fetch_tasks, only: %i[index show] do
+      put :verify, on: :member
+      put :reject, on: :member
+    end
 
     resources :genres
     resources :tags

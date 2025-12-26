@@ -1,14 +1,39 @@
 <% admin_nav_crumbs admin_nav_authors_link, admin_nav_author_link(@author), "Books list" %>
 
-<div id="<%= dom_id @author %>" class="container mt-4">
-  <% if @author.reference.present? %>
-    <div class="row mb-3">
-      <div class="col-md-3 font-weight-bold text-end">Author's Wiki:</div>
-      <div class="col-md-9"><%= external_link_to "WIKI", @author.reference %></div>
+<%= render 'admin/data_fetch_tasks/task_info_card', task: @task %>
+
+<div class="card mt-2">
+  <div class="card-header">
+    Author:
+  </div>
+  <div class="card-body">
+    <div id="<%= dom_id @author %>" class="container mt-4">
+      <% if @author.reference.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Wiki:</div>
+          <div class="col-md-9"><%= external_link_to @author.reference, @author.reference %></div>
+        </div>
+      <% end %>
     </div>
-  <% end %>
+  </div>
 </div>
 
-<% if @books.present? %>
-  <%= render 'admin/books/batch_edit', books: @books %>
-<% end %>
+<div class="card mt-2">
+  <div class="card-header">
+    Books:
+  </div>
+  <div class="card-body">
+    <% if @books.present? %>
+      <%= render 'admin/books/batch_edit', books: @books %>
+    <% end %>
+  </div>
+</div>
+
+<div class="card mt-2">
+  <div class="card-header">
+    Task:
+  </div>
+  <div class="card-body">
+    <%= render 'admin/data_fetch_tasks/task_status_actions', task: @task %>
+  </div>
+<div>

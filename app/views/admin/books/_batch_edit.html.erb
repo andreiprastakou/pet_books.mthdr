@@ -16,19 +16,30 @@
     <div data-books-batch-form-target="booksList">
       <% books = books.sort_by { |b| b.year_published.to_i } %>
       <% books.each_with_index do |book, index| %>
-        <div class="row mb-3 align-items-center" data-name="book-row">
+        <div class="row mb-3 align-items-center" data-name="book-row" data-books-batch-form-target="bookEntry">
           <div class="col-1">
             <%= text_field_tag "batch[#{index}][id]", book.id, class: 'form-control form-control-sm', disabled: true %>
             <%= hidden_field_tag "batch[#{index}][id]", book.id %>
           </div>
           <div class="col-2">
-            <%= text_field_tag "batch[#{index}][title]", book.title, class: 'form-control form-control-sm' %>
+            <%= admin_reversible_input(old_value: book.title_was) do %>
+              <%= text_field_tag "batch[#{index}][title]", book.title,
+                class: 'form-control form-control-sm',
+                data: { name: "title", input_changes_target: "input" } %>
+            <% end %>
           </div>
           <div class="col-1">
-            <%= text_field_tag "batch[#{index}][original_title]", book.original_title, class: 'form-control form-control-sm' %>
+            <%= admin_reversible_input(old_value: book.original_title_was) do %>
+              <%= text_field_tag "batch[#{index}][original_title]", book.original_title,
+                class: 'form-control form-control-sm',
+                data: { name: "original_title", input_changes_target: "input" } %>
+            <% end %>
           </div>
           <div class="col-1">
-            <%= text_field_tag "batch[#{index}][literary_form]", book.literary_form, class: 'form-control form-control-sm' %>
+            <%= admin_reversible_input(old_value: book.literary_form_was) do %>
+              <%= text_field_tag "batch[#{index}][literary_form]", book.literary_form,
+                class: 'form-control form-control-sm', data: { input_changes_target: "input" } %>
+            <% end %>
           </div>
           <div class="col-2">
             <%= select_tag "batch[#{index}][author_id]",
@@ -36,24 +47,40 @@
               class: "form-select form-control-sm" %>
           </div>
           <div class="col-1">
-            <%= text_field_tag "batch[#{index}][year_published]", book.year_published, class: 'form-control form-control-sm' %>
+            <%= admin_reversible_input(old_value: book.year_published_was) do %>
+              <%= text_field_tag "batch[#{index}][year_published]", book.year_published,
+                class: 'form-control form-control-sm', data: { input_changes_target: "input" } %>
+            <% end %>
           </div>
           <div class="col-1">
             <div class="b-external-link-input" data-controller="external-link-preview">
-              <%= text_field_tag "batch[#{index}][goodreads_url]", book.goodreads_url, class: 'form-control form-control-sm',
-                data: { external_link_preview_target: "input", action: "input->external-link-preview#syncUrl" } %>
-              <%= link_to "L", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
+              <%= admin_reversible_input(old_value: book.goodreads_url_was) do %>
+                <%= text_field_tag "batch[#{index}][goodreads_url]", book.goodreads_url,
+                  class: 'form-control form-control-sm',
+                  data: { external_link_preview_target: "input",
+                    action: "input->external-link-preview#syncUrl",
+                    input_changes_target: "input" } %>
+              <% end %>
+              <%= link_to "🔗", nil, target: "_blank", data: { external_link_preview_target: "link" },
+                class: "b-batch-external-link" %>
             </div>
           </div>
           <div class="col-1">
             <div class="b-external-link-input" data-controller="external-link-preview">
-              <%= text_field_tag "batch[#{index}][wiki_url]", book.wiki_url, class: 'form-control form-control-sm',
-                data: { external_link_preview_target: "input", action: "input->external-link-preview#syncUrl" } %>
-              <%= link_to "L", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
+              <%= admin_reversible_input(old_value: book.wiki_url_was) do %>
+                <%= text_field_tag "batch[#{index}][wiki_url]", book.wiki_url,
+                  class: 'form-control form-control-sm',
+                  data: { external_link_preview_target: "input",
+                    action: "input->external-link-preview#syncUrl",
+                    input_changes_target: "input" } %>
+              <% end %>
+              <%= link_to "🔗", nil, target: "_blank", data: { external_link_preview_target: "link" },
+                class: "b-batch-external-link" %>
             </div>
           </div>
           <div class="col-1">
-            <%= button_tag 'x', class: 'btn btn-danger btn-sm', data: { action: 'click->books-batch-form#removeBook' } %>
+            <%= button_tag 'x', class: 'btn btn-danger btn-sm', data: {
+              action: 'click->books-batch-form#removeBook' } %>
           </div>
         </div>
       <% end %>

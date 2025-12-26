@@ -1,0 +1,36 @@
+.b-reversible-input-container {
+  display: inline-block;
+  overflow: clip;
+
+  &.new {
+    input {
+      background-color: lavender;
+    }
+  }
+
+  &.changed {
+    input {
+      background-color: khaki;
+    }
+  }
+
+  &.verified {
+    input {
+      background-color: lightgreen;
+    }
+  }
+
+  .b-info {
+    color: #666;
+    font-size: 10px;
+
+    .b-old-value {
+      font-style: italic;
+    }
+
+    .b-reset-button {
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+}

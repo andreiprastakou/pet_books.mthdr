@@ -1,4 +1,5 @@
 import "@hotwired/turbo-rails"
+import "bootstrap"
 import { Application } from "@hotwired/stimulus"
 import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
 
