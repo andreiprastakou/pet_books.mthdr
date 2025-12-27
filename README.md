@@ -18,8 +18,8 @@ Local access: <a href="http://localhost:3010/" target="_blank">http://localhost:
 
 ## Development
 
-![rubyBadge](https://img.shields.io/badge/ruby-3.4.5-green)
-![railsBadge](https://img.shields.io/badge/rails-8.0.3-green)
+![rubyBadge](https://img.shields.io/badge/ruby-3.4.8-green)
+![railsBadge](https://img.shields.io/badge/rails-8.1.1-green)
 
 Shell container is the default for running all of the commands below.
 You may use `bin/shell -e VAR_X=VAL_X COMMAND` shortcut.

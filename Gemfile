@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.4.5'
+ruby '3.4.8'
 
 # runners
 gem 'bootsnap', '>= 1.4.4', require: false
@@ -18,7 +18,7 @@ gem 'httparty'
 
 # background jobs
 gem 'mission_control-jobs'
-gem 'solid_queue'
+gem 'solid_queue', '~> 1.2.4'
 
 # views
 gem 'jbuilder', '~> 2.7'
@@ -45,6 +45,12 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 gem 'pagy', '~> 9.3'
 
 gem 'ruby_llm', '~> 1.6'
+
+# tools
+gem 'benchmark'
+
+# tech debt locks
+gem 'connection_pool', '~> 2.0' # v3 incompatible with react-rails
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
