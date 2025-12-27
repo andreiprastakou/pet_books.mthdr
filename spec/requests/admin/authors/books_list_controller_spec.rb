@@ -67,4 +67,70 @@ RSpec.describe Admin::Authors::BooksListController do
       )
     end
   end
+
+  describe 'POST /admin/authors/:id/books_list/:id/apply' do
+    let(:send_request) do
+      post apply_admin_author_books_list_path(author, task), params: params, headers: authorization_header
+    end
+    let(:task) { create(:author_books_list_task, target: author, status: :fetched, fetched_data: []) }
+    let(:params) do
+      {
+        batch: {
+          0 => {
+            id: book.id,
+            title: 'UPDATED_TITLE',
+            original_title: 'UPDATED_ORIGINAL_TITLE',
+            year_published: '2025',
+            author_id: author.id,
+            literary_form: 'novel',
+            wiki_url: 'UPDATED_WIKI_URL'
+          }
+        }
+      }
+    end
+    let(:book) { create(:book, author: author, title: 'ORIGINAL_TITLE') }
+    let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
+
+    before do
+      book
+      allow(Forms::Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
+      allow(updater).to receive_messages(update: true, books: [book])
+    end
+
+    it 'updates books via the updater' do
+      send_request
+      expect(updater).to have_received(:update)
+    end
+
+    it 'marks the task as verified' do
+      send_request
+      expect(task.reload).to be_verified
+    end
+
+    it 'redirects to the data fetch task page' do
+      send_request
+      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+    end
+
+    context 'with invalid params' do
+      before do
+        allow(updater).to receive_messages(update: false, collect_errors: 'Title cannot be blank')
+      end
+
+      it 'renders the edit template again' do
+        send_request
+        expect(response).to render_template 'admin/authors/books_list/edit'
+      end
+
+      it 'sets an error flash message' do
+        send_request
+        expect(flash[:error]).to include('Title cannot be blank')
+      end
+
+      it 'does not mark the task as verified' do
+        send_request
+        expect(task.reload).not_to be_verified
+      end
+    end
+  end
 end

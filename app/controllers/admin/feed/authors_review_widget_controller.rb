@@ -1,30 +1,11 @@
 module Admin
   module Feed
     class AuthorsReviewWidgetController < AdminController
-      before_action :fetch_author, only: %i[request_books_list fill_books_list]
-
       def show
         fetch_view_data
       end
 
-      def request_books_list
-        task = Admin::BookSummaryTask.setup(book)
-        Admin::DataFetchJob.perform_later(task.id)
-
-        fetch_view_data
-        render :show
-      end
-
-      def fill_books_list
-        task = Admin::BookSummaryTask.setup(book)
-        Admin::DataFetchJob.perform_later(task.id)
-      end
-
       private
-
-      def fetch_author
-        @author = Author.find(params[:author_id])
-      end
 
       def fetch_view_data
         authors_scope = Author.not_synced.without_tasks
