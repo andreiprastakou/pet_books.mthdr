@@ -55,7 +55,7 @@
           </div>
           <div class="col-2">
             <div class="b-external-link-input" data-controller="external-link-preview">
-              <%= admin_reversible_input(old_value: book.wiki_url_was) do %>
+              <%= admin_reversible_link_input(old_value: book.wiki_url_was) do %>
                 <%= text_field_tag "batch[#{index}][wiki_url]", book.wiki_url,
                   class: 'form-control form-control-sm',
                   data: { external_link_preview_target: "input",
@@ -67,7 +67,7 @@
             </div>
           </div>
           <div class="col-1">
-            <%= button_tag 'x', class: 'btn btn-danger btn-sm', data: {
+            <%= button_tag '-', class: 'btn btn-danger btn-sm', data: {
               action: 'click->books-batch-form#removeBook' } %>
           </div>
         </div>

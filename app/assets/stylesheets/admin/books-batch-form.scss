@@ -6,10 +6,19 @@
       display: inline-block;
       width: 55px;
     }
+
+    .b-reversible-input-container {
+      width: auto;
+    }
+
+    .b-info .b-reset-button {
+      text-decoration: none;
+    }
   }
 
   .b-batch-external-link {
     text-decoration: none;
+    vertical-align: top;
 
     &:not([href]) {
       display: none;

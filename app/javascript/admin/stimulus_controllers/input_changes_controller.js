@@ -9,7 +9,9 @@ export default class extends Controller {
   connect() {
     const inputElement = this.inputTarget
 
-    this.element.querySelector('[data-name="oldValue"]').textContent = this.evaluateOldValueDisplayed()
+    const display = this.element.querySelector('[data-name="oldValueText"]')
+    if (display)
+      display.textContent = this.evaluateOldValueDisplayed()
 
     this.toggleOldValueDisplay()
 
