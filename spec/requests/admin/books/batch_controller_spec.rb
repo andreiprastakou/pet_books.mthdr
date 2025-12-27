@@ -19,8 +19,7 @@ RSpec.describe Admin::Books::BatchController do
 
     before do
       allow(Forms::Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
-      allow(updater).to receive(:update).and_return(true)
-      allow(updater).to receive(:books).and_return([book_a])
+      allow(updater).to receive_messages(update: true, books: [book_a])
     end
 
     it 'updates and redirects to the author page' do
@@ -31,8 +30,7 @@ RSpec.describe Admin::Books::BatchController do
 
     context 'with invalid params' do
       before do
-        allow(updater).to receive(:update).and_return(false)
-        book_a.errors.add(:title, 'SOME_ERROR')
+        allow(updater).to receive_messages(update: false, collect_errors: 'Title SOME_ERROR')
       end
 
       it 'renders the form again without updating books' do

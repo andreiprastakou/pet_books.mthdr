@@ -15,7 +15,7 @@ export default class extends Controller {
     this.bookEntryTargets.forEach(bookEntry => {
       const title = bookEntry.querySelector('[data-name="title"]')
       const originalTitle = bookEntry.querySelector('[data-name="original_title"]')
-      if (title.value == originalTitle.value)
+      if (title.value === originalTitle.value)
         originalTitle.value = null
     })
   }

@@ -8,21 +8,29 @@ module Admin
 
       def update
         updater = Forms::Admin::BooksBatchUpdater.new
-        success = updater.update(params.fetch(:batch))
-        @books = updater.books
-        if success
-          flash.now[:success] = t('notices.admin.books_batch.updates_applied')
-          redirect_to redirect_path_after_update
+        if apply_via_updater(updater)
+          redirect_to redirect_path_after_update, notice: t('notices.admin.books_batch.updates_applied')
         else
           flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
+          prepare_form_data
           render :edit
         end
       end
 
       private
 
+      def apply_via_updater(updater)
+        updater.update(params.fetch(:batch)).tap do
+          @books = updater.books
+        end
+      end
+
       def redirect_path_after_update
         @books.present? ? admin_author_path(@books.first.author) : admin_books_path
+      end
+
+      def prepare_form_data
+        @authors = @books.map(&:author).uniq
       end
     end
   end

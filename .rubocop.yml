@@ -21,6 +21,10 @@ Metrics/BlockLength:
     - spec/**/*
     - app/services/forms/taggable.rb
 
+Metrics/MethodLength:
+  Exclude:
+    - app/helpers/**/*
+
 Metrics/ModuleLength:
   Exclude:
     - app/helpers/**/*

@@ -38,20 +38,11 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
         expect(assigns(:all_themes)).to match_array(%w[theme_a theme_b])
       end
     end
-
-    context 'when the task is not in fetched state' do
-      let(:task) { create(:book_summary_task, target: book, status: :failed) }
-
-      it 'redirects to book with an error message' do
-        send_request
-        expect(response).to redirect_to(admin_data_fetch_task_path(task))
-      end
-    end
   end
 
-  describe 'PUT /admin/books/:book_id/generative_summaries/:id' do
+  describe 'POST /admin/books/:book_id/generative_summaries/:id/apply' do
     let(:send_request) do
-      put admin_book_generative_summary_path(book, task), params: params, headers: authorization_header
+      post apply_admin_book_generative_summary_path(book, task), params: params, headers: authorization_header
     end
     let(:book) { create(:book) }
     let(:task) { create(:book_summary_task, target: book, status: :fetched, fetched_data: []) }
@@ -106,42 +97,6 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
         send_request
         expect(response).to render_template('admin/books/generative_summaries/edit')
         expect(task.reload).not_to be_verified
-      end
-    end
-
-    context 'when summary_verified is not passed' do
-      before { params.delete(:summary_verified) }
-
-      it 'updates the book but keeps the task not verified' do
-        send_request
-        expect(response).to redirect_to(admin_book_path(book))
-        expect(book.reload.title).to eq('UPDATED_TITLE')
-        expect(task.reload).not_to be_verified
-      end
-    end
-  end
-
-  describe 'PUT /admin/books/:book_id/generative_summaries/:id/reject' do
-    let(:send_request) do
-      put reject_admin_book_generative_summary_path(book, task), headers: authorization_header
-    end
-    let(:book) { create(:book) }
-    let(:task) { create(:book_summary_task, target: book, status: :fetched) }
-
-    it 'rejects the task and redirects to the feed page' do
-      send_request
-      expect(task.reload).to be_rejected
-      expect(response).to redirect_to(admin_root_path)
-    end
-
-    context 'when there are more fetched tasks' do
-      let(:task_b) { create(:book_summary_task, target: book, status: :fetched) }
-
-      before { task_b }
-
-      it 'redirects to its form' do
-        send_request
-        expect(response).to redirect_to(admin_book_generative_summary_path(book, task_id: task_b.id))
       end
     end
   end

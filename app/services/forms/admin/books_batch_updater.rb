@@ -1,6 +1,6 @@
 module Forms
   module Admin
-    class BooksBatchUpdater < Forms::BaseBatchForm
+    class BooksBatchUpdater
       attr_reader :books
 
       def initialize
@@ -8,11 +8,10 @@ module Forms
       end
 
       def update(updates_params)
-        @params = updates_params
         @books = []
         all_successful = true
         Book.transaction do
-          params_to_books do |book|
+          params_to_books(updates_params) do |book|
             all_successful = book.valid? && all_successful && book.save
             @books << book
           end
@@ -27,8 +26,8 @@ module Forms
 
       private
 
-      def params_to_books
-        @params.each_value do |book_params|
+      def params_to_books(params)
+        params.each_value do |book_params|
           book = book_params[:id].present? ? Book.find(book_params[:id]) : Book.new
           book.assign_attributes(params_for_book(book_params))
           yield book

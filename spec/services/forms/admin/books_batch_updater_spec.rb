@@ -77,4 +77,3 @@ RSpec.describe Forms::Admin::BooksBatchUpdater do
     end
   end
 end
-

@@ -6,8 +6,7 @@ module Admin
       @tasks = Admin::BaseDataFetchTask.order(id: :desc)
     end
 
-    def show
-    end
+    def show; end
 
     def reject
       @task.rejected!

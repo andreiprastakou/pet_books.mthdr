@@ -22,17 +22,16 @@ export default class extends Controller {
     if (inputElement.type === 'select-one') {
       const option = Array.from(inputElement.options).find(opt => opt.value === oldValue)
       return option ? option.text : oldValue
-    } else {
-      return oldValue
     }
+    return oldValue
   }
 
   assignDecoration(oldValue, currentValue) {
     if (oldValue)
-      if (currentValue !== oldValue)
-        this.element.classList.add('changed')
-      else
+      if (currentValue === oldValue)
         this.element.classList.remove('changed')
+      else
+        this.element.classList.add('changed')
     else
       if (currentValue)
         this.element.classList.add('new')

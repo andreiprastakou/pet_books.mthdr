@@ -18,12 +18,9 @@ module Admin
 
       def apply
         updater = Forms::Admin::BooksBatchUpdater.new
-        success = updater.update(params.fetch(:batch))
-        @books = updater.books
-        if success
+        if apply_via_updater(updater)
           @task.verified!
-          flash.now[:success] = t('notices.admin.books_batch.updates_applied')
-          redirect_to admin_data_fetch_task_path(@author, @task)
+          redirect_to admin_data_fetch_task_path(@author, @task), notice: t('notices.admin.books_batch.updates_applied')
         else
           flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
           prepare_form_data
@@ -39,6 +36,12 @@ module Admin
 
       def fetch_task
         @task = Admin::AuthorBooksListTask.find(params[:id])
+      end
+
+      def apply_via_updater(updater)
+        updater.update(params.fetch(:batch)).tap do
+          @books = updater.books
+        end
       end
 
       def prepare_form_data
