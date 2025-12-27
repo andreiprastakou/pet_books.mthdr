@@ -42,8 +42,12 @@ Rails.application.routes.draw do
         resource :sync_status, only: %i[update], controller: 'sync_status'
         resource :wiki_stats, only: %i[update]
 
-        resources :books_list, only: %i[create edit]
-        resources :list_parsing, only: %i[new create edit]
+        resources :books_list, only: %i[create edit] do
+          post :apply, on: :member
+        end
+        resources :list_parsing, only: %i[new create edit] do
+          post :apply, on: :member
+        end
       end
     end
 
@@ -55,7 +59,7 @@ Rails.application.routes.draw do
       scope module: :books do
         resource :wiki_stats, only: %i[update], controller: 'wiki_stats'
         resources :generative_summaries, only: %i[create edit update] do
-          put :reject, on: :member
+          post :apply, on: :member
         end
       end
     end

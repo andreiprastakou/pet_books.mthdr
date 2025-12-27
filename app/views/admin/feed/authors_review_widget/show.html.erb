@@ -27,7 +27,7 @@
             <% @fetched_lists_to_verify.each do |task| %>
               <li class="list-group-item">
                 <%= admin_link_to "#{task.author.fullname}",
-                  edit_admin_author_books_list_path(task.author, task.id) %>
+                  admin_data_fetch_task_path(task.id) %>
               </li>
             <% end %>
           </ul>
@@ -44,7 +44,7 @@
             <% @parsed_lists_to_verify.each do |task| %>
               <li class="list-group-item">
                 <%= admin_link_to "#{task.author.fullname}",
-                  edit_admin_author_list_parsing_path(task.author, task.id) %>
+                  admin_data_fetch_task_path(task.id) %>
               </li>
             <% end %>
           </ul>

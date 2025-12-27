@@ -1,14 +1,33 @@
-<% admin_nav_crumbs admin_nav_authors_link, admin_nav_author_link(@author), "Parse List", "Batch Upsert" %>
+<%= turbo_frame_tag "task_apply_form", target: "_top" do %>
+  <div class="card mt-2">
+    <div class="card-header">
+      References:
+    </div>
 
-<% if @author.present? %>
-  <div class="container mt-4">
-    <% if @author.reference.present? %>
-      <div class="row mb-3">
-        <div class="col-md-3 font-weight-bold text-end">Author's Wiki:</div>
-        <div class="col-md-9"><%= external_link_to "WIKI", @author.reference %></div>
+    <div class="card-body">
+      <% author = @task.author %>
+      <div class="container mt-4">
+        <% if author.reference.present? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Wiki:</div>
+            <div class="col-md-9"><%= external_link_to author.reference, author.reference %></div>
+          </div>
+        <% end %>
       </div>
-    <% end %>
+    </div>
+  </div>
+
+  <div class="card mt-2">
+    <div class="card-header">
+      Body of updates:
+    </div>
+
+    <div class="card-body">
+      <%= render 'admin/books/batch_edit', books: @books, target: apply_admin_author_list_parsing_path(@author, @task),
+        actions: [
+          button_to('Reject', reject_admin_data_fetch_task_path(@task), method: :put, class: 'btn btn-danger btn-lg')
+        ]
+      %>
+    </div>
   </div>
 <% end %>
-
-<%= render 'admin/books/batch_edit', books: @books %>

@@ -1,9 +1,8 @@
 module Admin
   module Books
     class GenerativeSummariesController < AdminController
-      before_action :fetch_book, only: %i[create edit update]
-      before_action :fetch_task, only: %i[edit update reject]
-      before_action :ensure_task_fetched, only: :edit
+      before_action :fetch_book, only: %i[create edit apply]
+      before_action :fetch_task, only: %i[edit apply]
 
       def edit
         @form = Forms::BookForm.new(@book)
@@ -16,25 +15,14 @@ module Admin
         redirect_to admin_book_path(@book), notice: t('notices.admin.generative_summaries.create.success')
       end
 
-      def update
+      def apply
         @form = Forms::BookForm.new(@book)
         if @form.update(admin_book_params)
-          @task.verified! if params[:summary_verified]
+          @task.verified!
           redirect_to admin_book_path(@book), notice: t('notices.admin.generative_summaries.update.success')
         else
           prepare_form_data
           render :edit, status: :unprocessable_content
-        end
-      end
-
-      def reject
-        @task.rejected!
-        next_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first
-        if next_task.present?
-          redirect_to admin_book_generative_summary_path(next_task.book, task_id: next_task.id),
-                      notice: t('notices.admin.generative_summaries.reject.success')
-        else
-          redirect_to admin_root_path, notice: t('notices.admin.generative_summaries.reject.nothing_else')
         end
       end
 
@@ -51,10 +39,6 @@ module Admin
       def prepare_form_data
         @summaries = @task.fetched_data.map(&:symbolize_keys)
         @all_themes = @summaries.flat_map { |s| s[:themes].split(/,\s?/) }.uniq
-      end
-
-      def ensure_task_fetched
-        redirect_to admin_data_fetch_task_path(@task), error: 'Task has not fetched data yet' unless @task.fetched?
       end
 
       def admin_book_params

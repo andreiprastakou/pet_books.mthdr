@@ -13,9 +13,11 @@
       <%= admin_buttonly_link_to "next: #{truncate(next_book.title, length: 20, escape: false)} (#{next_book.year_published})",
         admin_book_path(next_book) %>
     <% end %>
-    <% if (next_summary_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first).present? %>
-      <%= admin_buttonly_link_to "next review: #{truncate(next_summary_task.book.title, length: 20, escape: false)} (#{next_summary_task.book.year_published})",
-        edit_admin_book_generative_summary_path(next_summary_task.book, next_summary_task) %>
+    <% if @next_summary_task.present? %>
+      <%= admin_buttonly_link_to(
+        "next review: #{truncate(@next_summary_task.book.title, length: 20, escape: false)} (#{@next_summary_task.book.year_published})",
+        admin_data_fetch_task_path(@next_summary_task)
+      ) %>
     <% end %>
   </div>
 </div>

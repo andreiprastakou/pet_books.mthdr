@@ -9,65 +9,36 @@ RSpec.describe Admin::Books::BatchController do
           0 => {
             id: book_a.id,
             title: 'TITLE_A_UPDATED'
-          },
-          1 => {
-            title: 'TITLE_B',
-            original_title: 'ORIGINAL_TITLE_B',
-            literary_form: 'novel',
-            year_published: '2025',
-            author_id: author.id,
-            goodreads_url: 'GOODREADS_URL_B',
-            wiki_url: 'WIKI_URL_B'
           }
         }
       }
     end
-    let(:book_a) { create(:book, author: author, title: 'TITLE_A') }
+    let(:book_a) { build_stubbed(:book, author: author, title: 'TITLE_A') }
     let(:author) { create(:author) }
+    let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
 
-    it 'updates books with IDs' do
-      send_request
-      expect(book_a.reload.title).to eq 'TITLE_A_UPDATED'
+    before do
+      allow(Forms::Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
+      allow(updater).to receive(:update).and_return(true)
+      allow(updater).to receive(:books).and_return([book_a])
     end
 
-    it 'creates books with no IDs' do
-      book_a
-      expect { send_request }.to change(Book, :count).by(1)
-      book_b = Book.last
-      aggregate_failures do
-        expect(book_b.title).to eq 'TITLE_B'
-        expect(book_b.original_title).to eq 'ORIGINAL_TITLE_B'
-        expect(book_b.literary_form).to eq 'novel'
-        expect(book_b.year_published).to eq 2025
-        expect(book_b.author_id).to eq author.id
-        expect(book_b.goodreads_url).to eq 'GOODREADS_URL_B'
-        expect(book_b.wiki_url).to eq 'WIKI_URL_B'
-      end
-    end
-
-    it 'renders a successful response' do
+    it 'updates and redirects to the author page' do
       send_request
+      expect(updater).to have_received(:update)
       expect(response).to redirect_to admin_author_path(book_a.author)
     end
 
     context 'with invalid params' do
       before do
-        params[:batch][2] = params[:batch][1].dup
-        params[:batch][1][:title] = ''
+        allow(updater).to receive(:update).and_return(false)
+        book_a.errors.add(:title, 'SOME_ERROR')
       end
 
       it 'renders the form again without updating books' do
-        book_a
-        expect { send_request }.not_to change(Book, :count)
-        expect(book_a.reload.title).to eq 'TITLE_A'
-        expect(assigns(:books)).to contain_exactly(book_a, kind_of(Book), kind_of(Book))
-        expect(assigns(:books)[1].errors).to be_present
-      end
-
-      it 'renders the books batch edit page' do
         send_request
         expect(response).to render_template 'admin/books/batch/edit'
-        expect(flash[:error]).to eq 'Failed to apply updates: Title can\'t be blank.'
+        expect(flash[:error]).to eq 'Failed to apply updates: Title SOME_ERROR.'
       end
     end
   end

@@ -4,7 +4,7 @@ module Admin
   module Authors
     class BooksListController < AdminController
       before_action :fetch_author, only: %i[create edit]
-      before_action :fetch_task, only: %i[edit]
+      before_action :fetch_task, only: %i[edit apply]
 
       def edit
         prepare_form_data
@@ -14,6 +14,21 @@ module Admin
         task = Admin::AuthorBooksListTask.setup(@author)
         Admin::DataFetchJob.perform_later(task.id)
         redirect_to admin_author_path(@author), notice: t('notices.admin.author_books_list.create.success')
+      end
+
+      def apply
+        updater = Forms::Admin::BooksBatchUpdater.new
+        success = updater.update(params.fetch(:batch))
+        @books = updater.books
+        if success
+          @task.verified!
+          flash.now[:success] = t('notices.admin.books_batch.updates_applied')
+          redirect_to edit_admin_author_books_list_path(@author, @task)
+        else
+          flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
+          prepare_form_data
+          render :edit
+        end
       end
 
       private

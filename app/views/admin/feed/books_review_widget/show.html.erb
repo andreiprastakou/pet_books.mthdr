@@ -29,7 +29,7 @@
             <% @summaries_to_verify.each do |task| %>
               <li class="list-group-item">
                 <%= admin_link_to "#{task.book.title} (#{task.book.year_published}) by #{task.book.author.fullname}",
-                  edit_admin_book_generative_summary_path(task.book, task.id) %>
+                  admin_data_fetch_task_path(task.id) %>
               </li>
             <% end %>
           </ul>

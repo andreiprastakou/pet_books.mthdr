@@ -1,6 +1,6 @@
 module Admin
   class DataFetchTasksController < AdminController
-    before_action :fetch_task, only: %i[show verify reject]
+    before_action :fetch_task, only: %i[show reject]
 
     def index
       @tasks = Admin::BaseDataFetchTask.order(id: :desc)
@@ -9,12 +9,9 @@ module Admin
     def show
     end
 
-    def verify
-      @task.verified!
-    end
-
     def reject
       @task.rejected!
+      redirect_to admin_root_path
     end
 
     private

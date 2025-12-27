@@ -1,16 +1,16 @@
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form">
   <% all_authors = Author.order_by_fullname %>
-  <%= form_tag admin_books_batch_path, method: :patch, data: { controller: 'books-batch-form' } do %>
+  <% target = local_assigns[:target] || admin_books_batch_path %>
+  <%= form_tag target, method: :patch, data: { controller: 'books-batch-form' } do %>
     <div class="row mb-3 fw-bold text-muted">
       <div class="col-1">ID</div>
-      <div class="col-2">Title</div>
+      <div class="col-3">Title</div>
       <div class="col-1">Original</div>
       <div class="col-1">Form</div>
       <div class="col-2">Author</div>
       <div class="col-1">Year</div>
-      <div class="col-1">Goodreads</div>
-      <div class="col-1">Wiki</div>
-      <div class="col-2"></div>
+      <div class="col-2">Wiki</div>
+      <div class="col-1"></div>
     </div>
 
     <div data-books-batch-form-target="booksList">
@@ -21,7 +21,7 @@
             <%= text_field_tag "batch[#{index}][id]", book.id, class: 'form-control form-control-sm', disabled: true %>
             <%= hidden_field_tag "batch[#{index}][id]", book.id %>
           </div>
-          <div class="col-2">
+          <div class="col-3">
             <%= admin_reversible_input(old_value: book.title_was) do %>
               <%= text_field_tag "batch[#{index}][title]", book.title,
                 class: 'form-control form-control-sm',
@@ -36,7 +36,7 @@
             <% end %>
           </div>
           <div class="col-1">
-            <%= admin_reversible_input(old_value: book.literary_form_was) do %>
+            <%= admin_reversible_input(old_value: book.new_record? ? nil : book.literary_form_was) do %>
               <%= text_field_tag "batch[#{index}][literary_form]", book.literary_form,
                 class: 'form-control form-control-sm', data: { input_changes_target: "input" } %>
             <% end %>
@@ -52,20 +52,7 @@
                 class: 'form-control form-control-sm', data: { input_changes_target: "input" } %>
             <% end %>
           </div>
-          <div class="col-1">
-            <div class="b-external-link-input" data-controller="external-link-preview">
-              <%= admin_reversible_input(old_value: book.goodreads_url_was) do %>
-                <%= text_field_tag "batch[#{index}][goodreads_url]", book.goodreads_url,
-                  class: 'form-control form-control-sm',
-                  data: { external_link_preview_target: "input",
-                    action: "input->external-link-preview#syncUrl",
-                    input_changes_target: "input" } %>
-              <% end %>
-              <%= link_to "🔗", nil, target: "_blank", data: { external_link_preview_target: "link" },
-                class: "b-batch-external-link" %>
-            </div>
-          </div>
-          <div class="col-1">
+          <div class="col-2">
             <div class="b-external-link-input" data-controller="external-link-preview">
               <%= admin_reversible_input(old_value: book.wiki_url_was) do %>
                 <%= text_field_tag "batch[#{index}][wiki_url]", book.wiki_url,
@@ -124,18 +111,27 @@
           </div>
         </div>
         <div class="col-1">
-          <%= button_tag 'x', class: 'btn btn-danger btn-sm', data: { action: 'click->books-batch-form#removeBook' } %>
+          <%= button_tag '-', class: 'btn btn-danger btn-sm', data: { action: 'click->books-batch-form#removeBook' } %>
         </div>
       </div>
     </template>
 
     <div class="row mt-4">
       <div class="col-12 mb-3">
-        <%= button_tag '+ book', class: 'btn btn-success btn-lg', data: { action: 'click->books-batch-form#onClickAddBook' } %>
+        <%= button_tag '+ book', class: 'btn btn-success btn-lg',
+          data: { action: 'click->books-batch-form#onClickAddBook' } %>
       </div>
+
       <div class="col-12">
         <%= submit_tag 'Update all', class: 'btn btn-primary btn-lg' %>
-        <%= link_to 'Cancel', admin_books_path, class: 'btn btn-secondary btn-lg ms-2' %>
+
+        <% if local_assigns[:actions].present? %>
+          <% local_assigns[:actions].each do |action_element| %>
+            <div class="ms-2 d-inline-block">
+              <%= action_element %>
+            </div>
+          <% end %>
+        <% end %>
       </div>
     </div>
   <% end %>

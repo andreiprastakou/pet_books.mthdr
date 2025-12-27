@@ -1,9 +1,3 @@
 <% admin_nav_crumbs admin_nav_data_fetch_tasks_link, admin_nav_data_fetch_task_link(@task) %>
 
-<div class="container mt-4">
-  <div class="btn-group" role="group">
-    <%= admin_link_to_data_fetch_task_verification_form(@task) %>
-  </div>
-</div>
-
-<%= render 'admin/data_fetch_tasks/task_info_card', task: @task %>
+<%= render "admin/data_fetch_tasks/types/#{@task.model_name.element}", task: @task %>

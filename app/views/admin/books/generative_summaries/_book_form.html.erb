@@ -1,5 +1,5 @@
 <%= form_with(model: [:admin, book], scope: "book", local: true, novalidate: true,
-  url: admin_book_generative_summary_path(book, @task), method: :put,
+  url: apply_admin_book_generative_summary_path(book, @task), method: :post,
   data: { controller: "book-form",
     action: "book-generated-summaries:pickSummary@window->book-form#onSummaryPicked
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
@@ -58,11 +58,8 @@
 
   <%= form.hidden_field :data_filled, data: { book_generated_summaries_target: "datFilledInput" } %>
 
-  <%= hidden_field_tag :summary_verified, false, data: { book_generated_summaries_target: "summaryVerifiedInput" } %>
-
   <div class="mb-3">
-    <%= form.submit class: "btn btn-primary", data: { book_form_target: "submitButton" } %>
-    <%= link_to "Cancel", admin_books_path, class: "btn btn-secondary" %>
+    <%= form.submit class: "btn btn-primary btn-lg", data: { book_form_target: "submitButton" } %>
   </div>
 
   <template data-book-form-target="oldValueViewTemplate">

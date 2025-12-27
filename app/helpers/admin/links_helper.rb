@@ -102,31 +102,7 @@ module Admin
       end
     end
 
-    def admin_link_to_data_fetch_task_verification_form(task)
-      return unless task.fetched?
-
-      case task
-      when Admin::BookSummaryTask then admin_link_to_for_book_summary_task_verification_form(task)
-      when Admin::AuthorBooksListTask then admin_link_to_for_author_books_list_task_verification_form(task)
-      when Admin::AuthorBooksListParsingTask
-        admin_link_to_for_author_books_list_parsing_task_verification_form(task)
-      else raise NotImplementedError, "Verification form for #{task.type} is not implemented"
-      end
-    end
-
     private
-
-    def admin_link_to_for_book_summary_task_verification_form(task)
-      admin_buttonly_link_to 'Review updates', edit_admin_book_generative_summary_path(task.book, task.id)
-    end
-
-    def admin_link_to_for_author_books_list_task_verification_form(task)
-      admin_buttonly_link_to 'Review updates', edit_admin_author_books_list_path(task.author, task.id)
-    end
-
-    def admin_link_to_for_author_books_list_parsing_task_verification_form(task)
-      admin_buttonly_link_to 'Review updates', edit_admin_author_list_parsing_path(task.author, task.id)
-    end
 
     def admin_nav_crumbs_for_header(crumbs)
       crumbs_for_header = crumbs.map do |crumb|

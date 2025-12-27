@@ -1,8 +1,8 @@
-
 <div class="card">
   <div class="card-header">
     Task:
   </div>
+
   <div class="card-body">
     <div class="b-genre-page container mt-4">
       <div class="row mb-3">
@@ -12,7 +12,9 @@
 
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Status:</div>
-        <div class="col-md-9"><%= task.status.humanize %></div>
+        <div class="col-md-9">
+          <span><%= task.status.humanize %></span>
+        </div>
       </div>
 
       <div class="row mb-3">

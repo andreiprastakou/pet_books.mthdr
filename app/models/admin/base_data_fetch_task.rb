@@ -50,5 +50,9 @@ module Admin
         update!(status: :fetched, chat: chat, fetched_data: data)
       end
     end
+
+    def review_stage?
+      fetched?
+    end
   end
 end
