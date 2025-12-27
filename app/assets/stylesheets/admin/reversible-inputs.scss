@@ -4,13 +4,17 @@
   width: 100%;
 
   &.new {
-    input, textarea, select {
+    input,
+    textarea,
+    select {
       background-color: lavender;
     }
   }
 
   &.changed {
-    input, textarea, select {
+    input,
+    textarea,
+    select {
       background-color: khaki;
     }
   }

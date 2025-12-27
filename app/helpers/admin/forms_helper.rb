@@ -11,8 +11,8 @@ module Admin
                 [
                   'was <',
                   content_tag(:span, old_value,
-                    data: { name: 'oldValueText', action: 'click->input-changes#resetOldValue' },
-                    class: 'b-reset-button b-old-value'),
+                              data: { name: 'oldValueText', action: 'click->input-changes#resetOldValue' },
+                              class: 'b-reset-button b-old-value'),
                   '>'
                 ]
               )
@@ -32,8 +32,8 @@ module Admin
               safe_join(
                 [
                   'was <',
-                  content_tag(:span, "🔗", data: { action: 'click->input-changes#resetOldValue' },
-                                           class: 'b-reset-button b-old-value', title: old_value),
+                  content_tag(:span, '🔗', data: { action: 'click->input-changes#resetOldValue' },
+                                          class: 'b-reset-button b-old-value', title: old_value),
                   '>'
                 ]
               )
