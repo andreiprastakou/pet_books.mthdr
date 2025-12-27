@@ -23,7 +23,7 @@ module Admin
         if success
           @task.verified!
           flash.now[:success] = t('notices.admin.books_batch.updates_applied')
-          redirect_to edit_admin_author_books_list_path(@author, @task)
+          redirect_to admin_data_fetch_task_path(@author, @task)
         else
           flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
           prepare_form_data

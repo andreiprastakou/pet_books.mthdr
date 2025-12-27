@@ -67,7 +67,7 @@
 
   <%= render "admin/books/form/summary_input", form: form, book: book %>
 
-  <%= form.hidden_field :data_filled, data: { book_generated_summaries_target: "datFilledInput" } %>
+  <%= form.hidden_field :data_filled, data: { book_generated_summaries_target: "dataFilledInput" } %>
 
   <div class="mb-3">
     <%= form.submit class: "btn btn-primary btn-lg", data: { book_form_target: "submitButton" } %>

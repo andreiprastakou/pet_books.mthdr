@@ -1,7 +1,8 @@
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form">
   <% all_authors = Author.order_by_fullname %>
-  <% target = local_assigns[:target] || admin_books_batch_path %>
-  <%= form_tag target, method: :patch, data: { controller: 'books-batch-form' } do %>
+  <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
+  <% method = local_assigns.fetch(:target, :post) %>
+  <%= form_tag target, method: method do %>
     <div class="row mb-3 fw-bold text-muted">
       <div class="col-1">ID</div>
       <div class="col-3">Title</div>
@@ -124,15 +125,17 @@
 
       <div class="col-12">
         <%= submit_tag 'Update all', class: 'btn btn-primary btn-lg' %>
-
-        <% if local_assigns[:actions].present? %>
-          <% local_assigns[:actions].each do |action_element| %>
-            <div class="ms-2 d-inline-block">
-              <%= action_element %>
-            </div>
-          <% end %>
-        <% end %>
       </div>
+    </div>
+  <% end %>
+
+  <% if local_assigns[:actions].present? %>
+    <div class="row mt-3">
+      <% local_assigns[:actions].each do |action_element| %>
+        <div class="me-2 d-inline-block">
+          <%= action_element %>
+        </div>
+      <% end %>
     </div>
   <% end %>
 </div>

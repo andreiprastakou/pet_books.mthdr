@@ -8,6 +8,7 @@ module Admin
       birth_year
       created_at
       updated_at
+      synced_at
     ].index_by(&:to_s).freeze
 
     BOOKS_SORTING_MAP = %i[
@@ -17,7 +18,9 @@ module Admin
       wiki_popularity
       created_at
       updated_at
-    ].index_by(&:to_s).freeze
+    ].index_by(&:to_s).merge(
+      'synced' => :data_filled
+    ).freeze
 
     PARAMS = %i[
       fullname

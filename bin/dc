@@ -1,4 +1,0 @@
-#!/bin/bash
-# Shortcut for "docker compose run --rm shell"
-docker compose run --rm shell "$@"
-

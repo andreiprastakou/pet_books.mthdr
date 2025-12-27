@@ -2,13 +2,13 @@ import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   static targets = [
-    'datFilledInput',
+    'dataFilledInput',
   ]
 
   onPick(event) {
     // eslint-disable-next-line no-unused-vars
-    const { verificationUrl: _, ...bookParams } = event.params
-    this.datFilledInputTarget.value = true
+    const { verificationUrl: _a, ...bookParams } = event.params
+    this.dataFilledInputTarget.value = true
     this.dispatch('pickSummary', { detail: bookParams })
   }
 

@@ -38,7 +38,7 @@ module Admin
 
       def prepare_form_data
         @summaries = @task.fetched_data.map(&:symbolize_keys)
-        @all_themes = @summaries.flat_map { |s| s[:themes].split(/,\s?/) }.uniq
+        @all_themes = @summaries.flat_map { |s| s[:themes]&.split(/,\s?/) }.uniq.compact
       end
 
       def admin_book_params
