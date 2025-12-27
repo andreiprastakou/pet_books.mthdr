@@ -7,14 +7,19 @@
 
   <div class="mb-3">
     <%= form.label :author_id, class: "form-label" %>
-    <%= form.collection_select :author_id, Author.order_by_fullname, :id, :fullname, {}, class: "form-select",
-      data: { book_form_target: "authorSelect", behaviour: "indicateChanges", old_value: old_book.author_id } %>
+    <%= admin_reversible_input(old_value: book.author_id_was) do %>
+      <%= form.collection_select :author_id, Author.order_by_fullname, :id, :fullname, {}, class: "form-select",
+        data: { book_form_target: "authorSelect", input_changes_target: "input" } %>
+    <% end %>
   </div>
 
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
-    <%= form.text_field :title, class: "form-control", required: true,
-      data: { book_form_target: "titleInput", action: "input->book-form#syncGoodreadsQuery", behaviour: "indicateChanges", old_value: old_book.title } %>
+    <%= admin_reversible_input(old_value: book.title_was) do %>
+      <%= form.text_field :title, class: "form-control", required: true,
+        data: { book_form_target: "titleInput", action: "input->book-form#syncGoodreadsQuery",
+          input_changes_target: "input" } %>
+    <% end %>
     <div class="invalid-feedback">
       Please provide a title.
     </div>
@@ -22,14 +27,18 @@
 
   <div class="mb-3">
     <%= form.label :original_title, class: "form-label" %>
-    <%= form.text_field :original_title, class: "form-control", data: { behaviour: "indicateChanges", old_value: old_book.original_title } %>
+    <%= admin_reversible_input(old_value: book.original_title_was) do %>
+      <%= form.text_field :original_title, class: "form-control", data: { input_changes_target: "input" } %>
+    <% end %>
   </div>
 
   <div class="row">
     <div class="mb-3 col-md-6">
       <%= form.label :year_published, class: "form-label" %>
-      <%= form.number_field :year_published, class: "form-control", required: true,
-        data: { behaviour: "indicateChanges", old_value: old_book.year_published } %>
+      <%= admin_reversible_input(old_value: book.year_published_was) do %>
+        <%= form.number_field :year_published, class: "form-control", required: true,
+          data: { input_changes_target: "input" } %>
+      <% end %>
       <div class="invalid-feedback">
         Please provide a valid year.
       </div>
@@ -37,36 +46,32 @@
 
     <div class="mb-3 col-md-6">
       <%= form.label :literary_form, class: "form-label" %>
-      <%= form.text_field :literary_form, class: "form-control",
-        data: { book_form_target: "literaryFormInput", behaviour: "indicateChanges", old_value: old_book.literary_form } %>
+      <%= admin_reversible_input(old_value: book.literary_form_was) do %>
+        <%= form.text_field :literary_form, class: "form-control",
+          data: { book_form_target: "literaryFormInput", input_changes_target: "input" } %>
+      <% end %>
     </div>
   </div>
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addGenres@window->badges-input#onNamesAdded">
     <%= label_tag nil, "Genres", class: "form-label" %>
     <%= render "admin/books/form/badges_input", form: form,
-      name: "book[genre_names][]", old_values: old_book.current_genre_names, current_values: book.current_genre_names %>
+      name: "book[genre_names][]", old_values: book.current_genre_names, current_values: book.current_genre_names %>
   </div>
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addTags@window->badges-input#onNamesAdded">
     <%= label_tag nil, "Tags", class: "form-label" %>
     <%= render "admin/books/form/badges_input", form: form,
-      name: "book[tag_names][]", old_values: old_book.current_tag_names, current_values: book.current_tag_names %>
+      name: "book[tag_names][]", old_values: book.current_tag_names, current_values: book.current_tag_names %>
   </div>
 
-  <%= render "admin/books/form/summary_input", form: form, old_book: old_book %>
+  <%= render "admin/books/form/summary_input", form: form, book: book %>
 
   <%= form.hidden_field :data_filled, data: { book_generated_summaries_target: "datFilledInput" } %>
 
   <div class="mb-3">
     <%= form.submit class: "btn btn-primary btn-lg", data: { book_form_target: "submitButton" } %>
   </div>
-
-  <template data-book-form-target="oldValueViewTemplate">
-    <div class="form-text" data-name="oldValueDisplay">
-      Initial value: "<span data-name="oldValue"></span>" <span data-action="click->book-form#resetOldValue">RESET</span>
-    </div>
-  </template>
 <% end %>
 
 <%= render "admin/common/bootstrap_form_validator" %>

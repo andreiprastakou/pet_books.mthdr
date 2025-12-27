@@ -1,15 +1,16 @@
 .b-reversible-input-container {
   display: inline-block;
   overflow: clip;
+  width: 100%;
 
   &.new {
-    input {
+    input, textarea, select {
       background-color: lavender;
     }
   }
 
   &.changed {
-    input {
+    input, textarea, select {
       background-color: khaki;
     }
   }

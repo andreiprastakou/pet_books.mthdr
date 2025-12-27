@@ -12,7 +12,10 @@
 
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>
-    <%= form.text_field :name, class: "form-control", required: true %>
+    <%= admin_reversible_input(old_value: @tag.name_was) do %>
+      <%= form.text_field :name, class: "form-control", required: true,
+        data: { input_changes_target: "input" } %>
+    <% end %>
     <div class="invalid-feedback">
       Please provide a name.
     </div>
@@ -20,7 +23,10 @@
 
   <div class="mb-3">
     <%= form.label :category, class: "form-label" %>
-    <%= form.select :category, Tag.categories.keys.map { |c| [c.titleize, c] }.sort_by(&:first), {}, class: "form-select" %>
+    <%= admin_reversible_input(old_value: @tag.category_was) do %>
+      <%= form.select :category, Tag.categories.keys.map { |c| [c.titleize, c] }.sort_by(&:first), {}, class: "form-select",
+        data: { input_changes_target: "input" } %>
+    <% end %>
   </div>
 
   <div class="mb-3">

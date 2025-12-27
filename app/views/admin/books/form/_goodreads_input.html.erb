@@ -6,8 +6,11 @@
   </div>
   <div class="col-md-1"> >> </div>
   <div class="col-md-7">
-    <%= form.url_field :goodreads_url, class: "form-control",
-      data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input" } %>
+    <%= admin_reversible_input(old_value: book.goodreads_url_was) do %>
+      <%= form.url_field :goodreads_url, class: "form-control",
+        data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input",
+          input_changes_target: "input" } %>
+    <% end %>
     <div class="form-text">Enter the URL for the book's Goodreads page</div>
   </div>
   <div class="col-md-2 py-2">

@@ -9,11 +9,22 @@ export default class extends Controller {
   connect() {
     const inputElement = this.inputTarget
 
-    this.element.querySelector('[data-name="oldValue"]').textContent = this.element.dataset.oldValue
+    this.element.querySelector('[data-name="oldValue"]').textContent = this.evaluateOldValueDisplayed()
 
     this.toggleOldValueDisplay()
 
     inputElement.addEventListener('input', () => this.toggleOldValueDisplay.bind(this)())
+  }
+
+  evaluateOldValueDisplayed() {
+    const inputElement = this.inputTarget
+    const oldValue = this.element.dataset.oldValue?.trim()
+    if (inputElement.type === 'select-one') {
+      const option = Array.from(inputElement.options).find(opt => opt.value === oldValue)
+      return option ? option.text : oldValue
+    } else {
+      return oldValue
+    }
   }
 
   assignDecoration(oldValue, currentValue) {

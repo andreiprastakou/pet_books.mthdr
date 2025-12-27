@@ -1,10 +1,14 @@
 <div class="row mb-3">
   <%= form.label :summary, class: "form-label" %>
-  <%= form.text_area :summary, class: "form-control mb-1 b-book-summary", style: "height: 130px;",
-    data: { book_form_target: "summaryInput", behaviour: "indicateChanges", old_value: old_book.summary } %>
+  <%= admin_reversible_input(old_value: book.summary_was) do %>
+    <%= form.text_area :summary, class: "form-control mb-1 b-book-summary", style: "height: 130px;",
+      data: { book_form_target: "summaryInput", input_changes_target: "input" } %>
+  <% end %>
   <div class="col-md-10">
-    <%= form.text_field :summary_src, class: "form-control", placeholder: "SRC",
-      data: { book_form_target: "summarySrcInput", behaviour: "indicateChanges", old_value: old_book.summary_src } %>
+    <%= admin_reversible_input(old_value: book.summary_src_was) do %>
+      <%= form.text_field :summary_src, class: "form-control", placeholder: "SRC",
+        data: { book_form_target: "summarySrcInput", input_changes_target: "input" } %>
+    <% end %>
   </div>
   <div class="col-md-2">
     <%= button_tag "Clear", class: "btn btn-primary",
