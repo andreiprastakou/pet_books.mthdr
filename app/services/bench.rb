@@ -1,3 +1,5 @@
+require 'benchmark'
+
 class Bench
   DECIMALS = 3
 
