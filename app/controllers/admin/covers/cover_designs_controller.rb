@@ -34,7 +34,7 @@ module Admin
               redirect_to admin_covers_cover_designs_path, notice: t('notices.admin.cover_designs.update.success')
             end
           else
-            format.html { render :edit, status: :unprocessable_entity }
+            format.html { render :edit, status: :unprocessable_content }
           end
         end
       end

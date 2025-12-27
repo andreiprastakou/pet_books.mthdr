@@ -24,7 +24,6 @@ gem 'solid_queue', '~> 1.2.4'
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'react-rails'
-gem 'connection_pool', '~> 2.0' # v3 incompatible with react-rails
 gem 'sassc-rails'
 gem 'slim'
 gem 'turbo-rails', '~> 2.0'
@@ -49,6 +48,9 @@ gem 'ruby_llm', '~> 1.6'
 
 # tools
 gem 'benchmark'
+
+# tech debt locks
+gem 'connection_pool', '~> 2.0' # v3 incompatible with react-rails
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
