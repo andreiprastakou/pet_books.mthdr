@@ -1,0 +1,5 @@
+<% admin_nav_crumbs "Admin Feed" %>
+
+<%= turbo_frame_tag "books_review_widget", src: admin_feed_books_review_widget_path, target: "_top" %>
+
+<%= turbo_frame_tag "authors_review_widget", src: admin_feed_authors_review_widget_path, target: "_top" %>

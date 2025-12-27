@@ -85,6 +85,23 @@ module Admin
       "\"#{truncate_crumb(genre.name)}\""
     end
 
+    def admin_nav_data_fetch_tasks_link
+      ['Data Fetch Tasks', admin_data_fetch_tasks_path]
+    end
+
+    def admin_nav_data_fetch_task_link(task)
+      task.type
+    end
+
+    def admin_link_to_data_fetch_task_target(task)
+      case task
+      when Admin::BookSummaryTask
+        admin_link_to "Book \"#{task.book.title}\" by #{task.book.author.fullname}", admin_book_path(task.book)
+      else
+        "Entity #{task.target_type} with ID=#{task.target_id}"
+      end
+    end
+
     private
 
     def admin_nav_crumbs_for_header(crumbs)

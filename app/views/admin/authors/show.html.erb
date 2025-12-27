@@ -5,10 +5,10 @@
     <%= admin_buttonly_link_to "edit", edit_admin_author_path(@author) %>
     <%= admin_buttonly_link_to "+book", new_admin_author_book_path(@author) %>
     <%= admin_buttonly_link_to "edit all books", edit_admin_books_batch_path(book_ids: @author.books.pluck(:id)) %>
-    <%= admin_buttonly_link_to "parse list", new_admin_author_list_parsing_path(@author) %>
-    <%= button_to "sync all books", admin_author_books_list_path(@author), method: :post, class: 'btn btn-primary me-1' %>
-    <%= button_to "mark sync!", admin_author_sync_status_path(@author), method: :put, class: 'btn btn-primary me-1' %>
+    <%= admin_buttonly_link_to "AI parse list", new_admin_author_list_parsing_path(@author) %>
+    <%= button_to "AI find all books", admin_author_books_list_index_path(@author), method: :post, class: 'btn btn-primary me-1' %>
     <%= button_to "sync wiki views", admin_author_wiki_stats_path(@author), method: :put, class: 'btn btn-primary me-1' %>
+    <%= button_to "synced!", admin_author_sync_status_path(@author), method: :put, class: 'btn btn-primary me-1' %>
     <%= button_to "delete", admin_author_path(@author), method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>
     <%= display_link_to "display", author_display_path(@author) %>
   </div>
@@ -98,7 +98,7 @@
       <th>LINKS</th>
       <th><%= sortable_table_column("YEAR", "year_published") %></th>
       <th><%= sortable_table_column("WIKI VIEWS", "wiki_popularity") %></th>
-      <th>SYNC</th>
+      <th><%= sortable_table_column("SYNC", "synced") %></th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
     </thead>

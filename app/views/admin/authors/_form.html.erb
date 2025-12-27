@@ -12,8 +12,11 @@
 
   <div class="mb-3">
     <%= form.label :fullname, class: "form-label" %>
-    <%= form.text_field :fullname, class: "form-control",
-        data: { author_form_target: "fullnameInput", action: "input->author-form#syncName" }, required: true %>
+    <%= admin_reversible_input(old_value: author.fullname_was) do %>
+      <%= form.text_field :fullname, class: "form-control",
+        data: { author_form_target: "fullnameInput", action: "input->author-form#syncName",
+          input_changes_target: "input" }, required: true %>
+    <% end %>
     <div class="invalid-feedback">
       Please provide a full name.
     </div>
@@ -21,7 +24,10 @@
 
   <div class="mb-3">
     <%= form.label :original_fullname, class: "form-label" %>
-    <%= form.text_field :original_fullname, class: "form-control" %>
+    <%= admin_reversible_input(old_value: author.original_fullname_was) do %>
+      <%= form.text_field :original_fullname, class: "form-control",
+        data: { input_changes_target: "input" } %>
+    <% end %>
     <div class="invalid-feedback">
       Please provide a full name.
     </div>
@@ -35,8 +41,11 @@
     </div>
     <div class="col-md-1"> >> </div>
     <div class="col-md-6">
-      <%= form.text_field :reference, class: "form-control",
-        data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input" } %>
+      <%= admin_reversible_input(old_value: author.reference_was) do %>
+        <%= form.text_field :reference, class: "form-control",
+          data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input",
+            input_changes_target: "input" } %>
+      <% end %>
     </div>
     <div class="col-md-1"> >> </div>
     <div class="col-md-2">
@@ -66,11 +75,17 @@
   <div class="row mb-3">
     <div class="col-md-6">
       <%= form.label :birth_year, class: "form-label" %>
-      <%= form.number_field :birth_year, class: "form-control", min: 0, max: Time.current.year %>
+      <%= admin_reversible_input(old_value: author.birth_year_was) do %>
+        <%= form.number_field :birth_year, class: "form-control", min: 0, max: Time.current.year,
+          data: { input_changes_target: "input" } %>
+      <% end %>
     </div>
     <div class="col-md-6">
       <%= form.label :death_year, class: "form-label" %>
-      <%= form.number_field :death_year, class: "form-control", min: 0, max: Time.current.year %>
+      <%= admin_reversible_input(old_value: author.death_year_was) do %>
+        <%= form.number_field :death_year, class: "form-control", min: 0, max: Time.current.year,
+          data: { input_changes_target: "input" } %>
+      <% end %>
     </div>
   </div>
 
@@ -80,19 +95,4 @@
   </div>
 <% end %>
 
-<script>
-// Bootstrap form validation
-(function () {
-  'use strict'
-  var forms = document.querySelectorAll('.needs-validation')
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
+<%= render "admin/common/bootstrap_form_validator" %>

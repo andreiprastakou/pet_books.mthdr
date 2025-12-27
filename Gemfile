@@ -16,6 +16,10 @@ gem 'sqlite3', '~> 2.6'
 gem 'foreman'
 gem 'httparty'
 
+# background jobs
+gem 'mission_control-jobs'
+gem 'solid_queue'
+
 # views
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'

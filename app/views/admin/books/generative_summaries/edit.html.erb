@@ -1,0 +1,55 @@
+<%= turbo_frame_tag "task_apply_form", target: "_top" do %>
+  <div class="card mt-2">
+    <div class="card-header">
+      Body of updates:
+    </div>
+
+    <div class="card-body">
+      <div class="row" data-controller="book-generated-summaries">
+        <div class="col-md-6">
+
+          <%= label_tag nil, "Summaries", class: "form-label" %>
+          <div class="container b-generative-summaries">
+            <% @summaries.each do |summary| %>
+              <div class="row mb-2 b-summary border">
+                <div class="col-md-12 p-3">
+                  <%= summary[:summary] %>
+                </div>
+                <div class="col-md-6">
+                  <div>Form: <%= summary[:form] %>.</div>
+                  <div>Genre: <%= summary[:genre] %>.</div>
+                  <div>Themes: <%= summary[:themes] %>.</div>
+                  <div><%= "Source: #{summary[:src]}" %></div>
+                </div>
+                <div class="col-md-6 text-end">
+                  <%= button_tag "Pick", class: "btn btn-primary btn-sm",
+                    data: { action: "click->book-generated-summaries#onPick",
+                      book_generated_summaries_summary_param: summary[:summary],
+                      book_generated_summaries_src_param: summary[:src],
+                      book_generated_summaries_genres_param: summary[:genre],
+                      book_generated_summaries_themes_param: summary[:themes],
+                      book_generated_summaries_form_param: summary[:form] } %>
+                </div>
+              </div>
+            <% end %>
+
+            <div class="mb-2">
+              <% all_tags = @all_themes.join(",") %>
+              <%= button_tag "Add all tags", class: "btn btn-primary btn-sm", title: all_tags,
+                data: { action: "click->book-generated-summaries#onAddAllTags",
+                  book_generated_summaries_themes_param: all_tags } %>
+            </div>
+          </div>
+        </div>
+
+        <div class="container col-md-6">
+          <%= label_tag nil, "Book form", class: "form-label" %>
+          <%= render "admin/books/generative_summaries/book_form", book: @book, old_book: @book %>
+        </div>
+
+        <%= button_to('Reject', reject_admin_data_fetch_task_path(@task), method: :put,
+          class: 'btn btn-danger btn-lg') %>
+      </div>
+    </div>
+  </div>
+<% end %>

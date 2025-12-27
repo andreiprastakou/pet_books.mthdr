@@ -6,7 +6,7 @@ require 'active_record/railtie'
 require 'action_controller/railtie'
 require 'action_view/railtie'
 # require 'action_mailer/railtie'
-# require 'active_job/railtie'
+require 'active_job/railtie'
 # require 'action_cable/engine'
 # require 'action_mailbox/engine'
 # require 'action_text/engine'
@@ -36,5 +36,9 @@ module InfospaceBooks
 
     # Add node_modules to asset paths for Bootstrap
     config.assets.paths << Rails.root.join('node_modules')
+
+    # Admin view for solid queuejobs
+    config.mission_control.jobs.base_controller_class = 'ApplicationController'
+    config.mission_control.jobs.http_basic_auth_enabled = false
   end
 end

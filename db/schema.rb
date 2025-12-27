@@ -10,7 +10,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_08_182518) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_14_195143) do
+  create_table "admin_data_fetch_tasks", force: :cascade do |t|
+    t.integer "chat_id"
+    t.string "target_type", null: false
+    t.integer "target_id", null: false
+    t.string "type", null: false
+    t.string "status", null: false
+    t.json "input_data"
+    t.json "fetched_data"
+    t.string "fetch_error_details"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["chat_id"], name: "index_admin_data_fetch_tasks_on_chat_id"
+    t.index ["target_type", "target_id"], name: "index_admin_data_fetch_tasks_on_target"
+  end
+
   create_table "ai_chats", force: :cascade do |t|
     t.string "model_id"
     t.datetime "created_at", null: false
@@ -81,7 +96,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_182518) do
     t.integer "wiki_popularity", default: 0
     t.string "literary_form", default: "novel", null: false
     t.string "summary_src"
+    t.boolean "data_filled", default: false, null: false
     t.index ["author_id"], name: "index_books_on_author_id"
+    t.index ["data_filled"], name: "index_books_on_data_filled"
     t.index ["title", "author_id"], name: "index_books_on_title_and_author_id", unique: true
     t.index ["year_published"], name: "index_books_on_year_published"
   end
@@ -138,6 +155,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_182518) do
     t.index ["entity_type", "entity_id"], name: "index_wiki_page_stats_on_entity"
   end
 
+  add_foreign_key "admin_data_fetch_tasks", "ai_chats", column: "chat_id"
   add_foreign_key "ai_messages", "ai_chats", column: "chat_id"
   add_foreign_key "ai_messages", "ai_tool_calls", column: "tool_call_id"
   add_foreign_key "ai_tool_calls", "ai_messages", column: "message_id"

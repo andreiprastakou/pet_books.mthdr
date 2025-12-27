@@ -26,6 +26,8 @@ class Author < ApplicationRecord
   has_many :books, class_name: 'Book', inverse_of: :author, dependent: :restrict_with_error
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
+  has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy
+  has_many :list_parsing_tasks, class_name: 'Admin::AuthorBooksListParsingTask', as: :target, dependent: :destroy
 
   mount_base64_uploader :aws_photos, Uploaders::AwsAuthorPhotoUploader
 
@@ -36,6 +38,8 @@ class Author < ApplicationRecord
   validates :death_year, numericality: { only_integer: true, allow_nil: true }
 
   scope :order_by_fullname, -> { order(:fullname) }
+  scope :not_synced, -> { where(synced_at: nil) }
+  scope :without_tasks, -> { where.missing(:books_list_tasks).where.missing(:list_parsing_tasks) }
 
   def tag_ids
     tag_connections.map(&:tag_id)

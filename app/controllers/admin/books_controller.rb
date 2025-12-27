@@ -28,6 +28,7 @@ module Admin
 
     def show
       @next_book = Book.where(author_id: @book.author_id).where.not(id: @book.id).sample || Book.all.sample
+      @next_summary_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first
     end
 
     def new

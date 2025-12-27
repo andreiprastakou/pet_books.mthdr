@@ -4,27 +4,21 @@
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
   class: "needs-validation admin-book-form") do |form| %>
 
-  <% if form_handler.errors.any? %>
-    <div class="alert alert-danger">
-      <h4><%= pluralize(form_handler.errors.count, "error") %> prohibited this book from being saved:</h4>
-      <ul>
-        <% form_handler.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
   <div class="mb-3">
     <%= form.label :author_id, class: "form-label" %>
-    <%= form.collection_select :author_id, Author.order_by_fullname, :id, :fullname, {}, class: "form-select",
-      data: { book_form_target: "authorSelect", behaviour: "indicateChanges", old_value: old_book.author_id } %>
+    <%= admin_reversible_input(old_value: book.author_id_was) do %>
+      <%= form.collection_select :author_id, Author.order_by_fullname, :id, :fullname, {}, class: "form-select",
+          data: { book_form_target: "authorSelect", input_changes_target: "input" } %>
+    <% end %>
   </div>
 
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
-    <%= form.text_field :title, class: "form-control", required: true,
-      data: { book_form_target: "titleInput", action: "input->book-form#syncGoodreadsQuery", behaviour: "indicateChanges", old_value: old_book.title } %>
+    <%= admin_reversible_input(old_value: book.title_was) do %>
+      <%= form.text_field :title, class: "form-control", required: true,
+        data: { book_form_target: "titleInput", action: "input->book-form#syncGoodreadsQuery",
+          input_changes_target: "input" } %>
+    <% end %>
     <div class="invalid-feedback">
       Please provide a title.
     </div>
@@ -32,51 +26,25 @@
 
   <div class="mb-3">
     <%= form.label :original_title, class: "form-label" %>
-    <%= form.text_field :original_title, class: "form-control", data: { behaviour: "indicateChanges", old_value: old_book.original_title } %>
+    <%= admin_reversible_input(old_value: book.original_title_was) do %>
+      <%= form.text_field :original_title, class: "form-control", data: { input_changes_target: "input" } %>
+    <% end %>
   </div>
 
   <div class="mb-3">
     <%= form.label :year_published, class: "form-label" %>
-    <%= form.number_field :year_published, class: "form-control", min: 0, max: Time.current.year, required: true,
-      data: { behaviour: "indicateChanges", old_value: old_book.year_published } %>
+    <%= admin_reversible_input(old_value: book.year_published_was) do %>
+      <%= form.number_field :year_published, class: "form-control", required: true,
+        data: { input_changes_target: "input" } %>
+    <% end %>
     <div class="invalid-feedback">
       Please provide a valid year.
     </div>
   </div>
 
-  <div class="row mb-3" data-controller="external-link-preview">
-    <%= form.label :goodreads_url, "Goodreads URL", class: "form-label" %>
-    <div class="col-md-2 py-2">
-      <%= link_to "GOOGLE", "#", target: "_blank",
-        data: { book_form_target: "goodreadsQueryLink", href_scaffold: "http://google.com/search?#{{q: "book TITLE by AUTHOR goodreads"}.to_query}" } %>
-    </div>
-    <div class="col-md-1"> >> </div>
-    <div class="col-md-7">
-      <%= form.url_field :goodreads_url, class: "form-control",
-        data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input" } %>
-      <div class="form-text">Enter the URL for the book's Goodreads page</div>
-    </div>
-    <div class="col-md-2 py-2">
-      <%= link_to "LINK", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
-    </div>
-  </div>
+  <%= render "admin/books/form/goodreads_input", form: form, book: book %>
 
-  <div class="row mb-3" data-controller="external-link-preview">
-    <%= form.label :wiki_url, "Wiki URL", class: "form-label" %>
-    <div class="col-md-2 py-2">
-      <%= link_to "GOOGLE", "#", target: "_blank",
-        data: { book_form_target: "wikiQueryLink", href_scaffold: "http://google.com/search?#{{q: "book TITLE by AUTHOR wikipedia"}.to_query}" } %>
-    </div>
-    <div class="col-md-1"> >> </div>
-    <div class="col-md-7">
-      <%= form.url_field :wiki_url, class: "form-control",
-        data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input" } %>
-      <div class="form-text">Enter the URL for the book's wiki page</div>
-    </div>
-    <div class="col-md-2 py-2">
-      <%= link_to "LINK", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
-    </div>
-  </div>
+  <%= render "admin/books/form/wiki_input", form: form, book: book %>
 
   <div class="row mb-3">
     <div class="col-md-6">
@@ -87,8 +55,10 @@
 
   <div class="mb-3">
     <%= form.label :literary_form, class: "form-label" %>
-    <%= form.text_field :literary_form, class: "form-control",
-      data: { book_form_target: "literaryFormInput", behaviour: "indicateChanges", old_value: old_book.literary_form } %>
+    <%= admin_reversible_input(old_value: book.literary_form_was) do %>
+      <%= form.text_field :literary_form, class: "form-control",
+        data: { book_form_target: "literaryFormInput", input_changes_target: "input" } %>
+    <% end %>
   </div>
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addGenres@window->badges-input#onNamesAdded">
@@ -103,46 +73,12 @@
       name: "book[tag_names][]", old_values: old_book.current_tag_names, current_values: book.current_tag_names %>
   </div>
 
-  <div class="row mb-3">
-    <%= form.label :summary, class: "form-label" %>
-    <%= form.text_area :summary, class: "form-control mb-1 b-book-summary", style: "height: 130px;",
-      data: { book_form_target: "summaryInput", behaviour: "indicateChanges", old_value: old_book.summary } %>
-    <div class="col-md-10">
-      <%= form.text_field :summary_src, class: "form-control", placeholder: "SRC",
-        data: { book_form_target: "summarySrcInput", behaviour: "indicateChanges", old_value: old_book.summary_src } %>
-    </div>
-    <div class="col-md-2">
-      <%= button_tag "Clear", class: "btn btn-primary",
-        data: { action: "click->book-form#onSrcClearClicked:prevent" } %>
-    </div>
-  </div>
+  <%= render "admin/books/form/summary_input", form: form, book: book %>
 
   <div class="mb-3">
     <%= form.submit class: "btn btn-primary", data: { book_form_target: "submitButton" } %>
     <%= link_to "Cancel", admin_books_path, class: "btn btn-secondary" %>
   </div>
-
-  <template data-book-form-target="oldValueViewTemplate">
-    <div class="form-text" data-name="oldValueDisplay">
-      Initial value: "<span data-name="oldValue"></span>" <span data-action="click->book-form#resetOldValue">RESET</span>
-    </div>
-  </template>
 <% end %>
 
-<script>
-// Bootstrap form validation
-(function () {
-  'use strict'
-  var forms = document.querySelectorAll('.needs-validation')
-  Array.prototype.slice.call(forms)
-    .forEach(function (form) {
-      form.addEventListener('submit', function (event) {
-        if (!form.checkValidity()) {
-          event.preventDefault()
-          event.stopPropagation()
-        }
-        form.classList.add('was-validated')
-      }, false)
-    })
-})()
-</script>
+<%= render "admin/common/bootstrap_form_validator" %>

@@ -12,9 +12,12 @@ export default class extends Controller {
 
   syncUrl() {
     const url = this.inputTarget.value.trim()
-    if (url) 
+    if (url) {
       this.linkTarget.href = url
-    else 
+      this.linkTarget.title = url
+    } else {
       this.linkTarget.removeAttribute('href')
+      this.linkTarget.removeAttribute('title')
+    }
   }
 }

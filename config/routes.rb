@@ -31,25 +31,36 @@ Rails.application.routes.draw do
   end
 
   namespace :admin do
+    resources :ai_chats, only: %i[index show], controller: 'ai/chats'
+
+    namespace :authors do
+      resource :search, only: %i[create show], controller: 'search'
+    end
     resources :authors do
       scope module: :authors do
         resources :books, only: %i[new]
-        resource :books_list, only: %i[create], controller: 'books_list'
-        resource :list_parsing, only: %i[new create], controller: 'list_parsing'
         resource :sync_status, only: %i[update], controller: 'sync_status'
         resource :wiki_stats, only: %i[update]
+
+        resources :books_list, only: %i[create edit] do
+          post :apply, on: :member
+        end
+        resources :list_parsing, only: %i[new create edit] do
+          post :apply, on: :member
+        end
       end
     end
-    resource :authors_search, only: %i[create], controller: 'authors/search'
 
     namespace :books do
       resource :batch, only: %i[edit update], controller: 'batch'
-      resource :search, only: %i[create], controller: 'search'
+      resource :search, only: %i[create show], controller: 'search'
     end
     resources :books do
       scope module: :books do
         resource :wiki_stats, only: %i[update], controller: 'wiki_stats'
-        resource :generative_summary, only: %i[create], controller: 'generative_summary'
+        resources :generative_summaries, only: %i[create edit update] do
+          post :apply, on: :member
+        end
       end
     end
 
@@ -57,12 +68,27 @@ Rails.application.routes.draw do
       resources :cover_designs, except: %i[show]
     end
 
-    resources :ai_chats, only: %i[index show], controller: 'ai/chats'
+    namespace :feed do
+      resource :books_review_widget, only: %i[show], controller: 'books_review_widget' do
+        post :request_summary
+      end
+      resource :authors_review_widget, only: %i[show], controller: 'authors_review_widget' do
+        post :request_books_list
+        post :fill_books_list
+      end
+    end
+
+    resources :data_fetch_tasks, only: %i[index show] do
+      put :verify, on: :member
+      put :reject, on: :member
+    end
 
     resources :genres
     resources :tags
 
-    get '/', to: 'books#index', format: :html, as: :root
+    mount MissionControl::Jobs::Engine, at: '/jobs'
+
+    get '/', to: 'feed#show', format: :html, as: :root
   end
 
   get '*path', to: 'home#index', format: :html

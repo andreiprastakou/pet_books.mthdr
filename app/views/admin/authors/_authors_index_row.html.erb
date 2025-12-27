@@ -19,6 +19,9 @@
     <%= author.books.size %>
   </td>
   <td>
+    <%= admin_timestamp(author.synced_at) %>
+  </td>
+  <td>
     <%= admin_timestamp(author.created_at) %>
   </td>
   <td>

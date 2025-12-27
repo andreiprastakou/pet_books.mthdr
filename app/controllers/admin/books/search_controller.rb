@@ -1,9 +1,13 @@
 module Admin
   module Books
     class SearchController < AdminController
-      def create
+      def show
         @key = params[:key]
         @books = perform_search
+      end
+
+      def create
+        redirect_to admin_books_search_path(key: params[:key])
       end
 
       private

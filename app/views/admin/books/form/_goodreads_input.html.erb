@@ -1,0 +1,19 @@
+<div class="row mb-3" data-controller="external-link-preview">
+  <%= form.label :goodreads_url, "Goodreads URL", class: "form-label" %>
+  <div class="col-md-2 py-2">
+    <%= link_to "SEARCH", "#", target: "_blank",
+      data: { book_form_target: "goodreadsQueryLink", href_scaffold: "http://google.com/search?#{{q: "book TITLE by AUTHOR goodreads"}.to_query}" } %>
+  </div>
+  <div class="col-md-1"> >> </div>
+  <div class="col-md-7">
+    <%= admin_reversible_input(old_value: book.goodreads_url_was) do %>
+      <%= form.url_field :goodreads_url, class: "form-control",
+        data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input",
+          input_changes_target: "input" } %>
+    <% end %>
+    <div class="form-text">Enter the URL for the book's Goodreads page</div>
+  </div>
+  <div class="col-md-2 py-2">
+    <%= link_to "LINK", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
+  </div>
+</div>

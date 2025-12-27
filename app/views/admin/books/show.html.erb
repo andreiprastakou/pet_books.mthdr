@@ -2,17 +2,23 @@
 
 <div class="container mt-4">
   <div class="btn-group" role="group">
+    <%= display_link_to "show", book_display_path(@book) %>
     <%= admin_buttonly_link_to "edit", edit_admin_book_path(@book) %>
-    <%= button_to "generate info", admin_book_generative_summary_path(@book), method: :post, class: "btn btn-primary me-1" %>
-    <% if (next_book = @book.next_author_book).present? %>
-      <%= admin_buttonly_link_to "next: #{truncate(next_book.title, length: 20, escape: false)} (#{next_book.year_published})",
-        admin_book_path(next_book) %>
-    <% end %>
+    <%= button_to "generate info", admin_book_generative_summaries_path(@book), method: :post, class: "btn btn-primary me-1" %>
     <% if @book.wiki_url.present? %>
       <%= button_to "sync wiki stats", admin_book_wiki_stats_path(@book), method: :put, class: "btn btn-primary me-1" %>
     <% end %>
     <%= button_to "delete", admin_book_path(@book), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
-    <%= display_link_to "show", book_display_path(@book) %>
+    <% if (next_book = @book.next_author_book).present? %>
+      <%= admin_buttonly_link_to "next: #{truncate(next_book.title, length: 20, escape: false)} (#{next_book.year_published})",
+        admin_book_path(next_book) %>
+    <% end %>
+    <% if @next_summary_task.present? %>
+      <%= admin_buttonly_link_to(
+        "next review: #{truncate(@next_summary_task.book.title, length: 20, escape: false)} (#{@next_summary_task.book.year_published})",
+        admin_data_fetch_task_path(@next_summary_task)
+      ) %>
+    <% end %>
   </div>
 </div>
 

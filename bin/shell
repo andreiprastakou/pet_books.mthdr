@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Parse arguments to separate docker compose flags from command arguments
+ENV_FLAGS=()
+COMMAND_ARGS=()
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    -e|--env)
+      # Collect -e/--env flag and its value
+      if [ $# -gt 1 ]; then
+        ENV_FLAGS+=("$1" "$2")
+        shift 2
+      else
+        ENV_FLAGS+=("$1")
+        shift
+      fi
+      ;;
+    *)
+      # Regular command argument
+      COMMAND_ARGS+=("$1")
+      shift
+      ;;
+  esac
+done
+
+# Build the docker compose command
+CMD_ARGS=("run" "--rm" "--remove-orphans" "${ENV_FLAGS[@]}" "shell" "${COMMAND_ARGS[@]}")
+
+# Print the full command before executing
+printf '%s ' docker compose "${CMD_ARGS[@]}"
+printf '\n'
+
+# Execute the command
+docker compose "${CMD_ARGS[@]}"
