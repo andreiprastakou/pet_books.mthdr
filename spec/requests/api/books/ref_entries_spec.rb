@@ -12,7 +12,7 @@ RSpec.describe '/api/books/ref_entries' do
       expect(response).to be_successful
       expect(json_response).to eq(
         id: book.id,
-        author_id: book.author_id,
+        author_id: book.author_ids.first,
         year: 2000
       )
     end

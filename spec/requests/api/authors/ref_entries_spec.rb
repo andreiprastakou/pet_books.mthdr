@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe '/api/authors/ref_entries' do
   let(:author) { create(:author) }
 
-  before { author.books << build(:book, author: nil) }
+  before { author.books << build(:book, authors: []) }
 
   describe 'GET /:id' do
     subject(:send_request) { get "/api/authors/ref_entries/#{author.id}.json", headers: authorization_header }

@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   static targets = [
-    'authorSelect',
+    'authorName',
     'goodreadsQueryLink',
     'genreSelect',
     'literaryFormInput',
@@ -20,20 +20,23 @@ export default class extends Controller {
     this.syncWikiQuery()
   }
 
+  // ACTION
   onSrcClearClicked() {
     this.summarySrcInputTarget.value = ''
     this.summarySrcInputTarget.dispatchEvent(new Event('input', { bubbles: true }))
   }
 
-  //
-  // GOODREADS
-  //
+  // ACTION
+  syncQueries() {
+    this.syncGoodreadsQuery()
+    this.syncWikiQuery()
+  }
 
   syncGoodreadsQuery() {
     if (!this.hasGoodreadsQueryLinkTarget) return
 
     const title = this.titleInputTarget.value.trim()
-    const author = this.authorSelectTarget.selectedOptions[0]?.text.trim() || 'author'
+    const author = this.authorNameTarget.value.trim() || 'author'
     if (title) {
       const query = { q: `goodreads book ${title} by ${author}` }
       this.goodreadsQueryLinkTarget.href = `http://google.com/search?${new URLSearchParams(query)}`
@@ -41,15 +44,11 @@ export default class extends Controller {
       this.goodreadsQueryLinkTarget.removeAttribute('href')
   }
 
-  //
-  // WIKI
-  //
-
   syncWikiQuery() {
     if (!this.hasWikiQueryLinkTarget) return
 
     const title = this.titleInputTarget.value.trim()
-    const author = this.authorSelectTarget.selectedOptions[0]?.text.trim() || 'author'
+    const author = this.authorNameTarget.value.trim() || 'author'
     if (title) {
       const query = { q: `wikipedia book ${title} by ${author}` }
       this.wikiQueryLinkTarget.href = `http://google.com/search?${new URLSearchParams(query)}`
@@ -57,8 +56,7 @@ export default class extends Controller {
       this.wikiQueryLinkTarget.removeAttribute('href')
   }
 
-  // Callbacks
-
+  // ACTION
   onSummaryPicked(event) {
     const { summary, src, genres, themes, form } = event.detail
     this.dispatch('addTags', { detail: { names: themes } })
@@ -71,6 +69,7 @@ export default class extends Controller {
     this.submitButtonTarget.scrollIntoView()
   }
 
+  // ACTION
   onTagsAdded(event) {
     const { themes } = event.detail
     this.dispatch('addTags', { detail: { names: themes } })

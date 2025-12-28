@@ -10,12 +10,13 @@ module InfoFetchers
         2.2. source name;
         2.3. genre name (one of: <GENRES>);
         2.4. themes;
-        2.5: literary form (one of: #{Book::STANDARD_FORMS.join(',')}).
+        2.5. list of authors;
+        2.6: literary form (one of: #{Book::STANDARD_FORMS.join(',')}).
         3. prepare output of the collected pieces and their sources;
         4. print JSON output only.
         rules:
-        1. all output should be in English;
-        2. output should be of format: [["SUMMARY","MAIN_THEME1,MAIN_THEME2","GENRE1","FORM","SOURCE_NAME"]].
+        1. English is prefereble for output;
+        2. output should be of format: [["summary","theme1,theme2","genre1","form","src","author1,author2"]].
       INSTRUCTIONS
 
       def ask(book)
@@ -36,12 +37,13 @@ module InfoFetchers
       private
 
       def parse_summary_from_response(response)
-        JSON.parse(response.content).map do |(summary, themes, genre, form, src)|
+        JSON.parse(response.content).map do |(summary, themes, genre, form, src, authors)|
           {
             summary: summary,
             themes: themes,
             genre: genre,
             form: form,
+            authors: authors,
             src: src
           }.compact_blank
         end
@@ -52,7 +54,7 @@ module InfoFetchers
           book.literary_form&.humanize,
           "\"#{book.title}\"",
           "(#{book.year_published})",
-          "by #{book.author.fullname}"
+          "by #{book.authors.map(&:fullname).join(', ')}"
         ].compact_blank.join(' '))
       end
     end

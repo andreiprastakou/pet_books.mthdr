@@ -3,3 +3,15 @@
     border-radius: 100px;
   }
 }
+
+.b-author-autocomplete-container {
+  position: relative;
+}
+
+.b-author-autocomplete-results {
+  max-height: 200px;
+  overflow-y: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 1000;
+}

@@ -16,7 +16,7 @@ RSpec.describe '/api/books/full_entries' do
         id: book.id,
         title: book.title,
         original_title: book.original_title,
-        author_id: book.author_id,
+        author_id: book.author_ids.first,
         tag_ids: tags.map(&:id),
         year_published: book.year_published,
         cover_thumb_url: nil,
@@ -30,7 +30,7 @@ RSpec.describe '/api/books/full_entries' do
       post '/api/books/full_entries.json', params: { book: book_params }, headers: authorization_header
     end
 
-    let(:book_params) { { title: 'NEW_BOOK', author_id: author.id, year_published: 1900 } }
+    let(:book_params) { { title: 'NEW_BOOK', author_ids: [author.id], year_published: 1900 } }
     let(:author) { create(:author) }
 
     it 'creates a book', :aggregate_failures do
@@ -40,7 +40,7 @@ RSpec.describe '/api/books/full_entries' do
       expect(response).to be_successful
       expect(json_response).to eq(id: book.id)
       expect(book.title).to eq('NEW_BOOK')
-      expect(book.author_id).to eq(author.id)
+      expect(book.author_ids).to eq([author.id])
       expect(book.year_published).to eq(1900)
     end
   end

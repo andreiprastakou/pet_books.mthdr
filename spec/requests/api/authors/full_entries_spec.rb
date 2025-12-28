@@ -26,7 +26,7 @@ RSpec.describe '/api/authors/full_entries' do
     end
 
     before do
-      author.books << build(:book, author: nil, popularity: 10_000)
+      author.books << build(:book, authors: [], popularity: 10_000)
     end
 
     it 'returns full info' do

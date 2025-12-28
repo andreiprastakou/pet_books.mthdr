@@ -19,7 +19,7 @@ RSpec.describe '/api/books/index_entries' do
         goodreads_url: 'https://example.com',
         cover_thumb_url: nil,
         cover_full_url: nil,
-        author_id: book.author_id,
+        author_id: book.author_ids.first,
         year: 2000,
         tag_ids: [tag.id],
         popularity: 20_000,

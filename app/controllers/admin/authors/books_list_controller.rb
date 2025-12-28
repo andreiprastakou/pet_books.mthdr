@@ -67,7 +67,7 @@ module Admin
       end
 
       def build_book(attributes)
-        Book.new(attributes.merge(author: @author))
+        Book.new(attributes.merge(authors: [@author]))
       end
     end
   end

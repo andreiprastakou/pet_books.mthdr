@@ -5,19 +5,20 @@
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
   class: "needs-validation admin-book-form") do |form| %>
 
-  <div class="mb-3">
-    <%= form.label :author_id, class: "form-label" %>
-    <%= admin_reversible_input(old_value: book.author_id_was) do %>
-      <%= form.collection_select :author_id, Author.order_by_fullname, :id, :fullname, {}, class: "form-select",
-        data: { book_form_target: "authorSelect", input_changes_target: "input" } %>
-    <% end %>
+  <div class="row mb-3" data-controller="author-input">
+    <%= label_tag nil, "Authors", class: "form-label" %>
+    <% entries = book_authors_to_badges_entries(book) %>
+    <%= render "admin/books/form/authors_badges_input_wide", book: book,
+      name: "book[author_ids][]",
+      old_values: entries,
+      values: entries %>
   </div>
 
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
     <%= admin_reversible_input(old_value: book.title_was) do %>
       <%= form.text_field :title, class: "form-control", required: true,
-        data: { book_form_target: "titleInput", action: "input->book-form#syncGoodreadsQuery",
+        data: { book_form_target: "titleInput", action: "input->book-form#syncQueries",
           input_changes_target: "input" } %>
     <% end %>
     <div class="invalid-feedback">

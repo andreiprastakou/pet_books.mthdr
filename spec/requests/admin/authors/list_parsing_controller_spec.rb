@@ -48,8 +48,8 @@ RSpec.describe Admin::Authors::ListParsingController do
     end
     let(:books) do
       [
-        create(:book, author: author, title: 'TITLE_1', year_published: '2020', literary_form: 'TYPE_1'),
-        create(:book, author: author, title: 'TITLE_2', year_published: '2020', literary_form: 'TYPE_1')
+        create(:book, authors: [author], title: 'TITLE_1', year_published: '2020', literary_form: 'TYPE_1'),
+        create(:book, authors: [author], title: 'TITLE_2', year_published: '2020', literary_form: 'TYPE_1')
       ]
     end
 

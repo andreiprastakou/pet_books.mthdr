@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: authors
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  aws_photos        :json
@@ -23,7 +24,8 @@
 class Author < ApplicationRecord
   include CarrierwaveUrlAssign
 
-  has_many :books, class_name: 'Book', inverse_of: :author, dependent: :restrict_with_error
+  has_many :book_authors, class_name: 'BookAuthor', dependent: :restrict_with_error
+  has_many :books, class_name: 'Book', through: :book_authors
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
   has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy

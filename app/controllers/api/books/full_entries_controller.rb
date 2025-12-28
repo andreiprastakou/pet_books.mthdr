@@ -5,11 +5,11 @@ module Api
     class FullEntriesController < Api::Books::BaseController
       PERMITTED_ATTRIBUTES = [
         :title,
-        :author_id,
         :year_published,
         :original_title,
         :goodreads_url,
-        { tag_names: [] }
+        { tag_names: [] },
+        { author_ids: [] }
       ].freeze
 
       before_action :fetch_book, only: %i[show update destroy]

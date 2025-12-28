@@ -65,8 +65,12 @@
       <% end %>
 
       <div class="row mb-3">
-        <div class="col-md-3 font-weight-bold text-end">Author:</div>
-        <div class="col-md-9"><%= admin_link_to @book.author.fullname, admin_author_path(@book.author) %></div>
+        <div class="col-md-3 font-weight-bold text-end">Authors:</div>
+        <div class="col-md-9">
+          <% @book.authors.each do |author| %>
+            <%= admin_link_to author.fullname, admin_author_path(author) %> <%= ',' if author != @book.authors.last %>
+          <% end %>
+        </div>
       </div>
 
       <div class="row mb-3">

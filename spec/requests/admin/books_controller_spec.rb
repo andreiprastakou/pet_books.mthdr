@@ -5,7 +5,7 @@ RSpec.describe Admin::BooksController do
   let(:valid_attributes) do
     {
       title: 'Test Book',
-      author_id: author.id,
+      author_ids: [author.id],
       year_published: 2023
     }
   end
@@ -13,12 +13,12 @@ RSpec.describe Admin::BooksController do
   let(:invalid_attributes) do
     {
       title: '',
-      author_id: author.id,
+      author_ids: [author.id],
       year_published: 2023
     }
   end
 
-  let(:book) { create(:book, author: author) }
+  let(:book) { create(:book, authors: [author]) }
 
   describe 'GET /admin/books' do
     let(:send_request) { get admin_books_path, headers: authorization_header }

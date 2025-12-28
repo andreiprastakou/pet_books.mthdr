@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: cover_designs
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  author_name_color :string           not null

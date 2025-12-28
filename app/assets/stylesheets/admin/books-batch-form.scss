@@ -24,4 +24,20 @@
       display: none;
     }
   }
+
+  .b-author-badges-list {
+    margin-bottom: 4px;
+    width: 100%;
+  }
+
+  .b-author-badges-input {
+    float: left;
+    width: calc(100% - 40px);
+  }
+
+  .b-author-badges-button {
+    float: right;
+    text-align: right;
+    width: 40px;
+  }
 }

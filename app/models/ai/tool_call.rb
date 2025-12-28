@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: ai_tool_calls
+# Database name: primary
 #
 #  id           :integer          not null, primary key
 #  arguments    :text

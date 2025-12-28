@@ -8,16 +8,16 @@ RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
 
     let(:author) { build_stubbed(:author, fullname: 'F. Scott Fitzgerald') }
     let(:book) do
-      build_stubbed(:book, title: 'The Great Gatsby', year_published: 1925, author: author, literary_form: 'novel')
+      build_stubbed(:book, title: 'The Great Gatsby', year_published: 1925, authors: [author], literary_form: 'novel')
     end
     let(:chat) { instance_double(Ai::Chat) }
     let(:chat_response) { instance_double(RubyLLM::Message, content: response_text) }
     let(:response_text) do
       [
         ['The Great Gatsby is a novel by F. Scott Fitzgerald.', 'Love, Money, Society', 'social_realism', 'Novel',
-         'Goodreads'],
+         'Goodreads', 'F. Scott Fitzgerald'],
         ['The Great Gatsby is not a novel by F. Scott Fitzgerald.', 'Society, Love, Money, Dreams', 'social_realism',
-         'Novel', 'Google Books']
+         'Novel', 'Google Books', 'F. Scott Fitzgerald']
       ].to_json
     end
 
@@ -32,9 +32,11 @@ RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
       expect(result).to match(
         [
           { summary: 'The Great Gatsby is a novel by F. Scott Fitzgerald.',
-            themes: 'Love, Money, Society', genre: 'social_realism', form: 'Novel', src: 'Goodreads' },
+            themes: 'Love, Money, Society', genre: 'social_realism', form: 'Novel', src: 'Goodreads',
+            authors: 'F. Scott Fitzgerald' },
           { summary: 'The Great Gatsby is not a novel by F. Scott Fitzgerald.',
-            themes: 'Society, Love, Money, Dreams', genre: 'social_realism', form: 'Novel', src: 'Google Books' }
+            themes: 'Society, Love, Money, Dreams', genre: 'social_realism', form: 'Novel', src: 'Google Books',
+            authors: 'F. Scott Fitzgerald' }
         ]
       )
       expect(writer.errors).to be_empty

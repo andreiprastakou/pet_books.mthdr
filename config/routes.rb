@@ -86,6 +86,14 @@ Rails.application.routes.draw do
     resources :genres
     resources :tags
 
+    namespace :api do
+      scope constraints: ->(req) { req.format == :json } do
+        namespace :authors do
+          resource :search, only: :show, controller: 'search'
+        end
+      end
+    end
+
     mount MissionControl::Jobs::Engine, at: '/jobs'
 
     get '/', to: 'feed#show', format: :html, as: :root

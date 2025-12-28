@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: authors
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  aws_photos        :json
@@ -23,7 +24,14 @@
 require 'rails_helper'
 
 RSpec.describe Author do
-  it { is_expected.to have_many(:books).class_name(Book.name) }
+  describe 'associations' do
+    it { is_expected.to have_many(:book_authors).class_name(BookAuthor.name) }
+    it { is_expected.to have_many(:books).class_name(Book.name).through(:book_authors) }
+    it { is_expected.to have_many(:tag_connections).class_name(TagConnection.name) }
+    it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
+    it { is_expected.to have_many(:books_list_tasks).class_name(Admin::AuthorBooksListTask.name) }
+    it { is_expected.to have_many(:list_parsing_tasks).class_name(Admin::AuthorBooksListParsingTask.name) }
+  end
 
   describe 'validation' do
     subject { build(:author) }

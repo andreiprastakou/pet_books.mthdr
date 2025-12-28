@@ -24,7 +24,7 @@ class BooksFilter
     ids = Array.wrap(params[:author_id]).presence || params[:author_ids]
     return if ids.blank?
 
-    @scope = scope.where(author_id: ids)
+    @scope = scope.by_author(ids)
   end
 
   def apply_tags_filter

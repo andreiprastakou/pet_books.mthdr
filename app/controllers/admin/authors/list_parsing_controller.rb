@@ -67,7 +67,7 @@ module Admin
 
       def build_book(attributes)
         Book.new(
-          author: @author,
+          authors: [@author],
           title: attributes['title'],
           year_published: attributes['year'],
           literary_form: attributes['type']

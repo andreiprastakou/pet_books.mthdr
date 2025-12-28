@@ -19,10 +19,11 @@
                   <div>Form: <%= summary[:form] %>.</div>
                   <div>Genre: <%= summary[:genre] %>.</div>
                   <div>Themes: <%= summary[:themes] %>.</div>
+                  <div>Authors: <%= summary[:authors] %>.</div>
                   <div><%= "Source: #{summary[:src]}" %></div>
                 </div>
                 <div class="col-md-6 text-end">
-                  <%= button_tag "Pick", class: "btn btn-primary btn-sm",
+                  <%= button_tag "Pick", class: "btn btn-success btn-sm",
                     data: { action: "click->book-generated-summaries#onPick",
                       book_generated_summaries_summary_param: summary[:summary],
                       book_generated_summaries_src_param: summary[:src],
@@ -35,7 +36,7 @@
 
             <div class="mb-2">
               <% all_tags = @all_themes.join(",") %>
-              <%= button_tag "Add all tags", class: "btn btn-primary btn-sm", title: all_tags,
+              <%= button_tag "Add all tags", class: "btn btn-success btn-sm", title: all_tags,
                 data: { action: "click->book-generated-summaries#onAddAllTags",
                   book_generated_summaries_themes_param: all_tags } %>
             </div>

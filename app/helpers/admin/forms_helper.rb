@@ -42,5 +42,11 @@ module Admin
         )
       end
     end
+
+    def book_authors_to_badges_entries(book)
+      book.authors.map do |author|
+        { label: author.fullname, id: author.id }
+      end
+    end
   end
 end

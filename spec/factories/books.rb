@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: books
+# Database name: primary
 #
 #  id                   :integer          not null, primary key
 #  data_filled          :boolean          default(FALSE), not null
@@ -20,19 +21,16 @@
 #  year_published       :integer          not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  author_id            :integer          not null
 #
 # Indexes
 #
-#  index_books_on_author_id            (author_id)
-#  index_books_on_data_filled          (data_filled)
-#  index_books_on_title_and_author_id  (title,author_id) UNIQUE
-#  index_books_on_year_published       (year_published)
+#  index_books_on_data_filled     (data_filled)
+#  index_books_on_year_published  (year_published)
 #
 FactoryBot.define do
   factory :book, class: 'Book' do
     sequence(:title) { |i| "Book #{i}" }
-    author factory: %i[author], strategy: :create
     year_published { rand(1992..2021) }
+    authors { create_list(:author, 1) }
   end
 end
