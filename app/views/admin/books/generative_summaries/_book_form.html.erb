@@ -9,7 +9,7 @@
   <div class="row mb-3" data-controller="association-input">
     <%= label_tag nil, "Authors", class: "form-label" %>
     <% entries = book_authors_to_badges_entries(book) %>
-    <%= render "admin/books/form/association_badges_input_wide", book: book,
+    <%= render "admin/books/form/association_badges_input_wide",
       name: "book[author_ids][]",
       autocomplete_url: admin_api_authors_search_path(format: :json),
       label_input_data: { book_form_target: "authorName" },
@@ -72,7 +72,7 @@
   <div class="row mb-3" data-controller="association-input">
     <%= label_tag nil, "Series", class: "form-label" %>
     <%= hidden_field_tag "book[series_ids][]", "", data: { association_input_target: "sentinelInput" } %>
-    <%= render "admin/books/form/association_badges_input_wide", book: book,
+    <%= render "admin/books/form/association_badges_input_wide",
       name: "book[series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),
       old_values: book_series_to_badges_entries(book),
