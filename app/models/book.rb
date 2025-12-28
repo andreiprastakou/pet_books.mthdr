@@ -129,6 +129,9 @@ class Book < ApplicationRecord
   end
 
   def series_ids=(ids)
+    # handle sentinel inputs
+    ids = ids.reject { |id| id.blank? }
+
     book_series.each do |book_series|
       book_series.mark_for_destruction unless ids.include?(book_series.series_id)
     end
