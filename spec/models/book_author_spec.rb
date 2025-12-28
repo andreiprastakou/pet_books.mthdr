@@ -38,4 +38,3 @@ RSpec.describe BookAuthor do
     end
   end
 end
-

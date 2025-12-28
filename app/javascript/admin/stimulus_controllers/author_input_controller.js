@@ -68,7 +68,7 @@ export default class extends Controller {
   }
 
   addEntry(entry) {
-    var present = false
+    let present = false
     this.badgeValueInputTargets.forEach(input => {
       if (input.value === entry.id)
         present = true

@@ -28,4 +28,3 @@ FactoryBot.define do
     author factory: %i[author], strategy: :create
   end
 end
-

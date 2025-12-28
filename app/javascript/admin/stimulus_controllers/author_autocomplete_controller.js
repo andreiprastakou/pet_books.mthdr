@@ -46,7 +46,6 @@ export default class extends Controller {
       const authors = await response.json()
       this.displayResults(authors)
     } catch (error) {
-      console.error('Error searching authors:', error)
       this.resultsTarget.hidden = true
     }
   }
@@ -69,13 +68,14 @@ export default class extends Controller {
       item.dataset.authorId = author.id
       item.dataset.authorName = author.fullname
 
-      const handleSelection = (event) => {
+      const handleSelection = event => {
         event.preventDefault()
         event.stopPropagation()
         this.selectAuthor(author)
       }
       item.addEventListener('click', handleSelection)
-      item.addEventListener('pointerdown', handleSelection) // touchpad
+      // touchpad
+      item.addEventListener('pointerdown', handleSelection)
 
       this.resultsTarget.appendChild(item)
     })
@@ -90,7 +90,7 @@ export default class extends Controller {
   }
 
   // ACTION
-  handleBlur(event) {
+  handleBlur() {
     // Delay hiding results to allow click events to fire
     setTimeout(() => {
       this.resultsTarget.hidden = true
@@ -100,9 +100,8 @@ export default class extends Controller {
   // ACTION
   handleFocus(event) {
     const query = event.target.value.trim()
-    if (query.length >= MIN_QUERY_LENGTH) {
+    if (query.length >= MIN_QUERY_LENGTH)
       this.performSearch(query)
-    }
   }
 }
 

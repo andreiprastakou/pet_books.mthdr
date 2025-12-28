@@ -52,7 +52,7 @@ RSpec.describe Book do
 
     it 'validates uniqueness of title per author' do
       authors = create_list(:author, 3)
-      book = create(:book, title: 'TITLE_A', authors: authors[0..1])
+      create(:book, title: 'TITLE_A', authors: authors[0..1])
       variants = [
         build(:book, title: 'TITLE_A', authors: authors[2..2]),
         build(:book, title: 'TITLE_A', authors: authors[1..1]),
@@ -234,7 +234,7 @@ RSpec.describe Book do
 
     it 'assigns the authors by given ids' do
       book
-      expect { call }.to change(BookAuthor, :count).by(0)
+      expect { call }.not_to change(BookAuthor, :count)
       expect(book.book_authors.map(&:author_id)).to eq(authors[0..2].map(&:id))
       expect(book.book_authors.map(&:marked_for_destruction?)).to eq([true, false, false])
       expect(book.book_authors.map(&:new_record?)).to eq([false, false, true])
@@ -270,7 +270,7 @@ RSpec.describe Book do
       expect(result).to eq(authors.first.id)
     end
 
-    context "when the book has no authors" do
+    context 'when the book has no authors' do
       let(:book) { build(:book, authors: []) }
 
       it 'returns nil' do

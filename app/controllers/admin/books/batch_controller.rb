@@ -26,7 +26,7 @@ module Admin
       end
 
       def redirect_path_after_update
-        author = @books.first&.authors.first
+        author = @books.first&.authors&.first
         author.present? ? admin_author_path(author) : admin_books_path
       end
 
