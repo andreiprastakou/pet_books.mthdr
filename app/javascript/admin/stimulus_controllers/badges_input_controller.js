@@ -15,7 +15,7 @@ export default class extends Controller {
   }
 
   fillInitialBadges() {
-    const names = JSON.parse(this.badgesTarget.dataset.initialValues)
+    const names = JSON.parse(this.badgesTarget.dataset.values)
     const oldNames = JSON.parse(this.badgesTarget.dataset.oldValue)
     names.forEach(name => {
       this.addNewBadge(name, { new: !oldNames.includes(name) })
@@ -28,6 +28,7 @@ export default class extends Controller {
     })
   }
 
+  // ACTION
   updateBadgeAddButton() {
     const name = this.badgeNewNameInputTarget.value.trim()
     if (name)
@@ -36,6 +37,7 @@ export default class extends Controller {
       this.addButtonTarget.disabled = true
   }
 
+  // ACTION
   onAddClicked(event) {
     event.preventDefault()
     const names = this.badgeNewNameInputTarget.value.trim()
@@ -68,6 +70,7 @@ export default class extends Controller {
     return badge
   }
 
+  // ACTION
   deleteBadge(event) {
     const badge = event.target.closest('[data-name="badge"]')
     if (!badge) return
@@ -83,6 +86,7 @@ export default class extends Controller {
     badge.querySelector('[data-name="badgeNameInput"]').disabled = true
   }
 
+  // ACTION
   restoreBadge(event) {
     const badge = event.target.closest('[data-name="badge"]')
     if (!badge) return
@@ -91,8 +95,7 @@ export default class extends Controller {
     badge.querySelector('[data-name="badgeNameInput"]').disabled = false
   }
 
-  // Callbacks
-
+  // ACTION
   onNamesAdded(event) {
     const { names } = event.detail
     this.addNames(names)
