@@ -1,32 +1,3 @@
-.admin-book-form {
-  .b-badge {
-    .b-badge-delete-button {
-      cursor: pointer;
-    }
-
-    .b-badge-restore-button {
-      display: none;
-      cursor: pointer;
-    }
-
-    &.new {
-      font-style: italic;
-    }
-
-    &.removed {
-      opacity: 0.5;
-
-      .b-badge-delete-button {
-        display: none;
-      }
-
-      .b-badge-restore-button {
-        display: inline;
-      }
-    }
-  }
-}
-
 .b-generative-summaries {
   .b-summary {
     font-size: 13px;

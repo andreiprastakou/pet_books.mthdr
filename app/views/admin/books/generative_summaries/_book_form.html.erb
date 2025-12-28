@@ -5,23 +5,12 @@
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
   class: "needs-validation admin-book-form") do |form| %>
 
-  <div class="mb-3">
+  <div class="row mb-3" data-controller="author-input">
     <%= form.label :author_id, class: "form-label" %>
-    <div class="col-12 b-author-autocomplete-container" data-controller="author-autocomplete"
-      data-author-autocomplete-url-value="<%= admin_api_authors_search_path %>.json"
-      data-author-autocomplete-selected-id-value="<%= book.author_id %>"
-      data-author-autocomplete-selected-name-value="<%= book.author&.fullname %>">
-      <%= form.hidden_field :author_id, data: { author_autocomplete_target: "hidden" } %>
-      <%= admin_reversible_input(old_value: book.author&.fullname) do %>
-        <%= text_field_tag nil, book.author&.fullname,
-          class: 'form-control', autocomplete: 'off',
-          data: {
-            author_autocomplete_target: "input", input_changes_target: "input", book_form_target: "authorName",
-            action: "input->author-autocomplete#search blur->author-autocomplete#handleBlur focus->author-autocomplete#handleFocus input->book-form#syncQueries"
-          } %>
-        <div class="list-group b-author-autocomplete-results" data-author-autocomplete-target="results"></div>
-      <% end %>
-    </div>
+    <%= render "admin/books/form/authors_badges_input_wide", book: book,
+      name: "book[author_id]",
+      old_values: [{label: old_book.author&.fullname, id: old_book.author_id}],
+      values: [{label: book.author&.fullname, id: book.author_id}] %>
   </div>
 
   <div class="mb-3">

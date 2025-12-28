@@ -45,20 +45,11 @@
             <% end %>
           </div>
           <!-- Author input -->
-          <div class="col-2 b-author-autocomplete-container" data-controller="author-autocomplete"
-            data-author-autocomplete-url-value="<%= admin_api_authors_search_path %>.json"
-            data-author-autocomplete-selected-id-value="<%= book.author_id %>"
-            data-author-autocomplete-selected-name-value="<%= book.author&.fullname %>">
-            <%= hidden_field_tag "batch[#{index}][author_id]", book.author_id, data: { author_autocomplete_target: "hidden" } %>
-            <%= admin_reversible_input(old_value: book.author&.fullname) do %>
-              <%= text_field_tag nil, book.author&.fullname,
-                class: 'form-control form-control-sm', autocomplete: 'off',
-                data: {
-                  author_autocomplete_target: "input", input_changes_target: "input",
-                  action: "input->author-autocomplete#search blur->author-autocomplete#handleBlur focus->author-autocomplete#handleFocus"
-                } %>
-              <div class="list-group b-author-autocomplete-results" data-author-autocomplete-target="results"></div>
-            <% end %>
+          <div class="col-2" data-controller="author-input">
+            <%= render "admin/books/form/authors_badges_input_mini", book: book,
+              name: "batch[#{index}][author_id]",
+              old_values: [{label: book.author&.fullname, id: book.author_id}],
+              values: [{label: book.author&.fullname, id: book.author_id}] %>
           </div>
           <!-- Year input -->
           <div class="col-1">

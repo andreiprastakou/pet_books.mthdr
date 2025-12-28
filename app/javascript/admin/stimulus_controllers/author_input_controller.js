@@ -22,13 +22,9 @@ export default class extends Controller {
     const currentEntries = JSON.parse(this.badgesTarget.dataset.values)
     const oldEntries = JSON.parse(this.badgesTarget.dataset.oldValues)
     currentEntries.forEach(entry => {
-      console.log(entry)
-      console.log('old entry?', this.entryExistsInArray(entry, oldEntries))
       this.renderBadge(entry, { new: !this.entryExistsInArray(entry, oldEntries) })
     })
     oldEntries.forEach(entry => {
-      console.log(entry)
-      console.log('new entry?', this.entryExistsInArray(entry, currentEntries))
       if (this.entryExistsInArray(entry, currentEntries)) return
 
       const badge = this.renderBadge(entry)
@@ -48,8 +44,9 @@ export default class extends Controller {
   renderBadge(entry, options = { new: false }) {
     const badgeTemplate = this.badgeTemplateTarget.content.cloneNode(true)
     badgeTemplate.querySelector('[data-name="label"]').textContent = entry.label
-    badgeTemplate.querySelector('[data-name="badgeValueInput"]').value = entry.id || null
+    badgeTemplate.querySelector('[data-name="badgeValueInput"]').value = entry.id
     const badge = badgeTemplate.querySelector('[data-name="badge"]')
+    badge.title = `${entry.label} (ID=${entry.id})`
     this.badgesTarget.appendChild(badgeTemplate)
     if (options.new) {
       badge.classList.add('new')
@@ -61,7 +58,10 @@ export default class extends Controller {
   // ACTION
   onAddClicked(event) {
     event.preventDefault()
-    const entry = { label: this.badgeNewEntryInputTarget.value.trim(), id: this.badgeValueInputTarget.dataset.valueId }
+    const entry = {
+      label: this.badgeNewEntryInputTarget.value.trim(),
+      id: this.badgeNewEntryInputTarget.dataset.valueId || null
+    }
     this.badgeNewEntryInputTarget.value = ''
     this.badgeNewEntryInputTarget.dispatchEvent(new Event('input', { bubbles: true }))
     this.addEntry(entry)
@@ -112,6 +112,10 @@ export default class extends Controller {
   }
 
   restoreBadge(badge) {
+    this.badgeValueInputTargets.forEach(input => {
+      const badge = input.closest('[data-name="badge"]')
+      this.deleteBadge(badge)
+    })
     badge.classList.remove('removed')
     badge.querySelector('[data-name="badgeValueInput"]').disabled = false
   }

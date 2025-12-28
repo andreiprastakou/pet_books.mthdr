@@ -5,21 +5,14 @@ const MIN_QUERY_LENGTH = 2
 export default class extends Controller {
   static targets = [
     'input',
-    'hidden',
     'results',
   ]
 
   static values = {
-    url: String,
-    selectedId: Number,
-    selectedName: String,
+    url: String
   }
 
   connect() {
-    this.selectedIdValue = this.hiddenTarget.value || null
-    if (this.selectedNameValue) {
-      this.inputTarget.value = this.selectedNameValue
-    }
     this.resultsTarget.hidden = true
     this.debounceTimeout = null
   }
@@ -30,7 +23,7 @@ export default class extends Controller {
 
     // Clear selection if input is cleared
     if (query === '') {
-      this.hiddenTarget.value = ''
+      this.inputTarget.dataset.valueId = null
       this.resultsTarget.hidden = true
       return
     }
@@ -92,10 +85,8 @@ export default class extends Controller {
 
   selectAuthor(author) {
     this.inputTarget.value = author.fullname
-    this.hiddenTarget.value = author.id
+    this.inputTarget.dataset.valueId = author.id
     this.resultsTarget.hidden = true
-    this.selectedIdValue = author.id
-    this.selectedNameValue = author.fullname
   }
 
   // ACTION
