@@ -48,5 +48,11 @@ module Admin
         { label: author.fullname, id: author.id }
       end
     end
+
+    def book_series_to_badges_entries(book)
+      book.series.map do |series|
+        { label: series.name, id: series.id }
+      end
+    end
   end
 end

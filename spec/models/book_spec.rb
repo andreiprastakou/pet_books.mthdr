@@ -36,6 +36,8 @@ RSpec.describe Book do
     it { is_expected.to have_many(:wiki_page_stats).class_name(WikiPageStat.name) }
     it { is_expected.to have_many(:book_authors).class_name(BookAuthor.name) }
     it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
+    it { is_expected.to have_many(:book_series).class_name(BookSeries.name) }
+    it { is_expected.to have_many(:series).class_name(Series.name).through(:book_series) }
   end
 
   describe 'validation' do
@@ -276,6 +278,23 @@ RSpec.describe Book do
       it 'returns nil' do
         expect(result).to be_nil
       end
+    end
+  end
+
+  describe '#series_ids=' do
+    subject(:call) { book.series_ids = series_ids }
+
+    let(:book) { create(:book, book_series: initial_book_series) }
+    let(:series) { create_list(:series, 3) }
+    let(:initial_book_series) { [build(:book_series, series: series[0]), build(:book_series, series: series[1])] }
+    let(:series_ids) { [series[1].id, series[2].id] }
+
+    it 'assigns the series by given ids' do
+      book
+      expect { call }.not_to change(BookSeries, :count)
+      expect(book.book_series.map(&:series_id)).to eq(series[0..2].map(&:id))
+      expect(book.book_series.map(&:marked_for_destruction?)).to eq([true, false, false])
+      expect(book.book_series.map(&:new_record?)).to eq([false, false, true])
     end
   end
 end

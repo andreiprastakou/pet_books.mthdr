@@ -47,10 +47,13 @@ class Book < ApplicationRecord
   has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
   has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
+  has_many :book_series, class_name: 'BookSeries', dependent: :destroy, inverse_of: :book
+  has_many :series, through: :book_series, class_name: 'Series'
 
   accepts_nested_attributes_for :tag_connections, allow_destroy: true
   accepts_nested_attributes_for :genres, allow_destroy: true
   accepts_nested_attributes_for :book_authors, allow_destroy: true
+  accepts_nested_attributes_for :book_series, allow_destroy: true
 
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }
@@ -122,6 +125,16 @@ class Book < ApplicationRecord
 
     ids.each do |id|
       book_authors.build(author_id: id) unless book_authors.any? { |ba| ba.author_id == id }
+    end
+  end
+
+  def series_ids=(ids)
+    book_series.each do |book_series|
+      book_series.mark_for_destruction unless ids.include?(book_series.series_id)
+    end
+
+    ids.each do |id|
+      book_series.build(series_id: id) unless book_series.any? { |bs| bs.series_id == id }
     end
   end
 

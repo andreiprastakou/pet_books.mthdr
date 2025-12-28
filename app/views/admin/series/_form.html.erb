@@ -1,0 +1,19 @@
+<%= form_with(model: [:admin, @series], class: "needs-validation", novalidate: true) do |form| %>
+  <div class="mb-3">
+    <%= form.label :name, class: "form-label" %>
+    <%= admin_reversible_input(old_value: @series.name_was) do %>
+      <%= form.text_field :name, class: "form-control", required: true,
+        data: { input_changes_target: "input" } %>
+    <% end %>
+    <div class="invalid-feedback">
+      Please provide a name.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", admin_series_index_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<%= render "admin/common/bootstrap_form_validator" %>

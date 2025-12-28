@@ -4,10 +4,12 @@
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
   class: "needs-validation admin-book-form") do |form| %>
 
-  <div class="row mb-3" data-controller="author-input">
+  <div class="row mb-3" data-controller="association-input">
     <%= label_tag nil, "Authors", class: "form-label" %>
-    <%= render "admin/books/form/authors_badges_input_wide", book: book,
+    <%= render "admin/books/form/association_badges_input_wide", book: book,
       name: "book[author_ids][]",
+      autocomplete_url: admin_api_authors_search_path(format: :json),
+      label_input_data: { book_form_target: "authorName" },
       old_values: book_authors_to_badges_entries(book),
       values: book_authors_to_badges_entries(book) %>
   </div>
@@ -71,6 +73,15 @@
     <%= label_tag nil, "Tags", class: "form-label" %>
     <%= render "admin/books/form/badges_input", form: form,
       name: "book[tag_names][]", old_values: old_book.current_tag_names, current_values: book.current_tag_names %>
+  </div>
+
+  <div class="row mb-3" data-controller="association-input">
+    <%= label_tag nil, "Series", class: "form-label" %>
+    <%= render "admin/books/form/association_badges_input_wide", book: book,
+      name: "book[series_ids][]",
+      autocomplete_url: admin_api_series_search_path(format: :json),
+      old_values: book_series_to_badges_entries(book),
+      values: book_series_to_badges_entries(book) %>
   </div>
 
   <%= render "admin/books/form/summary_input", form: form, book: book %>

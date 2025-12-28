@@ -43,35 +43,33 @@ export default class extends Controller {
 
     try {
       const response = await fetch(`${this.urlValue}?q=${encodeURIComponent(query)}`)
-      const authors = await response.json()
-      this.displayResults(authors)
+      const entries = await response.json()
+      this.displayResults(entries)
     } catch (error) {
       this.resultsTarget.hidden = true
     }
   }
 
-  displayResults(authors) {
+  displayResults(entries) {
     // Clear previous results
     this.resultsTarget.innerHTML = ''
 
-    if (authors.length === 0) {
+    if (entries.length === 0) {
       this.resultsTarget.hidden = true
       return
     }
 
     // Create result items
-    authors.forEach(author => {
+    entries.forEach(entry => {
       const item = document.createElement('div')
       item.className = 'list-group-item list-group-item-action'
       item.style.cursor = 'pointer'
-      item.textContent = author.fullname
-      item.dataset.authorId = author.id
-      item.dataset.authorName = author.fullname
+      item.textContent = entry.label
 
       const handleSelection = event => {
         event.preventDefault()
         event.stopPropagation()
-        this.selectAuthor(author)
+        this.selectEntry(entry)
       }
       item.addEventListener('click', handleSelection)
       // touchpad
@@ -83,9 +81,9 @@ export default class extends Controller {
     this.resultsTarget.hidden = false
   }
 
-  selectAuthor(author) {
-    this.inputTarget.value = author.fullname
-    this.inputTarget.dataset.valueId = author.id
+  selectEntry(entry) {
+    this.inputTarget.value = entry.label
+    this.inputTarget.dataset.valueId = entry.id
     this.resultsTarget.hidden = true
   }
 

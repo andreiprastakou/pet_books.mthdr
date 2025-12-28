@@ -98,6 +98,17 @@
         </div>
       <% end %>
 
+      <% if @book.series.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Series:</div>
+          <div class="col-md-9">
+            <% @book.series.each do |series| %>
+              <%= admin_link_to series.name, admin_series_path(series) %> <%= ',' if series != @book.series.last %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
       <% if @book.tags.present? %>
         <div class="row mb-3">
           <div class="col-md-3 font-weight-bold text-end">Tags:</div>

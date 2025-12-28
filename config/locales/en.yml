@@ -69,6 +69,13 @@ en:
           success: "Genre was successfully updated."
         destroy:
           success: "Genre was successfully destroyed."
+      series:
+        create:
+          success: "Series was successfully created."
+        update:
+          success: "Series was successfully updated."
+        destroy:
+          success: "Series was successfully destroyed."
       tags:
         create:
           success: "Tag was successfully created."

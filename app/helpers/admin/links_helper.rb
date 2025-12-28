@@ -102,6 +102,14 @@ module Admin
       end
     end
 
+    def admin_nav_series_index_link
+      ['Series', admin_series_index_path]
+    end
+
+    def admin_nav_series_link(series)
+      "\"#{truncate_crumb(series.name)}\""
+    end
+
     private
 
     def admin_nav_crumbs_for_header(crumbs)
