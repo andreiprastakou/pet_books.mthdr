@@ -6,17 +6,28 @@
 
   <div class="mb-3">
     <%= form.label :author_id, class: "form-label" %>
-    <%= admin_reversible_input(old_value: book.author_id_was) do %>
-      <%= form.collection_select :author_id, Author.order_by_fullname, :id, :fullname, {}, class: "form-select",
-          data: { book_form_target: "authorSelect", input_changes_target: "input" } %>
-    <% end %>
+    <div class="col-12 b-author-autocomplete-container" data-controller="author-autocomplete"
+      data-author-autocomplete-url-value="<%= admin_api_authors_search_path %>.json"
+      data-author-autocomplete-selected-id-value="<%= book.author_id %>"
+      data-author-autocomplete-selected-name-value="<%= book.author&.fullname %>">
+      <%= form.hidden_field :author_id, data: { author_autocomplete_target: "hidden" } %>
+      <%= admin_reversible_input(old_value: book.author&.fullname) do %>
+        <%= text_field_tag nil, book.author&.fullname,
+          class: 'form-control', autocomplete: 'off',
+          data: {
+            author_autocomplete_target: "input", input_changes_target: "input", book_form_target: "authorName",
+            action: "input->author-autocomplete#search blur->author-autocomplete#handleBlur focus->author-autocomplete#handleFocus input->book-form#syncQueries"
+          } %>
+        <div class="list-group b-author-autocomplete-results" data-author-autocomplete-target="results"></div>
+      <% end %>
+    </div>
   </div>
 
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
     <%= admin_reversible_input(old_value: book.title_was) do %>
       <%= form.text_field :title, class: "form-control", required: true,
-        data: { book_form_target: "titleInput", action: "input->book-form#syncGoodreadsQuery",
+        data: { book_form_target: "titleInput", action: "input->book-form#syncQueries",
           input_changes_target: "input" } %>
     <% end %>
     <div class="invalid-feedback">

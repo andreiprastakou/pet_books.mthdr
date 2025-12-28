@@ -1,5 +1,4 @@
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form">
-  <% all_authors = Author.order_by_fullname %>
   <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
   <% method = local_assigns.fetch(:target, :post) %>
   <%= form_tag target, method: method do %>
@@ -22,6 +21,7 @@
             <%= text_field_tag "batch[#{index}][id]", book.id, class: 'form-control form-control-sm', disabled: true %>
             <%= hidden_field_tag "batch[#{index}][id]", book.id %>
           </div>
+          <!-- Title input -->
           <div class="col-3">
             <%= admin_reversible_input(old_value: book.title_was) do %>
               <%= text_field_tag "batch[#{index}][title]", book.title,
@@ -29,6 +29,7 @@
                 data: { name: "title", input_changes_target: "input" } %>
             <% end %>
           </div>
+          <!-- Original title input -->
           <div class="col-1">
             <%= admin_reversible_input(old_value: book.original_title_was) do %>
               <%= text_field_tag "batch[#{index}][original_title]", book.original_title,
@@ -36,23 +37,37 @@
                 data: { name: "original_title", input_changes_target: "input" } %>
             <% end %>
           </div>
+          <!-- Literary form input -->
           <div class="col-1">
             <%= admin_reversible_input(old_value: book.new_record? ? nil : book.literary_form_was) do %>
               <%= text_field_tag "batch[#{index}][literary_form]", book.literary_form,
                 class: 'form-control form-control-sm', data: { input_changes_target: "input" } %>
             <% end %>
           </div>
-          <div class="col-2">
-            <%= select_tag "batch[#{index}][author_id]",
-              options_from_collection_for_select(all_authors, :id, :fullname, book.author_id),
-              class: "form-select form-control-sm" %>
+          <!-- Author input -->
+          <div class="col-2 b-author-autocomplete-container" data-controller="author-autocomplete"
+            data-author-autocomplete-url-value="<%= admin_api_authors_search_path %>.json"
+            data-author-autocomplete-selected-id-value="<%= book.author_id %>"
+            data-author-autocomplete-selected-name-value="<%= book.author&.fullname %>">
+            <%= hidden_field_tag "batch[#{index}][author_id]", book.author_id, data: { author_autocomplete_target: "hidden" } %>
+            <%= admin_reversible_input(old_value: book.author&.fullname) do %>
+              <%= text_field_tag nil, book.author&.fullname,
+                class: 'form-control form-control-sm', autocomplete: 'off',
+                data: {
+                  author_autocomplete_target: "input", input_changes_target: "input",
+                  action: "input->author-autocomplete#search blur->author-autocomplete#handleBlur focus->author-autocomplete#handleFocus"
+                } %>
+              <div class="list-group b-author-autocomplete-results" data-author-autocomplete-target="results"></div>
+            <% end %>
           </div>
+          <!-- Year input -->
           <div class="col-1">
             <%= admin_reversible_input(old_value: book.year_published_was) do %>
               <%= text_field_tag "batch[#{index}][year_published]", book.year_published,
                 class: 'form-control form-control-sm', data: { input_changes_target: "input" } %>
             <% end %>
           </div>
+          <!-- Wiki input -->
           <div class="col-2">
             <div class="b-external-link-input" data-controller="external-link-preview">
               <%= admin_reversible_link_input(old_value: book.wiki_url_was) do %>
@@ -66,6 +81,7 @@
                 class: "b-batch-external-link" %>
             </div>
           </div>
+          <!-- Remove book button -->
           <div class="col-1">
             <%= button_tag '-', class: 'btn btn-danger btn-sm', data: {
               action: 'click->books-batch-form#removeBook' } %>
@@ -80,7 +96,7 @@
         <div class="col-1">
           <%= text_field_tag "batch[#{index}][id]", nil, class: 'form-control form-control-sm', disabled: true %>
         </div>
-        <div class="col-2">
+        <div class="col-3">
           <%= text_field_tag "batch[#{index}][title]", nil, class: 'form-control form-control-sm' %>
         </div>
         <div class="col-1">
@@ -89,28 +105,31 @@
         <div class="col-1">
           <%= text_field_tag "batch[#{index}][literary_form]", nil, class: 'form-control form-control-sm' %>
         </div>
-        <div class="col-2">
-          <%= select_tag "batch[#{index}][author_id]",
-            options_from_collection_for_select(all_authors, :id, :fullname, books.first&.author_id),
-            class: "form-select form-control-sm" %>
+        <!-- Author input -->
+        <div class="col-2 b-author-autocomplete-container" data-controller="author-autocomplete"
+          data-author-autocomplete-url-value="<%= admin_api_authors_search_path %>.json">
+          <%= hidden_field_tag "batch[#{index}][author_id]", nil, data: { author_autocomplete_target: "hidden" } %>
+          <%= text_field_tag nil, nil,
+            class: 'form-control form-control-sm', autocomplete: 'off',
+            data: {
+              author_autocomplete_target: "input",
+              action: "input->author-autocomplete#search blur->author-autocomplete#handleBlur focus->author-autocomplete#handleFocus"
+            } %>
+          <div class="list-group b-author-autocomplete-results" data-author-autocomplete-target="results"></div>
         </div>
+        <!-- Year input -->
         <div class="col-1">
           <%= text_field_tag "batch[#{index}][year_published]", nil, class: 'form-control form-control-sm' %>
         </div>
-        <div class="col-1">
-          <div class="b-external-link-input" data-controller="external-link-preview">
-            <%= text_field_tag "batch[#{index}][goodreads_url]", nil, class: 'form-control form-control-sm',
-              data: { external_link_preview_target: "input", action: "input->external-link-preview#syncUrl" } %>
-            <%= link_to "L", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
-          </div>
-        </div>
-        <div class="col-1">
+        <!-- Wiki input -->
+        <div class="col-2">
           <div class="b-external-link-input" data-controller="external-link-preview">
             <%= text_field_tag "batch[#{index}][wiki_url]", nil, class: 'form-control form-control-sm',
               data: { external_link_preview_target: "input", action: "input->external-link-preview#syncUrl" } %>
             <%= link_to "L", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
           </div>
         </div>
+        <!-- Remove book button -->
         <div class="col-1">
           <%= button_tag '-', class: 'btn btn-danger btn-sm', data: { action: 'click->books-batch-form#removeBook' } %>
         </div>
@@ -118,11 +137,13 @@
     </template>
 
     <div class="row mt-4">
+      <!-- Add book button -->
       <div class="col-12 mb-3">
         <%= button_tag '+ book', class: 'btn btn-success btn-lg',
           data: { action: 'click->books-batch-form#onClickAddBook' } %>
       </div>
 
+      <!-- Submit button -->
       <div class="col-12">
         <%= submit_tag 'Update all', class: 'btn btn-primary btn-lg' %>
       </div>
