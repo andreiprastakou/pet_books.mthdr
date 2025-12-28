@@ -23,6 +23,14 @@
     </div>
   </div>
 
+  <div class="row mb-3" data-controller="author-input">
+    <%= label_tag nil, "Authors", class: "form-label" %>
+    <%= render "admin/books/form/authors_badges_input", form: form,
+      name: "book[author_id]",
+      old_values: [{label: old_book.author&.fullname, id: old_book.author_id}],
+      values: [{label: book.author&.fullname, id: book.author_id}] %>
+  </div>
+
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
     <%= admin_reversible_input(old_value: book.title_was) do %>
