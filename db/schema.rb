@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_28_181603) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_28_233617) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -95,6 +95,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_181603) do
     t.datetime "created_at", null: false
     t.integer "series_id", null: false
     t.datetime "updated_at", null: false
+    t.index ["book_id", "series_id"], name: "index_book_series_on_book_id_and_series_id", unique: true
     t.index ["book_id"], name: "index_book_series_on_book_id"
     t.index ["series_id"], name: "index_book_series_on_series_id"
   end

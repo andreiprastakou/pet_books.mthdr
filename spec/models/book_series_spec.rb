@@ -13,8 +13,9 @@
 #
 # Indexes
 #
-#  index_book_series_on_book_id    (book_id)
-#  index_book_series_on_series_id  (series_id)
+#  index_book_series_on_book_id                (book_id)
+#  index_book_series_on_book_id_and_series_id  (book_id,series_id) UNIQUE
+#  index_book_series_on_series_id              (series_id)
 #
 # Foreign Keys
 #

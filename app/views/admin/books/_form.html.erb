@@ -1,4 +1,6 @@
-<%= form_with(model: [:admin, book], scope: "book", local: true, novalidate: true,
+<%= form_with(model: book, scope: "book", local: true, novalidate: true,
+  url: book.new_record? ? admin_books_path : admin_book_path(book),
+  method: book.new_record? ? :post : :put,
   data: { controller: "book-form",
     action: "book-generated-summaries:pickSummary@window->book-form#onSummaryPicked
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },

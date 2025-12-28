@@ -127,68 +127,6 @@ RSpec.describe Book do
     end
   end
 
-  describe '#current_tag_names' do
-    subject(:result) { book.current_tag_names }
-
-    let(:book) { build(:book, tags: tags) }
-    let(:tags) { create_list(:tag, 3) }
-
-    before { book.tag_connections[1].mark_for_destruction }
-
-    it 'returns the current tag names' do
-      expect(result).to match_array(tags.map(&:name).values_at(0, 2))
-    end
-  end
-
-  describe '#current_genre_names' do
-    subject(:result) { book.current_genre_names }
-
-    let(:book) { build(:book, genres: book_genres) }
-    let(:book_genres) { build_list(:book_genre, 3, genre: build_stubbed(:genre)) }
-
-    before { book.genres[1].mark_for_destruction }
-
-    it 'returns the current genre names' do
-      expect(result).to match_array(book_genres.map(&:genre_name).values_at(0, 2))
-    end
-  end
-
-  describe '#current_book_genres' do
-    subject(:result) { book.current_book_genres }
-
-    let(:book) { build(:book, genres: book_genres) }
-    let(:book_genres) { build_list(:book_genre, 3, genre: build_stubbed(:genre)) }
-
-    before { book.genres[1].mark_for_destruction }
-
-    it 'returns the current book genres' do
-      expect(result).to match_array(book_genres.values_at(0, 2))
-    end
-  end
-
-  describe '#genre_names=' do
-    subject(:call) { book.genre_names = genre_names }
-
-    let(:book) { create(:book, genres: book_genres) }
-    let(:book_genres) do
-      [
-        build(:book_genre, genre: create(:genre, name: 'genre_a')),
-        build(:book_genre, genre: create(:genre, name: 'genre_b'))
-      ]
-    end
-    let(:genre_names) { %w[genre_a genre_c] }
-
-    it 'assigns the genres by given names' do
-      book
-      expect { call }.to change(Genre, :count).by(1)
-
-      new_genre = Genre.last
-      expect(new_genre.name).to eq('genre_c')
-      expect(book.current_genre_names).to contain_exactly('genre_a', 'genre_c')
-      expect(book.reload.current_genre_names).to contain_exactly('genre_a', 'genre_b')
-    end
-  end
-
   describe '#next_author_book' do
     subject(:result) { book.next_author_book }
 
@@ -223,23 +161,6 @@ RSpec.describe Book do
       let(:book) { build(:book, literary_form: 'novel') }
 
       it { is_expected.to be false }
-    end
-  end
-
-  describe '#author_ids=' do
-    subject(:call) { book.author_ids = author_ids }
-
-    let(:book) { create(:book, authors: [], book_authors: initial_book_authors) }
-    let(:authors) { create_list(:author, 3) }
-    let(:initial_book_authors) { [build(:book_author, author: authors[0]), build(:book_author, author: authors[1])] }
-    let(:author_ids) { [authors[1].id, authors[2].id] }
-
-    it 'assigns the authors by given ids' do
-      book
-      expect { call }.not_to change(BookAuthor, :count)
-      expect(book.book_authors.map(&:author_id)).to eq(authors[0..2].map(&:id))
-      expect(book.book_authors.map(&:marked_for_destruction?)).to eq([true, false, false])
-      expect(book.book_authors.map(&:new_record?)).to eq([false, false, true])
     end
   end
 
@@ -278,23 +199,6 @@ RSpec.describe Book do
       it 'returns nil' do
         expect(result).to be_nil
       end
-    end
-  end
-
-  describe '#series_ids=' do
-    subject(:call) { book.series_ids = series_ids }
-
-    let(:book) { create(:book, book_series: initial_book_series) }
-    let(:series) { create_list(:series, 3) }
-    let(:initial_book_series) { [build(:book_series, series: series[0]), build(:book_series, series: series[1])] }
-    let(:series_ids) { [series[1].id, series[2].id] }
-
-    it 'assigns the series by given ids' do
-      book
-      expect { call }.not_to change(BookSeries, :count)
-      expect(book.book_series.map(&:series_id)).to eq(series[0..2].map(&:id))
-      expect(book.book_series.map(&:marked_for_destruction?)).to eq([true, false, false])
-      expect(book.book_series.map(&:new_record?)).to eq([false, false, true])
     end
   end
 end

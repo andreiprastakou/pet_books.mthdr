@@ -4,12 +4,13 @@
   <%= form_tag target, method: method do %>
     <div class="row mb-3 fw-bold text-muted">
       <div class="col-1">ID</div>
-      <div class="col-3">Title</div>
+      <div class="col-2">Title</div>
       <div class="col-1">Original</div>
       <div class="col-1">Form</div>
       <div class="col-2">Author</div>
+      <div class="col-2">Series</div>
       <div class="col-1">Year</div>
-      <div class="col-2">Wiki</div>
+      <div class="col-1">Wiki</div>
       <div class="col-1"></div>
     </div>
 
@@ -22,7 +23,7 @@
             <%= hidden_field_tag "batch[#{index}][id]", book.id %>
           </div>
           <!-- Title input -->
-          <div class="col-3">
+          <div class="col-2">
             <%= admin_reversible_input(old_value: book.title_was) do %>
               <%= text_field_tag "batch[#{index}][title]", book.title,
                 class: 'form-control form-control-sm',
@@ -45,10 +46,20 @@
             <% end %>
           </div>
           <!-- Author input -->
-          <div class="col-2" data-controller="author-input">
+          <div class="col-2" data-controller="association-input">
             <% entries = book_authors_to_badges_entries(book) %>
-            <%= render "admin/books/form/authors_badges_input_mini", book: book,
+            <%= render "admin/books/form/association_badges_input_mini", book: book,
               name: "batch[#{index}][author_ids][]",
+              autocomplete_url: admin_api_authors_search_path(format: :json),
+              old_values: entries,
+              values: entries %>
+          </div>
+          <!-- Series input -->
+          <div class="col-2" data-controller="association-input">
+            <% entries = book_series_to_badges_entries(book) %>
+            <%= render "admin/books/form/association_badges_input_mini", book: book,
+              name: "batch[#{index}][series_ids][]",
+              autocomplete_url: admin_api_series_search_path(format: :json),
               old_values: entries,
               values: entries %>
           </div>
@@ -60,7 +71,7 @@
             <% end %>
           </div>
           <!-- Wiki input -->
-          <div class="col-2">
+          <div class="col-1">
             <div class="b-external-link-input" data-controller="external-link-preview">
               <%= admin_reversible_link_input(old_value: book.wiki_url_was) do %>
                 <%= text_field_tag "batch[#{index}][wiki_url]", book.wiki_url,
