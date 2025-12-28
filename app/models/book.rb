@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: books
+# Database name: primary
 #
 #  id                   :integer          not null, primary key
 #  data_filled          :boolean          default(FALSE), not null
@@ -20,14 +21,11 @@
 #  year_published       :integer          not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  author_id            :integer          not null
 #
 # Indexes
 #
-#  index_books_on_author_id            (author_id)
-#  index_books_on_data_filled          (data_filled)
-#  index_books_on_title_and_author_id  (title,author_id) UNIQUE
-#  index_books_on_year_published       (year_published)
+#  index_books_on_data_filled     (data_filled)
+#  index_books_on_year_published  (year_published)
 #
 class Book < ApplicationRecord
   STANDARD_FORMS = %w[
@@ -42,27 +40,29 @@ class Book < ApplicationRecord
 
   include CarrierwaveUrlAssign
 
-  belongs_to :author, class_name: 'Author', optional: true
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
   has_many :wiki_page_stats, as: :entity, class_name: 'WikiPageStat', dependent: :destroy
   has_many :genres, class_name: 'BookGenre', dependent: :destroy
   has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
+  has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book
+  has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
 
   accepts_nested_attributes_for :tag_connections, allow_destroy: true
   accepts_nested_attributes_for :genres, allow_destroy: true
+  accepts_nested_attributes_for :book_authors, allow_destroy: true
 
-  validates :title, presence: true, uniqueness: { scope: :author_id }
-  validates :author_id, presence: true
+  validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :wiki_popularity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
+  validate :validate_unique_title_per_author
 
   before_validation :strip_title
 
   scope :with_tags, lambda { |tag_ids|
     includes(:tags).references(:tags).where(tags: { id: Array(tag_ids) })
   }
-  scope :by_author, ->(author) { where(author_id: author) }
+  scope :by_author, ->(author) { joins(:book_authors).where(book_authors: { author_id: author }) }
   scope :not_filled, -> { where(data_filled: false) }
   scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
 
@@ -103,9 +103,10 @@ class Book < ApplicationRecord
   end
 
   def next_author_book
-    self.class.where(author_id: author_id)
-        .where('(year_published > ?) OR (year_published = ? AND id > ?)', year_published, year_published, id)
-        .order(:year_published, :id)
+    author_ids = book_authors.map(&:author_id)
+    self.class.by_author(author_ids)
+        .where('(year_published > ?) OR (year_published = ? AND books.id > ?)', year_published, year_published, id)
+        .order(:year_published, 'books.id')
         .limit(1)
         .first
   end
@@ -114,7 +115,38 @@ class Book < ApplicationRecord
     literary_form.in?(%w[short short_story])
   end
 
+  def author_ids=(ids)
+    book_authors.each do |book_author|
+      book_author.mark_for_destruction unless ids.include?(book_author.author_id)
+    end
+
+    ids.each do |id|
+      book_authors.build(author_id: id) unless book_authors.any? { |ba| ba.author_id == id }
+    end
+  end
+
+  def author_names_label
+    return 'Unknown Author' if authors.empty?
+
+    authors.map(&:fullname).join(', ')
+  end
+
+  def legacy_author_id
+    ActiveSupport::Deprecation.new.warn('Book#legacy_author_id is deprecated. Use Book#author_ids instead.')
+    author_ids.first
+  end
+
   protected
+
+  def validate_unique_title_per_author
+    return if title.blank?
+
+    author_ids = book_authors.map(&:author_id)
+    siblings = Book.by_author(author_ids).where.not(id: id)
+    if siblings.pluck(:title).map(&:downcase).include?(title.downcase)
+      errors.add(:title, 'must be unique per author')
+    end
+  end
 
   def strip_title
     return if title.blank?

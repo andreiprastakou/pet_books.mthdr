@@ -96,7 +96,7 @@ module Admin
     def admin_link_to_data_fetch_task_target(task)
       case task
       when Admin::BookSummaryTask
-        admin_link_to "Book \"#{task.book.title}\" by #{task.book.author.fullname}", admin_book_path(task.book)
+        admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
       else
         "Entity #{task.target_type} with ID=#{task.target_id}"
       end

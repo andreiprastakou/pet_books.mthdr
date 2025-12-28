@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: books
+# Database name: primary
 #
 #  id                   :integer          not null, primary key
 #  data_filled          :boolean          default(FALSE), not null
@@ -20,35 +21,45 @@
 #  year_published       :integer          not null
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  author_id            :integer          not null
 #
 # Indexes
 #
-#  index_books_on_author_id            (author_id)
-#  index_books_on_data_filled          (data_filled)
-#  index_books_on_title_and_author_id  (title,author_id) UNIQUE
-#  index_books_on_year_published       (year_published)
+#  index_books_on_data_filled     (data_filled)
+#  index_books_on_year_published  (year_published)
 #
 require 'rails_helper'
 
 RSpec.describe Book do
-  it { is_expected.to belong_to(:author).class_name(Author.name).required(false) }
-  it { is_expected.to have_many(:tag_connections).class_name(TagConnection.name) }
-  it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
-  it { is_expected.to have_many(:wiki_page_stats).class_name(WikiPageStat.name) }
+  describe 'associations' do
+    it { is_expected.to have_many(:tag_connections).class_name(TagConnection.name) }
+    it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
+    it { is_expected.to have_many(:wiki_page_stats).class_name(WikiPageStat.name) }
+    it { is_expected.to have_many(:book_authors).class_name(BookAuthor.name) }
+    it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
+  end
 
   describe 'validation' do
     subject { build(:book) }
 
     it { is_expected.to validate_presence_of(:title) }
-    it { is_expected.to validate_uniqueness_of(:title).scoped_to(:author_id) }
-    it { is_expected.to validate_presence_of(:author_id) }
     it { is_expected.to validate_presence_of(:year_published) }
     it { is_expected.to validate_numericality_of(:year_published).only_integer }
     it { is_expected.to validate_numericality_of(:wiki_popularity).only_integer.is_greater_than_or_equal_to(0) }
 
     it 'has a valid factory' do
       expect(build(:book)).to be_valid
+    end
+
+    it 'validates uniqueness of title per author' do
+      authors = create_list(:author, 3)
+      book = create(:book, title: 'TITLE_A', authors: authors[0..1])
+      variants = [
+        build(:book, title: 'TITLE_A', authors: authors[2..2]),
+        build(:book, title: 'TITLE_A', authors: authors[1..1]),
+        build(:book, title: 'TITLE_B', authors: authors[1..1])
+      ]
+      expect(variants.map(&:valid?)).to eq([true, false, true])
+      expect(variants[1].errors[:title]).to include('must be unique per author')
     end
   end
 
@@ -57,6 +68,26 @@ RSpec.describe Book do
       it 'is stripped' do
         book = build_stubbed(:book, title: "   TITLE  \n")
         expect { book.valid? }.to change(book, :title).to('TITLE')
+      end
+    end
+  end
+
+  describe 'scopes' do
+    describe '.by_author' do
+      subject(:result) { described_class.by_author(author) }
+
+      let(:author) { authors[1] }
+      let(:authors) { create_list(:author, 3) }
+      let(:books) do
+        [
+          create(:book, authors: authors[0..1]),
+          create(:book, authors: authors[1..2]),
+          create(:book, authors: authors[2..2])
+        ]
+      end
+
+      it 'returns the books by the author' do
+        expect(result).to match_array(books[0..1])
       end
     end
   end
@@ -162,12 +193,12 @@ RSpec.describe Book do
     let(:book) { books[1] }
     let(:books) do
       [
-        create(:book, author: author, year_published: 2020),
-        create(:book, author: author, year_published: 2020),
-        create(:book, author: create(:author), year_published: 2020),
-        create(:book, author: author, year_published: 2020),
-        create(:book, author: author, year_published: 2022),
-        create(:book, author: author, year_published: 2021)
+        create(:book, authors: [author], year_published: 2020),
+        create(:book, authors: [author], year_published: 2020),
+        create(:book, authors: [create(:author)], year_published: 2020),
+        create(:book, authors: [author], year_published: 2020),
+        create(:book, authors: [author], year_published: 2022),
+        create(:book, authors: [author], year_published: 2021)
       ]
     end
     let(:author) { create(:author) }
@@ -190,6 +221,61 @@ RSpec.describe Book do
       let(:book) { build(:book, literary_form: 'novel') }
 
       it { is_expected.to be false }
+    end
+  end
+
+  describe '#author_ids=' do
+    subject(:call) { book.author_ids = author_ids }
+
+    let(:book) { create(:book, authors: [], book_authors: initial_book_authors) }
+    let(:authors) { create_list(:author, 3) }
+    let(:initial_book_authors) { [build(:book_author, author: authors[0]), build(:book_author, author: authors[1])] }
+    let(:author_ids) { [authors[1].id, authors[2].id] }
+
+    it 'assigns the authors by given ids' do
+      book
+      expect { call }.to change(BookAuthor, :count).by(0)
+      expect(book.book_authors.map(&:author_id)).to eq(authors[0..2].map(&:id))
+      expect(book.book_authors.map(&:marked_for_destruction?)).to eq([true, false, false])
+      expect(book.book_authors.map(&:new_record?)).to eq([false, false, true])
+    end
+  end
+
+  describe '#author_names_label' do
+    subject(:result) { book.author_names_label }
+
+    let(:book) { build(:book, authors: authors) }
+    let(:authors) { create_list(:author, 3) }
+
+    it 'returns the author names label' do
+      expect(result).to eq(authors.map(&:fullname).join(', '))
+    end
+
+    context 'when the book has no authors' do
+      let(:book) { build(:book, authors: []) }
+
+      it 'returns "Unknown Author"' do
+        expect(result).to eq('Unknown Author')
+      end
+    end
+  end
+
+  describe '#legacy_author_id' do
+    subject(:result) { book.legacy_author_id }
+
+    let(:book) { build(:book, authors: authors) }
+    let(:authors) { create_list(:author, 3) }
+
+    it 'returns one author id' do
+      expect(result).to eq(authors.first.id)
+    end
+
+    context "when the book has no authors" do
+      let(:book) { build(:book, authors: []) }
+
+      it 'returns nil' do
+        expect(result).to be_nil
+      end
     end
   end
 end

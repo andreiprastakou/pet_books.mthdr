@@ -6,11 +6,12 @@
   class: "needs-validation admin-book-form") do |form| %>
 
   <div class="row mb-3" data-controller="author-input">
-    <%= form.label :author_id, class: "form-label" %>
+    <%= label_tag nil, "Authors", class: "form-label" %>
+    <% entries = book_authors_to_badges_entries(book) %>
     <%= render "admin/books/form/authors_badges_input_wide", book: book,
-      name: "book[author_id]",
-      old_values: [{label: old_book.author&.fullname, id: old_book.author_id}],
-      values: [{label: book.author&.fullname, id: book.author_id}] %>
+      name: "book[author_ids][]",
+      old_values: entries,
+      values: entries %>
   </div>
 
   <div class="mb-3">

@@ -40,7 +40,7 @@ module Forms
           original_title: book_params[:original_title],
           literary_form: book_params[:literary_form],
           year_published: book_params[:year_published],
-          author_id: book_params[:author_id],
+          author_ids: book_params[:author_ids],
           goodreads_url: book_params[:goodreads_url],
           wiki_url: book_params[:wiki_url]
         }.compact

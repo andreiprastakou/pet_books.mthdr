@@ -70,13 +70,8 @@ export default class extends Controller {
   addEntry(entry) {
     var present = false
     this.badgeValueInputTargets.forEach(input => {
-      const badge = input.closest('[data-name="badge"]')
-      if (input.value === entry.id) {
-        this.restoreBadge(badge)
+      if (input.value === entry.id)
         present = true
-      } else {
-        this.deleteBadge(badge)
-      }
     })
     if (present) return
 
@@ -112,10 +107,6 @@ export default class extends Controller {
   }
 
   restoreBadge(badge) {
-    this.badgeValueInputTargets.forEach(input => {
-      const badge = input.closest('[data-name="badge"]')
-      this.deleteBadge(badge)
-    })
     badge.classList.remove('removed')
     badge.querySelector('[data-name="badgeValueInput"]').disabled = false
   }

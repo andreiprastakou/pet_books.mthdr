@@ -9,9 +9,9 @@ RSpec.describe Admin::Authors::WikiStatsController do
     let(:syncer) { instance_double(InfoFetchers::Wiki::BookSyncer) }
     let(:books) do
       [
-        create(:book, author: author, wiki_popularity: 0),
-        create(:book, author: author, wiki_popularity: 0, wiki_url: 'WIKI_URL'),
-        create(:book, author: author, wiki_popularity: 100)
+        create(:book, authors: [author], wiki_popularity: 0),
+        create(:book, authors: [author], wiki_popularity: 0, wiki_url: 'WIKI_URL'),
+        create(:book, authors: [author], wiki_popularity: 100)
       ]
     end
 
@@ -34,7 +34,7 @@ RSpec.describe Admin::Authors::WikiStatsController do
     end
 
     context 'when there are no books to sync' do
-      let(:books) { [create(:book, author: author, wiki_popularity: 0, wiki_url: nil)] }
+      let(:books) { [create(:book, authors: [author], wiki_popularity: 0, wiki_url: nil)] }
 
       it 'redirects with a message' do
         send_request

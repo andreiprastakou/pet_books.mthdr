@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: tags
+# Database name: primary
 #
 #  id         :integer          not null, primary key
 #  category   :integer          default("other")

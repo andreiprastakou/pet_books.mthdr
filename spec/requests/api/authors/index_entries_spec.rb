@@ -4,7 +4,7 @@ RSpec.describe '/api/authors/index_entries' do
   let(:author) { create(:author, birth_year: 1900) }
 
   before do
-    author.books << build(:book, author: nil)
+    author.books << build(:book, authors: [])
   end
 
   describe 'GET /:id' do

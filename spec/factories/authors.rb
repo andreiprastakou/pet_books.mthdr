@@ -3,6 +3,7 @@
 # == Schema Information
 #
 # Table name: authors
+# Database name: primary
 #
 #  id                :integer          not null, primary key
 #  aws_photos        :json

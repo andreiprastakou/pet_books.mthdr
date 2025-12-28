@@ -13,7 +13,7 @@ RSpec.describe Admin::Books::BatchController do
         }
       }
     end
-    let(:book_a) { build_stubbed(:book, author: author, title: 'TITLE_A') }
+    let(:book_a) { build_stubbed(:book, authors: [author], title: 'TITLE_A') }
     let(:author) { create(:author) }
     let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
 
@@ -25,7 +25,7 @@ RSpec.describe Admin::Books::BatchController do
     it 'updates and redirects to the author page' do
       send_request
       expect(updater).to have_received(:update)
-      expect(response).to redirect_to admin_author_path(book_a.author)
+      expect(response).to redirect_to admin_author_path(book_a.authors.first)
     end
 
     context 'with invalid params' do

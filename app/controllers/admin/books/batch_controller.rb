@@ -26,11 +26,12 @@ module Admin
       end
 
       def redirect_path_after_update
-        @books.present? ? admin_author_path(@books.first.author) : admin_books_path
+        author = @books.first&.authors.first
+        author.present? ? admin_author_path(author) : admin_books_path
       end
 
       def prepare_form_data
-        @authors = @books.map(&:author).uniq
+        @authors = @books.flat_map(&:authors).uniq
       end
     end
   end

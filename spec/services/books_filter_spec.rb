@@ -24,7 +24,7 @@ RSpec.describe BooksFilter do
     end
 
     context 'with :author_id' do
-      let(:params) { { author_id: books[1].author_id } }
+      let(:params) { { author_id: books[1].author_ids.first } }
 
       it 'returns only books of that author' do
         expect(result.to_a).to match_array(books.values_at(1))
@@ -32,7 +32,7 @@ RSpec.describe BooksFilter do
     end
 
     context 'with :author_ids' do
-      let(:params) { { author_ids: books.values_at(0, 2).map(&:author_id) } }
+      let(:params) { { author_ids: books.values_at(0, 2).flat_map(&:author_ids) } }
 
       it 'returns only books of those authors' do
         expect(result.to_a).to match_array(books.values_at(0, 2))

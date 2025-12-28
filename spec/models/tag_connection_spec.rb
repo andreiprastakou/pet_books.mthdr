@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: tag_connections
+# Database name: primary
 #
 #  id          :integer          not null, primary key
 #  entity_type :string           not null

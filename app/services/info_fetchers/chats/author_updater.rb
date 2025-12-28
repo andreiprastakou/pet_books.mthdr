@@ -24,7 +24,7 @@ module InfoFetchers
 
       def update_books(author, books_info)
         books_info.each do |book_info|
-          book = Book.find_or_initialize_by(author_id: author.id, title: book_info.fetch('title'))
+          book = Book.where(title: book_info.fetch('title')).by_author(author).first_or_initialize(authors: [author])
           book.update!(
             original_title: book_info.fetch('original_title'),
             year_published: book_info.fetch('publishing_year')

@@ -7,7 +7,9 @@
     <%= "(#{book.original_title})" if book.special_original_title? %>
   </td>
   <td>
-    <%= admin_link_to book.author.fullname, admin_author_path(book.author) %>
+    <% book.authors.each do |author| %>
+      <%= admin_link_to author.fullname, admin_author_path(author) %> <%= ',' if author != book.authors.last %>
+    <% end %>
   </td>
   <td>
     <%= admin_link_to "show", admin_book_path(book) %>

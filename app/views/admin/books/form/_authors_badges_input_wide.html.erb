@@ -16,9 +16,7 @@
 
 <div class="col-md-4">
   <div class="col-12 b-author-autocomplete-container" data-controller="author-autocomplete"
-    data-author-autocomplete-url-value="<%= admin_api_authors_search_path %>.json"
-    data-author-autocomplete-selected-id-value="<%= book.author_id %>"
-    data-author-autocomplete-selected-name-value="<%= book.author&.fullname %>">
+    data-author-autocomplete-url-value="<%= admin_api_authors_search_path %>.json">
     <%= text_field_tag nil, nil,
       class: 'form-control', autocomplete: 'off',
       data: {

@@ -42,9 +42,9 @@ module Admin
       end
 
       def admin_book_params
-        params.fetch(:book).permit(:title, :original_title, :year_published, :author_id,
+        params.fetch(:book).permit(:title, :original_title, :year_published,
                                    :summary, :summary_src, :literary_form, :data_filled,
-                                   tag_names: [], genre_names: [])
+                                   tag_names: [], genre_names: [], author_ids: [])
       end
     end
   end

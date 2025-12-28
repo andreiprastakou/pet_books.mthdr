@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: wiki_page_stats
+# Database name: primary
 #
 #  id               :integer          not null, primary key
 #  entity_type      :string           not null

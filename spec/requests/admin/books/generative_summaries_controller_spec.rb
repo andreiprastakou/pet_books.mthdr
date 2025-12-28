@@ -52,7 +52,7 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
           title: 'UPDATED_TITLE',
           original_title: 'UPDATED_ORIGINAL_TITLE',
           year_published: '2026',
-          author_id: book.author_id,
+          author_ids: book.author_ids,
           summary: 'UPDATED_SUMMARY',
           summary_src: 'UPDATED_SUMMARY_SRC',
           literary_form: 'UPDATED_LITERARY_FORM',

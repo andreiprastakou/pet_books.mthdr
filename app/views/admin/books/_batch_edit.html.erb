@@ -46,10 +46,11 @@
           </div>
           <!-- Author input -->
           <div class="col-2" data-controller="author-input">
+            <% entries = book_authors_to_badges_entries(book) %>
             <%= render "admin/books/form/authors_badges_input_mini", book: book,
-              name: "batch[#{index}][author_id]",
-              old_values: [{label: book.author&.fullname, id: book.author_id}],
-              values: [{label: book.author&.fullname, id: book.author_id}] %>
+              name: "batch[#{index}][author_ids][]",
+              old_values: entries,
+              values: entries %>
           </div>
           <!-- Year input -->
           <div class="col-1">

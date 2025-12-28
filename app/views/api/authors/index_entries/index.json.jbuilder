@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-counts_by_author = Book.group(:author_id).count
+counts_by_author = Book.joins(:book_authors).group(book_authors: :author_id).count
 
 json.list do
   json.partial! 'api/authors/index_entries/author', collection: @authors, as: :author,

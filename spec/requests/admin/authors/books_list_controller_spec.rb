@@ -38,11 +38,11 @@ RSpec.describe Admin::Authors::BooksListController do
     end
     let(:books) do
       [
-        create(:book, author: author, title: 'BOOK_1', original_title: 'ORIGINAL_1', year_published: 2021,
+        create(:book, authors: [author], title: 'BOOK_1', original_title: 'ORIGINAL_1', year_published: 2021,
                       literary_form: 'type_1', wiki_url: 'WIKI_URL_1'),
-        create(:book, author: author, title: 'BOOK_2', original_title: 'ORIGINAL_2', year_published: 2022,
+        create(:book, authors: [author], title: 'BOOK_2', original_title: 'ORIGINAL_2', year_published: 2022,
                       literary_form: 'type_2', wiki_url: 'WIKI_URL_2'),
-        create(:book, author: author, title: 'BOOK_3', original_title: 'ORIGINAL_3', year_published: 2023,
+        create(:book, authors: [author], title: 'BOOK_3', original_title: 'ORIGINAL_3', year_published: 2023,
                       literary_form: 'type_3', wiki_url: 'WIKI_URL_3')
       ]
     end
@@ -81,14 +81,14 @@ RSpec.describe Admin::Authors::BooksListController do
             title: 'UPDATED_TITLE',
             original_title: 'UPDATED_ORIGINAL_TITLE',
             year_published: '2025',
-            author_id: author.id,
+            author_ids: [author.id],
             literary_form: 'novel',
             wiki_url: 'UPDATED_WIKI_URL'
           }
         }
       }
     end
-    let(:book) { create(:book, author: author, title: 'ORIGINAL_TITLE') }
+    let(:book) { create(:book, authors: [author], title: 'ORIGINAL_TITLE') }
     let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
 
     before do

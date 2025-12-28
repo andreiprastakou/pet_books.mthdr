@@ -1,6 +1,7 @@
 # == Schema Information
 #
 # Table name: admin_data_fetch_tasks
+# Database name: primary
 #
 #  id                  :integer          not null, primary key
 #  fetch_error_details :string

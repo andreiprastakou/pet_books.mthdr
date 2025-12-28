@@ -16,13 +16,13 @@ RSpec.describe Forms::Admin::BooksBatchUpdater do
           original_title: 'ORIGINAL_TITLE_B',
           literary_form: 'novel',
           year_published: '2025',
-          author_id: author.id,
+          author_ids: [author.id],
           goodreads_url: 'GOODREADS_URL_B',
           wiki_url: 'WIKI_URL_B'
         }
       }
     end
-    let(:book_a) { create(:book, author: author, title: 'TITLE_A') }
+    let(:book_a) { create(:book, authors: [author], title: 'TITLE_A') }
     let(:author) { create(:author) }
 
     before { book_a }
@@ -40,7 +40,7 @@ RSpec.describe Forms::Admin::BooksBatchUpdater do
         expect(book_b.original_title).to eq 'ORIGINAL_TITLE_B'
         expect(book_b.literary_form).to eq 'novel'
         expect(book_b.year_published).to eq 2025
-        expect(book_b.author_id).to eq author.id
+        expect(book_b.authors.map(&:id)).to eq [author.id]
         expect(book_b.goodreads_url).to eq 'GOODREADS_URL_B'
         expect(book_b.wiki_url).to eq 'WIKI_URL_B'
       end

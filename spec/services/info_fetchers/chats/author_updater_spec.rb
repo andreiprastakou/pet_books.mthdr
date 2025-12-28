@@ -7,6 +7,11 @@ RSpec.describe InfoFetchers::Chats::AuthorUpdater do
     subject(:call) { updater.apply_updates(author) }
 
     let(:author) { create(:author) }
+    let(:initial_books) do
+      [
+        create(:book, authors: [author], title: 'Crime and Punishment', year_published: 1865)
+      ]
+    end
     let(:ai_talker) { instance_double(InfoFetchers::Chats::AuthorsExpert) }
     let(:author_info) do
       {
@@ -37,7 +42,7 @@ RSpec.describe InfoFetchers::Chats::AuthorUpdater do
       allow(InfoFetchers::Chats::AuthorsExpert).to receive(:new).and_return(ai_talker)
       allow(ai_talker).to receive(:ask_books_list).with(author.fullname).and_return(info)
       allow(Rails.logger).to receive(:info)
-      allow(Book).to receive(:find_or_initialize_by).and_call_original
+      initial_books
     end
 
     it 'fetches author info and updates author' do
@@ -50,13 +55,13 @@ RSpec.describe InfoFetchers::Chats::AuthorUpdater do
     end
 
     it 'fetches books info and updates books' do
-      call
+      expect { call }.to change(Book, :count).by(1)
 
       books_info.each do |book_info|
-        expect(Book).to have_received(:find_or_initialize_by).with(
-          author_id: author.id,
-          title: book_info['title']
-        )
+        book = Book.find_by(title: book_info['title'])
+        expect(book.authors).to contain_exactly(author)
+        expect(book.original_title).to eq(book_info['original_title'])
+        expect(book.year_published).to eq(book_info['publishing_year'])
       end
     end
 

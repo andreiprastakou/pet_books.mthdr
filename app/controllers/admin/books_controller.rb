@@ -27,7 +27,7 @@ module Admin
     end
 
     def show
-      @next_book = Book.where(author_id: @book.author_id).where.not(id: @book.id).sample || Book.all.sample
+      @next_book = @book.next_author_book
       @next_summary_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first
     end
 
@@ -80,9 +80,9 @@ module Admin
     end
 
     def admin_book_params
-      params.fetch(:book).permit(:title, :original_title, :year_published, :author_id, :goodreads_url,
+      params.fetch(:book).permit(:title, :original_title, :year_published, :goodreads_url,
                                  :summary, :summary_src, :wiki_url, :literary_form, :genre,
-                                 tag_names: [], genre_names: [])
+                                 tag_names: [], genre_names: [], author_ids: [])
     end
 
     def current_index_view
