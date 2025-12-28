@@ -5,7 +5,7 @@
   class: "needs-validation admin-book-form") do |form| %>
 
   <div class="row mb-3" data-controller="author-input">
-    <%= label_tag nil, "Author", class: "form-label" %>
+    <%= label_tag nil, "Authors", class: "form-label" %>
     <%= render "admin/books/form/authors_badges_input_wide", book: book,
       name: "book[author_ids][]",
       old_values: book_authors_to_badges_entries(book),
