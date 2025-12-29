@@ -1,6 +1,6 @@
 module Admin
   class AuthorsController < AdminController
-    before_action :set_author, only: %i[show edit update destroy]
+    before_action :fetch_record, only: %i[show edit update destroy]
 
     SORTING_MAP = %i[
       id
@@ -56,7 +56,7 @@ module Admin
     def edit; end
 
     def create
-      @author = Author.new(admin_author_params)
+      @author = Author.new(record_params)
 
       respond_to do |format|
         if @author.save
@@ -69,7 +69,7 @@ module Admin
 
     def update
       respond_to do |format|
-        if @author.update(admin_author_params)
+        if @author.update(record_params)
           format.html { redirect_to admin_author_path(@author), notice: t('notices.admin.authors.update.success') }
         else
           format.html { render :edit, status: :unprocessable_content }
@@ -89,11 +89,11 @@ module Admin
 
     private
 
-    def set_author
+    def fetch_record
       @author = Author.find(params.expect(:id))
     end
 
-    def admin_author_params
+    def record_params
       params.fetch(:author).permit(*PARAMS)
     end
   end

@@ -13,10 +13,6 @@
 #
 #  index_collections_on_name  (name) UNIQUE
 #
-class Collection < ApplicationRecord
-  has_many :book_collections, dependent: :destroy
-  has_many :books, through: :book_collections
-
-  validates :name, presence: true, uniqueness: { case_sensitive: false }
-  validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }
+FactoryBot.define do
+  factory :admin_collection_form, class: 'Admin::CollectionForm', parent: :collection
 end

@@ -1,6 +1,6 @@
 module Admin
   class BooksController < AdminController
-    before_action :set_book, only: %i[show edit update destroy]
+    before_action :fetch_record, only: %i[show edit update destroy]
 
     SORTING_MAP = %i[
       id
@@ -40,7 +40,7 @@ module Admin
     def create
       @book = Admin::BookForm.new
       respond_to do |format|
-        if @book.update(admin_book_params)
+        if @book.update(record_params)
           format.html { redirect_to admin_book_path(@book), notice: t('notices.admin.books.create.success') }
         else
           format.html { render :new, status: :unprocessable_content }
@@ -50,7 +50,7 @@ module Admin
 
     def update
       respond_to do |format|
-        if @book.update(admin_book_params)
+        if @book.update(record_params)
           format.html { redirect_to admin_book_path(@book), notice: t('notices.admin.books.update.success') }
         else
           format.html { render :edit, status: :unprocessable_content }
@@ -70,11 +70,11 @@ module Admin
 
     private
 
-    def set_book
+    def fetch_record
       @book = Admin::BookForm.find(params[:id])
     end
 
-    def admin_book_params
+    def record_params
       params.fetch(:book).permit(:title, :original_title, :year_published, :goodreads_url,
                                  :summary, :summary_src, :wiki_url, :literary_form, :genre,
                                  tag_names: [], genre_names: [], author_ids: [], series_ids: [])

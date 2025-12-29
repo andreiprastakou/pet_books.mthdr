@@ -1,6 +1,6 @@
 module Admin
   class SeriesController < AdminController
-    before_action :set_series, only: %i[show edit update destroy]
+    before_action :fetch_record, only: %i[show edit update destroy]
 
     SORTING_MAP = %i[
       id
@@ -41,7 +41,7 @@ module Admin
     def edit; end
 
     def create
-      @series = Series.new(admin_series_params)
+      @series = Series.new(record_params)
 
       respond_to do |format|
         if @series.save
@@ -54,7 +54,7 @@ module Admin
 
     def update
       respond_to do |format|
-        if @series.update(admin_series_params)
+        if @series.update(record_params)
           format.html { redirect_to admin_series_path(@series), notice: t('notices.admin.series.update.success') }
         else
           format.html { render :edit, status: :unprocessable_content }
@@ -74,11 +74,11 @@ module Admin
 
     private
 
-    def set_series
+    def fetch_record
       @series = ::Series.find(params[:id])
     end
 
-    def admin_series_params
+    def record_params
       params.fetch(:series).permit(:name)
     end
 

@@ -1,6 +1,6 @@
 module Admin
   class CollectionsController < AdminController
-    before_action :set_collection, only: %i[show edit update destroy]
+    before_action :fetch_record, only: %i[show edit update destroy]
 
     SORTING_MAP = %i[
       id
@@ -36,13 +36,13 @@ module Admin
     end
 
     def new
-      @collection = Collection.new
+      @collection = Admin::CollectionForm.new
     end
 
     def edit; end
 
     def create
-      @collection = Collection.new(admin_collection_params)
+      @collection = Admin::CollectionForm.new(record_params)
 
       respond_to do |format|
         if @collection.save
@@ -57,7 +57,7 @@ module Admin
 
     def update
       respond_to do |format|
-        if @collection.update(admin_collection_params)
+        if @collection.update(record_params)
           format.html do
             redirect_to admin_collection_path(@collection),
                         notice: t('notices.admin.collections.update.success')
@@ -80,11 +80,11 @@ module Admin
 
     private
 
-    def set_collection
-      @collection = ::Collection.find(params[:id])
+    def fetch_record
+      @collection = Admin::CollectionForm.find(params[:id])
     end
 
-    def admin_collection_params
+    def record_params
       params.fetch(:collection).permit(:name, :year_published, book_ids: [])
     end
 
