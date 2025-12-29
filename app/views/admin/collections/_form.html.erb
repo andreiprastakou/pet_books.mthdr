@@ -1,4 +1,8 @@
-<%= form_with(model: [:admin, @collection], class: "needs-validation b-collection-form", novalidate: true) do |form| %>
+<%= form_with(model: @collection, class: "needs-validation b-collection-form", novalidate: true,
+  url: @collection.new_record? ? admin_collections_path : admin_collection_path(@collection),
+  method: @collection.new_record? ? :post : :put,
+  scope: "collection",
+  data: { controller: "collection-form" }) do |form| %>
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>
     <%= admin_reversible_input(old_value: @collection.name_was) do %>
