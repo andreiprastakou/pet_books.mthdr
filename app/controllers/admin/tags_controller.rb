@@ -1,6 +1,6 @@
 module Admin
   class TagsController < AdminController
-    before_action :set_tag, only: %i[show edit update destroy]
+    before_action :fetch_record, only: %i[show edit update destroy]
 
     SORTING_MAP = %i[
       id
@@ -29,7 +29,7 @@ module Admin
     def edit; end
 
     def create
-      @tag = Tag.new(admin_tag_params)
+      @tag = Tag.new(record_params)
 
       respond_to do |format|
         if @tag.save
@@ -42,7 +42,7 @@ module Admin
 
     def update
       respond_to do |format|
-        if @tag.update(admin_tag_params)
+        if @tag.update(record_params)
           format.html { redirect_to admin_tag_path(@tag), notice: t('notices.admin.tags.update.success') }
         else
           format.html { render :edit, status: :unprocessable_content }
@@ -62,11 +62,11 @@ module Admin
 
     private
 
-    def set_tag
+    def fetch_record
       @tag = ::Tag.find(params[:id])
     end
 
-    def admin_tag_params
+    def record_params
       params.fetch(:tag).permit(:name, :category)
     end
 

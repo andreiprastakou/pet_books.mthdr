@@ -1,7 +1,7 @@
 module Admin
   module Ai
     class ChatsController < AdminController
-      before_action :set_chat, only: :show
+      before_action :fetch_record, only: :show
 
       SORTING_MAP = %i[
         id
@@ -26,7 +26,7 @@ module Admin
 
       private
 
-      def set_chat
+      def fetch_record
         @chat = ::Ai::Chat.find(params[:id])
       end
     end

@@ -34,7 +34,7 @@ RSpec.describe BookSeries do
 
   describe 'validation' do
     it 'has a valid factory' do
-      expect(build(:book_series)).to be_valid
+      expect(build(:book_series, series: create(:series), book: create(:book))).to be_valid
     end
   end
 end

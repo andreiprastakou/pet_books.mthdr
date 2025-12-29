@@ -1,6 +1,6 @@
 module Admin
   class GenresController < AdminController
-    before_action :set_genre, only: %i[show edit update destroy]
+    before_action :fetch_record, only: %i[show edit update destroy]
 
     SORTING_MAP = %i[
       id
@@ -41,7 +41,7 @@ module Admin
     def edit; end
 
     def create
-      @genre = Genre.new(admin_genre_params)
+      @genre = Genre.new(record_params)
 
       respond_to do |format|
         if @genre.save
@@ -54,7 +54,7 @@ module Admin
 
     def update
       respond_to do |format|
-        if @genre.update(admin_genre_params)
+        if @genre.update(record_params)
           format.html { redirect_to admin_genre_path(@genre), notice: t('notices.admin.genres.update.success') }
         else
           format.html { render :edit, status: :unprocessable_content }
@@ -74,11 +74,11 @@ module Admin
 
     private
 
-    def set_genre
+    def fetch_record
       @genre = ::Genre.find(params[:id])
     end
 
-    def admin_genre_params
+    def record_params
       params.fetch(:genre).permit(:name, :cover_design_id)
     end
 

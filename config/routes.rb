@@ -64,6 +64,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :collections
+
     namespace :covers do
       resources :cover_designs, except: %i[show]
     end
@@ -92,6 +94,10 @@ Rails.application.routes.draw do
     namespace :api do
       scope constraints: ->(req) { req.format == :json } do
         namespace :authors do
+          resource :search, only: :show, controller: 'search'
+        end
+
+        namespace :books do
           resource :search, only: :show, controller: 'search'
         end
 
