@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::FormsHelper, type: :helper do
+RSpec.describe Admin::FormsHelper do
   describe '#book_authors_to_badges_entries' do
     let(:book) { build(:book, authors: [author]) }
     let(:author) { create(:author, fullname: 'AUTHOR_A') }

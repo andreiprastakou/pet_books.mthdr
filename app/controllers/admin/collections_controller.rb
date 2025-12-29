@@ -46,7 +46,9 @@ module Admin
 
       respond_to do |format|
         if @collection.save
-          format.html { redirect_to admin_collection_path(@collection), notice: t('notices.admin.collections.create.success') }
+          format.html do
+            redirect_to admin_collection_path(@collection), notice: t('notices.admin.collections.create.success')
+          end
         else
           format.html { render :new, status: :unprocessable_content }
         end
@@ -56,8 +58,10 @@ module Admin
     def update
       respond_to do |format|
         if @collection.update(admin_collection_params)
-          format.html { redirect_to admin_collection_path(@collection),
-                                    notice: t('notices.admin.collections.update.success') }
+          format.html do
+            redirect_to admin_collection_path(@collection),
+                        notice: t('notices.admin.collections.update.success')
+          end
         else
           format.html { render :edit, status: :unprocessable_content }
         end

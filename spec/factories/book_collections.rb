@@ -21,6 +21,5 @@
 #  collection_id  (collection_id => collections.id)
 #
 FactoryBot.define do
-  factory :book_collection, class: 'BookCollection' do
-  end
+  factory :book_collection, class: 'BookCollection'
 end

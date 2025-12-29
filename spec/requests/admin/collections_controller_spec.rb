@@ -92,7 +92,8 @@ RSpec.describe Admin::CollectionsController do
       end
 
       it 'sorts books by title ascending' do
-        get admin_collection_path(collection), params: { sort_by: 'title', sort_order: 'asc' }, headers: authorization_header
+        get admin_collection_path(collection), params: { sort_by: 'title', sort_order: 'asc' },
+                                               headers: authorization_header
         expect(response).to be_successful
         titles = assigns(:books).map(&:title)
         expect(titles).to eq(['Book 1', 'Book 2', 'Book 3'])
@@ -100,7 +101,7 @@ RSpec.describe Admin::CollectionsController do
 
       it 'sorts books by year_published ascending' do
         get admin_collection_path(collection), params: { sort_by: 'year_published', sort_order: 'asc' },
-                                       headers: authorization_header
+                                               headers: authorization_header
         expect(response).to be_successful
         years = assigns(:books).map(&:year_published)
         expect(years).to eq([2019, 2020, 2021])
@@ -156,7 +157,7 @@ RSpec.describe Admin::CollectionsController do
     context 'with invalid parameters' do
       let(:send_request) do
         post admin_collections_path(format: :html), params: { collection: invalid_attributes },
-                                                     headers: authorization_header
+                                                    headers: authorization_header
       end
 
       it 'does not create a new Collection' do

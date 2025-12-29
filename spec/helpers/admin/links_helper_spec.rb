@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::LinksHelper, type: :helper do
+RSpec.describe Admin::LinksHelper do
   describe '#admin_nav_collections_link' do
     it 'returns the correct link' do
       expect(helper.admin_nav_collections_link).to eq(['Collections', admin_collections_path])
