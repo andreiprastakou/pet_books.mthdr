@@ -81,7 +81,7 @@ module Admin
     end
 
     def admin_collection_params
-      params.fetch(:collection).permit(:name, :year_published)
+      params.fetch(:collection).permit(:name, :year_published, book_ids: [])
     end
 
     def apply_sort(scope, _sorting_map, defaults: {})

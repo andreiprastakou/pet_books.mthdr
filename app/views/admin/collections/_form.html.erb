@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, @collection], class: "needs-validation", novalidate: true) do |form| %>
+<%= form_with(model: [:admin, @collection], class: "needs-validation b-collection-form", novalidate: true) do |form| %>
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>
     <%= admin_reversible_input(old_value: @collection.name_was) do %>
@@ -13,6 +13,16 @@
       <%= form.number_field :year_published, class: "form-control", required: true,
         data: { input_changes_target: "input" } %>
     <% end %>
+  </div>
+
+  <div class="row mb-3 b-collection-books-input" data-controller="association-input"
+    data-action="association-input:association-changed->book-form#onAssociationChanged">
+    <%= label_tag nil, "Books", class: "form-label" %>
+    <%= render "admin/books/form/association_badges_input_wide",
+      name: "collection[book_ids][]",
+      autocomplete_url: admin_api_books_search_path(format: :json),
+      old_values: collection_books_to_badges_entries(@collection),
+      values: collection_books_to_badges_entries(@collection) %>
   </div>
 
   <div class="mb-3">

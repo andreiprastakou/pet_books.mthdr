@@ -97,6 +97,10 @@ Rails.application.routes.draw do
           resource :search, only: :show, controller: 'search'
         end
 
+        namespace :books do
+          resource :search, only: :show, controller: 'search'
+        end
+
         namespace :series do
           resource :search, only: :show, controller: 'search'
         end

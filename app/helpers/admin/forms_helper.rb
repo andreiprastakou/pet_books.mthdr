@@ -54,5 +54,14 @@ module Admin
         { label: series.name, id: series.id }
       end
     end
+
+    def collection_books_to_badges_entries(collection)
+      collection.books.map do |book|
+        {
+          label: book_label_for_badges(book),
+          id: book.id
+        }
+      end
+    end
   end
 end
