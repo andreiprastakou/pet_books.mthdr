@@ -24,7 +24,5 @@
 #
 FactoryBot.define do
   factory :book_series, class: 'BookSeries' do
-    series factory: %i[series], strategy: :create
-    book factory: %i[book], strategy: :create
   end
 end

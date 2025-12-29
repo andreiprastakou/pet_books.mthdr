@@ -49,6 +49,8 @@ class Book < ApplicationRecord
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
   has_many :book_series, class_name: 'BookSeries', dependent: :destroy, inverse_of: :book
   has_many :series, through: :book_series, class_name: 'Series'
+  has_many :book_collections, class_name: 'BookCollection', dependent: :destroy, inverse_of: :book
+  has_many :collections, through: :book_collections, class_name: 'Collection'
 
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }

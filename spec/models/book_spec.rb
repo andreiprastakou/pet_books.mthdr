@@ -38,6 +38,8 @@ RSpec.describe Book do
     it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
     it { is_expected.to have_many(:book_series).class_name(BookSeries.name) }
     it { is_expected.to have_many(:series).class_name(Series.name).through(:book_series) }
+    it { is_expected.to have_many(:book_collections).class_name(BookCollection.name) }
+    it { is_expected.to have_many(:collections).class_name(Collection.name).through(:book_collections) }
   end
 
   describe 'validation' do
