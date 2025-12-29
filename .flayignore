@@ -1,4 +1,4 @@
 app/controllers/**/*
 app/models/admin/book_form.rb
-db/migrate/**/*
+db/**/*
 spec/**/*
