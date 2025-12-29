@@ -6,12 +6,13 @@
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
   class: "needs-validation admin-book-form") do |form| %>
 
-  <div class="row mb-3" data-controller="association-input">
+  <div class="row mb-3" data-controller="association-input"
+    data-association-input-association-value="authors"
+    data-action="association-input:association-changed->book-form#onAssociationChanged">
     <%= label_tag nil, "Authors", class: "form-label" %>
     <%= render "admin/books/form/association_badges_input_wide",
       name: "book[author_ids][]",
       autocomplete_url: admin_api_authors_search_path(format: :json),
-      label_input_data: { book_form_target: "authorName" },
       old_values: book_authors_to_badges_entries(book),
       values: book_authors_to_badges_entries(book) %>
   </div>
