@@ -9,6 +9,7 @@
     <thead>
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("NAME", "name") %></th>
+      <th><%= sortable_table_column("YEAR", "year_published") %></th>
       <th>LINKS</th>
       <th><%= sortable_table_column("SIZE", "books_count") %></th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
@@ -22,6 +23,9 @@
         </td>
         <td>
           <%= collection.name %>
+        </td>
+        <td>
+          <%= collection.year_published %>
         </td>
         <td>
           <%= admin_link_to "show", admin_collection_path(collection) %>
