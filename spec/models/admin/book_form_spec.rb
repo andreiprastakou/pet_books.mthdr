@@ -30,6 +30,8 @@
 require 'rails_helper'
 
 RSpec.describe Admin::BookForm do
+  let(:sentinel) { "" }
+
   it 'has a valid factory' do
     expect(build(:admin_book_form)).to be_valid
   end
@@ -70,7 +72,7 @@ RSpec.describe Admin::BookForm do
         build(:book_genre, genre: create(:genre, name: 'genre_b'))
       ]
     end
-    let(:genre_names) { %w[genre_a genre_c] }
+    let(:genre_names) { %w[genre_a genre_c] + [sentinel] }
 
     it 'assigns the genres by given names' do
       book
@@ -89,7 +91,7 @@ RSpec.describe Admin::BookForm do
     let(:book) { create(:admin_book_form, authors: [], book_authors: initial_book_authors) }
     let(:authors) { create_list(:author, 3) }
     let(:initial_book_authors) { [build(:book_author, author: authors[0]), build(:book_author, author: authors[1])] }
-    let(:author_ids) { [authors[1].id, authors[2].id] }
+    let(:author_ids) { [authors[1].id, authors[2].id, sentinel] }
 
     it 'assigns the authors by given ids' do
       book
@@ -106,7 +108,7 @@ RSpec.describe Admin::BookForm do
     let(:book) { create(:admin_book_form, book_series: initial_book_series) }
     let(:series) { create_list(:series, 3) }
     let(:initial_book_series) { [build(:book_series, series: series[0]), build(:book_series, series: series[1])] }
-    let(:series_ids) { [series[1].id, series[2].id] }
+    let(:series_ids) { [series[1].id, series[2].id, sentinel] }
 
     it 'assigns the series by given ids' do
       book
@@ -135,7 +137,7 @@ RSpec.describe Admin::BookForm do
 
     let(:book) { create(:admin_book_form, tags: tags[0..1]) }
     let(:tags) { create_list(:tag, 3) }
-    let(:tag_names) { tags[1..2].map(&:name) + %w[tag_d] }
+    let(:tag_names) { tags[1..2].map(&:name) + %w[tag_d] + [sentinel] }
 
     it 'assigns the tags by given names', :aggregate_failures do
       book
@@ -143,7 +145,7 @@ RSpec.describe Admin::BookForm do
 
       new_tag = Tag.last
       expect(new_tag.name).to eq('tag_d')
-      expect(book.current_tag_names).to match_array(tag_names)
+      expect(book.current_tag_names).to match_array(tag_names.compact_blank)
       expect(book.tag_connections.map(&:marked_for_destruction?)).to eq([true, false, false, false])
       expect(book.tag_connections.map(&:new_record?)).to eq([false, false, true, true])
     end

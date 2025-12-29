@@ -68,7 +68,6 @@ module Admin
     end
 
     def series_ids=(ids)
-      # handle sentinel inputs
       ids = ids.compact_blank
 
       book_series.each do |book_series|
