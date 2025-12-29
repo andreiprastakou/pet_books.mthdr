@@ -95,11 +95,11 @@ export default class extends Controller {
   }
 
   deleteBadge(badge) {
-    if (badge.dataset.newBadge) 
+    if (badge.dataset.newBadge)
       badge.remove()
-    else 
+    else
       this.markBadgeAsRemoved(badge)
-    
+
     const entry = this.getEntryFromBadge(badge)
     this.currentEntries = this.currentEntries.filter(e => e.id !== entry.id || e.label !== entry.label)
     this.notifyChanges()
