@@ -110,6 +110,14 @@ module Admin
       "\"#{truncate_crumb(series.name)}\""
     end
 
+    def admin_nav_collections_link
+      ['Collections', admin_collections_path]
+    end
+
+    def admin_nav_collection_link(collection)
+      "\"#{truncate_crumb(collection.name)}\""
+    end
+
     private
 
     def admin_nav_crumbs_for_header(crumbs)

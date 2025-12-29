@@ -64,6 +64,8 @@ Rails.application.routes.draw do
       end
     end
 
+    resources :collections
+
     namespace :covers do
       resources :cover_designs, except: %i[show]
     end

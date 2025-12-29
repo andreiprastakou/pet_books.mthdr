@@ -1,0 +1,45 @@
+<% admin_nav_crumbs "Collections" %>
+
+<div class="container mt-4">
+  <%= admin_buttonly_link_to "New collection", new_admin_collection_path %>
+</div>
+
+<div class="container mt-4">
+  <table class="table">
+    <thead>
+      <th><%= sortable_table_column("ID", "id") %></th>
+      <th><%= sortable_table_column("NAME", "name") %></th>
+      <th>LINKS</th>
+      <th><%= sortable_table_column("SIZE", "books_count") %></th>
+      <th><%= sortable_table_column("CREATED", "created_at") %></th>
+      <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
+      <th>ACTIONS</th>
+    </thead>
+    <% @collections.each do |collection| %>
+      <tr>
+        <td>
+          <%= admin_link_to collection.id, admin_collection_path(collection) %>
+        </td>
+        <td>
+          <%= collection.name %>
+        </td>
+        <td>
+          <%= admin_link_to "show", admin_collection_path(collection) %>
+          <%= admin_link_to "edit", edit_admin_collection_path(collection) %>
+        </td>
+        <td>
+          <%= collection.book_collections.size %>
+        </td>
+        <td>
+          <%= admin_timestamp(collection.created_at) %>
+        </td>
+        <td>
+          <%= admin_timestamp(collection.updated_at) %>
+        </td>
+        <td>
+          <%= button_to "delete", admin_collection_path(collection), method: :delete, class: "btn btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

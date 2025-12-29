@@ -47,6 +47,14 @@ en:
       books_batch:
         updates_applied: "Updates applied."
         failed: "Failed to apply updates: %{errors}."
+      collections:
+        create:
+          success: "Collection was successfully created."
+        update:
+          success: "Collection was successfully updated."
+        destroy:
+          success: "Collection was successfully destroyed."
+          failure: "Collection was not destroyed: %{errors}."
       cover_designs:
         create:
           success: "Cover design was successfully created."
