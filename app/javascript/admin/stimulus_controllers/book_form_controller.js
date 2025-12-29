@@ -2,7 +2,6 @@ import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   static targets = [
-    'authorName',
     'goodreadsQueryLink',
     'genreSelect',
     'literaryFormInput',
@@ -15,9 +14,7 @@ export default class extends Controller {
   ]
 
   connect() {
-    this.syncGoodreadsQuery()
-
-    this.syncWikiQuery()
+    this.currentAuthors = []
   }
 
   // ACTION
@@ -36,7 +33,7 @@ export default class extends Controller {
     if (!this.hasGoodreadsQueryLinkTarget) return
 
     const title = this.titleInputTarget.value.trim()
-    const author = this.authorNameTarget.value.trim() || 'author'
+    const author = this.authorNames().join(', ')
     if (title) {
       const query = { q: `goodreads book ${title} by ${author}` }
       this.goodreadsQueryLinkTarget.href = `http://google.com/search?${new URLSearchParams(query)}`
@@ -48,12 +45,16 @@ export default class extends Controller {
     if (!this.hasWikiQueryLinkTarget) return
 
     const title = this.titleInputTarget.value.trim()
-    const author = this.authorNameTarget.value.trim() || 'author'
+    const author = this.authorNames().join(', ')
     if (title) {
       const query = { q: `wikipedia book ${title} by ${author}` }
       this.wikiQueryLinkTarget.href = `http://google.com/search?${new URLSearchParams(query)}`
     } else
       this.wikiQueryLinkTarget.removeAttribute('href')
+  }
+
+  authorNames() {
+    return this.currentAuthors.map(author => author.label)
   }
 
   // ACTION
@@ -73,5 +74,14 @@ export default class extends Controller {
   onTagsAdded(event) {
     const { themes } = event.detail
     this.dispatch('addTags', { detail: { names: themes } })
+  }
+
+  // ACTION
+  onAssociationChanged(event) {
+    const { association, entries } = event.detail
+    if (association === 'authors') {
+      this.currentAuthors = entries
+      this.syncQueries()
+    }
   }
 }

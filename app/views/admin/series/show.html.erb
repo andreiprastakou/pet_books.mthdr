@@ -1,40 +1,29 @@
-<% admin_nav_crumbs admin_nav_genres_link, admin_nav_genre_link(@genre) %>
+<% admin_nav_crumbs admin_nav_series_index_link, admin_nav_series_link(@series) %>
 
 <div class="container mt-4">
   <div class="btn-group" role="group">
-    <%= admin_buttonly_link_to "edit", edit_admin_genre_path(@genre) %>
-    <%= button_to "delete", [:admin, @genre], method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>
+    <%= admin_buttonly_link_to "edit", edit_admin_series_path(@series) %>
+    <%= button_to "delete", [:admin, @series], method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>
   </div>
 </div>
 
-<div class="b-genre-page container mt-4">
+<div class="b-series-page container mt-4">
   <div class="row">
     <div class="container col-md-6">
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Label:</div>
-        <div class="col-md-9"><%= @genre.name %></div>
+        <div class="col-md-9"><%= @series.name %></div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Created At:</div>
-        <div class="col-md-9"><%= admin_timestamp(@genre.created_at) %></div>
+        <div class="col-md-9"><%= admin_timestamp(@series.created_at) %></div>
       </div>
 
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
-        <div class="col-md-9"><%= admin_timestamp(@genre.updated_at) %></div>
+        <div class="col-md-9"><%= admin_timestamp(@series.updated_at) %></div>
       </div>
-    </div>
-
-    <div class="container col-md-6">
-      <% if @genre.cover_design.present? %>
-        <div class="row mb-3">
-          <%= render "admin/books/standard_cover_base",
-                design: @genre.cover_design,
-                title: @genre.name,
-                author_name: "John Doe" %>
-        </div>
-      <% end %>
     </div>
   </div>
 

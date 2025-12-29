@@ -84,11 +84,18 @@ Rails.application.routes.draw do
     end
 
     resources :genres
+
+    resources :series
+
     resources :tags
 
     namespace :api do
       scope constraints: ->(req) { req.format == :json } do
         namespace :authors do
+          resource :search, only: :show, controller: 'search'
+        end
+
+        namespace :series do
           resource :search, only: :show, controller: 'search'
         end
       end

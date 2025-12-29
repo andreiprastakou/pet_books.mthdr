@@ -1,4 +1,11 @@
 .b-badge {
+  .b-badge-name {
+    display: inline-block;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .b-badge-delete-button {
     cursor: pointer;
   }

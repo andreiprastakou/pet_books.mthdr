@@ -32,19 +32,15 @@ module Admin
     end
 
     def new
-      @book = Book.new
-      @form = Forms::BookForm.new(@book)
+      @book = Admin::BookForm.new
     end
 
-    def edit
-      @form = Forms::BookForm.new(@book)
-    end
+    def edit; end
 
     def create
-      @book = Book.new
-      @form = Forms::BookForm.new(@book)
+      @book = Admin::BookForm.new
       respond_to do |format|
-        if @form.update(admin_book_params)
+        if @book.update(admin_book_params)
           format.html { redirect_to admin_book_path(@book), notice: t('notices.admin.books.create.success') }
         else
           format.html { render :new, status: :unprocessable_content }
@@ -53,9 +49,8 @@ module Admin
     end
 
     def update
-      @form = Forms::BookForm.new(@book)
       respond_to do |format|
-        if @form.update(admin_book_params)
+        if @book.update(admin_book_params)
           format.html { redirect_to admin_book_path(@book), notice: t('notices.admin.books.update.success') }
         else
           format.html { render :edit, status: :unprocessable_content }
@@ -76,13 +71,13 @@ module Admin
     private
 
     def set_book
-      @book = Book.find(params[:id])
+      @book = Admin::BookForm.find(params[:id])
     end
 
     def admin_book_params
       params.fetch(:book).permit(:title, :original_title, :year_published, :goodreads_url,
                                  :summary, :summary_src, :wiki_url, :literary_form, :genre,
-                                 tag_names: [], genre_names: [], author_ids: [])
+                                 tag_names: [], genre_names: [], author_ids: [], series_ids: [])
     end
 
     def current_index_view

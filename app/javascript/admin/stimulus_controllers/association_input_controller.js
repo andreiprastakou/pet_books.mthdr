@@ -9,6 +9,10 @@ export default class extends Controller {
     'badgeTemplate',
   ]
 
+  static values = {
+    association: String
+  }
+
   connect() {
     this.fillInitialBadges()
     this.updateBadgeAddButton()
@@ -21,6 +25,7 @@ export default class extends Controller {
   fillInitialBadges() {
     const currentEntries = JSON.parse(this.badgesTarget.dataset.values)
     const oldEntries = JSON.parse(this.badgesTarget.dataset.oldValues)
+    this.currentEntries = [...currentEntries]
     currentEntries.forEach(entry => {
       this.renderBadge(entry, { new: !this.entryExistsInArray(entry, oldEntries) })
     })
@@ -30,6 +35,7 @@ export default class extends Controller {
       const badge = this.renderBadge(entry)
       this.markBadgeAsRemoved(badge)
     })
+    this.notifyChanges()
   }
 
   // ACTION
@@ -76,6 +82,8 @@ export default class extends Controller {
     if (present) return
 
     this.renderBadge(entry, { new: true })
+    this.currentEntries.push(entry)
+    this.notifyChanges()
   }
 
   // ACTION
@@ -91,6 +99,10 @@ export default class extends Controller {
       badge.remove()
     else
       this.markBadgeAsRemoved(badge)
+
+    const entry = this.getEntryFromBadge(badge)
+    this.currentEntries = this.currentEntries.filter(e => e.id !== entry.id || e.label !== entry.label)
+    this.notifyChanges()
   }
 
   markBadgeAsRemoved(badge) {
@@ -109,5 +121,28 @@ export default class extends Controller {
   restoreBadge(badge) {
     badge.classList.remove('removed')
     badge.querySelector('[data-name="badgeValueInput"]').disabled = false
+    const entry = this.getEntryFromBadge(badge)
+    this.currentEntries.push(entry)
+    this.notifyChanges()
+  }
+
+  getEntryFromBadge(badge) {
+    const labelElement = badge.querySelector('[data-name="label"]')
+    const valueInput = badge.querySelector('[data-name="badgeValueInput"]')
+    return {
+      id: parseInt(valueInput.value) || null,
+      label: labelElement.textContent.trim()
+    }
+  }
+
+  notifyChanges() {
+    if (!this.hasAssociationValue) return
+
+    this.dispatch('association-changed', {
+      detail: {
+        association: this.associationValue,
+        entries: this.currentEntries
+      }
+    })
   }
 }

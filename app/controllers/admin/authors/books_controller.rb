@@ -4,8 +4,7 @@ module Admin
       before_action :set_author
 
       def new
-        @book = Book.new(authors: [@author])
-        @form = Forms::BookForm.new(@book)
+        @book = Admin::BookForm.new(authors: [@author])
       end
 
       private

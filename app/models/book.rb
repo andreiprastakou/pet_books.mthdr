@@ -47,10 +47,8 @@ class Book < ApplicationRecord
   has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
   has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
-
-  accepts_nested_attributes_for :tag_connections, allow_destroy: true
-  accepts_nested_attributes_for :genres, allow_destroy: true
-  accepts_nested_attributes_for :book_authors, allow_destroy: true
+  has_many :book_series, class_name: 'BookSeries', dependent: :destroy, inverse_of: :book
+  has_many :series, through: :book_series, class_name: 'Series'
 
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }
@@ -74,34 +72,6 @@ class Book < ApplicationRecord
     original_title.present? && original_title != title
   end
 
-  def current_tag_names
-    tag_connections.reject(&:marked_for_destruction?).map(&:tag).map(&:name)
-  end
-
-  def current_genre_names
-    genres.reject(&:marked_for_destruction?).map(&:genre_name)
-  end
-
-  def current_book_genres
-    genres.reject(&:marked_for_destruction?)
-  end
-
-  def genre_names=(names)
-    names = names.map { |name| Genre.normalize_name_value(name) }
-    book_genres_indexed = current_book_genres.index_by(&:genre_name)
-
-    names.uniq.each do |name|
-      next if book_genres_indexed.key?(name)
-
-      genre = Genre.where(name: name).first_or_create!
-      genres.build(genre: genre)
-    end
-
-    book_genres_indexed.each do |name, book_genre|
-      book_genre.mark_for_destruction unless names.include?(name)
-    end
-  end
-
   def next_author_book
     author_ids = book_authors.map(&:author_id)
     self.class.by_author(author_ids)
@@ -113,16 +83,6 @@ class Book < ApplicationRecord
 
   def small?
     literary_form.in?(%w[short short_story])
-  end
-
-  def author_ids=(ids)
-    book_authors.each do |book_author|
-      book_author.mark_for_destruction unless ids.include?(book_author.author_id)
-    end
-
-    ids.each do |id|
-      book_authors.build(author_id: id) unless book_authors.any? { |ba| ba.author_id == id }
-    end
   end
 
   def author_names_label

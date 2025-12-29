@@ -19,12 +19,12 @@ module Api
       def show; end
 
       def create
-        @book = Book.new
-        perform_form_create(Forms::BookForm.new(@book), book_params, @book)
+        @book = Admin::BookForm.new
+        perform_form_create(@book, book_params, @book)
       end
 
       def update
-        perform_form_update(Forms::BookForm.new(@book), book_params)
+        perform_form_update(Admin::BookForm.find(@book.id), book_params)
       end
 
       def destroy

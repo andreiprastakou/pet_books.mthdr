@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_28_141606) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_28_233617) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -90,6 +90,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_141606) do
     t.index ["genre_id"], name: "index_book_genres_on_genre_id"
   end
 
+  create_table "book_series", force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "series_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id", "series_id"], name: "index_book_series_on_book_id_and_series_id", unique: true
+    t.index ["book_id"], name: "index_book_series_on_book_id"
+    t.index ["series_id"], name: "index_book_series_on_series_id"
+  end
+
   create_table "books", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.boolean "data_filled", default: false, null: false
@@ -128,6 +138,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_141606) do
     t.datetime "updated_at", null: false
     t.index ["cover_design_id"], name: "index_genres_on_cover_design_id"
     t.index ["name"], name: "index_genres_on_name", unique: true
+  end
+
+  create_table "series", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_series_on_name"
   end
 
   create_table "tag_connections", force: :cascade do |t|
@@ -170,5 +187,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_28_141606) do
   add_foreign_key "book_authors", "books"
   add_foreign_key "book_genres", "books"
   add_foreign_key "book_genres", "genres"
+  add_foreign_key "book_series", "books"
+  add_foreign_key "book_series", "series"
   add_foreign_key "genres", "cover_designs"
 end

@@ -2,5 +2,5 @@
 
 json.array! @authors do |author|
   json.id author.id
-  json.fullname author.fullname
+  json.label author.fullname
 end
