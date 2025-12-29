@@ -21,8 +21,10 @@ RSpec.describe Admin::CollectionForm do
 
     let(:form) { create(:admin_collection_form, book_collections: initial_book_collections) }
     let(:books) { create_list(:book, 3) }
-    let(:initial_book_collections) { [build(:book_collection, book: books[0]), build(:book_collection, book: books[1])] }
-    let(:book_ids) { [books[1].id, books[2].id, ""] }
+    let(:initial_book_collections) do
+      [build(:book_collection, book: books[0]), build(:book_collection, book: books[1])]
+    end
+    let(:book_ids) { [books[1].id, books[2].id, ''] }
 
     it 'assigns the books by given ids' do
       form
