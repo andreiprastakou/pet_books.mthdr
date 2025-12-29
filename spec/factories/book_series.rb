@@ -28,4 +28,3 @@ FactoryBot.define do
     book factory: %i[book], strategy: :create
   end
 end
-

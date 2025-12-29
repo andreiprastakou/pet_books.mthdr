@@ -26,4 +26,3 @@ class BookSeries < ApplicationRecord
   belongs_to :series, class_name: 'Series', inverse_of: :book_series
   belongs_to :book, class_name: 'Book', inverse_of: :book_series
 end
-

@@ -64,12 +64,16 @@ RSpec.describe Admin::SeriesController do
     end
 
     context 'with books' do
-      let(:book1) { create(:book, title: 'Book 1', year_published: 2020) }
-      let(:book2) { create(:book, title: 'Book 2', year_published: 2021) }
-      let(:book3) { create(:book, title: 'Book 3', year_published: 2019) }
+      let(:books) do
+        [
+          create(:book, title: 'Book 1', year_published: 2020),
+          create(:book, title: 'Book 2', year_published: 2021),
+          create(:book, title: 'Book 3', year_published: 2019)
+        ]
+      end
 
       before do
-        series.books << [book1, book2, book3]
+        series.books += books
       end
 
       it 'renders a successful response' do
@@ -93,7 +97,8 @@ RSpec.describe Admin::SeriesController do
       end
 
       it 'sorts books by year_published ascending' do
-        get admin_series_path(series), params: { sort_by: 'year_published', sort_order: 'asc' }, headers: authorization_header
+        get admin_series_path(series), params: { sort_by: 'year_published', sort_order: 'asc' },
+                                       headers: authorization_header
         expect(response).to be_successful
         years = assigns(:books).map(&:year_published)
         expect(years).to eq([2019, 2020, 2021])
@@ -148,7 +153,8 @@ RSpec.describe Admin::SeriesController do
 
     context 'with invalid parameters' do
       let(:send_request) do
-        post admin_series_index_path(format: :html), params: { series: invalid_attributes }, headers: authorization_header
+        post admin_series_index_path(format: :html), params: { series: invalid_attributes },
+                                                     headers: authorization_header
       end
 
       it 'does not create a new Series' do
@@ -241,4 +247,3 @@ RSpec.describe Admin::SeriesController do
     end
   end
 end
-

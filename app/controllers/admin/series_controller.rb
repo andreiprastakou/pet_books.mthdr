@@ -68,7 +68,7 @@ module Admin
       else
         errors = @series.errors.full_messages.join(', ')
         redirect_to admin_series_path(@series),
-          status: :see_other, alert: t('notices.admin.series.destroy.failure', errors: errors)
+                    status: :see_other, alert: t('notices.admin.series.destroy.failure', errors: errors)
       end
     end
 

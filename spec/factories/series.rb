@@ -19,4 +19,3 @@ FactoryBot.define do
     sequence(:name) { |i| "Series #{i}" }
   end
 end
-

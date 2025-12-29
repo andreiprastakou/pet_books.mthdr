@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe Admin::Api::Authors::SearchController do
   describe 'GET /admin/api/authors/search.json' do
-    let(:send_request) { get admin_api_authors_search_path(format: :json), params: params, headers: authorization_header }
+    let(:send_request) do
+      get admin_api_authors_search_path(format: :json), params: params, headers: authorization_header
+    end
     let(:params) { {} }
 
     context 'when query is empty' do
@@ -25,32 +27,38 @@ RSpec.describe Admin::Api::Authors::SearchController do
 
     context 'when query has matches' do
       let(:params) { { q: 'King' } }
-      let!(:author1) { create(:author, fullname: 'King Henry I') }
-      let!(:author2) { create(:author, fullname: 'King Henry II') }
-      let!(:author3) { create(:author, fullname: 'Queen Elizabeth') }
+      let(:authors) do
+        [
+          create(:author, fullname: 'King Henry I'),
+          create(:author, fullname: 'King Henry II'),
+          create(:author, fullname: 'Queen Elizabeth')
+        ]
+      end
 
       it 'returns matching authors' do
+        authors
         send_request
         expect(response).to be_successful
         expect(json_response).to contain_exactly(
-          { id: author1.id, label: 'King Henry I' },
-          { id: author2.id, label: 'King Henry II' }
+          { id: authors[0].id, label: 'King Henry I' },
+          { id: authors[1].id, label: 'King Henry II' }
         )
       end
 
       it 'orders results by fullname' do
         send_request
         expect(response).to be_successful
-        labels = json_response.map { |a| a[:label] }
+        labels = json_response.pluck(:label)
         expect(labels).to eq(labels.sort)
       end
     end
 
     context 'when query has no matches' do
       let(:params) { { q: 'NonExistent' } }
-      let!(:author) { create(:author, fullname: 'King Henry I') }
+      let(:authors) { [create(:author, fullname: 'King Henry I')] }
 
       it 'returns an empty array' do
+        authors
         send_request
         expect(response).to be_successful
         expect(json_response).to eq([])
@@ -73,14 +81,19 @@ RSpec.describe Admin::Api::Authors::SearchController do
 
     context 'with partial matches' do
       let(:params) { { q: 'enry' } }
-      let!(:author1) { create(:author, fullname: 'King Henry I') }
-      let!(:author2) { create(:author, fullname: 'Queen Elizabeth') }
+      let(:authors) do
+        [
+          create(:author, fullname: 'King Henry I'),
+          create(:author, fullname: 'Queen Elizabeth')
+        ]
+      end
 
       it 'returns partial matches' do
+        authors
         send_request
         expect(response).to be_successful
         expect(json_response).to contain_exactly(
-          { id: author1.id, label: 'King Henry I' }
+          { id: authors[0].id, label: 'King Henry I' }
         )
       end
     end

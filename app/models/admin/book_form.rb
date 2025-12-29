@@ -40,42 +40,42 @@ module Admin
       current_book_genres.map(&:genre_name)
     end
 
-    def genre_names=(names)
-      names = names.map { |name| Genre.normalize_name_value(name) }.compact_blank
+    def genre_names=(new_genre_names)
+      previous_genre_names = current_genre_names
+      new_genre_names = prepare_input_values(new_genre_names) { |name| Genre.normalize_name_value(name) }
       book_genres_indexed = current_book_genres.index_by(&:genre_name)
 
-      names.uniq.each do |name|
-        next if book_genres_indexed.key?(name)
-
-        genre = Genre.where(name: name).first_or_create!
-        genres.build(genre: genre)
-      end
-
       book_genres_indexed.each do |name, book_genre|
-        book_genre.mark_for_destruction unless names.include?(name)
+        book_genre.mark_for_destruction unless new_genre_names.include?(name)
+      end
+
+      (new_genre_names - previous_genre_names).each do |name|
+        genres.build(genre: Genre.where(name: name).first_or_create!)
       end
     end
 
-    def author_ids=(ids)
-      ids = ids.compact_blank
+    def author_ids=(new_author_ids)
+      previous_author_ids = book_authors.map(&:author_id)
+      new_author_ids = prepare_input_values(new_author_ids)
       book_authors.each do |book_author|
-        book_author.mark_for_destruction unless ids.include?(book_author.author_id)
+        book_author.mark_for_destruction unless new_author_ids.include?(book_author.author_id)
       end
 
-      ids.each do |id|
-        book_authors.build(author_id: id) unless book_authors.any? { |ba| ba.author_id == id }
+      (new_author_ids - previous_author_ids).each do |id|
+        book_authors.build(author_id: id)
       end
     end
 
-    def series_ids=(ids)
-      ids = ids.compact_blank
+    def series_ids=(new_series_ids)
+      previous_series_ids = book_series.map(&:series_id)
+      new_series_ids = prepare_input_values(new_series_ids)
 
       book_series.each do |book_series|
-        book_series.mark_for_destruction unless ids.include?(book_series.series_id)
+        book_series.mark_for_destruction unless new_series_ids.include?(book_series.series_id)
       end
 
-      ids.each do |id|
-        book_series.build(series_id: id) unless book_series.any? { |bs| bs.series_id == id }
+      (new_series_ids - previous_series_ids).each do |id|
+        book_series.build(series_id: id)
       end
     end
 
@@ -85,7 +85,7 @@ module Admin
 
     def tag_names=(new_tag_names)
       previous_tag_names = current_tag_names
-      new_tag_names = new_tag_names.map { |name| Tag.normalize_name_value(name) }.compact_blank
+      new_tag_names = prepare_input_values(new_tag_names) { |name| Tag.normalize_name_value(name) }
       tag_connections.each do |tag_connection|
         tag_connection.mark_for_destruction unless new_tag_names.include?(tag_connection.tag.name)
       end
@@ -93,6 +93,13 @@ module Admin
       (new_tag_names - previous_tag_names).each do |name|
         tag_connections.build(tag: Tag.where(name: name).first_or_create!)
       end
+    end
+
+    private
+
+    def prepare_input_values(values, &)
+      values = values.map(&) if block_given?
+      values.uniq.compact_blank
     end
   end
 end

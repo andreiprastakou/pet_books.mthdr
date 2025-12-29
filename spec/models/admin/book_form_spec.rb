@@ -30,7 +30,7 @@
 require 'rails_helper'
 
 RSpec.describe Admin::BookForm do
-  let(:sentinel) { "" }
+  let(:sentinel) { '' }
 
   it 'has a valid factory' do
     expect(build(:admin_book_form)).to be_valid

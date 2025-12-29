@@ -38,4 +38,3 @@ RSpec.describe BookSeries do
     end
   end
 end
-

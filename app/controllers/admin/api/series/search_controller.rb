@@ -6,8 +6,8 @@ module Admin
           query = params[:q].to_s.strip
           @series = if query.present?
                       ::Series.where('name LIKE ?', "%#{query}%")
-                            .order(:name)
-                            .limit(10)
+                              .order(:name)
+                              .limit(10)
                     else
                       []
                     end

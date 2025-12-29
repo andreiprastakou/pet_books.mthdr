@@ -34,4 +34,3 @@ RSpec.describe Series do
     end
   end
 end
-

@@ -1,5 +1,4 @@
 import { Controller } from '@hotwired/stimulus'
-import { ThemeConsumer } from 'react-bootstrap/esm/ThemeProvider'
 
 export default class extends Controller {
   static targets = [
