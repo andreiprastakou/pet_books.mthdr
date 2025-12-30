@@ -51,7 +51,7 @@ export default class extends Controller {
 
   // ACTION
   onEntrySelected(event) {
-    const entry = event.detail.entry
+    const { entry } = event.detail
     this.addEntry(entry)
   }
 

@@ -89,7 +89,7 @@ export default class extends Controller {
   notifySelection(entry) {
     this.dispatch('selected', {
       detail: {
-        entry: entry
+        entry
       }
     })
   }

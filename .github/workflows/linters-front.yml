@@ -31,7 +31,7 @@ jobs:
           yarn install --frozen-lockfile
 
       - name: Run Stylelint
-        run: yarn run stylelint "app/assets/stylesheets/**/*.{css,scss}"
+        run: yarn run stylelint "app/assets/stylesheets/**/*.{css,scss}" --formatter verbose
 
       - name: Run ESLint
-        run: yarn run eslint "app/javascript/admin/**/*.{js,jsx}" --max-warnings 0
+        run: yarn run eslint "app/javascript/admin/**/*.{js,jsx}" --max-warnings 0 --format stylish
