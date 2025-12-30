@@ -23,7 +23,6 @@ export default class extends Controller {
 
     // Clear selection if input is cleared
     if (query === '') {
-      this.inputTarget.dataset.valueId = null
       this.resultsTarget.hidden = true
       return
     }
@@ -82,9 +81,17 @@ export default class extends Controller {
   }
 
   selectEntry(entry) {
-    this.inputTarget.value = entry.label
-    this.inputTarget.dataset.valueId = entry.id
+    this.inputTarget.value = null
     this.resultsTarget.hidden = true
+    this.notifySelection(entry)
+  }
+
+  notifySelection(entry) {
+    this.dispatch('selected', {
+      detail: {
+        entry: entry
+      }
+    })
   }
 
   // ACTION
