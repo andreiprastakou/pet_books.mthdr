@@ -16,19 +16,14 @@
 
 <div class="b-association-badges-input">
   <div class="col-12 b-autocomplete-container" data-controller="autocomplete"
-    data-autocomplete-url-value="<%= autocomplete_url %>">
+    data-autocomplete-url-value="<%= autocomplete_url %>"
+    data-action="autocomplete:selected->association-input#onEntrySelected">
     <%= text_field_tag nil, nil,
       class: 'form-control form-control-sm', autocomplete: 'off',
       data: {
         autocomplete_target: "input",
-        association_input_target: "badgeNewEntryInput",
-        action: "input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus input->association-input#updateBadgeAddButton"
+        action: "input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus"
       }.merge(local_assigns.fetch(:label_input_data, {})) %>
     <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
   </div>
-</div>
-
-<div class="b-association-badges-button">
-  <%= button_tag "+", class: "btn btn-success btn-sm", type: "button",
-    data: { action: "click->association-input#onAddClicked", association_input_target: "addButton" } %>
 </div>

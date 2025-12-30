@@ -2,10 +2,8 @@ import { Controller } from '@hotwired/stimulus'
 
 export default class extends Controller {
   static targets = [
-    'addButton',
     'badges',
     'badgeValueInput',
-    'badgeNewEntryInput',
     'badgeTemplate',
   ]
 
@@ -15,7 +13,6 @@ export default class extends Controller {
 
   connect() {
     this.fillInitialBadges()
-    this.updateBadgeAddButton()
   }
 
   entryExistsInArray(entry, array) {
@@ -38,15 +35,6 @@ export default class extends Controller {
     this.notifyChanges()
   }
 
-  // ACTION
-  updateBadgeAddButton() {
-    const name = this.badgeNewEntryInputTarget.value.trim()
-    if (name)
-      this.addButtonTarget.disabled = false
-    else
-      this.addButtonTarget.disabled = true
-  }
-
   renderBadge(entry, options = { new: false }) {
     const badgeTemplate = this.badgeTemplateTarget.content.cloneNode(true)
     badgeTemplate.querySelector('[data-name="label"]').textContent = entry.label
@@ -62,21 +50,15 @@ export default class extends Controller {
   }
 
   // ACTION
-  onAddClicked(event) {
-    event.preventDefault()
-    const entry = {
-      label: this.badgeNewEntryInputTarget.value.trim(),
-      id: this.badgeNewEntryInputTarget.dataset.valueId || null
-    }
-    this.badgeNewEntryInputTarget.value = ''
-    this.badgeNewEntryInputTarget.dispatchEvent(new Event('input', { bubbles: true }))
+  onEntrySelected(event) {
+    const { entry } = event.detail
     this.addEntry(entry)
   }
 
   addEntry(entry) {
     let present = false
     this.badgeValueInputTargets.forEach(input => {
-      if (input.value === entry.id)
+      if (String(input.value) === String(entry.id))
         present = true
     })
     if (present) return
