@@ -40,6 +40,8 @@ RSpec.describe Book do
     it { is_expected.to have_many(:series).class_name(Series.name).through(:book_series) }
     it { is_expected.to have_many(:book_collections).class_name(BookCollection.name) }
     it { is_expected.to have_many(:collections).class_name(Collection.name).through(:book_collections) }
+    it { is_expected.to have_many(:book_public_lists).class_name(BookPublicList.name) }
+    it { is_expected.to have_many(:public_lists).class_name(PublicList.name).through(:book_public_lists) }
   end
 
   describe 'validation' do
