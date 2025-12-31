@@ -9,7 +9,7 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListParser do
     let(:text) { 'David Copperfield, 1850, novel' }
     let(:chat) { instance_double(Ai::Chat) }
     let(:chat_response) { instance_double(RubyLLM::Message, content: chat_output) }
-    let(:chat_output) { '[["David Copperfield", 1850, "novel"]]' }
+    let(:chat_output) { '[["David Copperfield", "David Copperfield", 1850, "SERIES_A", "novel"]]' }
 
     before do
       allow(Ai::Chat).to receive(:start).and_return(chat)
@@ -18,7 +18,10 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListParser do
     end
 
     it 'parses books list' do
-      expect(result).to eq([{ title: 'David Copperfield', year: 1850, type: 'novel' }])
+      expect(result).to eq([{
+        title: 'David Copperfield', original_title: 'David Copperfield',
+        year: 1850, series: 'SERIES_A', type: 'novel'
+      }])
     end
 
     it 'sets up chat with instructions' do

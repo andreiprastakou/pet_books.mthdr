@@ -1,6 +1,6 @@
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form">
   <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
-  <% method = local_assigns.fetch(:target, :post) %>
+  <% method = local_assigns.fetch(:target, :put) %>
   <%= form_tag target, method: method do %>
     <div class="row mb-3 fw-bold text-muted">
       <div class="col-1">ID</div>

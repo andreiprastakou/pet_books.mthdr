@@ -61,10 +61,12 @@
         <div class="col-md-9"><%= admin_timestamp(@author.updated_at) %></div>
       </div>
 
-      <div class="row mb-3">
-        <div class="col-md-3 font-weight-bold text-end">Synced At:</div>
-        <div class="col-md-9"><%= admin_timestamp(@author.synced_at) %></div>
-      </div>
+      <% if @author.synced_at.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Synced At:</div>
+          <div class="col-md-9"><%= admin_timestamp(@author.synced_at) %></div>
+        </div>
+      <% end %>
 
       <% if @author.tags.present? %>
         <div class="row mb-3">
@@ -80,12 +82,12 @@
 
     <div class="container col-md-6">
       <div class="row mb-3">
-        <div class="col-md-3 font-weight-bold text-end">Photo:</div>
-        <div class="col-md-9">
-          <% if @author.photo_thumb_url.present? %>
+        <% if @author.photo_thumb_url.present? %>
+          <div class="col-md-3 font-weight-bold text-end">Photo:</div>
+          <div class="col-md-9">
             <%= image_tag @author.photo_thumb_url, class: "img-fluid b-author-photo" %>
-          <% end %>
-        </div>
+          </div>
+        <% end %>
       </div>
     </div>
   </div>
@@ -94,7 +96,7 @@
     <thead>
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("TITLE", "title") %></th>
-      <th>FORM</th>
+      <th><%= sortable_table_column("FORM", "literary_form") %></th>
       <th>LINKS</th>
       <th><%= sortable_table_column("YEAR", "year_published") %></th>
       <th><%= sortable_table_column("WIKI VIEWS", "wiki_popularity") %></th>

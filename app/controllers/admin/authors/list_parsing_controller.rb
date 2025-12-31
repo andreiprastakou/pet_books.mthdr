@@ -60,8 +60,13 @@ module Admin
         end
         return false if existing_book.nil?
 
-        existing_book.year_published = attributes['year'] if attributes['year'].present?
-        existing_book.literary_form = attributes['type'] if attributes['type'].present?
+        attributes = {
+          original_title: attributes['original_title'],
+          year_published: attributes['year'],
+          literary_form: attributes['type'],
+          series_ids: existing_book.series_ids | series_ids_for_book(attributes['series'])
+        }.compact
+        existing_book.assign_attributes(attributes)
         true
       end
 
@@ -69,9 +74,18 @@ module Admin
         Book.new(
           authors: [@author],
           title: attributes['title'],
+          original_title: attributes['original_title'],
           year_published: attributes['year'],
-          literary_form: attributes['type']
+          literary_form: attributes['type'],
+          series_ids: series_ids_for_book(attributes['series'])
         )
+      end
+
+      def series_ids_for_book(parsed_series_name)
+        series_name = parsed_series_name&.strip
+        return [] if series_name.blank?
+
+        [Series.find_or_create_by!(name: series_name).id]
       end
     end
   end

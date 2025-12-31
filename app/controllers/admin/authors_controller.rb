@@ -16,6 +16,7 @@ module Admin
       title
       year_published
       wiki_popularity
+      literary_form
       created_at
       updated_at
     ].index_by(&:to_s).merge(
