@@ -47,7 +47,7 @@
           </div>
           <!-- Author input -->
           <div class="col-2" data-controller="association-input">
-            <% entries = book_authors_to_badges_entries(book) %>
+            <% entries = authors_to_badges_entries(book.authors) %>
             <%= render "admin/books/form/association_badges_input_mini",
               name: "batch[#{index}][author_ids][]",
               autocomplete_url: admin_api_authors_search_path(format: :json),
@@ -56,7 +56,7 @@
           </div>
           <!-- Series input -->
           <div class="col-2" data-controller="association-input">
-            <% entries = book_series_to_badges_entries(book) %>
+            <% entries = series_to_badges_entries(book.book_series) %>
             <%= render "admin/books/form/association_badges_input_mini",
               name: "batch[#{index}][series_ids][]",
               autocomplete_url: admin_api_series_search_path(format: :json),

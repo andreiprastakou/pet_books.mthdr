@@ -16,7 +16,7 @@ RSpec.describe PublicListType do
   subject { build(:public_list_type) }
 
   describe 'associations' do
-    it { is_expected.to have_many(:public_lists).class_name(PublicList.name).dependent(:destroy) }
+    it { is_expected.to have_many(:public_lists).class_name(PublicList.name).dependent(:restrict_with_error) }
   end
 
   describe 'validation' do

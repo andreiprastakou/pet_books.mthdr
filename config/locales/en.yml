@@ -77,6 +77,20 @@ en:
           success: "Genre was successfully updated."
         destroy:
           success: "Genre was successfully destroyed."
+      public_lists:
+        create:
+          success: "Public list was successfully created."
+        update:
+          success: "Public list was successfully updated."
+        destroy:
+          success: "Public list was successfully destroyed."
+      public_list_types:
+        create:
+          success: "Public list type was successfully created."
+        update:
+          success: "Public list type was successfully updated."
+        destroy:
+          success: "Public list type was successfully destroyed."
       series:
         create:
           success: "Series was successfully created."

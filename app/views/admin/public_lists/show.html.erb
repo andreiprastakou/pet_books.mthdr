@@ -1,0 +1,77 @@
+<% admin_nav_crumbs admin_nav_public_list_types_link, admin_nav_public_list_type_link(@public_list_type), admin_nav_public_list_link(@public_list) %>
+
+<div class="container mt-4">
+  <div class="btn-group" role="group">
+    <%= admin_buttonly_link_to "edit", edit_admin_public_list_type_public_list_path(@public_list_type, @public_list) %>
+    <%= button_to "delete", admin_public_list_type_public_list_path(@public_list_type, @public_list), method: :delete,
+      class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>
+  </div>
+</div>
+
+<div class="b-public-list-page container mt-4">
+  <div class="row">
+    <div class="container col-md-6">
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Type:</div>
+        <div class="col-md-9"><%= @public_list.public_list_type.name %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Year:</div>
+        <div class="col-md-9"><%= @public_list.year %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Created At:</div>
+        <div class="col-md-9"><%= admin_timestamp(@public_list.created_at) %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
+        <div class="col-md-9"><%= admin_timestamp(@public_list.updated_at) %></div>
+      </div>
+    </div>
+  </div>
+
+  <table class="table border">
+    <thead>
+      <th><%= sortable_table_column("ID", "id") %></th>
+      <th><%= sortable_table_column("TITLE", "title") %></th>
+      <th>AUTHORS</th>
+      <th><%= sortable_table_column("FORM", "literary_form") %></th>
+      <th>LINKS</th>
+      <th><%= sortable_table_column("YEAR", "year_published") %></th>
+      <th><%= sortable_table_column("WIKI VIEWS", "wiki_popularity") %></th>
+    </thead>
+    <% @books.each do |book| %>
+      <tr>
+        <td>
+          <%= admin_link_to book.id, admin_book_path(book) %>
+        </td>
+        <td>
+          <%= book.title %>
+          <%= "(#{book.original_title})" if book.special_original_title? %>
+        </td>
+        <td>
+          <% book.authors.each do |author| %>
+            <%= admin_link_to author.fullname, admin_author_path(author) %> <%= ',' if author != book.authors.last %>
+          <% end %>
+        </td>
+        <td>
+          <%= book.literary_form.humanize %>
+        </td>
+        <td>
+          <%= admin_link_to "show", admin_book_path(book) %>
+          <%= admin_link_to "edit", edit_admin_book_path(book) %>
+          <%= external_link_to "wiki", book.wiki_url if book.wiki_url.present? %>
+        </td>
+        <td>
+          <%= book.year_published %>
+        </td>
+        <td>
+          <%= number_with_delimiter(book.wiki_popularity) %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+</div>

@@ -9,7 +9,7 @@
 #  updated_at :datetime         not null
 #
 class PublicListType < ApplicationRecord
-  has_many :public_lists, class_name: 'PublicList', dependent: :destroy
+  has_many :public_lists, class_name: 'PublicList', dependent: :restrict_with_error
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
 end

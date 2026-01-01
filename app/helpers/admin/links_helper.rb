@@ -118,6 +118,22 @@ module Admin
       "\"#{truncate_crumb(collection.name)}\""
     end
 
+    def admin_nav_public_list_types_link
+      ['Public List Types', admin_public_list_types_path]
+    end
+
+    def admin_nav_public_list_type_link(public_list_type)
+      ["\"#{truncate_crumb(public_list_type.name)}\"", admin_public_list_type_path(public_list_type)]
+    end
+
+    def admin_nav_public_lists_link
+      ['Public Lists', admin_public_lists_path]
+    end
+
+    def admin_nav_public_list_link(public_list)
+      public_list.year
+    end
+
     private
 
     def admin_nav_crumbs_for_header(crumbs)

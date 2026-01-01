@@ -13,8 +13,8 @@
     <%= render "admin/books/form/association_badges_input_wide",
       name: "book[author_ids][]",
       autocomplete_url: admin_api_authors_search_path(format: :json),
-      old_values: book_authors_to_badges_entries(book),
-      values: book_authors_to_badges_entries(book) %>
+      old_values: authors_to_badges_entries(book.authors),
+      values: authors_to_badges_entries(book.authors) %>
   </div>
 
   <div class="mb-3">
@@ -84,8 +84,8 @@
     <%= render "admin/books/form/association_badges_input_wide",
       name: "book[series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),
-      old_values: book_series_to_badges_entries(book),
-      values: book_series_to_badges_entries(book) %>
+      old_values: series_to_badges_entries(book.book_series),
+      values: series_to_badges_entries(book.book_series) %>
   </div>
 
   <%= render "admin/books/form/summary_input", form: form, book: book %>
