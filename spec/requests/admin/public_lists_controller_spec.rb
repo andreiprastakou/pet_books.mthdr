@@ -62,7 +62,7 @@ RSpec.describe Admin::PublicListsController do
         expect(roles).to eq(%w[winner_c winner_b winner_a])
       end
 
-      context 'with sorting' do
+      context 'with sorting by title' do
         let(:params) { { sort_by: 'title', sort_order: 'asc' } }
 
         it 'allows to sort books by title ascending' do
@@ -73,7 +73,7 @@ RSpec.describe Admin::PublicListsController do
         end
       end
 
-      context 'with sorting' do
+      context 'with sorting by year_published' do
         let(:params) { { sort_by: 'year_published', sort_order: 'asc' } }
 
         it 'allows to sort books by year_published ascending' do

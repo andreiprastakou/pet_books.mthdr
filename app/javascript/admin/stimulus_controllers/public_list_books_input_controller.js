@@ -38,6 +38,7 @@ export default class extends Controller {
   // ACTION
   onBookSelected(event) {
     const { entry } = event.detail
+    // eslint-disable-next-line camelcase
     this.renderBook({ book_id: entry.id, label: entry.label })
   }
 

@@ -14,6 +14,10 @@ AllCops:
     - db/schema.rb
     - tmp/**/*
 
+Metrics/AbcSize:
+  Exclude:
+    - app/helpers/**/*
+
 Metrics/BlockLength:
   Exclude:
     - config/**/*

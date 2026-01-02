@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_31_222639) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_02_173358) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -173,6 +173,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_31_222639) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_public_list_types_on_name", unique: true
   end
 
   create_table "public_lists", force: :cascade do |t|
