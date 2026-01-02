@@ -141,6 +141,44 @@
         </div>
       <% end %>
 
+      <% if @book.book_public_lists.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Lists:</div>
+          <div class="col-md-9">
+            <% @book.book_public_lists.each do |book_public_list| %>
+              <%= admin_link_to "#{book_public_list.public_list.year} #{book_public_list.public_list.public_list_type.name} - #{book_public_list.role&.humanize}",
+                admin_public_list_type_public_list_path(book_public_list.public_list.public_list_type, book_public_list.public_list) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.collections.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Collections:</div>
+          <div class="col-md-9">
+            <% @book.collections.each do |collection| %>
+              <%= admin_link_to collection.name, admin_collection_path(collection) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.generative_summary_tasks.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Data Fetch Tasks:</div>
+          <div class="col-md-9">
+            <% @book.generative_summary_tasks.each do |generative_summary_task| %>
+              <%= link_to admin_data_fetch_task_path(generative_summary_task) do %>
+                <%= generative_summary_task.class.name %>
+                from <%= admin_timestamp(generative_summary_task.created_at) %>
+                (<%= generative_summary_task.status.humanize %>)
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Created At:</div>
         <div class="col-md-9"><%= admin_timestamp(@book.created_at) %></div>

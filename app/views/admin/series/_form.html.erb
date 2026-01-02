@@ -1,4 +1,6 @@
 <%= form_with(model: [:admin, @series], class: "needs-validation", novalidate: true) do |form| %>
+  <%= render "admin/common/form_errors", form_record: @series %>
+
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>
     <%= admin_reversible_input(old_value: @series.name_was) do %>

@@ -8,7 +8,9 @@ module InfoFetchers
         JSON output only. It must have structure:
           [[
             "<title>" (string, English),
+            "<original title>" (string, original title, if present),
             <publishing_year> (integer),
+            "<series name>" (string, if present),
             "<type>" (string, one of: #{Book::STANDARD_FORMS.join(',')})
           ], [etc...]]
       INSTRUCTIONS
@@ -32,9 +34,13 @@ module InfoFetchers
 
       def parse_data_from_response(response)
         data = JSON.parse(response.content)
-        data.map do |(title, year, type)|
+        data.map do |(title, original_title, year, series, type)|
           {
-            title: title, year: year, type: type
+            title: title,
+            original_title: original_title,
+            year: year,
+            series: series,
+            type: type
           }.compact_blank
         end
       end

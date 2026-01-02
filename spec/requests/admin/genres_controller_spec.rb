@@ -88,6 +88,7 @@ RSpec.describe Admin::GenresController do
       it 'renders the form again' do
         send_request
         expect(response).to render_template 'admin/genres/new'
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
@@ -124,6 +125,7 @@ RSpec.describe Admin::GenresController do
       it 'renders the form again' do
         send_request
         expect(response).to render_template 'admin/genres/edit'
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

@@ -90,6 +90,7 @@ RSpec.describe Admin::TagsController do
       it 'renders the form again' do
         send_request
         expect(response).to render_template 'admin/tags/new'
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
@@ -128,6 +129,7 @@ RSpec.describe Admin::TagsController do
       it 'renders the form again' do
         send_request
         expect(response).to render_template 'admin/tags/edit'
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end

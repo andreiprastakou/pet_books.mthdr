@@ -51,6 +51,8 @@ class Book < ApplicationRecord
   has_many :series, through: :book_series, class_name: 'Series'
   has_many :book_collections, class_name: 'BookCollection', dependent: :destroy, inverse_of: :book
   has_many :collections, through: :book_collections, class_name: 'Collection'
+  has_many :book_public_lists, class_name: 'BookPublicList', dependent: :destroy, inverse_of: :book
+  has_many :public_lists, through: :book_public_lists, class_name: 'PublicList'
 
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }
@@ -84,7 +86,13 @@ class Book < ApplicationRecord
   end
 
   def small?
-    literary_form.in?(%w[short short_story])
+    literary_form.in?(%w[short short_story poem comics])
+  end
+
+  def needs_data_fetch?
+    generative_summary_tasks.reject(&:rejected?).empty? &&
+      !data_filled? &&
+      !small?
   end
 
   def author_names_label

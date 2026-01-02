@@ -87,6 +87,10 @@ Rails.application.routes.draw do
 
     resources :genres
 
+    resources :public_list_types do
+      resources :public_lists, except: %i[index]
+    end
+
     resources :series
 
     resources :tags

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_29_110058) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_02_173358) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -100,6 +100,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_29_110058) do
     t.index ["genre_id"], name: "index_book_genres_on_genre_id"
   end
 
+  create_table "book_public_lists", force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "public_list_id", null: false
+    t.string "role"
+    t.datetime "updated_at", null: false
+    t.index ["book_id", "public_list_id"], name: "index_book_public_lists_on_book_id_and_public_list_id", unique: true
+    t.index ["book_id"], name: "index_book_public_lists_on_book_id"
+    t.index ["public_list_id"], name: "index_book_public_lists_on_public_list_id"
+  end
+
   create_table "book_series", force: :cascade do |t|
     t.integer "book_id", null: false
     t.datetime "created_at", null: false
@@ -158,6 +169,22 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_29_110058) do
     t.index ["name"], name: "index_genres_on_name", unique: true
   end
 
+  create_table "public_list_types", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_public_list_types_on_name", unique: true
+  end
+
+  create_table "public_lists", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "public_list_type_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "year", null: false
+    t.index ["public_list_type_id", "year"], name: "index_public_lists_on_public_list_type_id_and_year", unique: true
+    t.index ["public_list_type_id"], name: "index_public_lists_on_public_list_type_id"
+  end
+
   create_table "series", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name", null: false
@@ -207,7 +234,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_29_110058) do
   add_foreign_key "book_collections", "collections"
   add_foreign_key "book_genres", "books"
   add_foreign_key "book_genres", "genres"
+  add_foreign_key "book_public_lists", "books"
+  add_foreign_key "book_public_lists", "public_lists"
   add_foreign_key "book_series", "books"
   add_foreign_key "book_series", "series"
   add_foreign_key "genres", "cover_designs"
+  add_foreign_key "public_lists", "public_list_types"
 end

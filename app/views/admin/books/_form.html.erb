@@ -6,6 +6,8 @@
       book-generated-summaries:addTags@window->book-form#onTagsAdded" },
   class: "needs-validation admin-book-form") do |form| %>
 
+  <%= render "admin/common/form_errors", form_record: book %>
+
   <div class="row mb-3" data-controller="association-input"
     data-association-input-association-value="authors"
     data-action="association-input:association-changed->book-form#onAssociationChanged">
@@ -13,8 +15,8 @@
     <%= render "admin/books/form/association_badges_input_wide",
       name: "book[author_ids][]",
       autocomplete_url: admin_api_authors_search_path(format: :json),
-      old_values: book_authors_to_badges_entries(book),
-      values: book_authors_to_badges_entries(book) %>
+      old_values: authors_to_badges_entries(book.authors),
+      values: authors_to_badges_entries(book.authors) %>
   </div>
 
   <div class="mb-3">
@@ -51,13 +53,6 @@
 
   <%= render "admin/books/form/wiki_input", form: form, book: book %>
 
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <%= form.label :wiki_popularity, class: "form-label" %>
-      <%= form.number_field :wiki_popularity, class: "form-control", disabled: true %>
-    </div>
-  </div>
-
   <div class="mb-3">
     <%= form.label :literary_form, class: "form-label" %>
     <%= admin_reversible_input(old_value: book.literary_form_was) do %>
@@ -84,8 +79,8 @@
     <%= render "admin/books/form/association_badges_input_wide",
       name: "book[series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),
-      old_values: book_series_to_badges_entries(book),
-      values: book_series_to_badges_entries(book) %>
+      old_values: series_to_badges_entries(book.series),
+      values: series_to_badges_entries(book.series) %>
   </div>
 
   <%= render "admin/books/form/summary_input", form: form, book: book %>

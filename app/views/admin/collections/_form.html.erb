@@ -3,6 +3,8 @@
   method: @collection.new_record? ? :post : :put,
   scope: "collection",
   data: { controller: "collection-form" }) do |form| %>
+  <%= render "admin/common/form_errors", form_record: @collection %>
+
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>
     <%= admin_reversible_input(old_value: @collection.name_was) do %>
@@ -25,8 +27,8 @@
     <%= render "admin/books/form/association_badges_input_wide",
       name: "collection[book_ids][]",
       autocomplete_url: admin_api_books_search_path(format: :json),
-      old_values: collection_books_to_badges_entries(@collection),
-      values: collection_books_to_badges_entries(@collection) %>
+      old_values: books_to_badges_entries(@collection.books),
+      values: books_to_badges_entries(@collection.books) %>
   </div>
 
   <div class="mb-3">

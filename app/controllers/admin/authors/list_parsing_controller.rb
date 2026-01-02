@@ -47,6 +47,7 @@ module Admin
       def prepare_form_data
         @books = @author.books.to_a
         @task.fetched_data.each do |attributes|
+          attributes = attributes.with_indifferent_access
           next if apply_to_existing_book(attributes)
 
           book = build_book(attributes)
@@ -55,23 +56,35 @@ module Admin
       end
 
       def apply_to_existing_book(attributes)
-        existing_book = @books.find do |book|
-          book.title == attributes['title']
-        end
+        existing_book = @books.find { |book| book.title == attributes[:title] }
         return false if existing_book.nil?
 
-        existing_book.year_published = attributes['year'] if attributes['year'].present?
-        existing_book.literary_form = attributes['type'] if attributes['type'].present?
+        prepared_attributes = attributes.slice(:original_title)
+        prepared_attributes.merge!(
+          year_published: attributes[:year], literary_form: attributes[:type],
+          series_ids: existing_book.series_ids | series_ids_for_book(attributes[:series])
+        ).compact
+        existing_book.assign_attributes(prepared_attributes.compact)
         true
       end
 
       def build_book(attributes)
         Book.new(
-          authors: [@author],
-          title: attributes['title'],
-          year_published: attributes['year'],
-          literary_form: attributes['type']
+          attributes.slice(:title, :original_title)
+            .merge(
+              year_published: attributes[:year],
+              authors: [@author],
+              literary_form: attributes[:type],
+              series_ids: series_ids_for_book(attributes[:series])
+            ).compact
         )
+      end
+
+      def series_ids_for_book(parsed_series_name)
+        series_name = parsed_series_name&.strip
+        return [] if series_name.blank?
+
+        [Series.find_or_create_by!(name: series_name).id]
       end
     end
   end

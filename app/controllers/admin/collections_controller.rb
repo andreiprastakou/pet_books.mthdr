@@ -15,8 +15,7 @@ module Admin
       title
       year_published
       wiki_popularity
-      created_at
-      updated_at
+      literary_form
     ].index_by(&:to_s).freeze
 
     def index
@@ -29,7 +28,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        @collection.books.preload(:tags, :authors),
+        @collection.books.preload(:authors, :generative_summary_tasks),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       )

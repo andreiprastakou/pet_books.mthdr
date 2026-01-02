@@ -38,12 +38,10 @@
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("TITLE", "title") %></th>
       <th>AUTHORS</th>
-      <th>FORM</th>
+      <th><%= sortable_table_column("FORM", "literary_form") %></th>
       <th>LINKS</th>
       <th><%= sortable_table_column("YEAR", "year_published") %></th>
-      <th><%= sortable_table_column("WIKI VIEWS", "wiki_popularity") %></th>
-      <th><%= sortable_table_column("CREATED", "created_at") %></th>
-      <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
+      <th><%= sortable_table_column("WIKI", "wiki_popularity") %></th>
     </thead>
     <% @books.each do |book| %>
       <tr>
@@ -51,7 +49,7 @@
           <%= admin_link_to book.id, admin_book_path(book) %>
         </td>
         <td>
-          <%= book.title %>
+          <%= book_title_marked_for_data_fetch(book) %>
           <%= "(#{book.original_title})" if book.special_original_title? %>
         </td>
         <td>
@@ -65,19 +63,12 @@
         <td>
           <%= admin_link_to "show", admin_book_path(book) %>
           <%= admin_link_to "edit", edit_admin_book_path(book) %>
-          <%= external_link_to "wiki", book.wiki_url if book.wiki_url.present? %>
         </td>
         <td>
           <%= book.year_published %>
         </td>
         <td>
-          <%= number_with_delimiter(book.wiki_popularity) %>
-        </td>
-        <td>
-          <%= admin_timestamp(book.created_at) %>
-        </td>
-        <td>
-          <%= admin_timestamp(book.updated_at) %>
+          <%= book_wiki_link(book) %>
         </td>
       </tr>
     <% end %>

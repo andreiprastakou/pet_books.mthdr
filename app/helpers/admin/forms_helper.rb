@@ -43,23 +43,34 @@ module Admin
       end
     end
 
-    def book_authors_to_badges_entries(book)
-      book.authors.map do |author|
+    def authors_to_badges_entries(authors)
+      authors.map do |author|
         { label: author.fullname, id: author.id }
       end
     end
 
-    def book_series_to_badges_entries(book)
-      book.series.map do |series|
+    def series_to_badges_entries(series)
+      series.map do |series|
         { label: series.name, id: series.id }
       end
     end
 
-    def collection_books_to_badges_entries(collection)
-      collection.books.map do |book|
+    def books_to_badges_entries(books)
+      books.map do |book|
         {
           label: book_label_for_badges(book),
           id: book.id
+        }
+      end
+    end
+
+    def book_public_lists_to_input_entries(book_public_lists)
+      book_public_lists.map do |book_public_list|
+        {
+          label: book_label_for_badges(book_public_list.book),
+          id: book_public_list.id,
+          book_id: book_public_list.book_id,
+          role: book_public_list.role
         }
       end
     end

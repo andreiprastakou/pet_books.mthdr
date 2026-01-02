@@ -1,14 +1,5 @@
 <%= form_with(model: [:admin, @genre], class: "needs-validation", novalidate: true) do |form| %>
-  <% if @genre.errors.any? %>
-    <div class="alert alert-danger">
-      <h4><%= pluralize(@genre.errors.count, "error") %> prohibited this genre from being saved:</h4>
-      <ul>
-        <% @genre.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "admin/common/form_errors", form_record: @genre %>
 
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>

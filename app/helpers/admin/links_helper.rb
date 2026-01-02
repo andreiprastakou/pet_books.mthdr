@@ -97,6 +97,8 @@ module Admin
       case task
       when Admin::BookSummaryTask
         admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
+      when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask
+        admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)
       else
         "Entity #{task.target_type} with ID=#{task.target_id}"
       end
@@ -116,6 +118,22 @@ module Admin
 
     def admin_nav_collection_link(collection)
       "\"#{truncate_crumb(collection.name)}\""
+    end
+
+    def admin_nav_public_list_types_link
+      ['Public List Types', admin_public_list_types_path]
+    end
+
+    def admin_nav_public_list_type_link(public_list_type)
+      ["\"#{truncate_crumb(public_list_type.name)}\"", admin_public_list_type_path(public_list_type)]
+    end
+
+    def admin_nav_public_lists_link
+      ['Public Lists', admin_public_lists_path]
+    end
+
+    def admin_nav_public_list_link(public_list)
+      public_list.year
     end
 
     private

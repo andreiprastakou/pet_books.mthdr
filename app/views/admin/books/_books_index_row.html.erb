@@ -3,7 +3,7 @@
     <%= admin_link_to book.id, admin_book_path(book) %>
   </td>
   <td>
-    <%= book.title %>
+    <%= book_title_marked_for_data_fetch(book) %>
     <%= "(#{book.original_title})" if book.special_original_title? %>
   </td>
   <td>
@@ -14,13 +14,12 @@
   <td>
     <%= admin_link_to "show", admin_book_path(book) %>
     <%= admin_link_to "edit", edit_admin_book_path(book) %>
-    <%= external_link_to "wiki", book.wiki_url if book.wiki_url.present? %>
   </td>
   <td>
     <%= book.year_published %>
   </td>
   <td>
-    <%= number_with_delimiter(book.wiki_popularity) %>
+    <%= book_wiki_link(book) %>
   </td>
   <td>
     <%= admin_timestamp(book.created_at) %>

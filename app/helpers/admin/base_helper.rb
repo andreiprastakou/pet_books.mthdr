@@ -3,10 +3,19 @@ module Admin
     def admin_timestamp(time)
       return if time.blank?
 
-      if time < 3.months.ago
-        time.strftime('%Y-%m-%d')
+      full_timestamp = time.strftime('%Y %b %d, %H:%M %Z')
+      time_passed = (Time.zone.now - time).round
+      if time_passed < 1.hour
+        content_tag(
+          :span,
+          "#{pluralize(time_passed / 1.minute, 'minute')} ago", title: full_timestamp
+        )
+      elsif time_passed < 1.day
+        content_tag(:span, "#{pluralize(time_passed / 1.hour, 'hour')} ago", title: full_timestamp)
+      elsif time_passed < 31.days
+        content_tag(:span, time.strftime('%Y %b %d'), title: full_timestamp)
       else
-        time.strftime('%b %d, %H:%M')
+        content_tag(:span, time.strftime('%Y %b'), title: full_timestamp)
       end
     end
 
