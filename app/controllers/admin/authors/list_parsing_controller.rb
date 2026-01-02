@@ -56,20 +56,15 @@ module Admin
       end
 
       def apply_to_existing_book(attributes)
-        existing_book = @books.find do |book|
-          book.title == attributes[:title]
-        end
+        existing_book = @books.find { |book| book.title == attributes[:title] }
         return false if existing_book.nil?
 
-        existing_book.assign_attributes(
-          attributes.
-            slice(:original_title).
-            merge(
-              year_published: attributes[:year],
-              literary_form: attributes[:type],
-              series_ids: existing_book.series_ids | series_ids_for_book(attributes[:series])
-            ).compact
-        )
+        prepared_attributes = attributes.slice(:original_title)
+        prepared_attributes.merge!(
+          year_published: attributes[:year], literary_form: attributes[:type],
+          series_ids: existing_book.series_ids | series_ids_for_book(attributes[:series])
+        ).compact
+        existing_book.assign_attributes(prepared_attributes.compact)
         true
       end
 
