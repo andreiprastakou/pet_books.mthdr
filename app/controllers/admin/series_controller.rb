@@ -27,7 +27,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        @series.books.preload(:tags, :authors),
+        @series.books.preload(:authors, :generative_summary_tasks),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       )

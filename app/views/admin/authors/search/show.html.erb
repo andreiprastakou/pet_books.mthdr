@@ -3,6 +3,10 @@
 <%= render "admin/authors/search_form" %>
 
 <div class="container mt-4">
+  <%= admin_buttonly_link_to "New author", new_admin_author_path %>
+</div>
+
+<div class="container mt-4">
   <table id="admin_authors" class="table">
     <thead>
       <th>ID</th>

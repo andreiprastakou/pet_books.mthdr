@@ -1,14 +1,5 @@
 <%= form_with(model: [:admin, @public_list_type], class: "needs-validation", novalidate: true) do |form| %>
-  <% if @public_list_type.errors.any? %>
-    <div class="alert alert-danger">
-      <h4><%= pluralize(@public_list_type.errors.count, "error") %> prohibited this public list type from being saved:</h4>
-      <ul>
-        <% @public_list_type.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "admin/common/form_errors", form_record: @public_list_type %>
 
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>

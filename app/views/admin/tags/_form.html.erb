@@ -1,14 +1,5 @@
 <%= form_with(model: [:admin, @tag], class: "needs-validation", novalidate: true) do |form| %>
-  <% if @tag.errors.any? %>
-    <div class="alert alert-danger">
-      <h4><%= pluralize(@tag.errors.count, "error") %> prohibited this tag from being saved:</h4>
-      <ul>
-        <% @tag.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "admin/common/form_errors", form_record: @tag %>
 
   <div class="mb-3">
     <%= form.label :name, class: "form-label" %>

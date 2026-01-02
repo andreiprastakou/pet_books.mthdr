@@ -1,16 +1,7 @@
 <div class="row" data-controller="cover-design-form">
   <div class="container col-md-6">
     <%= form_with(model: [:admin, :covers, design], local: true) do |form| %>
-      <% if design.errors.any? %>
-        <div class="alert alert-danger">
-          <h4><%= pluralize(design.errors.count, "error") %> prohibited this cover design from being saved:</h4>
-          <ul>
-            <% design.errors.full_messages.each do |message| %>
-              <li><%= message %></li>
-            <% end %>
-          </ul>
-        </div>
-      <% end %>
+      <%= render "admin/common/form_errors", form_record: design %>
 
       <div class="mb-3">
         <%= form.label :name, class: "form-label" %>

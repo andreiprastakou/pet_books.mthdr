@@ -9,6 +9,13 @@ module Admin
       created_at
     ].index_by(&:to_s).freeze
 
+    PUBLIC_LISTS_SORTING_MAP = %i[
+      id
+      year
+      created_at
+      updated_at
+    ].index_by(&:to_s).freeze
+
     def index
       @public_list_types = apply_sort(
         PublicListType.all,
@@ -18,7 +25,11 @@ module Admin
     end
 
     def show
-      @public_lists = @public_list_type.public_lists
+      @public_lists = apply_sort(
+        @public_list_type.public_lists.preload(:book_public_lists).includes(:book_public_lists),
+        PUBLIC_LISTS_SORTING_MAP,
+        defaults: { sort_by: 'year', sort_order: 'desc' }
+      )
     end
 
     def new
@@ -33,7 +44,7 @@ module Admin
         redirect_to admin_public_list_type_path(@public_list_type),
                     notice: t('notices.admin.public_list_types.create.success')
       else
-        render :new
+        render :new, status: :unprocessable_content
       end
     end
 
@@ -42,7 +53,7 @@ module Admin
         redirect_to admin_public_list_type_path(@public_list_type),
                     notice: t('notices.admin.public_list_types.update.success')
       else
-        render :edit
+        render :edit, status: :unprocessable_content
       end
     end
 

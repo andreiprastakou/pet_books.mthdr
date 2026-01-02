@@ -56,7 +56,7 @@
           </div>
           <!-- Series input -->
           <div class="col-2" data-controller="association-input">
-            <% entries = series_to_badges_entries(book.book_series) %>
+            <% entries = series_to_badges_entries(book.series) %>
             <%= render "admin/books/form/association_badges_input_mini",
               name: "batch[#{index}][series_ids][]",
               autocomplete_url: admin_api_series_search_path(format: :json),

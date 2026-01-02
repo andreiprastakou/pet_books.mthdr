@@ -75,8 +75,8 @@
     <%= render "admin/books/form/association_badges_input_wide",
       name: "book[series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),
-      old_values: series_to_badges_entries(book.book_series),
-      values: series_to_badges_entries(book.book_series) %>
+      old_values: series_to_badges_entries(book.series),
+      values: series_to_badges_entries(book.series) %>
   </div>
 
   <%= render "admin/books/form/summary_input", form: form, book: book %>

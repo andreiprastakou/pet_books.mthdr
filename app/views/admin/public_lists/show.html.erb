@@ -35,21 +35,23 @@
 
   <table class="table border">
     <thead>
-      <th><%= sortable_table_column("ID", "id") %></th>
+      <th>ID</th>
       <th><%= sortable_table_column("TITLE", "title") %></th>
       <th>AUTHORS</th>
-      <th><%= sortable_table_column("FORM", "literary_form") %></th>
+      <th><%= sortable_table_column("FORMAT", "literary_form") %></th>
+      <th><%= sortable_table_column("ROLE", "role") %></th>
       <th>LINKS</th>
       <th><%= sortable_table_column("YEAR", "year_published") %></th>
-      <th><%= sortable_table_column("WIKI VIEWS", "wiki_popularity") %></th>
+      <th><%= sortable_table_column("WIKI", "wiki_popularity") %></th>
     </thead>
-    <% @books.each do |book| %>
+    <% @book_public_lists.each do |book_public_list| %>
+      <% book = book_public_list.book %>
       <tr>
         <td>
           <%= admin_link_to book.id, admin_book_path(book) %>
         </td>
         <td>
-          <%= book.title %>
+          <%= book_title_marked_for_data_fetch(book) %>
           <%= "(#{book.original_title})" if book.special_original_title? %>
         </td>
         <td>
@@ -61,6 +63,9 @@
           <%= book.literary_form.humanize %>
         </td>
         <td>
+          <%= book_public_list.role&.humanize %>
+        </td>
+        <td>
           <%= admin_link_to "show", admin_book_path(book) %>
           <%= admin_link_to "edit", edit_admin_book_path(book) %>
           <%= external_link_to "wiki", book.wiki_url if book.wiki_url.present? %>
@@ -69,7 +74,7 @@
           <%= book.year_published %>
         </td>
         <td>
-          <%= number_with_delimiter(book.wiki_popularity) %>
+          <%= book_wiki_link(book) %>
         </td>
       </tr>
     <% end %>

@@ -1,16 +1,7 @@
 <%= form_with(model: @public_list, scope: "public_list", class: "needs-validation b-public-list-form", novalidate: true,
   url: @public_list.new_record? ? admin_public_list_type_public_lists_path(@public_list_type) : admin_public_list_type_public_list_path(@public_list_type, @public_list),
   method: @public_list.new_record? ? :post : :put) do |form| %>
-  <% if @public_list.errors.any? %>
-    <div class="alert alert-danger">
-      <h4><%= pluralize(@public_list.errors.count, "error") %> prohibited this public list from being saved:</h4>
-      <ul>
-        <% @public_list.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
+  <%= render "admin/common/form_errors", form_record: @public_list %>
 
   <div class="mb-3">
     <%= form.label :year, class: "form-label" %>
@@ -23,13 +14,10 @@
     </div>
   </div>
 
-  <div class="row mb-3 b-public-list-books-input" data-controller="association-input">
-    <%= label_tag nil, "Books", class: "form-label" %>
-    <%= render "admin/books/form/association_badges_input_wide",
-      name: "public_list[book_ids][]",
+  <div class="row mb-3 b-public-list-books-input" data-controller="public-list-books-input">
+    <%= render "admin/public_lists/books_input",
       autocomplete_url: admin_api_books_search_path(format: :json),
-      old_values: books_to_badges_entries(@public_list.books),
-      values: books_to_badges_entries(@public_list.books) %>
+      values: book_public_lists_to_input_entries(@public_list.book_public_lists) %>
   </div>
 
   <div class="mb-3">

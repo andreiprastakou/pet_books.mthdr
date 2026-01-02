@@ -17,8 +17,6 @@ module Admin
       year_published
       wiki_popularity
       literary_form
-      created_at
-      updated_at
     ].index_by(&:to_s).merge(
       'synced' => :data_filled
     ).freeze
@@ -44,7 +42,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        Book.preload(:genres, :tags).by_author(@author),
+        Book.preload(:genres, :generative_summary_tasks).by_author(@author),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       ).order(id: :desc)

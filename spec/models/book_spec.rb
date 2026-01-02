@@ -155,7 +155,8 @@ RSpec.describe Book do
   describe '#small?' do
     subject(:result) { book.small? }
 
-    let(:book) { build(:book, literary_form: %w[short short_story].sample) }
+    let(:book) { build(:book, literary_form: short_forms.sample) }
+    let(:short_forms) { %w[short short_story poem comics] }
 
     context 'when the literary form is short' do
       it { is_expected.to be true }
@@ -203,6 +204,40 @@ RSpec.describe Book do
       it 'returns nil' do
         expect(result).to be_nil
       end
+    end
+  end
+
+  describe '#needs_data_fetch?' do
+    subject(:result) { book.needs_data_fetch? }
+
+    let(:book) { build(:book, data_filled: false, literary_form: 'novel') }
+
+    context 'when a book is not data_filled' do
+      it { is_expected.to be true }
+
+      context 'when a book is a short form' do
+        before { book.literary_form = 'short' }
+
+        it { is_expected.to be false }
+      end
+
+      context 'when a book has pending generative_summary_tasks' do
+        before { book.generative_summary_tasks.build }
+
+        it { is_expected.to be false }
+      end
+
+      context 'when a book has only rejected generative_summary_tasks' do
+        before { book.generative_summary_tasks.build(status: 'rejected') }
+
+        it { is_expected.to be true }
+      end
+    end
+
+    context 'when a book is data_filled' do
+      before { book.data_filled = true }
+
+      it { is_expected.to be false }
     end
   end
 end

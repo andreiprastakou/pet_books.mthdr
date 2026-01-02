@@ -63,5 +63,16 @@ module Admin
         }
       end
     end
+
+    def book_public_lists_to_input_entries(book_public_lists)
+      book_public_lists.map do |book_public_list|
+        {
+          label: book_label_for_badges(book_public_list.book),
+          id: book_public_list.id,
+          book_id: book_public_list.book_id,
+          role: book_public_list.role
+        }
+      end
+    end
   end
 end

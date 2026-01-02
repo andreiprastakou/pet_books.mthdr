@@ -1,6 +1,6 @@
 <%= render 'admin/data_fetch_tasks/task_info_card', task: task %>
 
-<%= turbo_frame_tag "task_apply_form", src: edit_admin_book_generative_summary_path(task.book, task.id),
-  target: "_top" %>
 <% if task.review_stage? %>
+  <%= turbo_frame_tag "task_apply_form", src: edit_admin_book_generative_summary_path(task.book, task.id),
+    target: "_top" %>
 <% end %>

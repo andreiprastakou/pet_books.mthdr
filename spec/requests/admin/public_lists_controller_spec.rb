@@ -18,18 +18,12 @@ RSpec.describe Admin::PublicListsController do
 
   let(:public_list) { create(:public_list, public_list_type: public_list_type) }
 
-  describe 'GET /admin/public_lists' do
-    let(:send_request) { get admin_public_lists_path, headers: authorization_header }
-
-    it 'renders a successful response' do
-      send_request
-      expect(response).to be_successful
-      expect(response).to render_template 'admin/public_lists/index'
+  describe 'GET /admin/public_list_type/:public_list_type_id/public_lists/:id' do
+    let(:send_request) do
+      get admin_public_list_type_public_list_path(public_list_type, public_list),
+          params: params, headers: authorization_header
     end
-  end
-
-  describe 'GET /admin/public_lists/:id' do
-    let(:send_request) { get admin_public_list_path(public_list), headers: authorization_header }
+    let(:params) { {} }
 
     context 'without books' do
       it 'renders a successful response' do
@@ -49,7 +43,10 @@ RSpec.describe Admin::PublicListsController do
       end
 
       before do
-        public_list.books += books
+        public_list.book_public_lists.build(book: books[0], role: "winner_c")
+        public_list.book_public_lists.build(book: books[1], role: "winner_b")
+        public_list.book_public_lists.build(book: books[2], role: "winner_a")
+        public_list.save!
       end
 
       it 'renders a successful response' do
@@ -58,33 +55,41 @@ RSpec.describe Admin::PublicListsController do
         expect(response).to render_template 'admin/public_lists/show'
       end
 
-      it 'displays books sorted by year_published descending by default' do
+      it 'displays books sorted by roles descending by default' do
         send_request
         expect(response).to be_successful
-        years = assigns(:books).map(&:year_published)
-        expect(years).to eq([2021, 2020, 2019])
+        roles = assigns(:book_public_lists).map(&:role)
+        expect(roles).to eq(['winner_c', 'winner_b', 'winner_a'])
       end
 
-      it 'sorts books by title ascending' do
-        get admin_public_list_path(public_list), params: { sort_by: 'title', sort_order: 'asc' },
-                                                 headers: authorization_header
-        expect(response).to be_successful
-        titles = assigns(:books).map(&:title)
-        expect(titles).to eq(['Book 1', 'Book 2', 'Book 3'])
+      context 'with sorting' do
+        let(:params) { { sort_by: 'title', sort_order: 'asc' } }
+
+        it 'allows to sort books by title ascending' do
+          send_request
+          expect(response).to be_successful
+          titles = assigns(:book_public_lists).map { |book_public_list| book_public_list.book.title }
+          expect(titles).to eq(['Book 1', 'Book 2', 'Book 3'])
+        end
       end
 
-      it 'sorts books by year_published ascending' do
-        get admin_public_list_path(public_list), params: { sort_by: 'year_published', sort_order: 'asc' },
-                                                 headers: authorization_header
-        expect(response).to be_successful
-        years = assigns(:books).map(&:year_published)
-        expect(years).to eq([2019, 2020, 2021])
+      context 'with sorting' do
+        let(:params) { { sort_by: 'year_published', sort_order: 'asc' } }
+
+        it 'allows to sort books by year_published ascending' do
+          send_request
+          expect(response).to be_successful
+          years = assigns(:book_public_lists).map { |book_public_list| book_public_list.book.year_published }
+          expect(years).to eq([2019, 2020, 2021])
+        end
       end
     end
   end
 
-  describe 'GET /admin/public_lists/new' do
-    let(:send_request) { get new_admin_public_list_path, headers: authorization_header }
+  describe 'GET /admin/public_list_type/:public_list_type_id/public_lists/new' do
+    let(:send_request) do
+      get new_admin_public_list_type_public_list_path(public_list_type), headers: authorization_header
+    end
 
     it 'renders a successful response' do
       send_request
@@ -93,8 +98,10 @@ RSpec.describe Admin::PublicListsController do
     end
   end
 
-  describe 'GET /admin/public_lists/:id/edit' do
-    let(:send_request) { get edit_admin_public_list_path(public_list), headers: authorization_header }
+  describe 'GET /admin/public_list_type/:public_list_type_id/public_lists/:id/edit' do
+    let(:send_request) do
+      get edit_admin_public_list_type_public_list_path(public_list_type, public_list), headers: authorization_header
+    end
 
     it 'renders a successful response' do
       send_request
@@ -103,10 +110,11 @@ RSpec.describe Admin::PublicListsController do
     end
   end
 
-  describe 'POST /admin/public_lists' do
+  describe 'POST /admin/public_list_type/:public_list_type_id/public_lists' do
     context 'with valid parameters' do
       let(:send_request) do
-        post admin_public_lists_path, params: { public_list: valid_attributes }, headers: authorization_header
+        post admin_public_list_type_public_lists_path(public_list_type), params: { public_list: valid_attributes },
+          headers: authorization_header
       end
 
       it 'creates a new PublicList' do
@@ -117,7 +125,7 @@ RSpec.describe Admin::PublicListsController do
 
       it 'redirects to the created public list' do
         send_request
-        expect(response).to redirect_to(admin_public_list_path(PublicList.last))
+        expect(response).to redirect_to(admin_public_list_type_public_list_path(public_list_type, PublicList.last))
         expect(flash[:notice]).to eq('Public list was successfully created.')
       end
 
@@ -131,7 +139,7 @@ RSpec.describe Admin::PublicListsController do
 
     context 'with invalid parameters' do
       let(:send_request) do
-        post admin_public_lists_path(format: :html), params: { public_list: invalid_attributes },
+        post admin_public_list_type_public_lists_path(public_list_type), params: { public_list: invalid_attributes },
                                                      headers: authorization_header
       end
 
@@ -144,21 +152,24 @@ RSpec.describe Admin::PublicListsController do
       it 'renders the form again' do
         send_request
         expect(response).to render_template 'admin/public_lists/new'
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
 
-  describe 'PATCH /admin/public_lists/:id' do
+  describe 'PATCH /admin/public_list_type/:public_list_type_id/public_lists/:id' do
+    let(:send_request) do
+      patch admin_public_list_type_public_list_path(public_list_type, public_list),
+            params: params,
+            headers: authorization_header
+    end
+    let(:params) { { public_list: new_attributes } }
+
     context 'with valid parameters' do
       let(:new_attributes) do
         {
           year: 2024
         }
-      end
-      let(:send_request) do
-        patch admin_public_list_path(public_list),
-              params: { public_list: new_attributes },
-              headers: authorization_header
       end
 
       it 'updates the requested public list' do
@@ -169,17 +180,13 @@ RSpec.describe Admin::PublicListsController do
 
       it 'redirects to the public list' do
         send_request
-        expect(response).to redirect_to(admin_public_list_path(public_list))
+        expect(response).to redirect_to(admin_public_list_type_public_list_path(public_list_type, public_list))
         expect(flash[:notice]).to eq('Public list was successfully updated.')
       end
     end
 
     context 'with invalid parameters' do
-      let(:send_request) do
-        patch admin_public_list_path(public_list),
-              params: { public_list: invalid_attributes },
-              headers: authorization_header
-      end
+      let(:params) { { public_list: invalid_attributes } }
 
       it 'does not update the public list' do
         original_year = public_list.year
@@ -191,12 +198,15 @@ RSpec.describe Admin::PublicListsController do
       it 'renders the form again' do
         send_request
         expect(response).to render_template 'admin/public_lists/edit'
+        expect(response).to have_http_status(:unprocessable_content)
       end
     end
   end
 
   describe 'DELETE /admin/public_lists/:id' do
-    let(:send_request) { delete admin_public_list_path(public_list), headers: authorization_header }
+    let(:send_request) do
+      delete admin_public_list_type_public_list_path(public_list_type, public_list), headers: authorization_header
+    end
 
     it 'destroys the requested public list' do
       public_list
@@ -207,7 +217,7 @@ RSpec.describe Admin::PublicListsController do
 
     it 'redirects to the public lists list' do
       send_request
-      expect(response).to redirect_to(admin_public_lists_path)
+      expect(response).to redirect_to(admin_public_list_type_path(public_list_type))
       expect(flash[:notice]).to eq('Public list was successfully destroyed.')
     end
 
@@ -220,8 +230,6 @@ RSpec.describe Admin::PublicListsController do
 
       it 'deletes the public list but not the books' do
         send_request
-        expect(response).to redirect_to(admin_public_lists_path)
-        expect(flash[:notice]).to eq('Public list was successfully destroyed.')
         expect(PublicList.count).to eq(0)
         expect(Book.count).to eq(1)
       end

@@ -86,7 +86,13 @@ class Book < ApplicationRecord
   end
 
   def small?
-    literary_form.in?(%w[short short_story])
+    literary_form.in?(%w[short short_story poem comics])
+  end
+
+  def needs_data_fetch?
+    generative_summary_tasks.reject(&:rejected?).empty? &&
+      !data_filled? &&
+      !small?
   end
 
   def author_names_label

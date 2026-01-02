@@ -34,11 +34,12 @@
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("YEAR", "year") %></th>
       <th>LINKS</th>
+      <th>ENTRIES</th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
       <th>ACTIONS</th>
     </thead>
-    <% @public_list_type.public_lists.each do |public_list| %>
+    <% @public_lists.each do |public_list| %>
       <tr>
         <td>
           <%= admin_link_to public_list.id, admin_public_list_type_public_list_path(@public_list_type, public_list) %>
@@ -49,6 +50,9 @@
         <td>
           <%= admin_link_to "show", admin_public_list_type_public_list_path(@public_list_type, public_list) %>
           <%= admin_link_to "edit", edit_admin_public_list_type_public_list_path(@public_list_type, public_list) %>
+        </td>
+        <td>
+          <%= public_list.book_public_lists.size %>
         </td>
         <td>
           <%= admin_timestamp(public_list.created_at) %>
