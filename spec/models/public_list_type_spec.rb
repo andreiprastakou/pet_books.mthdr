@@ -30,4 +30,3 @@ RSpec.describe PublicListType do
     end
   end
 end
-

@@ -50,4 +50,3 @@ RSpec.describe PublicList do
     end
   end
 end
-

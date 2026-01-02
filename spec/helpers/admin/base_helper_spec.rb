@@ -36,7 +36,7 @@ RSpec.describe Admin::BaseHelper do
     end
 
     context 'when time is older than 1 months ago' do
-      let(:time) { current_time - 1.months - 1.minute }
+      let(:time) { current_time - 1.month - 1.minute }
 
       it 'returns a formatted datetime' do
         expect(result).to eq('<span title="2025 Jun 01, 12:12 UTC">2025 Jun</span>')

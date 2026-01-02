@@ -46,4 +46,3 @@ RSpec.describe BookPublicList do
     end
   end
 end
-

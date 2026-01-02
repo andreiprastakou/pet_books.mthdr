@@ -15,4 +15,3 @@ FactoryBot.define do
     sequence(:name) { |i| "Public List Type #{i}" }
   end
 end
-

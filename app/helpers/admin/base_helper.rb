@@ -7,10 +7,10 @@ module Admin
       if time > 1.hour.ago
         content_tag(
           :span,
-          "#{pluralize(((Time.zone.now - time) / 1.minute).round, "minute")} ago", title: full_timestamp
+          "#{pluralize(((Time.zone.now - time) / 1.minute).round, 'minute')} ago", title: full_timestamp
         )
       elsif time > 1.day.ago
-        content_tag(:span, "#{pluralize(((Time.zone.now - time) / 1.hour).round, "hour")} ago", title: full_timestamp)
+        content_tag(:span, "#{pluralize(((Time.zone.now - time) / 1.hour).round, 'hour')} ago", title: full_timestamp)
       elsif time > 1.month.ago
         content_tag(:span, time.strftime('%Y %b %d'), title: full_timestamp)
       else

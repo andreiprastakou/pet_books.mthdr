@@ -19,9 +19,9 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListParser do
 
     it 'parses books list' do
       expect(result).to eq([{
-        title: 'David Copperfield', original_title: 'David Copperfield',
-        year: 1850, series: 'SERIES_A', type: 'novel'
-      }])
+                             title: 'David Copperfield', original_title: 'David Copperfield',
+                             year: 1850, series: 'SERIES_A', type: 'novel'
+                           }])
     end
 
     it 'sets up chat with instructions' do

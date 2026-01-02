@@ -43,9 +43,9 @@ RSpec.describe Admin::PublicListsController do
       end
 
       before do
-        public_list.book_public_lists.build(book: books[0], role: "winner_c")
-        public_list.book_public_lists.build(book: books[1], role: "winner_b")
-        public_list.book_public_lists.build(book: books[2], role: "winner_a")
+        public_list.book_public_lists.build(book: books[0], role: 'winner_c')
+        public_list.book_public_lists.build(book: books[1], role: 'winner_b')
+        public_list.book_public_lists.build(book: books[2], role: 'winner_a')
         public_list.save!
       end
 
@@ -59,7 +59,7 @@ RSpec.describe Admin::PublicListsController do
         send_request
         expect(response).to be_successful
         roles = assigns(:book_public_lists).map(&:role)
-        expect(roles).to eq(['winner_c', 'winner_b', 'winner_a'])
+        expect(roles).to eq(%w[winner_c winner_b winner_a])
       end
 
       context 'with sorting' do
@@ -114,7 +114,7 @@ RSpec.describe Admin::PublicListsController do
     context 'with valid parameters' do
       let(:send_request) do
         post admin_public_list_type_public_lists_path(public_list_type), params: { public_list: valid_attributes },
-          headers: authorization_header
+                                                                         headers: authorization_header
       end
 
       it 'creates a new PublicList' do
@@ -140,7 +140,7 @@ RSpec.describe Admin::PublicListsController do
     context 'with invalid parameters' do
       let(:send_request) do
         post admin_public_list_type_public_lists_path(public_list_type), params: { public_list: invalid_attributes },
-                                                     headers: authorization_header
+                                                                         headers: authorization_header
       end
 
       it 'does not create a new PublicList' do

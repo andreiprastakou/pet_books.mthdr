@@ -24,4 +24,3 @@
 FactoryBot.define do
   factory :book_public_list, class: 'BookPublicList'
 end
-

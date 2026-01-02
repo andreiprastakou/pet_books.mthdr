@@ -7,7 +7,7 @@ module Admin
       'role' => 'role',
       'title' => 'books.title',
       'year_published' => 'books.year_published',
-      'wiki_popularity' => 'books.wiki_popularity',
+      'wiki_popularity' => 'books.wiki_popularity'
     }.freeze
 
     def show
@@ -28,7 +28,7 @@ module Admin
       @public_list = Admin::PublicListForm.new(record_params.merge(public_list_type: @public_list_type))
       if @public_list.save
         redirect_to admin_public_list_type_public_list_path(@public_list_type, @public_list),
-          notice: t('notices.admin.public_lists.create.success')
+                    notice: t('notices.admin.public_lists.create.success')
       else
         render :new, status: :unprocessable_content
       end
@@ -37,7 +37,7 @@ module Admin
     def update
       if @public_list.update(record_params)
         redirect_to admin_public_list_type_public_list_path(@public_list_type, @public_list),
-          notice: t('notices.admin.public_lists.update.success')
+                    notice: t('notices.admin.public_lists.update.success')
       else
         render :edit, status: :unprocessable_content
       end
@@ -46,7 +46,7 @@ module Admin
     def destroy
       @public_list.destroy!
       redirect_to admin_public_list_type_path(@public_list_type),
-        notice: t('notices.admin.public_lists.destroy.success')
+                  notice: t('notices.admin.public_lists.destroy.success')
     end
 
     private

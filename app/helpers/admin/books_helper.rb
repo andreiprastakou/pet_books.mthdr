@@ -13,7 +13,7 @@ module Admin
     def book_wiki_link(book)
       return if book.wiki_url.blank?
 
-      label = "wiki"
+      label = 'wiki'
       label += " (#{number_with_delimiter(book.wiki_popularity)})" if book.wiki_popularity.positive?
       content_tag(:span, external_link_to(label, book.wiki_url), class: 'text-muted')
     end

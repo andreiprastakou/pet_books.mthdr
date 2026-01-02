@@ -8,9 +8,7 @@ module Admin
 
     def validate_books_uniqueness
       book_public_lists.group_by(&:book_id).each do |book_id, book_public_lists|
-        if book_public_lists.size > 1
-          errors.add(:book_public_lists, "Book ID #{book_id} is duplicated")
-        end
+        errors.add(:book_public_lists, "Book ID #{book_id} is duplicated") if book_public_lists.size > 1
       end
     end
   end
