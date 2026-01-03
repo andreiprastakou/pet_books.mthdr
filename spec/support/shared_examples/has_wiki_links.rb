@@ -7,10 +7,12 @@ shared_examples 'has wiki links' do
     it 'builds wiki links from the wiki_url' do
       record.wiki_url = 'https://en.wikipedia.org/wiki/Test'
       expect { record.valid? }.to change { record.wiki_links.to_a }.from([]).to([kind_of(WikiLink)])
-      expect(record.wiki_links[0]).to be_new_record
-      expect(record.wiki_links[0].locale).to eq('en')
-      expect(record.wiki_links[0].name).to eq('Test')
-      expect(record.wiki_links[0].url).to eq('https://en.wikipedia.org/wiki/Test')
+      aggregate_failures do
+        expect(record.wiki_links[0]).to be_new_record
+        expect(record.wiki_links[0].locale).to eq('en')
+        expect(record.wiki_links[0].name).to eq('Test')
+        expect(record.wiki_links[0].url).to eq('https://en.wikipedia.org/wiki/Test')
+      end
     end
 
     context 'without a wiki_url' do
