@@ -11,8 +11,8 @@
 #  death_year        :integer
 #  fullname          :string           not null
 #  original_fullname :string
-#  reference         :string
 #  synced_at         :datetime
+#  wiki_url          :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
@@ -23,6 +23,7 @@
 
 class Author < ApplicationRecord
   include CarrierwaveUrlAssign
+  include HasWikiLinks
 
   has_many :book_authors, class_name: 'BookAuthor', dependent: :restrict_with_error
   has_many :books, class_name: 'Book', through: :book_authors

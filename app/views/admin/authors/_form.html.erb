@@ -44,15 +44,15 @@
   </div>
 
   <div class="row mb-3" data-controller="external-link-preview">
-    <%= form.label :reference, "Wiki", class: "form-label" %>
+    <%= form.label :wiki_url, "Wiki", class: "form-label" %>
     <div class="col-md-2">
       <%= link_to "GOOGLE", "#", target: "_blank",
-        data: { author_form_target: "referenceQueryLink", href_scaffold: "http://google.com/search?#{{q: "author wiki NAME"}.to_query}" } %>
+        data: { author_form_target: "wikiQueryLink", href_scaffold: "http://google.com/search?#{{q: "author wiki NAME"}.to_query}" } %>
     </div>
     <div class="col-md-1"> >> </div>
     <div class="col-md-6">
-      <%= admin_reversible_input(old_value: author.reference_was) do %>
-        <%= form.text_field :reference, class: "form-control",
+      <%= admin_reversible_input(old_value: author.wiki_url_was) do %>
+        <%= form.text_field :wiki_url, class: "form-control",
           data: { action: "input->external-link-preview#syncUrl", external_link_preview_target: "input",
             input_changes_target: "input" } %>
       <% end %>

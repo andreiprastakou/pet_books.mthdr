@@ -16,14 +16,12 @@ RSpec.describe InfoFetchers::Wiki::BookSyncer do
     end
 
     before do
-      allow(InfoFetchers::Wiki::UrlParser).to receive(:extract_base_name_and_locale)
-        .with(book.wiki_url).and_return(['Crime and Punishment', 'en'])
       allow(InfoFetchers::Wiki::VariantsFetcher).to receive(:new).and_return(variants_fetcher)
-      allow(variants_fetcher).to receive(:fetch_variants).with('Crime and Punishment', 'en')
-                                                         .and_return({ 'en' => 'Crime and Punishment',
-                                                                       'ru' => 'Преступление и наказание' })
+      allow(variants_fetcher).to receive(:fetch_variants).with('Crime_and_Punishment', 'en')
+                                                         .and_return({ 'en' => 'Crime_and_Punishment',
+                                                                       'ru' => 'Преступление_и_наказание' })
       allow(InfoFetchers::Wiki::ViewsFetcher).to receive(:new).and_return(views_fetcher)
-      allow(views_fetcher).to receive(:fetch).with('Crime and Punishment', 'en', last_synced_at: nil)
+      allow(views_fetcher).to receive(:fetch).with('Crime_and_Punishment', 'en', last_synced_at: nil)
                                              .and_return([101, 11])
     end
 
@@ -39,46 +37,23 @@ RSpec.describe InfoFetchers::Wiki::BookSyncer do
       end
     end
 
-    context 'when the book had no wiki_page_stats' do
-      it 'creates wiki_page_stats' do
-        expect { call }.to change(book.wiki_page_stats, :count).by(1)
-        expect(
-          book.wiki_page_stats.pluck(:locale, :name, :views, :views_last_month, :views_synced_at)
-        ).to contain_exactly(['en', 'Crime and Punishment', 101, 11, Time.current])
-      end
-
-      context 'when wiki_url is unparseable' do
-        before do
-          allow(InfoFetchers::Wiki::UrlParser).to receive(:extract_base_name_and_locale).with(book.wiki_url)
-                                                                                        .and_return(nil)
-        end
-
-        it 'raises an error' do
-          expect { call }.to raise_error(RuntimeError, "Can't extract base name and locale from #{book.wiki_url}")
-        end
-      end
-    end
-
-    context 'when the book had wiki_page_stats' do
+    context 'when the book had wiki_links' do
       before do
-        old_stat
-        allow(views_fetcher).to receive(:fetch).with('Crime and Punishment', 'en', last_synced_at: 3.months.ago)
+        old_link.update!(views: 101, views_last_month: 11, views_synced_at: 3.months.ago)
+        allow(views_fetcher).to receive(:fetch).with('Crime_and_Punishment', 'en', last_synced_at: 3.months.ago)
                                                .and_return([301, 31])
         book.wiki_popularity = 101
       end
 
-      let(:old_stat) do
-        create(:wiki_page_stat, entity: book, locale: 'en', name: 'Crime and Punishment', views: 101,
-                                views_last_month: 11, views_synced_at: 3.months.ago)
-      end
+      let(:old_link) { book.wiki_links.last }
 
       it 'only updates the old stats', :aggregate_failures do
-        expect { call }.not_to change(WikiPageStat, :count)
-        old_stat.reload
+        expect { call }.not_to change(WikiLink, :count)
+        old_link.reload
         expect(book.reload.wiki_popularity).to eq(101 - 11 + 301)
-        expect(old_stat.views).to eq(101 - 11 + 301)
-        expect(old_stat.views_last_month).to eq(31)
-        expect(old_stat.views_synced_at).to eq(Time.current)
+        expect(old_link.views).to eq(101 - 11 + 301)
+        expect(old_link.views_last_month).to eq(31)
+        expect(old_link.views_synced_at).to eq(Time.current)
       end
 
       context 'when views could not be fetched' do

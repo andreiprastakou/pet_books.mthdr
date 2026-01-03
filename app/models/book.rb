@@ -39,10 +39,10 @@ class Book < ApplicationRecord
   ].freeze
 
   include CarrierwaveUrlAssign
+  include HasWikiLinks
 
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
-  has_many :wiki_page_stats, as: :entity, class_name: 'WikiPageStat', dependent: :destroy
   has_many :genres, class_name: 'BookGenre', dependent: :destroy
   has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
   has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book

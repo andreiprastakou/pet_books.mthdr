@@ -17,6 +17,15 @@
         <div class="col-md-9"><%= @public_list_type.name %></div>
       </div>
 
+      <% if @public_list_type.wiki_url.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Wiki URL:</div>
+          <div class="col-md-9">
+            <%= admin_link_to_wiki_with_stats(@public_list_type) %>
+          </div>
+        </div>
+      <% end %>
+
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Created At:</div>
         <div class="col-md-9"><%= admin_timestamp(@public_list_type.created_at) %></div>
@@ -34,6 +43,7 @@
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("YEAR", "year") %></th>
       <th>LINKS</th>
+      <th>WIKI</th>
       <th>ENTRIES</th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
@@ -50,6 +60,9 @@
         <td>
           <%= admin_link_to "show", admin_public_list_type_public_list_path(@public_list_type, public_list) %>
           <%= admin_link_to "edit", edit_admin_public_list_type_public_list_path(@public_list_type, public_list) %>
+        </td>
+        <td>
+          <%= external_link_to "wiki", public_list.wiki_url if public_list.wiki_url.present? %>
         </td>
         <td>
           <%= public_list.book_public_lists.size %>

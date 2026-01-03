@@ -11,8 +11,8 @@
 #  death_year        :integer
 #  fullname          :string           not null
 #  original_fullname :string
-#  reference         :string
 #  synced_at         :datetime
+#  wiki_url          :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #
@@ -51,6 +51,10 @@ RSpec.describe Author do
       author = described_class.new(fullname: "   NAME  \n")
       expect { author.valid? }.to change(author, :fullname).to('NAME')
     end
+  end
+
+  it_behaves_like 'has wiki links' do
+    let(:record) { build(:author) }
   end
 
   describe '#photo_thumb_url' do

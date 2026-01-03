@@ -4,6 +4,7 @@
 # Database name: primary
 #
 #  id                  :integer          not null, primary key
+#  wiki_url            :string
 #  year                :integer          not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
@@ -19,6 +20,8 @@
 #  public_list_type_id  (public_list_type_id => public_list_types.id)
 #
 class PublicList < ApplicationRecord
+  include HasWikiLinks
+
   belongs_to :public_list_type, class_name: 'PublicListType', inverse_of: :public_lists
   has_many :book_public_lists, class_name: 'BookPublicList', dependent: :destroy
   has_many :books, class_name: 'Book', through: :book_public_lists

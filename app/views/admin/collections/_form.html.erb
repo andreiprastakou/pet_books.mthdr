@@ -21,6 +21,14 @@
     <% end %>
   </div>
 
+  <div class="mb-3">
+    <%= form.label :wiki_url, "Wiki URL", class: "form-label" %>
+    <%= admin_reversible_input(old_value: @collection.wiki_url_was) do %>
+      <%= form.url_field :wiki_url, class: "form-control",
+        data: { input_changes_target: "input" } %>
+    <% end %>
+  </div>
+
   <div class="row mb-3 b-collection-books-input" data-controller="association-input"
     data-action="association-input:association-changed->book-form#onAssociationChanged">
     <%= label_tag nil, "Books", class: "form-label" %>

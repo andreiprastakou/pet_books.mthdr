@@ -29,21 +29,21 @@ RSpec.describe Admin::Authors::BooksListController do
     let(:fetched_data) do
       [
         { 'title' => 'BOOK_1', 'original_title' => 'ORIGINAL_1', 'year_published' => 2025,
-          'literary_form' => 'type_11', 'wiki_url' => 'WIKI_URL_11' },
+          'literary_form' => 'type_11', 'wiki_url' => 'https://en.wikipedia.org/wiki/Book_11' },
         { 'title' => 'BOOK_2_DIFFERENT', 'original_title' => 'ORIGINAL_2', 'year_published' => 2025,
-          'literary_form' => 'type_22', 'wiki_url' => 'WIKI_URL_22' },
+          'literary_form' => 'type_22', 'wiki_url' => 'https://en.wikipedia.org/wiki/Book_22' },
         { 'title' => 'BOOK_4', 'original_title' => 'ORIGINAL_4', 'year_published' => 2024,
-          'literary_form' => 'type_4', 'wiki_url' => 'WIKI_URL_4' }
+          'literary_form' => 'type_4', 'wiki_url' => 'https://en.wikipedia.org/wiki/Book_4' }
       ]
     end
     let(:books) do
       [
         create(:book, authors: [author], title: 'BOOK_1', original_title: 'ORIGINAL_1', year_published: 2021,
-                      literary_form: 'type_1', wiki_url: 'WIKI_URL_1'),
+                      literary_form: 'type_1', wiki_url: 'https://en.wikipedia.org/wiki/Book_1'),
         create(:book, authors: [author], title: 'BOOK_2', original_title: 'ORIGINAL_2', year_published: 2022,
-                      literary_form: 'type_2', wiki_url: 'WIKI_URL_2'),
+                      literary_form: 'type_2', wiki_url: 'https://en.wikipedia.org/wiki/Book_2'),
         create(:book, authors: [author], title: 'BOOK_3', original_title: 'ORIGINAL_3', year_published: 2023,
-                      literary_form: 'type_3', wiki_url: 'WIKI_URL_3')
+                      literary_form: 'type_3', wiki_url: 'https://en.wikipedia.org/wiki/Book_3')
       ]
     end
 
@@ -59,10 +59,10 @@ RSpec.describe Admin::Authors::BooksListController do
         [b.id, b.title, b.original_title, b.year_published, b.literary_form, b.wiki_url]
       end).to eq(
         [
-          [books[0].id, 'BOOK_1', 'ORIGINAL_1', 2025, 'type_11', 'WIKI_URL_11'],
-          [books[1].id, 'BOOK_2_DIFFERENT', 'ORIGINAL_2', 2025, 'type_22', 'WIKI_URL_22'],
-          [books[2].id, 'BOOK_3', 'ORIGINAL_3', 2023, 'type_3', 'WIKI_URL_3'],
-          [nil, 'BOOK_4', 'ORIGINAL_4', 2024, 'type_4', 'WIKI_URL_4']
+          [books[0].id, 'BOOK_1', 'ORIGINAL_1', 2025, 'type_11', 'https://en.wikipedia.org/wiki/Book_11'],
+          [books[1].id, 'BOOK_2_DIFFERENT', 'ORIGINAL_2', 2025, 'type_22', 'https://en.wikipedia.org/wiki/Book_22'],
+          [books[2].id, 'BOOK_3', 'ORIGINAL_3', 2023, 'type_3', 'https://en.wikipedia.org/wiki/Book_3'],
+          [nil, 'BOOK_4', 'ORIGINAL_4', 2024, 'type_4', 'https://en.wikipedia.org/wiki/Book_4']
         ]
       )
     end
@@ -83,7 +83,7 @@ RSpec.describe Admin::Authors::BooksListController do
             year_published: '2025',
             author_ids: [author.id],
             literary_form: 'novel',
-            wiki_url: 'UPDATED_WIKI_URL'
+            wiki_url: 'https://en.wikipedia.org/wiki/Updated_Book'
           }
         }
       }

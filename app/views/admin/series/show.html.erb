@@ -15,6 +15,13 @@
         <div class="col-md-9"><%= @series.name %></div>
       </div>
 
+      <% if @series.wiki_url.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Wiki URL:</div>
+          <div class="col-md-9"><%= admin_link_to_wiki_with_stats(@series) %></div>
+        </div>
+      <% end %>
+
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Created At:</div>
         <div class="col-md-9"><%= admin_timestamp(@series.created_at) %></div>

@@ -9,7 +9,10 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListExpert do
     let(:author) { create(:author, fullname: 'David Copperfield') }
     let(:chat) { instance_double(Ai::Chat) }
     let(:chat_response) { instance_double(RubyLLM::Message, content: chat_output) }
-    let(:chat_output) { '{"notes": "Notes", "works": [["David Copperfield", null, "1850", "novel", "WIKI_URL"]]}' }
+    let(:chat_output) do
+      '{"notes": "Notes", "works": ' \
+        '[["David Copperfield", null, "1850", "novel", "https://en.wikipedia.org/wiki/David_Copperfield"]]}'
+    end
 
     before do
       allow(Ai::Chat).to receive(:start).and_return(chat)
@@ -23,7 +26,7 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListExpert do
                                title: 'David Copperfield',
                                year_published: 1850,
                                literary_form: 'novel',
-                               wiki_url: 'WIKI_URL'
+                               wiki_url: 'https://en.wikipedia.org/wiki/David_Copperfield'
                              }
                            ])
     end

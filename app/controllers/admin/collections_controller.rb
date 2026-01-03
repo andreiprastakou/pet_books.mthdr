@@ -84,7 +84,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:collection).permit(:name, :year_published, book_ids: [])
+      params.fetch(:collection).permit(:name, :year_published, :wiki_url, book_ids: [])
     end
 
     def apply_sort(scope, _sorting_map, defaults: {})

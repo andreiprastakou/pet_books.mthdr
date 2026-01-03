@@ -24,7 +24,7 @@ module Admin
     PARAMS = %i[
       fullname
       original_fullname
-      reference
+      wiki_url
       birth_year
       death_year
       photo_url

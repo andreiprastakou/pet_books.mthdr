@@ -27,7 +27,7 @@ module Api
         params.fetch(:author, {})
               .permit(:fullname,
                       :photo_url,
-                      :reference,
+                      :wiki_url,
                       :birth_year,
                       :death_year,
                       tag_names: [])

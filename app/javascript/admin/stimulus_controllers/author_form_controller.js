@@ -3,7 +3,7 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = [
     'fullnameInput',
-    'referenceQueryLink',
+    'wikiQueryLink',
     'photoQueryLink',
   ]
 
@@ -13,17 +13,17 @@ export default class extends Controller {
 
   syncName() {
     const fullname = this.fullnameInputTarget.value.trim()
-    this.updateReferenceQuery(fullname)
+    this.updateWikiQuery(fullname)
     this.updatePhotoQuery(fullname)
   }
 
-  updateReferenceQuery(fullname) {
+  updateWikiQuery(fullname) {
     if (fullname) {
-      const href = this.referenceQueryLinkTarget.getAttribute('data-href-scaffold')
+      const href = this.wikiQueryLinkTarget.getAttribute('data-href-scaffold')
       const queryUrl = href.replace('NAME', encodeURI(fullname))
-      this.referenceQueryLinkTarget.setAttribute('href', queryUrl)
+      this.wikiQueryLinkTarget.setAttribute('href', queryUrl)
     } else
-      this.referenceQueryLinkTarget.removeAttribute('href')
+      this.wikiQueryLinkTarget.removeAttribute('href')
   }
 
   updatePhotoQuery(fullname) {
