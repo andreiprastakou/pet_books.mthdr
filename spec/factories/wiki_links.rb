@@ -24,6 +24,7 @@ FactoryBot.define do
     entity factory: :book, strategy: :build_stubbed
     locale { 'en' }
     sequence(:name) { |i| "Test_#{i}" }
+    sequence(:url) { |i| "https://en.wikipedia.org/wiki/Test_#{i}" }
     views { 100 }
     views_last_month { 10 }
     views_synced_at { 1.day.ago.utc }

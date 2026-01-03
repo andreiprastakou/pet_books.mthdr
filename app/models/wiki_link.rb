@@ -20,9 +20,8 @@
 #  index_wiki_page_stats_on_entity  (entity_type,entity_id)
 #
 class WikiLink < ApplicationRecord
-  belongs_to :entity, polymorphic: true, optional: true
+  belongs_to :entity, polymorphic: true, optional: true, inverse_of: :wiki_links
 
-  validates :entity_id, presence: true
   validates :entity_type, presence: true
   validates :locale, presence: true
   validates :name, presence: true
@@ -32,16 +31,16 @@ class WikiLink < ApplicationRecord
 
   after_create :enqueue_sync
 
-  def self.build_from_parts(entity:, locale:, name:)
-    new(entity: entity, locale: locale, name: name,
+def self.build_from_parts(locale:, name:)
+    new(locale: locale, name: name,
         url: "https://#{locale}.wikipedia.org/wiki/#{URI.encode_uri_component(name)}")
   end
 
-  def self.build_from_url(entity:, url:)
+  def self.build_from_url(url:)
     name, locale = InfoFetchers::Wiki::UrlParser.extract_base_name_and_locale(url)
     raise "Can't extract base name and locale from #{url}" if name.blank? || locale.blank?
 
-    new(entity: entity, locale: locale, name: name, url: url)
+    new(locale: locale, name: name, url: url)
   end
 
   private

@@ -25,7 +25,6 @@ RSpec.describe WikiLink do
   subject(:stat) { build(:wiki_link) }
 
   describe 'validations' do
-    it { is_expected.to validate_presence_of(:entity_id) }
     it { is_expected.to validate_presence_of(:entity_type) }
     it { is_expected.to validate_presence_of(:locale) }
     it { is_expected.to validate_presence_of(:name) }
@@ -35,23 +34,20 @@ RSpec.describe WikiLink do
   end
 
   describe '.build_from_url' do
-    subject(:result) { described_class.build_from_url(entity: entity, url: url) }
+    subject(:result) { described_class.build_from_url(url: url) }
 
     let(:url) { 'https://en.wikipedia.org/wiki/Test' }
-    let(:entity) { build_stubbed(:book) }
 
     it 'builds a link from a URL' do
       expect(result.url).to eq(url)
       expect(result.locale).to eq('en')
       expect(result.name).to eq('Test')
-      expect(result.entity).to eq(entity)
     end
   end
 
   describe '.build_from_parts' do
-    subject(:result) { described_class.build_from_parts(entity: entity, locale: locale, name: name) }
+    subject(:result) { described_class.build_from_parts(locale: locale, name: name) }
 
-    let(:entity) { build_stubbed(:book) }
     let(:locale) { 'en' }
     let(:name) { 'Test' }
 
@@ -59,7 +55,6 @@ RSpec.describe WikiLink do
       expect(result.url).to eq("https://en.wikipedia.org/wiki/Test")
       expect(result.locale).to eq('en')
       expect(result.name).to eq('Test')
-      expect(result.entity).to eq(entity)
     end
   end
 end

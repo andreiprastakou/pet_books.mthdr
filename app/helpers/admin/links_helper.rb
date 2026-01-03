@@ -143,7 +143,7 @@ module Admin
         safe_join([
           external_link_to('wiki', entity.wiki_url),
           " (#{pluralize(entity.wiki_links.count, 'page')}, " \
-          "#{pluralize(entity.wiki_links.map(&:views).compact.sum, 'view')})"
+          "#{pluralize(entity.wiki_links_sum_views, 'view')})"
         ])
       end
     end

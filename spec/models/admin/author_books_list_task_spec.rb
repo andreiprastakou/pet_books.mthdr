@@ -54,7 +54,7 @@ RSpec.describe Admin::AuthorBooksListTask do
     let(:books_data) do
       [
         { title: 'Book A', original_title: 'Original A', year_published: 2000, literary_form: 'novel',
-          wiki_url: 'https://example.com/a' },
+          wiki_url: 'https://en.wikipedia.org/wiki/Book_A' },
         { title: 'Book B', original_title: nil, year_published: 2001, literary_form: 'novel', wiki_url: nil }
       ]
     end

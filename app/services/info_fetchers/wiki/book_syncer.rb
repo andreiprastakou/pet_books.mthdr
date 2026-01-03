@@ -8,11 +8,9 @@ module InfoFetchers
       def sync!
         ensure_valid_context
 
-        links = book.wiki_links | initialize_links
-        sync_page_stats(links)
-
-        book.wiki_links.reload
-        book.update!(wiki_popularity: book.wiki_links.sum(&:views))
+        book.wiki_links |= initialize_links
+        sync_page_stats(book.wiki_links)
+        book.update!(wiki_popularity: book.wiki_links_sum_views)
       end
 
       private
@@ -28,7 +26,7 @@ module InfoFetchers
         variants.map do |locale, name|
           next if book.wiki_links.find { |link| link.locale == locale && link.name == name }
 
-          WikiLink.build_from_parts(entity: book, locale: locale, name: name)
+          WikiLink.build_from_parts(locale: locale, name: name)
         end.compact
       end
 

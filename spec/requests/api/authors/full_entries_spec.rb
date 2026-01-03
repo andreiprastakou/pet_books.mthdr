@@ -8,14 +8,14 @@ RSpec.describe '/api/authors/full_entries' do
   describe 'GET /:id' do
     subject(:send_request) { get "/api/authors/full_entries/#{author.id}.json", headers: authorization_header }
 
-    let(:author) { create(:author, wiki_url: 'http://example.com', birth_year: 1900, death_year: 2000, tags: [tag]) }
+    let(:author) { create(:author, wiki_url: 'https://en.wikipedia.org/wiki/foobar', birth_year: 1900, death_year: 2000, tags: [tag]) }
     let(:expected_response) do
       {
         id: author.id,
         fullname: author.fullname,
         photo_thumb_url: nil,
         photo_full_url: nil,
-        wiki_url: 'http://example.com',
+        reference: 'https://en.wikipedia.org/wiki/foobar',
         birth_year: 1900,
         death_year: 2000,
         tag_ids: [tag.id],
@@ -45,7 +45,7 @@ RSpec.describe '/api/authors/full_entries' do
       {
         fullname: 'Bob Bobson',
         photo_url: nil,
-        wiki_url: 'https://example.com',
+        wiki_url: 'https://en.wikipedia.org/wiki/foobar2',
         birth_year: 1900,
         death_year: 2000,
         tag_names: %w[foo bar]
@@ -60,7 +60,7 @@ RSpec.describe '/api/authors/full_entries' do
       expect(response.body).to match({ id: author.id }.to_json)
       aggregate_failures do
         expect(author.fullname).to eq('Bob Bobson')
-        expect(author.wiki_url).to eq('https://example.com')
+        expect(author.wiki_url).to eq('https://en.wikipedia.org/wiki/foobar2')
         expect(author.birth_year).to eq(1900)
         expect(author.death_year).to eq(2000)
         expect(author.tags).to contain_exactly(tag, kind_of(Tag))
@@ -79,7 +79,7 @@ RSpec.describe '/api/authors/full_entries' do
       {
         fullname: 'Bob Bobson Jr.',
         photo_url: nil,
-        wiki_url: 'https://example.com/new',
+        wiki_url: 'https://en.wikipedia.org/wiki/foobar3',
         birth_year: 1901,
         death_year: 2001,
         tag_names: %w[foo bar]
@@ -93,7 +93,7 @@ RSpec.describe '/api/authors/full_entries' do
       author.reload
       aggregate_failures do
         expect(author.fullname).to eq('Bob Bobson Jr.')
-        expect(author.wiki_url).to eq('https://example.com/new')
+        expect(author.wiki_url).to eq('https://en.wikipedia.org/wiki/foobar3')
         expect(author.birth_year).to eq(1901)
         expect(author.death_year).to eq(2001)
         expect(author.tags).to contain_exactly(tag, kind_of(Tag))
