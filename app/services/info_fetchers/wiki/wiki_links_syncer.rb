@@ -9,9 +9,7 @@ module InfoFetchers
         views, views_last_month = fetch_views(wiki_link)
         return if views.nil? || views_last_month.nil?
 
-        wiki_link.views ||= 0
-        wiki_link.views += views - (wiki_link.views_last_month || 0)
-        wiki_link.update!(views_last_month: views_last_month, views_synced_at: Time.now.utc)
+        update_wiki_link(views, views_last_month)
 
         update_entity
       end
@@ -19,6 +17,12 @@ module InfoFetchers
       private
 
       attr_reader :wiki_link
+
+      def update_wiki_link(views, views_last_month)
+        wiki_link.views ||= 0
+        wiki_link.views += views - (wiki_link.views_last_month || 0)
+        wiki_link.update!(views_last_month: views_last_month, views_synced_at: Time.now.utc)
+      end
 
       def fetch_views(wiki_link)
         InfoFetchers::Wiki::ViewsFetcher

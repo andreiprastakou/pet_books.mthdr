@@ -53,6 +53,10 @@ RSpec.describe Author do
     end
   end
 
+  it_behaves_like 'has wiki links' do
+    let(:record) { build(:author) }
+  end
+
   describe '#photo_thumb_url' do
     subject(:result) { author.photo_thumb_url }
 

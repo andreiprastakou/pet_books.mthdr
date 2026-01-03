@@ -36,4 +36,8 @@ RSpec.describe Collection do
       expect(build(:collection)).to be_valid
     end
   end
+
+  it_behaves_like 'has wiki links' do
+    let(:record) { build(:collection) }
+  end
 end

@@ -52,9 +52,32 @@ RSpec.describe WikiLink do
     let(:name) { 'Test' }
 
     it 'builds a link from parts' do
-      expect(result.url).to eq("https://en.wikipedia.org/wiki/Test")
+      expect(result.url).to eq('https://en.wikipedia.org/wiki/Test')
       expect(result.locale).to eq('en')
       expect(result.name).to eq('Test')
+    end
+  end
+
+  describe '#same_link?' do
+    subject(:result) { link.same_link?(other_link) }
+
+    let(:link) { build_stubbed(:wiki_link, locale: 'en', name: 'TEST_A') }
+    let(:other_link) { build_stubbed(:wiki_link, locale: 'en', name: 'TEST_A') }
+
+    context 'when the links are the same' do
+      it { is_expected.to be true }
+    end
+
+    context 'when locales are different' do
+      before { other_link.locale = 'fr' }
+
+      it { is_expected.to be false }
+    end
+
+    context 'when names are different' do
+      before { other_link.name = 'TEST_C' }
+
+      it { is_expected.to be false }
     end
   end
 end

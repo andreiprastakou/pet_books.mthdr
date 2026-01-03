@@ -34,4 +34,8 @@ RSpec.describe Series do
       expect(build(:series)).to be_valid
     end
   end
+
+  it_behaves_like 'has wiki links' do
+    let(:record) { build(:series) }
+  end
 end

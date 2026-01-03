@@ -50,4 +50,8 @@ RSpec.describe PublicList do
       expect(duplicate.errors[:public_list_type_id]).to be_present
     end
   end
+
+  it_behaves_like 'has wiki links' do
+    let(:record) { build(:public_list) }
+  end
 end

@@ -10,7 +10,7 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListExpert do
     let(:chat) { instance_double(Ai::Chat) }
     let(:chat_response) { instance_double(RubyLLM::Message, content: chat_output) }
     let(:chat_output) do
-      '{"notes": "Notes", "works": '\
+      '{"notes": "Notes", "works": ' \
         '[["David Copperfield", null, "1850", "novel", "https://en.wikipedia.org/wiki/David_Copperfield"]]}'
     end
 

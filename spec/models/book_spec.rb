@@ -98,6 +98,10 @@ RSpec.describe Book do
     end
   end
 
+  it_behaves_like 'has wiki links' do
+    let(:record) { build(:book) }
+  end
+
   describe '#tag_ids' do
     subject(:result) { book.tag_ids }
 

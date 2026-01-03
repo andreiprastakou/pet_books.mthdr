@@ -17,16 +17,18 @@ module HasWikiLinks
 
   private
 
+  # rubocop:disable Style/RescueModifier
   def refresh_wiki_links
     return if wiki_url.blank?
 
     new_link = WikiLink.build_from_url(url: wiki_url) rescue nil
     return if new_link.nil?
-    return if wiki_links.any? { |link| link.locale == new_link.locale && link.name == new_link.name }
+    return if wiki_links.any? { |link| link.same_link?(new_link) }
 
     wiki_links.each(&:mark_for_destruction)
     wiki_links << new_link
   end
+  # rubocop:enable Style/RescueModifier
 
   def validate_wiki_url_format
     return if wiki_url.blank?

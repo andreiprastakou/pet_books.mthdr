@@ -34,4 +34,8 @@ RSpec.describe PublicListType do
       expect(build(:public_list_type)).to be_valid
     end
   end
+
+  it_behaves_like 'has wiki links' do
+    let(:record) { build(:public_list_type) }
+  end
 end

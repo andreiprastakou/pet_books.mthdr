@@ -31,7 +31,11 @@ class WikiLink < ApplicationRecord
 
   after_create :enqueue_sync
 
-def self.build_from_parts(locale:, name:)
+  def same_link?(other_link)
+    locale == other_link.locale && name == other_link.name
+  end
+
+  def self.build_from_parts(locale:, name:)
     new(locale: locale, name: name,
         url: "https://#{locale}.wikipedia.org/wiki/#{URI.encode_uri_component(name)}")
   end

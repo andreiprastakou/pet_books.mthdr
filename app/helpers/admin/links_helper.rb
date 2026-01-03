@@ -141,10 +141,10 @@ module Admin
 
       content_tag(:span, class: 'text-muted') do
         safe_join([
-          external_link_to('wiki', entity.wiki_url),
-          " (#{pluralize(entity.wiki_links.count, 'page')}, " \
-          "#{pluralize(entity.wiki_links_sum_views, 'view')})"
-        ])
+                    external_link_to('wiki', entity.wiki_url),
+                    " (#{pluralize(entity.wiki_links.count, 'page')}, " \
+                    "#{pluralize(entity.wiki_links_sum_views, 'view')})"
+                  ])
       end
     end
 
