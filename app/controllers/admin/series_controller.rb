@@ -78,7 +78,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:series).permit(:name)
+      params.fetch(:series).permit(:name, :wiki_url)
     end
 
     def apply_sort(scope, _sorting_map, defaults: {})

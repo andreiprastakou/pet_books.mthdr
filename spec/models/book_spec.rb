@@ -33,7 +33,7 @@ RSpec.describe Book do
   describe 'associations' do
     it { is_expected.to have_many(:tag_connections).class_name(TagConnection.name) }
     it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
-    it { is_expected.to have_many(:wiki_page_stats).class_name(WikiPageStat.name) }
+    it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name) }
     it { is_expected.to have_many(:book_authors).class_name(BookAuthor.name) }
     it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
     it { is_expected.to have_many(:book_series).class_name(BookSeries.name) }

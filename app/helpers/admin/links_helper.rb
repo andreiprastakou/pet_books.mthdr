@@ -136,6 +136,18 @@ module Admin
       public_list.year
     end
 
+    def admin_link_to_wiki_with_stats(entity)
+      return if entity.wiki_url.blank?
+
+      content_tag(:span, class: 'text-muted') do
+        safe_join([
+          external_link_to('wiki', entity.wiki_url),
+          " (#{pluralize(entity.wiki_links.count, 'page')}, " \
+          "#{pluralize(entity.wiki_links.map(&:views).compact.sum, 'view')})"
+        ])
+      end
+    end
+
     private
 
     def admin_nav_crumbs_for_header(crumbs)

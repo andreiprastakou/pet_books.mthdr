@@ -60,7 +60,7 @@ module Admin
     end
 
     def record_params
-      permitted = params.fetch(:public_list).permit(:year, book_public_lists_attributes: {})
+      permitted = params.fetch(:public_list).permit(:year, :wiki_url, book_public_lists_attributes: {})
       if permitted.key?(:book_public_lists_attributes)
         permitted[:book_public_lists_attributes].each do |key, book_public_list_attributes|
           permitted[:book_public_lists_attributes][key] =

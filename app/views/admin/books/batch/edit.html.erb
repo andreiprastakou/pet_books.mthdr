@@ -9,7 +9,7 @@
     <% @authors.each do |author| %>
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end"><%= author.fullname %></div>
-        <div class="col-md-9"><%= external_link_to author.reference, author.reference %></div>
+        <div class="col-md-9"><%= external_link_to author.wiki_url, author.wiki_url %></div>
       </div>
     <% end %>
   </div>

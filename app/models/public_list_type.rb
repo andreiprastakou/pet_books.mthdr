@@ -5,6 +5,7 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string           not null
+#  wiki_url   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -13,6 +14,8 @@
 #  index_public_list_types_on_name  (name) UNIQUE
 #
 class PublicListType < ApplicationRecord
+  include HasWikiLinks
+
   has_many :public_lists, class_name: 'PublicList', dependent: :restrict_with_error
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }

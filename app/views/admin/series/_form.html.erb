@@ -13,6 +13,14 @@
   </div>
 
   <div class="mb-3">
+    <%= form.label :wiki_url, "Wiki URL", class: "form-label" %>
+    <%= admin_reversible_input(old_value: @series.wiki_url_was) do %>
+      <%= form.url_field :wiki_url, class: "form-control",
+        data: { input_changes_target: "input" } %>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
     <%= form.submit class: "btn btn-primary" %>
     <%= link_to "Cancel", admin_series_index_path, class: "btn btn-secondary" %>
   </div>

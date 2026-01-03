@@ -11,8 +11,8 @@
 #  death_year        :integer
 #  fullname          :string           not null
 #  original_fullname :string
-#  reference         :string
 #  synced_at         :datetime
+#  wiki_url          :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #

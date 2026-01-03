@@ -8,7 +8,7 @@
   <td>
     <%= admin_link_to "show", admin_author_path(author) %>
     <%= admin_link_to "edit", edit_admin_author_path(author) %>
-    <%= external_link_to "wiki", author.reference if author.reference.present? %>
+    <%= external_link_to "wiki", author.wiki_url if author.wiki_url.present? %>
     <%= external_link_to "photo", author.photo_thumb_url if author.photo_thumb_url.present? %>
   </td>
   <td>

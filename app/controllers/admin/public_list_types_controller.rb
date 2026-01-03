@@ -69,7 +69,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:public_list_type).permit(:name)
+      params.fetch(:public_list_type).permit(:name, :wiki_url)
     end
   end
 end

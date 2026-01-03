@@ -6,6 +6,7 @@
 # Database name: primary
 #
 #  id                  :integer          not null, primary key
+#  wiki_url            :string
 #  year                :integer          not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null

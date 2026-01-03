@@ -5,6 +5,7 @@
 #
 #  id             :integer          not null, primary key
 #  name           :string           not null
+#  wiki_url       :string
 #  year_published :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
@@ -14,6 +15,8 @@
 #  index_collections_on_name  (name) UNIQUE
 #
 class Collection < ApplicationRecord
+  include HasWikiLinks
+
   has_many :book_collections, dependent: :destroy
   has_many :books, through: :book_collections
 

@@ -8,11 +8,11 @@ module InfoFetchers
       def sync!
         ensure_valid_context
 
-        stats = book.wiki_page_stats | initialize_page_stats
-        sync_page_stats(stats)
+        links = book.wiki_links | initialize_links
+        sync_page_stats(links)
 
-        book.wiki_page_stats.reload
-        book.update!(wiki_popularity: book.wiki_page_stats.sum(&:views))
+        book.wiki_links.reload
+        book.update!(wiki_popularity: book.wiki_links.sum(&:views))
       end
 
       private
@@ -23,12 +23,12 @@ module InfoFetchers
         raise "No wiki_url for book #{book.id}" if book.wiki_url.blank?
       end
 
-      def initialize_page_stats
+      def initialize_links
         variants = fetch_variants
         variants.map do |locale, name|
-          next if book.wiki_page_stats.find { |stat| stat.locale == locale }
+          next if book.wiki_links.find { |link| link.locale == locale && link.name == name }
 
-          WikiPageStat.new(entity: book, locale: locale, name: name)
+          WikiLink.build_from_parts(entity: book, locale: locale, name: name)
         end.compact
       end
 
@@ -45,21 +45,21 @@ module InfoFetchers
         [name, locale]
       end
 
-      def sync_page_stats(stats)
-        stats.each do |wiki_page_stat|
-          views, views_last_month = fetch_views(wiki_page_stat)
+      def sync_page_stats(links)
+        links.each do |wiki_link|
+          views, views_last_month = fetch_views(wiki_link)
           next if views.nil? || views_last_month.nil?
 
-          wiki_page_stat.views ||= 0
-          wiki_page_stat.views += views - (wiki_page_stat.views_last_month || 0)
-          wiki_page_stat.update!(views_last_month: views_last_month, views_synced_at: Time.now.utc)
+          wiki_link.views ||= 0
+          wiki_link.views += views - (wiki_link.views_last_month || 0)
+          wiki_link.update!(views_last_month: views_last_month, views_synced_at: Time.now.utc)
         end
       end
 
-      def fetch_views(wiki_page_stat)
+      def fetch_views(wiki_link)
         InfoFetchers::Wiki::ViewsFetcher
           .new
-          .fetch(wiki_page_stat.name, wiki_page_stat.locale, last_synced_at: wiki_page_stat.views_synced_at)
+          .fetch(wiki_link.name, wiki_link.locale, last_synced_at: wiki_link.views_synced_at)
       end
     end
   end
