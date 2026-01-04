@@ -4,7 +4,7 @@ RSpec.describe Admin::WikiLinkSyncJob do
   describe '#perform' do
     subject(:call) { described_class.perform_now(wiki_link.id) }
 
-    let(:wiki_link) { create(:wiki_link) }
+    let(:wiki_link) { create(:wiki_link, entity: build_stubbed(:book)) }
     let(:syncer) { instance_double(InfoFetchers::Wiki::WikiLinksSyncer) }
 
     before do

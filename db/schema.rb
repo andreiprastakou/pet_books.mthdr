@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_01_03_085556) do
+ActiveRecord::Schema[8.1].define(version: 2026_01_04_075430) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -159,6 +159,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_01_03_085556) do
     t.string "title_color", null: false
     t.string "title_font", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "generic_links", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "entity_id", null: false
+    t.string "entity_type", null: false
+    t.string "locale"
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.string "url", null: false
+    t.index ["entity_type", "entity_id"], name: "index_generic_links_on_entity_type_and_entity_id"
   end
 
   create_table "genres", force: :cascade do |t|
