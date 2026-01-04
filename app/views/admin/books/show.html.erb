@@ -120,13 +120,6 @@
         </div>
       <% end %>
 
-      <% if @book.goodreads_url.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Goodreads:</div>
-          <div class="col-md-9"><%= external_link_to 'URL', @book.goodreads_url %></div>
-        </div>
-      <% end %>
-
       <% if @book.wiki_url.present? %>
         <div class="row mb-3">
           <div class="col-md-3 font-weight-bold text-end">Wiki:</div>

@@ -17,7 +17,6 @@ RSpec.describe Forms::Admin::BooksBatchUpdater do
           literary_form: 'novel',
           year_published: '2025',
           author_ids: [author.id],
-          goodreads_url: 'GOODREADS_URL_B',
           wiki_url: 'https://en.wikipedia.org/wiki/Book_B'
         }
       }
@@ -41,7 +40,6 @@ RSpec.describe Forms::Admin::BooksBatchUpdater do
         expect(book_b.literary_form).to eq 'novel'
         expect(book_b.year_published).to eq 2025
         expect(book_b.authors.map(&:id)).to eq [author.id]
-        expect(book_b.goodreads_url).to eq 'GOODREADS_URL_B'
         expect(book_b.wiki_url).to eq 'https://en.wikipedia.org/wiki/Book_B'
       end
     end

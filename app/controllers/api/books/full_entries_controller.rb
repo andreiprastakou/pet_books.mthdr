@@ -7,7 +7,6 @@ module Api
         :title,
         :year_published,
         :original_title,
-        :goodreads_url,
         { tag_names: [] },
         { author_ids: [] }
       ].freeze

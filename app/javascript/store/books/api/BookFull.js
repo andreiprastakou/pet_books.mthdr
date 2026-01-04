@@ -3,7 +3,6 @@ class BookFull {
     return {
       ...data,
       originalTitle: data['original_title'],
-      goodreadsUrl: data['goodreads_url'],
       imageUrl: data['cover_thumb_url'],
       imageFile: null,
       authorId: data['author_id'],
