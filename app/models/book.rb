@@ -5,22 +5,19 @@
 # Table name: books
 # Database name: primary
 #
-#  id                   :integer          not null, primary key
-#  data_filled          :boolean          default(FALSE), not null
-#  goodreads_popularity :integer
-#  goodreads_rating     :float
-#  goodreads_url        :string
-#  literary_form        :string           default("novel"), not null
-#  original_title       :string
-#  popularity           :integer          default(0)
-#  summary              :text
-#  summary_src          :string
-#  title                :string           not null
-#  wiki_popularity      :integer          default(0)
-#  wiki_url             :string
-#  year_published       :integer          not null
-#  created_at           :datetime         not null
-#  updated_at           :datetime         not null
+#  id              :integer          not null, primary key
+#  data_filled     :boolean          default(FALSE), not null
+#  literary_form   :string           default("novel"), not null
+#  original_title  :string
+#  popularity      :integer          default(0)
+#  summary         :text
+#  summary_src     :string
+#  title           :string           not null
+#  wiki_popularity :integer          default(0)
+#  wiki_url        :string
+#  year_published  :integer          not null
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
 #
 # Indexes
 #
@@ -39,6 +36,7 @@ class Book < ApplicationRecord
   ].freeze
 
   include CarrierwaveUrlAssign
+  include HasGenericLinks
   include HasWikiLinks
 
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
@@ -53,6 +51,7 @@ class Book < ApplicationRecord
   has_many :collections, through: :book_collections, class_name: 'Collection'
   has_many :book_public_lists, class_name: 'BookPublicList', dependent: :destroy, inverse_of: :book
   has_many :public_lists, through: :book_public_lists, class_name: 'PublicList'
+  has_many :generic_links, class_name: 'GenericLink', as: :entity, dependent: :destroy, inverse_of: :entity
 
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }

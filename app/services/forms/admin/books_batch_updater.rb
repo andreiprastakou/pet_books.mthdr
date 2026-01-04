@@ -42,7 +42,6 @@ module Forms
           year_published: book_params[:year_published],
           author_ids: book_params[:author_ids],
           series_ids: book_params[:series_ids],
-          goodreads_url: book_params[:goodreads_url],
           wiki_url: book_params[:wiki_url]
         }.compact
       end

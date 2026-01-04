@@ -20,6 +20,12 @@
     <% end %>
   </div>
 
+  <div class="mb-3" data-controller="generic-links-input">
+    <%= form.label nil, "Generic Links", class: "form-label" %>
+    <%= render "admin/common/generic_links_input",
+      form_scope: "series", values: generic_links_to_input_entries(@series.generic_links) %>
+  </div>
+
   <div class="mb-3">
     <%= form.submit class: "btn btn-primary" %>
     <%= link_to "Cancel", admin_series_index_path, class: "btn btn-secondary" %>

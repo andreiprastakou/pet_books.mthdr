@@ -21,7 +21,6 @@
 #
 FactoryBot.define do
   factory :wiki_link, class: 'WikiLink' do
-    entity factory: :book, strategy: :build_stubbed
     locale { 'en' }
     sequence(:name) { |i| "Test_#{i}" }
     sequence(:url) { |i| "https://en.wikipedia.org/wiki/Test_#{i}" }

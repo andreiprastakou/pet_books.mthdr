@@ -22,7 +22,7 @@
 require 'rails_helper'
 
 RSpec.describe WikiLink do
-  subject(:stat) { build(:wiki_link) }
+  subject(:link) { build(:wiki_link) }
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:entity_type) }
@@ -31,6 +31,10 @@ RSpec.describe WikiLink do
     it { is_expected.to validate_presence_of(:url) }
     it { is_expected.to validate_numericality_of(:views).is_greater_than_or_equal_to(0) }
     it { is_expected.to validate_numericality_of(:views_last_month).is_greater_than_or_equal_to(0) }
+
+    it 'has a valid factory' do
+      expect(build(:wiki_link, entity: build_stubbed(:book))).to be_valid
+    end
   end
 
   describe '.build_from_url' do

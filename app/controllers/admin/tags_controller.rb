@@ -10,6 +10,11 @@ module Admin
       updated_at
     ].index_by(&:to_s).freeze
 
+    PARAMS = %i[
+      name
+      category
+    ].freeze
+
     def index
       @pagy, @admin_tags = pagy(
         apply_sort(
@@ -67,7 +72,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:tag).permit(:name, :category)
+      params.fetch(:tag).permit(*PARAMS)
     end
 
     def apply_sort(scope, _sorting_map, defaults: {})

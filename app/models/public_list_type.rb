@@ -14,6 +14,7 @@
 #  index_public_list_types_on_name  (name) UNIQUE
 #
 class PublicListType < ApplicationRecord
+  include HasGenericLinks
   include HasWikiLinks
 
   has_many :public_lists, class_name: 'PublicList', dependent: :restrict_with_error

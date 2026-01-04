@@ -15,6 +15,7 @@
 #  index_collections_on_name  (name) UNIQUE
 #
 class Collection < ApplicationRecord
+  include HasGenericLinks
   include HasWikiLinks
 
   has_many :book_collections, dependent: :destroy

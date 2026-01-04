@@ -38,4 +38,6 @@ RSpec.describe Series do
   it_behaves_like 'has wiki links' do
     let(:record) { build(:series) }
   end
+
+  it_behaves_like 'has generic links'
 end

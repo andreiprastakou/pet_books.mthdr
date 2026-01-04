@@ -16,6 +16,7 @@
 #  index_series_on_name  (name)
 #
 class Series < ApplicationRecord
+  include HasGenericLinks
   include HasWikiLinks
 
   has_many :book_series, class_name: 'BookSeries', dependent: :restrict_with_error

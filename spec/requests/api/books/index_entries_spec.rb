@@ -5,7 +5,7 @@ RSpec.describe '/api/books/index_entries' do
     subject(:send_request) { get "/api/books/index_entries/#{book.id}.json", headers: authorization_header }
 
     let(:book) do
-      create(:book, goodreads_url: 'https://example.com', year_published: 2000, popularity: 20_000, tags: [tag])
+      create(:book, year_published: 2000, popularity: 20_000, tags: [tag])
     end
     let(:tag) { create(:tag) }
 
@@ -16,7 +16,6 @@ RSpec.describe '/api/books/index_entries' do
       expect(response.body).to eq({
         id: book.id,
         title: book.title,
-        goodreads_url: 'https://example.com',
         cover_thumb_url: nil,
         cover_full_url: nil,
         author_id: book.author_ids.first,

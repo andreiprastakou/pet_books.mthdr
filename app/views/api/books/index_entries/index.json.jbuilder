@@ -3,7 +3,6 @@
 json.array! @books do |book|
   json.id book.id
   json.title book.title
-  json.goodreads_url nil
   json.cover_thumb_url nil
   json.author_id book.legacy_author_id
   json.year book.year_published

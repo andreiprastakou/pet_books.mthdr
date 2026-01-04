@@ -18,6 +18,15 @@ module Admin
       literary_form
     ].index_by(&:to_s).freeze
 
+    PARAMS = (%i[
+      name
+      year_published
+      wiki_url
+    ] + [{
+      book_ids: [],
+      generic_links_attributes: {}
+    }]).freeze
+
     def index
       @collections = apply_sort(
         Collection.preload(:book_collections),
@@ -84,7 +93,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:collection).permit(:name, :year_published, :wiki_url, book_ids: [])
+      params.fetch(:collection).permit(*PARAMS)
     end
 
     def apply_sort(scope, _sorting_map, defaults: {})

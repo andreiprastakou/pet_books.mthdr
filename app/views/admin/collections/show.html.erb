@@ -28,6 +28,17 @@
         </div>
       <% end %>
 
+      <% if @collection.generic_links.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Links:</div>
+          <div class="col-md-9">
+            <% @collection.generic_links.each do |generic_link| %>
+              <%= external_link_to generic_link.name, generic_link.url %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
       <div class="row mb-3">
         <div class="col-md-3 font-weight-bold text-end">Created At:</div>
         <div class="col-md-9"><%= admin_timestamp(@collection.created_at) %></div>
