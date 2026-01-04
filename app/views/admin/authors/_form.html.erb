@@ -63,6 +63,12 @@
     </div>
   </div>
 
+  <div class="mb-3" data-controller="generic-links-input">
+    <%= form.label nil, "Generic Links", class: "form-label" %>
+    <%= render "admin/common/generic_links_input",
+      form_scope: "author", values: generic_links_to_input_entries(@author.generic_links) %>
+  </div>
+
   <div class="row mb-3">
     <div class="col-md-6">
       <%= form.label :birth_year, class: "form-label" %>

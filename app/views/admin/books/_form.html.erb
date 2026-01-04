@@ -53,6 +53,12 @@
 
   <%= render "admin/books/form/wiki_input", form: form, book: book %>
 
+  <div class="mb-3" data-controller="generic-links-input">
+    <%= form.label nil, "Generic Links", class: "form-label" %>
+    <%= render "admin/common/generic_links_input",
+      form_scope: "book", values: generic_links_to_input_entries(book.generic_links) %>
+  </div>
+
   <div class="mb-3">
     <%= form.label :literary_form, class: "form-label" %>
     <%= admin_reversible_input(old_value: book.literary_form_was) do %>

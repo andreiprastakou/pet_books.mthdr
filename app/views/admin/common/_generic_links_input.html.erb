@@ -1,0 +1,34 @@
+<div class="col-md-12">
+  <table class="table">
+    <tbody data-generic-links-input-target="linksList" data-values="<%= values.to_json %>">
+      <template data-generic-links-input-target="linkTemplate">
+        <tr data-name="link">
+          <td>
+            <%= hidden_field_tag "#{form_scope}[generic_links_attributes][ENTRY_ID][id]", nil,
+              data: { name: "idInput" } %>
+            <%= hidden_field_tag "#{form_scope}[generic_links_attributes][ENTRY_ID][_destroy]", nil,
+              data: { name: "destroyInput" } %>
+            <%= select_tag "#{form_scope}[generic_links_attributes][ENTRY_ID][name]", options_for_select(GenericLink::NAMES, nil), class: 'form-control',
+              data: { name: "name" } %>
+          </td>
+          <td>
+            <%= text_field_tag "#{form_scope}[generic_links_attributes][ENTRY_ID][url]", nil, class: 'form-control',
+              data: { name: "url" } %>
+          </td>
+          <td>
+            <%= button_tag "-", class: "btn btn-success", type: "button", tabindex: "-1",
+              data: { action: "click->generic-links-input#onClickDeleteLink" } %>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+    <tfoot>
+      <tr class="b-generic-link-new-entry-inputs">
+        <td colspan="3">
+          <%= button_tag "add link", class: "btn btn-success", type: "button", tabindex: "-1",
+            data: { action: "click->generic-links-input#onClickAddLink" } %>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

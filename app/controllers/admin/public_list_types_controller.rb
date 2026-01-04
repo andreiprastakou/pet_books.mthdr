@@ -16,6 +16,13 @@ module Admin
       updated_at
     ].index_by(&:to_s).freeze
 
+    PARAMS = (%i[
+      name
+      wiki_url
+    ] + [{
+      generic_links_attributes: {}
+    }]).freeze
+
     def index
       @public_list_types = apply_sort(
         PublicListType.all,
@@ -69,7 +76,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:public_list_type).permit(:name, :wiki_url)
+      params.fetch(:public_list_type).permit(*PARAMS)
     end
   end
 end

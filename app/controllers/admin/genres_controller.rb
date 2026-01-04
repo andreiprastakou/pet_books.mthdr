@@ -17,6 +17,11 @@ module Admin
       literary_form
     ].index_by(&:to_s).freeze
 
+    PARAMS = %i[
+      name
+      cover_design_id
+    ].freeze
+
     def index
       @genres = apply_sort(
         Genre.preload(:book_genres),
@@ -78,7 +83,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:genre).permit(:name, :cover_design_id)
+      params.fetch(:genre).permit(*PARAMS)
     end
 
     def apply_sort(scope, _sorting_map, defaults: {})

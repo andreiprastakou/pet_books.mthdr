@@ -21,14 +21,16 @@ module Admin
       'synced' => :data_filled
     ).freeze
 
-    PARAMS = %i[
+    PARAMS = (%i[
       fullname
       original_fullname
       wiki_url
       birth_year
       death_year
       photo_url
-    ].freeze
+    ] + [{
+      generic_links_attributes: {}
+    }]).freeze
 
     def index
       @pagy, @admin_authors = pagy(

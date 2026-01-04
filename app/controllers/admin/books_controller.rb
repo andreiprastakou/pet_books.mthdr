@@ -11,6 +11,23 @@ module Admin
       updated_at
     ].index_by(&:to_s).freeze
 
+    PARAMS = (%i[
+      title
+      original_title
+      year_published
+      summary
+      summary_src
+      wiki_url
+      literary_form
+      genre
+    ] + [{
+      tag_names: [],
+      genre_names: [],
+      author_ids: [],
+      series_ids: [],
+      generic_links_attributes: {}
+    }]).freeze
+
     DEFAULT_BOOKS_INDEX_VIEW = 'table'.freeze
 
     helper_method :current_index_view
@@ -75,9 +92,7 @@ module Admin
     end
 
     def record_params
-      params.fetch(:book).permit(:title, :original_title, :year_published, :goodreads_url,
-                                 :summary, :summary_src, :wiki_url, :literary_form, :genre,
-                                 tag_names: [], genre_names: [], author_ids: [], series_ids: [])
+      params.fetch(:book).permit(*PARAMS)
     end
 
     def current_index_view

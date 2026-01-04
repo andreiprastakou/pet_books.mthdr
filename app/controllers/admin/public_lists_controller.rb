@@ -10,6 +10,14 @@ module Admin
       'wiki_popularity' => 'books.wiki_popularity'
     }.freeze
 
+    PARAMS = (%i[
+      year
+      wiki_url
+    ] + [{
+      book_public_lists_attributes: {},
+      generic_links_attributes: {}
+    }]).freeze
+
     def show
       @book_public_lists = apply_sort(
         @public_list.book_public_lists.preload(book: %i[authors generative_summary_tasks]).includes(:book),
@@ -60,14 +68,8 @@ module Admin
     end
 
     def record_params
-      permitted = params.fetch(:public_list).permit(:year, :wiki_url, book_public_lists_attributes: {})
-      if permitted.key?(:book_public_lists_attributes)
-        permitted[:book_public_lists_attributes].each do |key, book_public_list_attributes|
-          permitted[:book_public_lists_attributes][key] =
-            book_public_list_attributes.permit(:id, :book_id, :role, :_destroy)
-        end
-      end
-      permitted
+      params.fetch(:public_list)
+            .permit(*PARAMS)
     end
   end
 end

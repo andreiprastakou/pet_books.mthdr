@@ -20,6 +20,7 @@
 #  public_list_type_id  (public_list_type_id => public_list_types.id)
 #
 class PublicList < ApplicationRecord
+  include HasGenericLinks
   include HasWikiLinks
 
   belongs_to :public_list_type, class_name: 'PublicListType', inverse_of: :public_lists

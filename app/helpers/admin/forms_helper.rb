@@ -74,5 +74,15 @@ module Admin
         }
       end
     end
+
+    def generic_links_to_input_entries(generic_links)
+      generic_links.map do |generic_link|
+        {
+          id: generic_link.id,
+          name: generic_link.name,
+          url: generic_link.url
+        }
+      end
+    end
   end
 end

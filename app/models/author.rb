@@ -23,6 +23,7 @@
 
 class Author < ApplicationRecord
   include CarrierwaveUrlAssign
+  include HasGenericLinks
   include HasWikiLinks
 
   has_many :book_authors, class_name: 'BookAuthor', dependent: :restrict_with_error

@@ -22,6 +22,12 @@
     <% end %>
   </div>
 
+  <div class="mb-3" data-controller="generic-links-input">
+    <%= form.label nil, "Generic Links", class: "form-label" %>
+    <%= render "admin/common/generic_links_input",
+      form_scope: "public_list", values: generic_links_to_input_entries(@public_list.generic_links) %>
+  </div>
+
   <div class="row mb-3 b-public-list-books-input" data-controller="public-list-books-input">
     <%= render "admin/public_lists/books_input",
       autocomplete_url: admin_api_books_search_path(format: :json),

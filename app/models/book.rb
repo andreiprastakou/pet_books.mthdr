@@ -39,6 +39,7 @@ class Book < ApplicationRecord
   ].freeze
 
   include CarrierwaveUrlAssign
+  include HasGenericLinks
   include HasWikiLinks
 
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
