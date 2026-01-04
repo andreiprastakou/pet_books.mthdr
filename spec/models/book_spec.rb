@@ -102,6 +102,8 @@ RSpec.describe Book do
     let(:record) { build(:book) }
   end
 
+  it_behaves_like 'has generic links'
+
   describe '#tag_ids' do
     subject(:result) { book.tag_ids }
 

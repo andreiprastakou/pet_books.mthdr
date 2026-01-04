@@ -40,4 +40,6 @@ RSpec.describe Collection do
   it_behaves_like 'has wiki links' do
     let(:record) { build(:collection) }
   end
+
+  it_behaves_like 'has generic links'
 end

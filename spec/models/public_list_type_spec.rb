@@ -38,4 +38,6 @@ RSpec.describe PublicListType do
   it_behaves_like 'has wiki links' do
     let(:record) { build(:public_list_type) }
   end
+
+  it_behaves_like 'has generic links'
 end
