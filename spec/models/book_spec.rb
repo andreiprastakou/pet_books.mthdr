@@ -93,6 +93,60 @@ RSpec.describe Book do
         expect(result).to match_array(books[0..1])
       end
     end
+
+    describe '.not_filled' do
+      subject(:result) { described_class.not_filled }
+
+      before { books }
+
+      let(:books) do
+        [
+          create(:book, data_filled: false),
+          create(:book, data_filled: true)
+        ]
+      end
+
+      it 'returns the books that are not filled' do
+        expect(result).to match_array(books.values_at(0))
+      end
+    end
+
+    describe '.without_tasks' do
+      subject(:result) { described_class.without_tasks }
+
+      before do
+        books
+        create(:book_summary_task, target: books[1])
+      end
+
+      let(:books) { create_list(:book, 2) }
+
+      it 'returns the books that have no tasks' do
+        expect(result).to match_array(books.values_at(0))
+      end
+    end
+
+    describe '.form_requires_summary' do
+      subject(:result) { described_class.form_requires_summary }
+
+      before { books }
+
+      let(:books) do
+        [
+          create(:book, literary_form: 'novel'),
+          create(:book, literary_form: 'novella'),
+          create(:book, literary_form: 'short'),
+          create(:book, literary_form: 'poem'),
+          create(:book, literary_form: 'play'),
+          create(:book, literary_form: 'comics'),
+          create(:book, literary_form: 'non_fiction')
+        ]
+      end
+
+      it 'returns the books that require a summary' do
+        expect(result).to match_array(books.values_at(0, 1, 6))
+      end
+    end
   end
 
   it_behaves_like 'has wiki links' do
@@ -218,8 +272,10 @@ RSpec.describe Book do
     context 'when a book is not data_filled' do
       it { is_expected.to be true }
 
-      context 'when a book is a short form' do
-        before { book.literary_form = 'short' }
+      context 'when book literary form does not require a summary' do
+        before do
+          book.literary_form = (described_class::STANDARD_FORMS - described_class::FORMS_REQUIRE_SUMMARY).sample
+        end
 
         it { is_expected.to be false }
       end

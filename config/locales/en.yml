@@ -41,6 +41,7 @@ en:
         generate_info:
           success: "Book info was successfully generated."
       books_batch_generate_summaries:
+        nothing_to_fetch: "No books need data fetch."
         success: "Summaries were requested to be generated."
       book_wiki_stats:
         update:

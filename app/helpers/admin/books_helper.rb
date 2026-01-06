@@ -21,7 +21,7 @@ module Admin
     def book_summary_icon(book)
       return if book.summary.blank?
 
-      content_tag(:span, "i", class: 'badge bg-secondary', title: book.summary)
+      content_tag(:span, 'i', class: 'badge bg-secondary', title: book.summary)
     end
 
     def button_to_generate_books_summaries(books)
@@ -29,8 +29,8 @@ module Admin
       return if books.empty?
 
       button_to "AI generate #{pluralize(books.count, 'summary')}",
-        admin_books_batch_generate_summaries_path(book_ids: books.pluck(:id)),
-        method: :post, class: 'btn btn-primary me-1'
+                admin_books_batch_generate_summaries_path(book_ids: books.pluck(:id)),
+                method: :post, class: 'btn btn-primary me-1'
     end
   end
 end
