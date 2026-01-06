@@ -40,6 +40,8 @@ en:
           success: "Book was successfully destroyed."
         generate_info:
           success: "Book info was successfully generated."
+      books_batch_generate_summaries:
+        success: "Summaries were requested to be generated."
       book_wiki_stats:
         update:
           success: "Wiki stats were updated."

@@ -3,6 +3,7 @@
 <div class="container mt-4">
   <div class="btn-group" role="group">
     <%= admin_buttonly_link_to "edit", edit_admin_series_path(@series) %>
+    <%= button_to_generate_books_summaries(@series.books) %>
     <%= button_to "delete", [:admin, @series], method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>
   </div>
 </div>
@@ -49,6 +50,7 @@
     <thead>
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("TITLE", "title") %></th>
+      <th>SUMMARY</th>
       <th>AUTHORS</th>
       <th>FORM</th>
       <th>LINKS</th>
@@ -63,6 +65,9 @@
         <td>
           <%= book_title_marked_for_data_fetch(book) %>
           <%= "(#{book.original_title})" if book.special_original_title? %>
+        </td>
+        <td>
+          <%= book_summary_icon(book) %>
         </td>
         <td>
           <% book.authors.each do |author| %>
