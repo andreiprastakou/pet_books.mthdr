@@ -17,7 +17,7 @@ module Admin
       private
 
       def fetch_view_data
-        books_to_fill_scope = Book.preload(:authors).not_filled.without_tasks
+        books_to_fill_scope = Book.preload(:authors).not_filled.without_tasks.form_requires_summary
         @books_to_fill = books_to_fill_scope.first(5)
         @books_to_fill_count = books_to_fill_scope.count
 

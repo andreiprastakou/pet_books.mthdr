@@ -42,6 +42,7 @@
     <thead>
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("TITLE", "title") %></th>
+      <th>SUMMARY</th>
       <th>AUTHORS</th>
       <th><%= sortable_table_column("FORM", "literary_form") %></th>
       <th>LINKS</th>
@@ -56,6 +57,9 @@
         <td>
           <%= book_title_marked_for_data_fetch(book) %>
           <%= "(#{book.original_title})" if book.special_original_title? %>
+        </td>
+        <td>
+          <%= book_summary_icon(book) %>
         </td>
         <td>
           <% book.authors.each do |author| %>

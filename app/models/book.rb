@@ -34,6 +34,7 @@ class Book < ApplicationRecord
     comics
     non_fiction
   ].freeze
+  FORMS_REQUIRE_SUMMARY = %w[novel novella non_fiction].freeze
 
   include CarrierwaveUrlAssign
   include HasGenericLinks
@@ -66,6 +67,7 @@ class Book < ApplicationRecord
   scope :by_author, ->(author) { joins(:book_authors).where(book_authors: { author_id: author }) }
   scope :not_filled, -> { where(data_filled: false) }
   scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
+  scope :form_requires_summary, -> { where(literary_form: FORMS_REQUIRE_SUMMARY) }
 
   def tag_ids
     tag_connections.map(&:tag_id)
@@ -91,7 +93,7 @@ class Book < ApplicationRecord
   def needs_data_fetch?
     generative_summary_tasks.reject(&:rejected?).empty? &&
       !data_filled? &&
-      !small?
+      literary_form.in?(FORMS_REQUIRE_SUMMARY)
   end
 
   def author_names_label

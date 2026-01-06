@@ -60,4 +60,33 @@ RSpec.describe Admin::BooksHelper do
       it { is_expected.to be_nil }
     end
   end
+
+  describe '#book_summary_icon' do
+    subject(:result) { helper.book_summary_icon(book) }
+
+    let(:book) { build_stubbed(:book, summary: 'SUMMARY_A') }
+
+    it 'returns a span with the summary' do
+      expect(result).to eq(
+        '<span class="badge bg-secondary" title="SUMMARY_A">i</span>'
+      )
+    end
+
+    context 'when the book has no summary' do
+      before { book.summary = nil }
+
+      it { is_expected.to be_nil }
+    end
+  end
+
+  describe '#button_to_generate_books_summaries' do
+    subject(:result) { helper.button_to_generate_books_summaries(books) }
+
+    let(:books) { build_stubbed_list(:book, 2) }
+
+    it 'returns a button to generate summaries' do
+      expect(result).to include 'AI generate 2 summaries'
+      expect(result).to include CGI.escapeHTML(admin_books_batch_generate_summaries_path(book_ids: books.pluck(:id)))
+    end
+  end
 end

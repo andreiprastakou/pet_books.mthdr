@@ -6,6 +6,7 @@
     <%= admin_buttonly_link_to "+book", new_admin_author_book_path(@author) %>
     <%= admin_buttonly_link_to "edit all books", edit_admin_books_batch_path(book_ids: @author.books.pluck(:id)) %>
     <%= admin_buttonly_link_to "AI parse list", new_admin_author_list_parsing_path(@author) %>
+    <%= button_to_generate_books_summaries(@author.books) %>
     <%= button_to "AI find all books", admin_author_books_list_index_path(@author), method: :post, class: 'btn btn-primary me-1' %>
     <%= button_to "sync wiki views", admin_author_wiki_stats_path(@author), method: :put, class: 'btn btn-primary me-1' %>
     <%= button_to "synced!", admin_author_sync_status_path(@author), method: :put, class: 'btn btn-primary me-1' %>
@@ -106,11 +107,11 @@
     <thead>
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("TITLE", "title") %></th>
+      <th>SUMMARY</th>
       <th><%= sortable_table_column("FORM", "literary_form") %></th>
       <th>LINKS</th>
       <th><%= sortable_table_column("YEAR", "year_published") %></th>
       <th><%= sortable_table_column("WIKI", "wiki_popularity") %></th>
-      <th><%= sortable_table_column("SYNC", "synced") %></th>
     </thead>
     <% @books.each do |book| %>
       <tr>
@@ -120,6 +121,9 @@
         <td>
           <%= book_title_marked_for_data_fetch(book) %>
           <%= "(#{book.original_title})" if book.special_original_title? %>
+        </td>
+        <td>
+          <%= book_summary_icon(book) %>
         </td>
         <td>
           <%= book.literary_form.humanize %>
@@ -133,9 +137,6 @@
         </td>
         <td>
           <%= book_wiki_link(book) %>
-        </td>
-        <td>
-          <%= book.data_filled? ? 'Yes' : 'No' %>
         </td>
       </tr>
     <% end %>
