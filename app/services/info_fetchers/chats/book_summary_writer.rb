@@ -37,9 +37,15 @@ module InfoFetchers
         5. Themes and authors must be comma-separated strings (no arrays).
       INSTRUCTIONS
 
-      def ask(book)
+      def ask(book, enhance_personality: true)
         last_response = ask_chat(book)
-        parse_summary_from_response(last_response)
+        summaries = parse_summary_from_response(last_response)
+
+        if enhance_personality
+          enhance_summaries_with_personality(summaries)
+        else
+          summaries
+        end
       rescue StandardError => e
         Rails.logger.error(e.message)
         @errors = [e]
@@ -74,6 +80,17 @@ module InfoFetchers
           "(#{book.year_published})",
           "by #{book.authors.map(&:fullname).join(', ')}"
         ].compact_blank.join(' '))
+      end
+
+      def enhance_summaries_with_personality(summaries)
+        enhancer = InfoFetchers::Chats::BookSummaryPersonalityEnhancer.new
+        summaries.map do |summary_data|
+          if summary_data[:summary].present?
+            summary_data.merge(summary: enhancer.enhance(summary_data[:summary]))
+          else
+            summary_data
+          end
+        end
       end
     end
   end
