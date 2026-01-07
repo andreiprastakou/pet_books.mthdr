@@ -16,7 +16,7 @@ class UrlAccessor {
   }
 }
 
-const Provider = (props) => {
+function Provider(props) {
   const { children } = props
 
   const history = useHistory()
@@ -50,7 +50,7 @@ const Provider = (props) => {
     const location = locationRef.current
     return buildPath({
       path: path ?? location.pathname,
-      params: params,
+      params,
       initialParams: location.search,
       hash: hash ?? location.hash
     })
@@ -76,7 +76,7 @@ const Provider = (props) => {
   }
 
   const contextValue = {
-    pageState: pageState,
+    pageState,
 
     actions: currentActions,
 
@@ -95,9 +95,7 @@ const Provider = (props) => {
   }
 
   const updatePageState = () => {
-    let newPageState = Object.keys(stateDefiners).reduce((newState, key) => {
-      return { ...newState, [key]: stateDefiners[key](urlAccessor) }
-    }, {})
+    const newPageState = Object.keys(stateDefiners).reduce((newState, key) => ({ ...newState, [key]: stateDefiners[key](urlAccessor) }), {})
     setPageState(newPageState)
   }
 
@@ -106,8 +104,8 @@ const Provider = (props) => {
   }, [location, stateDefiners])
 
   return (
-    <Context.Provider value={ contextValue }>
-      { children }
+      <Context.Provider value={contextValue}>
+        { children }
     </Context.Provider>
   )
 }

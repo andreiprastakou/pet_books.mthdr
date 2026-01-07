@@ -1,6 +1,5 @@
 import { objectToParams } from 'utils/objectToParams'
 import TagIndexEntry from 'store/tags/api/TagIndexEntry'
-import TagForm from 'store/tags/api/TagForm'
 import TagRef from 'store/tags/api/TagRef'
 import TagSearchEntry from 'store/tags/api/TagSearchEntry'
 
@@ -29,17 +28,6 @@ class ApiClient {
     return jQuery.ajax({
       url: `/api/tags/ref_entries/${id}.json`
     }).then(entry => TagRef.parse(entry))
-  }
-
-  static updateTag(id, data) {
-    const body = TagForm.buildServerData(data)
-    const formData = new FormData()
-    Object.keys(body).forEach(key => formData.append(`tag[${key}]`, body[key]))
-    return jQuery.ajax({
-      url: `/api/tags/full_entries/${id}.json`,
-      type: 'PUT',
-      data: { tag: body }
-    })
   }
 
   static getCategories() {

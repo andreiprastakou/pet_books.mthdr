@@ -23,9 +23,8 @@ const YearsSlider = (props) => {
         handleTitle={ years[state.value] }
         tooltip={ false }
         vertical
-        getAriaValueText={ (x) => 11231 }
         onChange={ (v) => setState({ value: v }) }
-        onChangeCommitted={ (i) => dispatch(jumpToYear(years[i])) }
+        // onChangeCommitted={ (i) => dispatch(jumpToYear(years[i])) }
       />
     </div>
   )

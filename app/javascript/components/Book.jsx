@@ -3,10 +3,8 @@ import PropTypes from 'prop-types'
 import { useSelector, useDispatch } from 'react-redux'
 import classnames from 'classnames'
 
-import { selectBooksIndexEntry, selectBookDefaultImageUrl } from 'store/books/selectors'
+import { selectBookDefaultImageUrl } from 'store/books/selectors'
 import { selectCurrentBookId } from 'store/axis/selectors'
-import { selectIdIsSelected } from 'store/selectables/selectors'
-import { toggleId } from 'store/selectables/actions'
 
 import ImageContainer from 'components/ImageContainer'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -17,19 +15,17 @@ const Book = (props) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const defaultCoverUrl = useSelector(selectBookDefaultImageUrl())
   const ref = useRef(null)
-  const isSelectedForBatch = useSelector(selectIdIsSelected(bookIndexEntry.id))
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
 
   const isCurrent = bookIndexEntry.id == currentBookId
   const coverUrl = bookIndexEntry.coverUrl || defaultCoverUrl
-  const classNames = classnames('book-case', { 'selected': isCurrent, 'selected-for-batch': isSelectedForBatch })
+  const classNames = classnames('book-case', { 'selected': isCurrent })
 
   useEffect(() => {
-    if (isCurrent) { ref.current?.scrollIntoViewIfNeeded() }
+    if (isCurrent) { ref.current?.scrollIntoView() }
   })
 
   const handleClick = (e) => {
-    if (e.ctrlKey) dispatch(toggleId(bookIndexEntry.id))
     showBooksIndexEntry(bookIndexEntry.id)
   }
 

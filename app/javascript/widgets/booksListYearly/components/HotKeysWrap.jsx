@@ -12,10 +12,7 @@ import {
   setBookShiftDirectionHorizontal,
   shiftSelection,
   shiftYear,
-  toggleCurrentBookSelected,
 } from 'widgets/booksListYearly/actions'
-import { syncCurrentBookStats } from 'store/bookSync/actions'
-import UrlStoreContext from 'store/urlStore/Context'
 
 const keyMap = {
   DOWN: 'Down',
@@ -24,12 +21,9 @@ const keyMap = {
   UP: 'Up',
   PAGE_UP: 'PageUp',
   START: 'Home',
-  TOGGLE_EDIT: 'e',
   TOGGLE_AUTHOR: 'a',
   LEFT: 'Left',
   RIGHT: 'Right',
-  SYNC_BOOK_STATS: 's',
-  SELECT_BOOK_FOR_BATCH: 'b',
 }
 
 const handleWheel = (dispatch, xDirection, yDirection) => {
@@ -47,8 +41,6 @@ const HotKeysWrap = (props) => {
   const currentAuthorId = useSelector(selectCurrentAuthorId())
   const currentAuthor = useSelector(selectAuthorFull(currentAuthorId))
   const currentBookRef = useSelector(selectCurrentBookRef())
-  const { pageState: { modalBookEditShown },
-          actions: { closeModal, openEditBookModal } } = useContext(UrlStoreContext)
 
   useEffect(() => ref.current.focus(), [])
 
@@ -68,18 +60,7 @@ const HotKeysWrap = (props) => {
       dispatch(setBookShiftDirectionHorizontal('left'))
       dispatch(shiftSelection(-1))
     },
-    SYNC_BOOK_STATS: () => dispatch(syncCurrentBookStats()),
     TOGGLE_AUTHOR: () => alert('TOGGLE'),
-    TOGGLE_EDIT: () => {
-      if (!currentBookRef) { return }
-
-      if (modalBookEditShown) {
-        closeModal()
-      } else {
-        openEditBookModal()
-      }
-    },
-    SELECT_BOOK_FOR_BATCH: () => dispatch(toggleCurrentBookSelected())
   })
 
   return (

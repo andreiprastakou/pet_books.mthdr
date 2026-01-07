@@ -11,7 +11,6 @@ import UrlStoreContext from 'store/urlStore/Context'
 
 const AuthorsListItem = (props) => {
   const { author } = props
-  const dispatch = useDispatch()
   const selectedAuthorId = useSelector(selectCurrentAuthorId())
   const isSelected = author.id == selectedAuthorId
   const ref = useRef(null)
@@ -21,7 +20,7 @@ const AuthorsListItem = (props) => {
   const sortBy = useSelector(selectSortBy())
 
   useEffect(() => {
-    if (isSelected) ref.current?.scrollIntoViewIfNeeded()
+    if (isSelected) ref.current?.scrollIntoView()
   })
 
   return (

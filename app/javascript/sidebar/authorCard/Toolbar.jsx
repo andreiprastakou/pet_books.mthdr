@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faBookmark, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faBookmark } from '@fortawesome/free-solid-svg-icons'
 import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import PropTypes from 'prop-types'
@@ -13,8 +13,8 @@ import UrlStoreContext from 'store/urlStore/Context'
 
 const Toolbar = (props) => {
   const { authorFull } = props
-  const { routes: { authorPagePath, editAuthorPath, newBookPath },
-          actions: { openEditAuthorModal, openNewBookModal }, routesReady } = useContext(UrlStoreContext)
+  const { routes: { authorPagePath },
+          routesReady } = useContext(UrlStoreContext)
 
   const dispatch = useDispatch()
   const tagNames = useSelector(selectTagNames(authorFull.tagIds))
@@ -38,11 +38,6 @@ const Toolbar = (props) => {
           </Button>
         }
 
-        <Button variant='outline-warning' title='Edit info' href={ editAuthorPath(authorFull.id) }
-                onClick={ e => { e.preventDefault(); openEditAuthorModal() } }>
-          <FontAwesomeIcon icon={ faPen }/>
-        </Button>
-
         { isBookmarked ?
           <Button variant='outline-warning' title='Remove bookmark' href='#'
                   onClick={ () => dispatch(unmarkAuthorAsBookmarked(authorFull.id, authorFull.tagIds)) }>
@@ -54,15 +49,6 @@ const Toolbar = (props) => {
             <FontAwesomeIcon icon={ faBookmarkEmpty }/>
           </Button>
         }
-
-        <Button variant='outline-danger' title='Delete' href='#' onClick={ (e) => e.preventDefault() }>
-          <FontAwesomeIcon icon={ faTrash }/>
-        </Button>
-
-        <Button variant='outline-warning' title='Add a book' href={ newBookPath() }
-                onClick={ e => { e.preventDefault(); openNewBookModal() } }>
-          + <FontAwesomeIcon icon={ faBook }/>
-        </Button>
       </ButtonGroup>
     </>
   )

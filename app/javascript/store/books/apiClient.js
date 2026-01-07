@@ -1,5 +1,4 @@
 import { objectToParams } from 'utils/objectToParams'
-import BookForm from 'store/books/api/BookForm'
 import BookFull from 'store/books/api/BookFull'
 import BookIndexEntry from 'store/books/api/BookIndexEntry'
 import BookRefEntry from 'store/books/api/BookRefEntry'
@@ -56,51 +55,10 @@ class ApiClient {
     }).then(entry => BookRefEntry.parse(entry))
   }
 
-  static updateBookPopularity(id) {
-    return jQuery.ajax({
-      url: `/api/books/popularity/${id}.json`,
-      type: 'PUT'
-    }).then(data => BookIndexEntry.parse(data))
-  }
-
   static getBookFull(id) {
     return jQuery.ajax({
       url: `/api/books/full_entries/${id}.json`
     }).then(entry => BookFull.parse(entry))
-  }
-
-  static updateBook(id, data) {
-    const body = BookForm.buildServerData(data)
-    const formData = new FormData()
-    Object.keys(body).forEach(key => formData.append(`book[${key}]`, body[key]))
-    return jQuery.ajax({
-      url: `/api/books/full_entries/${id}.json`,
-      type: 'PUT',
-      data: { book: body },
-      // contentType: false, cache: false, processData: false
-    })
-  }
-
-  static createBook(data) {
-    const body = BookForm.buildServerData(data)
-    return jQuery.ajax({
-      url: '/api/books/full_entries.json',
-      type: 'POST',
-      data: { book: body }
-    })
-  }
-
-  static updateBooksBatch(ids, tagNames) {
-    return jQuery.ajax({
-      url: '/api/books/batch.json',
-      type: 'PUT',
-      data: {
-        ids,
-        'batch_update': {
-          'tag_names': tagNames,
-        },
-      }
-    })
   }
 
   static search(key) {

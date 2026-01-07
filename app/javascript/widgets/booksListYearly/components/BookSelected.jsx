@@ -9,19 +9,15 @@ import TagBadge from 'components/TagBadge'
 import PopularityBadge from 'components/PopularityBadge'
 import BookToolbar from 'components/BookToolbar'
 import UrlStoreContext from 'store/urlStore/Context'
-import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectAuthorRef } from 'store/authors/selectors'
-import { selectBooksIndexEntry, selectBookDefaultImageUrl } from 'store/books/selectors'
+import {selectBookDefaultImageUrl } from 'store/books/selectors'
 import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
-import { selectIdIsSelected } from 'store/selectables/selectors'
 import { setImageSrc } from 'modals/imageFullShow/actions'
 
 const BookSelected = (props) => {
   const { bookIndexEntry } = props
   const id = bookIndexEntry.id
   const authorRef = useSelector(selectAuthorRef(bookIndexEntry.authorId))
-  const currentBookId = useSelector(selectCurrentBookId())
-  const isSelectedForBatch = useSelector(selectIdIsSelected(bookIndexEntry.id))
   const dispatch = useDispatch()
   const defaultCoverUrl = useSelector(selectBookDefaultImageUrl())
   const coverUrl = bookIndexEntry.coverUrl || defaultCoverUrl
@@ -35,7 +31,7 @@ const BookSelected = (props) => {
 
   if (!routesReady) return null
 
-  const classNames = classnames('book-case', 'selected', { 'selected-for-batch': isSelectedForBatch })
+  const classNames = classnames('book-case', 'selected')
 
   return (
     <div className='book-case selected' ref={ ref }>

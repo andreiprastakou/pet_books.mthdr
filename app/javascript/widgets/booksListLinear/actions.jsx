@@ -1,19 +1,14 @@
-import { first, last } from 'lodash'
 import apiClient from 'store/books/apiClient'
 import { selectCurrentBookId } from 'store/axis/selectors'
-import { clearSelection } from 'store/selectables/actions'
-import { selectBooksRefIds, selectCurrentBookRef } from 'store/books/selectors'
+import { selectCurrentBookRef } from 'store/books/selectors'
 import {
-  addBooks,
   addBooksRefs,
   fetchMissingBookIndexEntries,
   setRequestedBookId,
   showBook,
 } from 'store/books/actions'
-import { pickNearEntries } from 'utils/pickNearEntries'
 import { selectBookIds, selectFilter, selectPage, selectPerPage, selectSortBy } from 'widgets/booksListLinear/selectors'
 import { slice } from 'widgets/booksListLinear/slice'
-import { toggleId } from 'store/selectables/actions'
 export const {
   assignBookIds,
   assignBooksTotal,
@@ -75,10 +70,4 @@ export const switchToFirstBook = () => (dispatch, getState) => {
 
 export const clearListState = () => (dispatch) => {
   dispatch(clearListInnerState())
-  dispatch(clearSelection())
-}
-
-export const toggleCurrentBookSelected = () => (dispatch, getState) => {
-  const id = selectCurrentBookId()(getState())
-  dispatch(toggleId(id))
 }

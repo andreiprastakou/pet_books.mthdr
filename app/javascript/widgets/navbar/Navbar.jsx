@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 
 import AuthorsNavList from 'widgets/navbar/components/AuthorsNavList'
@@ -10,11 +10,10 @@ import UrlStoreContext from 'store/urlStore/Context'
 import { selectTagIdBookmark, selectTagIdRead } from 'store/tags/selectors'
 
 const PageNavbar = () => {
-  const { routes: { authorsPagePath, booksPagePath, newAuthorPath, tagsPagePath, tagPagePath },
-          actions: { goto, openNewAuthorModal },
+  const { routes: { authorsPagePath, booksPagePath, tagsPagePath, tagPagePath },
+          actions: { goto },
           routesReady } = useContext(UrlStoreContext)
   const { triggerEvent } = useContext(EventsContext)
-  const dispatch = useDispatch()
   const tagIdBookmark = useSelector(selectTagIdBookmark())
   const tagIdRead = useSelector(selectTagIdRead())
 
@@ -39,9 +38,6 @@ const PageNavbar = () => {
           <NavDropdown.Divider />
           <NavDropdown.Item href={ authorsPagePath() }>List all</NavDropdown.Item>
           <NavDropdown.Divider />
-          <NavDropdown.Item href={ newAuthorPath() } onClick={ e => { e.preventDefault(); openNewAuthorModal() } }>
-            +Author
-          </NavDropdown.Item>
         </NavDropdown>
 
         <NavDropdown title='Tags' onClick={ () => triggerEvent('TAGS_NAV_CLICKED') }>

@@ -27,7 +27,6 @@ import {
   selectYearCurrentBookId,
 } from 'widgets/booksListYearly/selectors'
 
-import { clearSelection, toggleId } from 'store/selectables/actions'
 import {
   clearState as clearYearsInnerState,
   requestYearRefsLoaded,
@@ -195,10 +194,5 @@ export const clearListState = () => dispatch => {
   dispatch(clearBooksRefs())
   dispatch(clearListInnerState())
   dispatch(clearYearsInnerState())
-  dispatch(clearSelection())
 }
 
-export const toggleCurrentBookSelected = () => (dispatch, getState) => {
-  const id = selectCurrentBookId()(getState())
-  dispatch(toggleId(id))
-}

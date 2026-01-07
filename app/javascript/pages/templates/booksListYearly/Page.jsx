@@ -4,7 +4,6 @@ import { Col } from 'react-bootstrap'
 import PageConfigurer from 'pages/templates/booksListYearly/PageConfigurer'
 import Layout from 'pages/Layout'
 import BooksListYearly from 'widgets/booksListYearly/BooksListYearly'
-import BooksYearlyControls from 'sidebar/batchControls/BooksYearlyControls'
 import ListUrlStoreConfigurer from 'widgets/booksListYearly/UrlStore'
 
 const Page = (props) => {
@@ -20,8 +19,6 @@ const Page = (props) => {
             { config.SidebarCardWidget &&
                 <config.SidebarCardWidget/>
             }
-
-            <BooksYearlyControls/>
           </div>
         </Col>
         <Col xs={ 8 }>
