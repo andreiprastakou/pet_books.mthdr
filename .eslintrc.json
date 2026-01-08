@@ -38,7 +38,7 @@
     "function-call-argument-newline": ["off"],
     "function-paren-newline": ["off"],
     "id-length": ["off"],
-    "indent": ["off"], // "indent": ["error", 2],
+    "indent": ["error", 2],
     "implicit-arrow-linebreak": ["off"],
     "max-params": ["error", 4],
     "multiline-comment-style": ["off"],
@@ -77,11 +77,18 @@
         "namedComponents": "arrow-function",
         "unnamedComponents": "arrow-function"
       }
-    ],
-    "max-lines-per-function": ["off"], // DO NOT MERGE
-    "max-statements": ["off"], // DO NOT MERGE
-    "react/jsx-no-constructed-context-values": ["off"] // DO NOT MERGE
+    ]
   },
+  "overrides": [
+    {
+      "files": ["*.jsx"],
+      "rules": {
+        "indent": ["off"],
+        "max-lines-per-function": ["error", { "max": 100 }],
+        "max-statements": ["error", { "max": 20 }]
+      }
+    }
+  ],
   "settings": {
     "react": {
       "version": "detect"

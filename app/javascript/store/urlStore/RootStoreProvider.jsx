@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useLocation, useHistory } from 'react-router-dom'
 
@@ -37,7 +37,7 @@ const Provider = ({ children }) => {
     patch: path => history.replace(path),
   }
 
-  const contextValue = {
+  const contextValue = useMemo(() => ({
     pageState,
     actions: currentActions,
     helpers: {
@@ -48,7 +48,7 @@ const Provider = ({ children }) => {
     getRoutes: () => routesRef.current,
     getActions: () => currentActions,
     routesReady,
-  }
+  }), [pageState, currentActions, routesRef.current, routesReady])
 
   const updatePageState = () => {
     const newPageState = Object.keys(stateDefiners).reduce((newState, key) => (
