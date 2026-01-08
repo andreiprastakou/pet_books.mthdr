@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
@@ -8,26 +8,26 @@ import BooksListLinearControls from 'sidebar/booksListLinearControls/BooksListLi
 import BooksListLinear from 'widgets/booksListLinear/BooksListLinear'
 import PageConfigurer from 'pages/tagPage/PageConfigurer'
 
-const TagPage = () => {
-  return (
-    <>
-      <PageConfigurer/>
+const TagPage = () => (
+  <>
+    <PageConfigurer />
 
-      <Layout>
-        <Col xs={ 4 }>
-          <div className='page-sidebar'>
-            <BookCard/>
-            <TagCard/>
-            <BooksListLinearControls/>
-          </div>
-        </Col>
+    <Layout>
+      <Col xs={4}>
+        <div className='page-sidebar'>
+          <BookCard />
 
-        <Col xs={ 8 }>
-          <BooksListLinear/>
-        </Col>
-      </Layout>
-    </>
-  )
-}
+          <TagCard />
+
+          <BooksListLinearControls />
+        </div>
+      </Col>
+
+      <Col xs={8}>
+        <BooksListLinear />
+      </Col>
+    </Layout>
+  </>
+)
 
 export default TagPage

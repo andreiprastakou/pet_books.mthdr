@@ -1,9 +1,9 @@
-import "@hotwired/turbo-rails"
-import "bootstrap"
-import { Application } from "@hotwired/stimulus"
-import { definitionsFromContext } from "@hotwired/stimulus-webpack-helpers"
+import '@hotwired/turbo-rails'
+import 'bootstrap'
+import { Application } from '@hotwired/stimulus'
+import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers'
 
 // Initialize Stimulus
 const application = Application.start()
-const context = require.context("../admin/stimulus_controllers", true, /\.js$/)
+const context = require.context('../admin/stimulus_controllers', true, /\.js$/u)
 application.load(definitionsFromContext(context))

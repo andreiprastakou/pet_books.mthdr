@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { selectCurrentBookId, selectCurrentAuthorId } from 'store/axis/selectors'
+import { selectCurrentAuthorId } from 'store/axis/selectors'
 import { fetchAuthorFull } from 'store/authors/actions'
 import { setPageIsLoading } from 'store/metadata/actions'
-import { clearListState } from 'widgets/booksListLinear/actions'
 import {
   assignFilter,
   assignPerPage,
   assignSortBy,
+  clearListState,
   fetchBooks,
 } from 'widgets/booksListLinear/actions'
 import { prepareNavRefs } from 'widgets/navbar/actions'
@@ -16,10 +16,9 @@ import { prepareNavRefs } from 'widgets/navbar/actions'
 const Configurer = () => {
   const dispatch = useDispatch()
   const authorId = useSelector(selectCurrentAuthorId())
-  const bookId = useSelector(selectCurrentBookId())
 
   useEffect(() => {
-    if (!authorId) { return }
+    if (!authorId)  return
     dispatch(setPageIsLoading(true))
     dispatch(clearListState())
     dispatch(assignSortBy('year'))

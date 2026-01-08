@@ -1,6 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
-import { useDispatch } from 'react-redux'
-import { Route, useParams } from 'react-router-dom'
+import React, { useContext, useEffect } from 'react'
 
 import BooksPage from 'pages/booksPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -17,13 +15,12 @@ const Helper = () => {
 
 const path = '/books'
 
-const Renderer = () => {
-  return (
-    <>
-      <ListUrlStoreConfigurer/>
-      <BooksPage/>
-    </>
-  )
-}
+const Renderer = () => (
+  <>
+    <ListUrlStoreConfigurer />
+
+    <BooksPage />
+  </>
+)
 
 export default { path, Renderer, Helper }

@@ -12,7 +12,7 @@ const keyMap = {
   RIGHT: 'Right',
 }
 
-const HotKeysWrap = (props) => {
+const HotKeysWrap = ({ children }) => {
   const dispatch = useDispatch()
   const ref = useRef(null)
 
@@ -30,12 +30,22 @@ const HotKeysWrap = (props) => {
   })
 
   return (
-    <HotKeys keyMap={ keyMap } handlers={ hotKeysHandlers() }>
-      <div tabIndex="-1" ref={ ref }>
-        { props.children }
+    <HotKeys
+      handlers={hotKeysHandlers()}
+      keyMap={keyMap}
+    >
+      <div
+        ref={ref}
+        tabIndex="-1"
+      >
+        { children }
       </div>
     </HotKeys>
   )
+}
+
+HotKeysWrap.propTypes = {
+  children: PropTypes.node.isRequired,
 }
 
 export default HotKeysWrap

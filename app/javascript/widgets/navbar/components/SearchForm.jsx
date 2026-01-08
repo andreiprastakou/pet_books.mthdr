@@ -1,15 +1,17 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
-import { Form, FormControl, NavDropdown, Spinner } from 'react-bootstrap'
+import { Form, Spinner } from 'react-bootstrap'
 
 import { addErrorMessage } from 'widgets/notifications/actions'
 import EventsContext from 'store/events/Context'
 
-const SearchForm = (props) => {
-  const { focusEvent = null, apiSearcher } = props
+const SearchForm = ({ focusEvent = null, apiSearcher }) => {
   const { subscribeToEvent } = useContext(EventsContext)
-  const [{ lastSearchedKey = null, searchInProgress = false }, setSearchState] = useState({})
+  const [searchState, setSearchState] = useState({})
+  const { lastSearchedKey = null, searchInProgress = false } = searchState
   const searchKey = useRef(null)
+  const key = searchKey.current
   const searchRef = useRef()
   const dispatch = useDispatch()
 
@@ -23,8 +25,7 @@ const SearchForm = (props) => {
   }, [])
 
   const performSearch = () => {
-    const key = searchKey.current
-    if (!Boolean(key) || searchInProgress) return
+    if (!key || searchInProgress) return
 
     setSearchState({ searchInProgress: true })
     apiSearcher(key).then(() => {
@@ -35,27 +36,45 @@ const SearchForm = (props) => {
     })
   }
 
-  const handleSearchInput = (key) => {
-    searchKey.current = key
+  const handleSearchSubmit = useCallback(e => {
+    e.preventDefault()
+    performSearch()
+  }, [])
+
+  const handleChange = useCallback(e => {
+    searchKey.current = e.target.value
     setTimeout(() => {
       if (key !== searchKey.current || key === lastSearchedKey) return
       performSearch()
     }, 1000)
-  }
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault()
-    performSearch()
-  }
+  }, [])
 
   return (
-    <Form onSubmit={ handleSearchSubmit }>
-      <Form.Control type='text' autoComplete='off' onChange={ (e) => handleSearchInput(e.target.value) } ref={ searchRef }/>
-      { searchInProgress &&
-        <Spinner className='search-spinner' animation='border'/>
-      }
+    <Form onSubmit={handleSearchSubmit}>
+      <Form.Control
+        autoComplete='off'
+        onChange={handleChange}
+        ref={searchRef}
+        type='text'
+      />
+
+      { searchInProgress ? (
+        <Spinner
+          animation='border'
+          className='search-spinner'
+        />
+      ) : null }
     </Form>
   )
+}
+
+SearchForm.propTypes = {
+  apiSearcher: PropTypes.func.isRequired,
+  focusEvent: PropTypes.string,
+}
+
+SearchForm.defaultProps = {
+  focusEvent: null,
 }
 
 export default SearchForm

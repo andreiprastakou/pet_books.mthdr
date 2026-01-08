@@ -1,5 +1,5 @@
-import { isEmpty, sortBy } from 'lodash'
-import React, { useContext, useEffect } from 'react'
+import { sortBy } from 'lodash'
+import React, { useContext, useEffect, useCallback } from 'react'
 import { Card } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
@@ -7,7 +7,6 @@ import PropTypes from 'prop-types'
 import Toolbar from 'sidebar/authorCard/Toolbar'
 import ImageContainer from 'components/ImageContainer'
 import TagBadge from 'components/TagBadge'
-import PopularityBadge from 'components/PopularityBadge'
 import CloseIcon from 'components/icons/CloseIcon'
 
 import orders from 'pages/authorsPage/sortOrders'
@@ -15,7 +14,6 @@ import { selectCurrentAuthorId } from 'store/axis/selectors'
 import { selectAuthorFull, selectAuthorDefaultImageUrl } from 'store/authors/selectors'
 import { fetchAuthorFull } from 'store/authors/actions'
 import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
-import { setupStoreForAuthorCard } from 'sidebar/authorCard/actions'
 import { setImageSrc } from 'modals/imageFullShow/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -28,13 +26,11 @@ const AuthorCardWrap = () => {
   }, [authorId])
 
   if (!authorFull) return null
-  return (<AuthorCard authorFull={ authorFull }/>)
+  return (<AuthorCard authorFull={authorFull} />)
 }
 
-const AuthorCard = (props) => {
-  const { authorFull } = props
+const AuthorCard = ({ authorFull, onClose }) => {
   const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
-  const { onClose } = props
   const dispatch = useDispatch()
   const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds))
   const visibleTags = useSelector(selectVisibleTags(tags))
@@ -43,37 +39,65 @@ const AuthorCard = (props) => {
 
   if (!routesReady) return null
 
+  const handleClose = useCallback(() => {
+    if (onClose) onClose()
+  }, [onClose])
+
+  const handleImageClick = useCallback(() => {
+    dispatch(setImageSrc(authorFull.imageUrl))
+  }, [authorFull.imageUrl])
+
   return (
     <Card className='sidebar-widget-author-card sidebar-card-widget'>
-      <Card.Header className='widget-title'>Author</Card.Header>
-      { onClose &&
-        <CloseIcon onClick={ () => onClose() }/>
-      }
+      <Card.Header className='widget-title'>
+        { 'Author' }
+      </Card.Header>
+
+      { onClose ? <CloseIcon onClick={handleClose} /> : null}
 
       <Card.Body>
-        <ImageContainer className='author-image' url={ authorFull.thumbUrl || defaultPhotoUrl }
-                        onClick={ () => dispatch(setImageSrc(authorFull.imageUrl)) }/>
+        <ImageContainer
+          classes='author-image'
+          onClick={handleImageClick}
+          url={authorFull.thumbUrl || defaultPhotoUrl}
+        />
 
         <div className='details-right'>
-          <div className='author-name'>{ authorFull.fullname }</div>
+          <div className='author-name'>
+            { authorFull.fullname }
+          </div>
 
           <div className='author-card-text'>
-            <div>Years: { renderLifetime(authorFull, authorsPagePath) }</div>
-            <div>Popularity: { authorFull.popularity.toLocaleString() } pts (
-              <a href={ authorsPagePath({ authorId: authorFull.id, sortOrder: orders.BY_RANK_ASCENDING }) }>
-                #{ authorFull.rank }
+            <div>
+              { 'Years: ' }
+
+              { renderLifetime(authorFull, authorsPagePath) }
+            </div>
+
+            <div>
+              { `Popularity: ${authorFull.popularity.toLocaleString()} pts (` }
+
+              <a href={authorsPagePath({ authorId: authorFull.id, sortOrder: orders.BY_RANK_ASCENDING })}>
+                { `#${authorFull.rank}` }
               </a>
-            )</div>
+
+              { ')' }
+            </div>
           </div>
 
           <div className='author-tags'>
             { sortedTags.map(tag =>
-              <TagBadge text={ tag.name } id={ tag.id } key={ tag.id } variant='dark'/>
+              (<TagBadge
+                id={tag.id}
+                key={tag.id}
+                text={tag.name}
+                variant='dark'
+               />)
             ) }
           </div>
         </div>
 
-        <Toolbar authorFull={ authorFull }/>
+        <Toolbar authorFull={authorFull} />
       </Card.Body>
     </Card>
   )
@@ -81,24 +105,33 @@ const AuthorCard = (props) => {
 
 AuthorCard.propTypes = {
   authorFull: PropTypes.object.isRequired,
+  onClose: PropTypes.func,
+}
+
+AuthorCard.defaultProps = {
+  onClose: null,
 }
 
 const renderLifetime = (authorFull, authorsPath) => {
-  if (!authorFull.birthYear) { return null }
+  if (!authorFull.birthYear)  return null
 
   const birthLabel = `${authorFull.birthYear}--`
   const age = authorFull.deathYear
-              ? authorFull.deathYear - authorFull.birthYear
-              : new Date().getFullYear() - authorFull.birthYear
+    ? authorFull.deathYear - authorFull.birthYear
+    : new Date().getFullYear() - authorFull.birthYear
   return(
     <>
       { birthLabel }
+
       { authorFull.deathYear }
-      &nbsp;(
-        <a href={ authorsPath({ authorId: authorFull.id, sortOrder: orders.BY_YEAR_ASCENDING }) }>
-          age { age }
-        </a>
-      )
+
+      { ' (' }
+
+      <a href={authorsPath({ authorId: authorFull.id, sortOrder: orders.BY_YEAR_ASCENDING })}>
+        { `age: ${age}` }
+      </a>
+
+      { ')' }
     </>
   )
 }

@@ -1,12 +1,9 @@
-import { compact, first, uniq } from 'lodash'
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 import classnames from 'classnames'
 
-import { selectCurrentBookId } from 'store/axis/selectors'
-import { selectBookPopularities, selectCurrentBookRef } from 'store/books/selectors'
-import { pickNearEntries } from 'utils/pickNearEntries'
+import { selectCurrentBookRef } from 'store/books/selectors'
 import {
   selectBookShiftDirectionHorizontal,
   selectDisplayedBookIdsInYear,
@@ -19,6 +16,7 @@ import PopularityChart from 'widgets/booksListYearly/components/PopularityChart'
 import BookIndexEntry from 'widgets/booksListYearly/components/BookIndexEntry'
 import ImageContainer from 'components/ImageContainer'
 
+/* eslint-disable max-len */
 const YEAR_BACKGROUNDS = {
   2022: 'https://ichef.bbci.co.uk/news/976/cpsprodpb/1279E/production/_125287657_hi076130836.jpg',
   2021: 'https://edition.cnn.com/interactive/2021/specials/year-in-pictures/media/august/s_DB144887CF3CD01375AECCD53541DB9BF6FFAD6A584BC234851AD45425D38FCE_1636681662106_205-AP21228596468540.jpg.JPG',
@@ -49,8 +47,9 @@ const YEAR_BACKGROUNDS = {
   1909: 'https://img4.goodfon.com/wallpaper/nbig/f/df/1909-i-god-ssha-buffalo-doma-obelisk-retro.jpg',
   1908: 'https://th-thumbnailer.cdn-si-edu.com/OjN_CtyeAdvTKnQ6w1wminT75q4=/fit-in/1600x0/https://tf-cmsv2-smithsonianmag-media.s3.amazonaws.com/filer/1908_book_jan08_main_631.jpg',
 }
+/* eslint-enable max-len */
 
-const YearRow = (props) => {
+const YearRow = props => {
   const { year } = props
   const currentBookRef = useSelector(selectCurrentBookRef())
   const displayedBookIds = useSelector(selectDisplayedBookIdsInYear(year))
@@ -58,35 +57,43 @@ const YearRow = (props) => {
   const direction = useSelector(selectBookShiftDirectionHorizontal())
   const dispatch = useDispatch()
 
-  const onAnimationEnd = (e) => {
-    switch (e.animationName) {
-      case 'move-left':
-      case 'move-right': dispatch(setBookShiftDirectionHorizontal(null)); break;
-    }
-  }
+  const onAnimationEnd = useCallback(e => {
+    if (e.animationName === 'move-left' || e.animationName === 'move-right')
+      dispatch(setBookShiftDirectionHorizontal(null))
+  }, [])
 
   const yearBackgroundUrl = YEAR_BACKGROUNDS[year]
 
   return (
-    <div className={ classnames('list-year', { 'current': yearIsCurrent }) }>
-      { yearIsCurrent && yearBackgroundUrl &&
-        <ImageContainer className='background'
-          url={ yearBackgroundUrl }
-          styles={ { backgroundSize: 'cover' } }/>
-      }
+    <div className={classnames('list-year', { 'current': yearIsCurrent })}>
+      { yearIsCurrent && yearBackgroundUrl ? (
+        <ImageContainer
+          className='background'
+          styles={{ backgroundSize: 'cover' }}
+          url={yearBackgroundUrl}
+        />
+      ) : null}
 
-      { yearIsCurrent &&
-        <PopularityChart bookIds={ displayedBookIds }/>
-      }
+      { yearIsCurrent ? <PopularityChart bookIds={displayedBookIds} /> : null}
 
       <div className='year-number'>
         { year }
       </div>
 
-      <div className={ classnames('year-books', { 'shifted-left': yearIsCurrent && direction === 'right', 'shifted-right': yearIsCurrent && direction === 'left', }) }
-        onAnimationEnd={ onAnimationEnd }>
+      <div
+        className={
+          classnames('year-books', {
+            'shifted-left': yearIsCurrent && direction === 'right',
+            'shifted-right': yearIsCurrent && direction === 'left',
+          })
+        }
+        onAnimationEnd={onAnimationEnd}
+      >
         { displayedBookIds.map(bookId =>
-          <BookIndexEntry id={ bookId } key={ [bookId, direction].join() }/>
+          (<BookIndexEntry
+            id={bookId}
+            key={[bookId, direction].join()}
+           />)
         ) }
       </div>
     </div>

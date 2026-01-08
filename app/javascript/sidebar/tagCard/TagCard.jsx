@@ -8,12 +8,15 @@ import Toolbar from 'sidebar/tagCard/Toolbar'
 const TagCard = () => {
   const tagIndexEntry = useSelector(selectCurrentTagIndexEntry())
 
-  if (!tagIndexEntry) { return null }
+  if (!tagIndexEntry)  return null
   return (
     <Card className='sidebar-card-widget'>
-      <Card.Header className='widget-title'>Tag: #{ tagIndexEntry.name }</Card.Header>
+      <Card.Header className='widget-title'>
+        { `Tag: #${tagIndexEntry.name}` }
+      </Card.Header>
+
       <Card.Body>
-        <Toolbar tagIndexEntry={ tagIndexEntry }/>
+        <Toolbar tagIndexEntry={tagIndexEntry} />
       </Card.Body>
     </Card>
   )

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
@@ -8,26 +8,26 @@ import BooksListLinearControls from 'sidebar/booksListLinearControls/BooksListLi
 import BooksListLinear from 'widgets/booksListLinear/BooksListLinear'
 import PageStoreConfigurer from 'pages/authorPage/PageStoreConfigurer'
 
-const AuthorPage = () => {
-  return (
-    <>
-      <PageStoreConfigurer/>
+const AuthorPage = () => (
+  <>
+    <PageStoreConfigurer />
 
-      <Layout>
-        <Col xs={ 4 }>
-          <div className='page-sidebar'>
-            <BookCard/>
-            <AuthorCard/>
-            <BooksListLinearControls/>
-          </div>
-        </Col>
+    <Layout>
+      <Col xs={4}>
+        <div className='page-sidebar'>
+          <BookCard />
 
-        <Col xs={ 8 }>
-          <BooksListLinear/>
-        </Col>
-      </Layout>
-    </>
-  )
-}
+          <AuthorCard />
+
+          <BooksListLinearControls />
+        </div>
+      </Col>
+
+      <Col xs={8}>
+        <BooksListLinear />
+      </Col>
+    </Layout>
+  </>
+)
 
 export default AuthorPage

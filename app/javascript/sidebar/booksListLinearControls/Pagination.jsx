@@ -1,5 +1,5 @@
-import React, { useContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useCallback, useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { Pagination } from 'react-bootstrap'
 
 import {
@@ -10,23 +10,29 @@ import {
 import UrlStoreContext from 'store/urlStore/Context'
 
 const BooksListPagination = () => {
-  const dispatch = useDispatch()
   const totalCount = useSelector(selectBooksTotal())
   const page = useSelector(selectPage())
   const perPage = useSelector(selectPerPage())
 
   const lastPage = Math.ceil(totalCount / perPage)
   const { actions: { switchToIndexPage }, routes: { indexPaginationPath }, routesReady } = useContext(UrlStoreContext)
-  const gotoPageHandler = (pageNumber) => () => switchToIndexPage(pageNumber, perPage)
 
   if (perPage >= totalCount) return null
   if (!routesReady) return null
 
-  const renderPageLink = (pageNumber) => {
+  const handlePageClick = useCallback(pageNumber => e => {
+    e.preventDefault()
+    switchToIndexPage(pageNumber, perPage)
+  }, [switchToIndexPage, perPage])
+
+  const renderPageLink = pageNumber => {
     if (pageNumber < 1 || pageNumber > lastPage) return null
     return (
-      <Pagination.Item title={ pageNumber } href={ indexPaginationPath(pageNumber, perPage) }
-                       onClick={ (e) => { e.preventDefault(); switchToIndexPage(pageNumber, perPage) } }>
+      <Pagination.Item
+        href={indexPaginationPath(pageNumber, perPage)}
+        onClick={handlePageClick(pageNumber)}
+        title={pageNumber}
+      >
         { pageNumber }
       </Pagination.Item>
     )
@@ -34,9 +40,18 @@ const BooksListPagination = () => {
   return (
     <Pagination className='pagination'>
       { page > 2 && renderPageLink(1) }
+
       { renderPageLink(page - 1) }
-      <Pagination.Item active disabled>{ page }</Pagination.Item>
+
+      <Pagination.Item
+        active
+        disabled
+      >
+        { page }
+      </Pagination.Item>
+
       { renderPageLink(page + 1) }
+
       { lastPage - page > 1 && renderPageLink(lastPage) }
     </Pagination>
   )

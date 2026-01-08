@@ -1,6 +1,6 @@
 import { sortBy, upperCase } from 'lodash'
-import React, { useContext, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useCallback, useContext } from 'react'
+import { useSelector } from 'react-redux'
 import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
@@ -12,43 +12,59 @@ import { selectCategories, selectTagsCategoriesIndex } from 'store/tags/selector
 import UrlStoreContext from 'store/urlStore/Context'
 
 const TagsPage = () => {
-  const dispatch = useDispatch()
   const sidebarShown = Boolean(useSelector(selectCurrentTagId()))
   const categories = sortBy(useSelector(selectCategories()), 'name')
   const tagsByCategories = useSelector(selectTagsCategoriesIndex())
   const { actions: { showTagIndexEntry } } = useContext(UrlStoreContext)
 
+  const handleTagClick = useCallback(id => showTagIndexEntry(id), [showTagIndexEntry])
+
+  const handleRenderPostfix = useCallback(tag => () => (
+    tag.connectionsCount > 0 ? ` (${tag.connectionsCount})` : null
+  ), [])
+
   return (
     <>
-      <PageConfigurer/>
+      <PageConfigurer />
 
-      <Layout className='tags-page'>
-        { sidebarShown &&
-          <Col xs={ 4 }>
+      <Layout classes='tags-page'>
+        { sidebarShown ? (
+          <Col xs={4}>
             <div className='page-sidebar'>
-              <TagCard/>
+              <TagCard />
             </div>
           </Col>
-        }
+        ) : null }
 
-        <Col xs={ sidebarShown ? 8 : 12 }>
+        <Col xs={sidebarShown ? 8 : 12}>
           <div className='tags-index-categories'>
-            { categories.map((category, index) => {
+            { categories.map(category => {
               const tagsSorted = sortBy(tagsByCategories[category.id], tag => upperCase(tag.name))
               return (
-                <div className='tags-index-category' key={ index }>
-                  <div className='category-name'>Category: { category.name }</div>
-                  <div className='category-contents'>
-                    { tagsSorted.map((tag, tagIndex) =>
+                <div
+                  className='tags-index-category'
+                  key={category.id}
+                >
+                  <div className='category-name'>
+                    { `Category: ${category.name}` }
+                  </div>
 
-                      <div className='tags-index-entry' key={ tagIndex }>
-                        <TagBadge key={ tag.id } text={ tag.name } id={ tag.id }
-                          renderPostfix={ () => (tag.connectionsCount > 0 && ` (${tag.connectionsCount})`) }
-                          variant='dark' onClick={ () => showTagIndexEntry(tag.id) }
+                  <div className='category-contents'>
+                    { tagsSorted.map(tag => (
+                      <div
+                        className='tags-index-entry'
+                        key={tag.id}
+                      >
+                        <TagBadge
+                          id={tag.id}
+                          key={tag.id}
+                          onClick={handleTagClick}
+                          renderPostfix={handleRenderPostfix(tag)}
+                          text={tag.name}
+                          variant='dark'
                         />
                       </div>
-
-                    ) }
+                    )) }
                   </div>
                 </div>
               )

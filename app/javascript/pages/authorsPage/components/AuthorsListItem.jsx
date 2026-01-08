@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useRef } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useCallback, useContext, useEffect, useRef } from 'react'
+import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 import { Col } from 'react-bootstrap'
 import classNames from 'classnames'
 
@@ -9,10 +10,9 @@ import { selectAuthorDefaultImageUrl } from 'store/authors/selectors'
 import ImageContainer from 'components/ImageContainer'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const AuthorsListItem = (props) => {
-  const { author } = props
+const AuthorsListItem = ({ author }) => {
   const selectedAuthorId = useSelector(selectCurrentAuthorId())
-  const isSelected = author.id == selectedAuthorId
+  const isSelected = author.id === selectedAuthorId
   const ref = useRef(null)
   const defaultPhotoUrl = useSelector(selectAuthorDefaultImageUrl())
 
@@ -23,25 +23,45 @@ const AuthorsListItem = (props) => {
     if (isSelected) ref.current?.scrollIntoView()
   })
 
+  const handleClick = useCallback(() => showAuthor(author.id), [showAuthor, author.id])
+
   return (
-    <Col key={ author.id } sm={3} ref={ ref } className='author-item-container'>
-      <div className={ classNames('authors-list-item', { 'selected': isSelected })}
-           onClick={ () => showAuthor(author.id) }
-           title={ author.fullname }>
-        <ImageContainer className='thumb' url={ author.thumbUrl || defaultPhotoUrl }/>
+    <Col
+      className='author-item-container'
+      key={author.id}
+      ref={ref}
+      sm={3}
+    >
+      <div
+        className={classNames('authors-list-item', { 'selected': isSelected })}
+        onClick={handleClick}
+        title={author.fullname}
+      >
+        <ImageContainer
+          classes='thumb'
+          url={author.thumbUrl || defaultPhotoUrl}
+        />
 
-        <div className='author-name'>{ author.fullname }</div>
+        <div className='author-name'>
+          { author.fullname }
+        </div>
 
-        { sortBy == 'years' &&
-          <div className='author-years'>{ author.birthYear }</div>
-        }
+        { sortBy === 'years' &&
+          <div className='author-years'>
+            { author.birthYear }
+          </div> }
 
-        { sortBy == 'popularity' &&
-          <div className='author-rank'>#{ author.rank }</div>
-        }
+        { sortBy === 'popularity' &&
+          <div className='author-rank'>
+            { `#${author.rank}` }
+          </div> }
       </div>
     </Col>
   )
+}
+
+AuthorsListItem.propTypes = {
+  author: PropTypes.object.isRequired,
 }
 
 export default AuthorsListItem

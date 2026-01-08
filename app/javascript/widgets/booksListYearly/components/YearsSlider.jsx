@@ -1,29 +1,29 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { Slider } from 'rsuite'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { selectCurrentYear, selectYears } from 'widgets/booksListYearly/selectors'
-import { jumpToYear } from 'widgets/booksListYearly/actions'
 
-const YearsSlider = (props) => {
+const YearsSlider = () => {
   const [state, setState] = useState({ value: 0 })
   const years = useSelector(selectYears())
   const currentYear = useSelector(selectCurrentYear())
-  const dispatch = useDispatch()
 
   useEffect(() => currentYear && setState({ value: years.indexOf(currentYear) }), [currentYear])
+
+  const handleChange = useCallback(v => setState({ value: v }), [])
 
   return (
     <div className='years-slider'>
       <Slider
-        value={ state.value }
-        min={ 0 }
-        max={ years.length - 1 }
         handleClassName='slider-handle'
-        handleTitle={ years[state.value] }
-        tooltip={ false }
+        handleTitle={years[state.value]}
+        max={years.length - 1}
+        min={0}
+        onChange={handleChange}
+        tooltip={false}
+        value={state.value}
         vertical
-        onChange={ (v) => setState({ value: v }) }
         // onChangeCommitted={ (i) => dispatch(jumpToYear(years[i])) }
       />
     </div>

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Route } from 'react-router-dom'
 
 import { setCurrentTagId } from 'store/axis/actions'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -18,29 +17,28 @@ const Helper = () => {
 
 const path = '/tags'
 
-const Renderer = () => {
-  return (
-    <>
-      <LocalStoreConfigurer/>
-      <TagsPage/>
-    </>
-  )
-}
+const Renderer = () => (
+  <>
+    <LocalStoreConfigurer />
+
+    <TagsPage />
+  </>
+)
 
 const LocalStoreConfigurer = () => {
   const dispatch = useDispatch()
   const { pageState: { tagId },
-          actions: { patch, addUrlAction, addUrlState },
-          helpers: { buildRelativePath },
-          getActions,
-        } = useContext(UrlStoreContext)
+    actions: { addUrlAction, addUrlState },
+    helpers: { buildRelativePath },
+    getActions,
+  } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addUrlAction('showTagIndexEntry', (id) =>
+    addUrlAction('showTagIndexEntry', id =>
       getActions().patch(buildRelativePath({ params: { 'tag_id': id } }))
     )
 
-    addUrlState('tagId', (url) => parseInt(url.queryParameter('tag_id')))
+    addUrlState('tagId', url => parseInt(url.queryParameter('tag_id')))
   }, [])
 
   useEffect(() => {

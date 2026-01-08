@@ -1,12 +1,12 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 
 import UrlStoreContext from 'store/urlStore/Context'
 
 const ModalsRouteHelper = () => {
   const { getActions, getRoutes,
-          helpers: { buildRelativePath },
-        } = useContext(UrlStoreContext)
-  const { patch, addRoute, addUrlAction } = getActions()
+    helpers: { buildRelativePath },
+  } = useContext(UrlStoreContext)
+  const { addRoute, addUrlAction } = getActions()
 
   useEffect(() => {
     addRoute('modalClosedPath', () => buildRelativePath({ hash: '' }))

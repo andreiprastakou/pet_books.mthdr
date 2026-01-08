@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import {
   Chart as ChartJS,
@@ -23,7 +22,7 @@ ChartJS.register(
   Legend
 )
 
-const PopularityChart = (props) => {
+const PopularityChart = props => {
   const { points, width } = props
   const options = {
     responsive: false,
@@ -58,7 +57,12 @@ const PopularityChart = (props) => {
 
   return (
     <div className='popularities-chart'>
-      <Line options={options} data={data} width={width} height='188'/>
+      <Line
+        data={data}
+        height='188'
+        options={options}
+        width={width}
+      />
     </div>
   )
 }

@@ -1,5 +1,4 @@
-import { isEmpty } from 'lodash'
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -19,8 +18,7 @@ import {
 import { prepareNavRefs } from 'widgets/navbar/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const Configurer = (props) => {
-  const listFilter = props.listFilter || {}
+const Configurer = ({ listFilter }) => {
   const dispatch = useDispatch()
   const { routesReady } = useContext(UrlStoreContext)
   const currentBookId = useSelector(selectCurrentBookId())
@@ -63,6 +61,10 @@ const Configurer = (props) => {
 
 Configurer.propTypes = {
   listFilter: PropTypes.object,
+}
+
+Configurer.defaultProps = {
+  listFilter: {},
 }
 
 export default Configurer

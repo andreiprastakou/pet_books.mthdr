@@ -7,26 +7,24 @@ import PopularityChart from 'components/PopularityChart'
 const BOOK_CASE_WIDTH = 140
 const BOOKS_SEPARATOR_WIDTH = 20
 
-const widthOfPopularityChart = (length) => {
-  return length * (BOOK_CASE_WIDTH + BOOKS_SEPARATOR_WIDTH) - BOOK_CASE_WIDTH + 60
-}
+const widthOfPopularityChart = length => length * (BOOK_CASE_WIDTH + BOOKS_SEPARATOR_WIDTH) - BOOK_CASE_WIDTH + 60
 
-const mapPopularityChart = (bookPopularities) => {
-  return bookPopularities.map((popularity, i) =>
-    ({
-      x: i * (BOOK_CASE_WIDTH + BOOKS_SEPARATOR_WIDTH),
-      y: popularity
-    })
-  )
-}
+const mapPopularityChart = bookPopularities => bookPopularities.map((popularity, i) =>
+  ({
+    x: i * (BOOK_CASE_WIDTH + BOOKS_SEPARATOR_WIDTH),
+    y: popularity
+  })
+)
 
-const Component = (props) => {
-  const { bookIds } = props
+const Component = ({ bookIds }) => {
   const popularities = useSelector(selectBookPopularities(bookIds))
 
-  if (bookIds.length < 2) { return null }
+  if (bookIds.length < 2)  return null
   return (
-    <PopularityChart points={ mapPopularityChart(popularities) } width={ widthOfPopularityChart(bookIds.length) }/>
+    <PopularityChart
+      points={mapPopularityChart(popularities)}
+      width={widthOfPopularityChart(bookIds.length)}
+    />
   )
 }
 

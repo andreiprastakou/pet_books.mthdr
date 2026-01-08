@@ -1,17 +1,16 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import pageRoutes from 'components/pageRoutes'
 
 import ModalsHelper from 'modals/RouteHelper'
 
-const PageRouteHelpers = () => {
-  return (
-    <>
-      <ModalsHelper/>
-      { pageRoutes.map((route, i) =>
-        <route.Helper key={ i }/>
-      ) }
-    </>
-  )
-}
+const PageRouteHelpers = () => (
+  <>
+    <ModalsHelper />
+
+    { pageRoutes.map(route =>
+      <route.Helper key={route.path} />
+    ) }
+  </>
+)
 
 export default PageRouteHelpers

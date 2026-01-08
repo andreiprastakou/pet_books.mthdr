@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { Route, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { setCurrentTagId } from 'store/axis/actions'
 import { setPageIsLoading } from 'store/metadata/actions'
@@ -11,21 +11,20 @@ const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('tagPagePath', (id) => buildPath({ path: `/tags/${id}` }))
+    addRoute('tagPagePath', id => buildPath({ path: `/tags/${id}` }))
   }, [])
   return null
 }
 
 const path = '/tags/:tagId'
 
-const Renderer = () => {
-  return (
-    <>
-      <LocalStoreConfigurer/>
-      <TagPage/>
-    </>
-  )
-}
+const Renderer = () => (
+  <>
+    <LocalStoreConfigurer />
+
+    <TagPage />
+  </>
+)
 
 const LocalStoreConfigurer = () => {
   const params = useParams()
@@ -34,8 +33,8 @@ const LocalStoreConfigurer = () => {
   const dispatch = useDispatch()
 
   const { actions: { addUrlState },
-          pageState: { tagId }
-        } = useContext(UrlStoreContext)
+    pageState: { tagId }
+  } = useContext(UrlStoreContext)
 
   useEffect(() => {
     addUrlState('tagId', () => parseInt(paramsRef.current.tagId))

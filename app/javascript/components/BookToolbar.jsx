@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -16,11 +16,11 @@ import {
 import { addTagToBook, removeTagFromBook } from 'widgets/booksListYearly/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const BookToolbar = (props) => {
+const BookToolbar = props => {
   const { book } = props
   const dispatch = useDispatch()
   const { routesReady,
-          routes: { booksPagePath } } = useContext(UrlStoreContext)
+    routes: { booksPagePath } } = useContext(UrlStoreContext)
   const tagNames = useSelector(selectTagNames(book.tagIds))
 
   const tagBookmark = useSelector(selectTagBookmark())
@@ -30,42 +30,81 @@ const BookToolbar = (props) => {
 
   if (!routesReady) return null
 
+  const handleClickUnbookmark = useCallback(() => {
+    dispatch(removeTagFromBook(book.id, tagBookmark))
+  }, [book.id, tagBookmark])
+
+  const handleClickBookmark = useCallback(() => {
+    dispatch(addTagToBook(book.id, tagBookmark))
+  }, [book.id, tagBookmark])
+
+  const handleClickMarkAsNotRead = useCallback(() => {
+    dispatch(removeTagFromBook(book.id, tagRead))
+  }, [book.id, tagRead])
+
+  const handleClickMarkAsRead = useCallback(() => {
+    dispatch(addTagToBook(book.id, tagRead))
+  }, [book.id, tagRead])
+
   return (
     <div>
       <ButtonGroup className='book-toolbar'>
-        { book.goodreadsUrl &&
-          <Button variant='outline-info' title='See info...' href={ book.goodreadsUrl } target='_blank'>
-            <FontAwesomeIcon icon={ faGoodreadsG }/>
+        { book.goodreadsUrl ? (
+          <Button
+            href={book.goodreadsUrl}
+            target='_blank'
+            title='See info...'
+            variant='outline-info'
+          >
+            <FontAwesomeIcon icon={faGoodreadsG} />
           </Button>
-        }
+        ) : null }
 
-        <Button variant='outline-info' title='See what was then...' href={ booksPagePath({ bookId: book.id }) }>
-          <FontAwesomeIcon icon={ faCalendarAlt }/>
+        <Button
+          href={booksPagePath({ bookId: book.id })}
+          title='See what was then...'
+          variant='outline-info'
+        >
+          <FontAwesomeIcon icon={faCalendarAlt} />
         </Button>
 
         { isBookmarked ?
-          <Button variant='outline-warning' title='Remove bookmark' href='#'
-                  onClick={ () => dispatch(removeTagFromBook(book.id, tagBookmark)) }>
-            <FontAwesomeIcon icon={ faBookmark }/>
+          <Button
+            href='#'
+            onClick={handleClickUnbookmark}
+            title='Remove bookmark'
+            variant='outline-warning'
+          >
+            <FontAwesomeIcon icon={faBookmark} />
           </Button>
           :
-          <Button variant='outline-warning' title='Bookmark' href='#'
-                  onClick={ () => dispatch(addTagToBook(book.id, tagBookmark)) }>
-            <FontAwesomeIcon icon={ faBookmarkEmpty }/>
-          </Button>
-        }
+          <Button
+            href='#'
+            onClick={handleClickBookmark}
+            title='Bookmark'
+            variant='outline-warning'
+          >
+            <FontAwesomeIcon icon={faBookmarkEmpty} />
+          </Button>}
 
         { isRead ?
-            <Button variant='outline-warning' title='Mark as not read' href='#'
-                    onClick={ () => dispatch(removeTagFromBook(book.id, tagRead)) }>
-              <FontAwesomeIcon icon={ faUserNinja }/>
-            </Button>
+          <Button
+            href='#'
+            onClick={handleClickMarkAsNotRead}
+            title='Mark as not read'
+            variant='outline-warning'
+          >
+            <FontAwesomeIcon icon={faUserNinja} />
+          </Button>
           :
-            <Button variant='outline-warning' title='Mark as read' href='#'
-                    onClick={ () => dispatch(addTagToBook(book.id, tagRead)) }>
-              <FontAwesomeIcon icon={ faUser }/>
-            </Button>
-        }
+          <Button
+            href='#'
+            onClick={handleClickMarkAsRead}
+            title='Mark as read'
+            variant='outline-warning'
+          >
+            <FontAwesomeIcon icon={faUser} />
+          </Button>}
 
       </ButtonGroup>
     </div>

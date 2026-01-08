@@ -5,18 +5,16 @@ import PageConfigurer from 'pages/templates/booksListYearly/PageConfigurer'
 import Layout from 'pages/Layout'
 import BooksListYearly from 'widgets/booksListYearly/BooksListYearly'
 
-const BooksPage = () => {
-  return (
-    <>
-      <PageConfigurer/>
+const BooksPage = () => (
+  <>
+    <PageConfigurer />
 
-      <Layout>
-        <Col xs={ 12 }>
-          <BooksListYearly/>
-        </Col>
-      </Layout>
-    </>
-  )
-}
+    <Layout>
+      <Col xs={12}>
+        <BooksListYearly />
+      </Col>
+    </Layout>
+  </>
+)
 
 export default BooksPage

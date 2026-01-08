@@ -38,7 +38,7 @@
     "function-call-argument-newline": ["off"],
     "function-paren-newline": ["off"],
     "id-length": ["off"],
-    "indent": ["error", 2],
+    "indent": ["off"], // "indent": ["error", 2],
     "implicit-arrow-linebreak": ["off"],
     "max-params": ["error", 4],
     "multiline-comment-style": ["off"],
@@ -58,12 +58,29 @@
     "quote-props": ["off"],
     "quotes": ["error", "single"],
     "radix": ["off"],
+    "react/forbid-component-props": ["off"],
+    "react/forbid-prop-types": ["off"],
+    "react/jsx-curly-brace-presence": ["off"],
+    "react/jsx-indent": ["error", 2],
+    "react/jsx-indent-props": ["error", 2],
+    "react/jsx-max-depth": ["error", { "max": 5 }],
+    "react/no-multi-comp": ["off"],
     "require-await": ["off"],
     "semi": ["error", "never"],
     "space-before-function-paren": ["error", "never"],
     "sort-imports": ["off"],
     "sort-keys": ["off"],
-     "template-curly-spacing": ["off"]
+    "template-curly-spacing": ["off"],
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "max-lines-per-function": ["off"], // DO NOT MERGE
+    "max-statements": ["off"], // DO NOT MERGE
+    "react/jsx-no-constructed-context-values": ["off"] // DO NOT MERGE
   },
   "settings": {
     "react": {

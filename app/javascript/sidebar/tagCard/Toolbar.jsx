@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 
 import UrlStoreContext from 'store/urlStore/Context'
 
-const Toolbar = (props) => {
+const Toolbar = props => {
   const { tagIndexEntry } = props
   const { routes: { tagPagePath }, routesReady } = useContext(UrlStoreContext)
 
@@ -14,15 +14,18 @@ const Toolbar = (props) => {
   if (!routesReady) return null
 
   return (
-    <>
-      <ButtonGroup className='toolbar'>
-        { tagIndexEntry.bookConnectionsCount > 0 &&
-          <Button variant='outline-info' title='See all books' href={ tagPagePath(tagIndexEntry.id) }>
-            <FontAwesomeIcon icon={ faBook }/> ({ tagIndexEntry.bookConnectionsCount })
-          </Button>
-        }
-      </ButtonGroup>
-    </>
+    <ButtonGroup className='toolbar'>
+      { tagIndexEntry.bookConnectionsCount > 0 &&
+      <Button
+        href={tagPagePath(tagIndexEntry.id)}
+        title='See all books'
+        variant='outline-info'
+      >
+        <FontAwesomeIcon icon={faBook} />
+
+        { ` (${tagIndexEntry.bookConnectionsCount})` }
+      </Button>}
+    </ButtonGroup>
   )
 }
 
