@@ -25,12 +25,12 @@ const SearchForm = ({ focusEvent = null, apiSearcher }) => {
   }, [])
 
   const performSearch = () => {
-    const key = searchKey.current
+    const currentKey = searchKey.current
     if (!key || searchInProgress) return
 
     setSearchState({ searchInProgress: true })
-    apiSearcher(key).then(() => {
-      setSearchState({ searchInProgress: false, lastSearchedKey: key })
+    apiSearcher(currentKey).then(() => {
+      setSearchState({ searchInProgress: false, lastSearchedKey: currentKey })
     }).fail(() => {
       dispatch(addErrorMessage('Search failed!'))
       setSearchState({ searchInProgress: false })

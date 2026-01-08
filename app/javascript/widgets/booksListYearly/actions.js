@@ -166,30 +166,29 @@ export const jumpToYear = year => dispatch => {
 
 // PRIVATES
 
-
 const changeSelectedYear = selectTargetYear => (dispatch, getState) => {
   const targetYear = selectTargetYear(getState())
   dispatch(jumpToYear(targetYear))
+}
+
+const selectBookIdToShow = (targetYear, currentBookId, bookIdsInYear, state) => {
+  if (currentBookId && bookIdsInYear.includes(currentBookId))
+    return currentBookId
+
+  const bookIdPreselected = selectYearCurrentBookId(targetYear)(state)
+  if (bookIdPreselected)
+    return bookIdPreselected
+
+  return first(bookIdsInYear)
 }
 
 const switchToBookByYear = targetYear => (dispatch, getState) => {
   const state = getState()
   const currentBookId = selectCurrentBookId()(state)
   const bookIdsInYear = selectBookIdsByYear(targetYear)(state)
-
-  if (currentBookId && bookIdsInYear.includes(currentBookId)) {
-    dispatch(showBook(currentBookId))
-    return
-  }
-
-  const bookIdPreselected = selectYearCurrentBookId(targetYear)(state)
-  if (bookIdPreselected)
-    dispatch(showBook(bookIdPreselected))
-  else {
-    const bookId = first(bookIdsInYear)
-    if (!bookId) return
+  const bookId = selectBookIdToShow(targetYear, currentBookId, bookIdsInYear, state)
+  if (bookId)
     dispatch(showBook(bookId))
-  }
 }
 
 export const requestBookIndexNeighboursLoaded = () => (dispatch, getState) => {
