@@ -53,6 +53,25 @@ RSpec.describe Author do
     end
   end
 
+  describe 'scopes' do
+    describe '.search_by_name' do
+      subject(:result) { described_class.search_by_name(key) }
+
+      let(:key) { 'Fenimore' }
+      let(:authors) do
+        [
+          create(:author, fullname: 'Fenimore Cooper'),
+          create(:author, fullname: 'fenimore Fothergill'),
+          create(:author, fullname: 'Penimore Fogarty')
+        ]
+      end
+
+      it 'returns the authors that match the name' do
+        expect(result).to match_array(authors.values_at(0, 1))
+      end
+    end
+  end
+
   it_behaves_like 'has wiki links' do
     let(:record) { build(:author) }
   end

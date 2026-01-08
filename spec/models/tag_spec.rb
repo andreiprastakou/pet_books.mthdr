@@ -39,6 +39,25 @@ RSpec.describe Tag do
     end
   end
 
+  describe 'scopes' do
+    describe '.search_by_name' do
+      subject(:result) { described_class.search_by_name(key) }
+
+      let(:key) { 'Ipsum' }
+      let(:tags) do
+        [
+          create(:tag, name: 'Lorem ipsum dolor'),
+          create(:tag, name: 'IPSUM'),
+          create(:tag, name: 'ipsun')
+        ]
+      end
+
+      it 'returns the tags that match the name' do
+        expect(result).to match_array(tags.values_at(0, 1))
+      end
+    end
+  end
+
   it_behaves_like 'has codified name', :name do
     let(:record) { build(:tag) }
   end
