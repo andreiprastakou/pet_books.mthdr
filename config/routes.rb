@@ -11,10 +11,8 @@ Rails.application.routes.draw do
       end
 
       namespace :books do
-        resource :batch, only: :update, controller: 'batch'
-        resources :full_entries, only: %i[show create update destroy]
+        resources :full_entries, only: %i[show]
         resources :index_entries, only: %i[show index]
-        resources :popularity, only: :update
         resources :ref_entries, only: %i[show index]
         resources :years, only: :index
         resource :search, only: :show, controller: 'search'
@@ -22,7 +20,6 @@ Rails.application.routes.draw do
 
       namespace :tags do
         resources :categories, only: :index
-        resources :full_entries, only: %i[update destroy]
         resources :index_entries, only: %i[show index]
         resources :ref_entries, only: %i[show index]
         resource :search, only: :show, controller: 'search'
