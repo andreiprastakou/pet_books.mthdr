@@ -1,5 +1,7 @@
 require 'simplecov'
 
+COVERAGE_MINIMUM = 97
+
 SimpleCov.start 'rails' do
   coverage_dir 'spec/coverage'
 
@@ -14,6 +16,6 @@ SimpleCov.start 'rails' do
   groups.delete 'Libraries'
 end
 
-SimpleCov.minimum_coverage 96
+SimpleCov.minimum_coverage COVERAGE_MINIMUM
 
 Rails.application.eager_load!
