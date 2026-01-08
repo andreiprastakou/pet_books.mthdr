@@ -1,24 +1,23 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
 import PopularityChart from 'widgets/booksListLinear/components/PopularityChart'
 import BookIndexEntry from 'widgets/booksListLinear/components/BookIndexEntry'
 
-const BooksRow = (props) => {
-  const { ids: bookIds } = props
+const BooksRow = ({ ids: bookIds }) => (
+  <div className='books-list-row'>
+    <PopularityChart bookIds={bookIds} />
 
-  return (
-    <div className='books-list-row'>
-      <PopularityChart bookIds={ bookIds }/>
-
-      <div>
-        { bookIds.map((bookId, i) =>
-            <BookIndexEntry id={ bookId } key={ i } showYear={ true }/>
-        ) }
-      </div>
+    <div>
+      { bookIds.map(bookId =>
+        (<BookIndexEntry
+          id={bookId}
+          key={bookId}
+          showYear
+         />)
+      ) }
     </div>
-  )
-}
+  </div>
+)
 
 BooksRow.propTypes = {
   ids: PropTypes.array.isRequired,

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useContext, useCallback } from 'react'
+import { useSelector } from 'react-redux'
 import { Row, Col } from 'react-bootstrap'
 import { HotKeys } from 'react-hotkeys'
 
@@ -13,7 +13,6 @@ import PageConfigurer from 'pages/authorsPage/PageConfigurer'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const AuthorsPage = () => {
-  const dispatch = useDispatch()
   const { pageState: { sortOrder }, actions: { removeAuthorWidget } } = useContext(UrlStoreContext)
   const authors = useSelector(selectSortedAuthors(sortOrder))
 
@@ -23,30 +22,32 @@ const AuthorsPage = () => {
     UP: 'Up',
   }
 
-  const hotKeysHandlers = {
-    SHIFT_ON: () => console.log('SHIFT PUSHED'),
-    SHIFT_OFF: () => console.log('SHIFT RELEASED'),
-    UP: () => console.log('UP'),
-  }
+  const handleCardClose = useCallback(() => removeAuthorWidget(), [])
 
   return (
     <>
-      <PageConfigurer/>
+      <PageConfigurer />
 
-      <HotKeys keyMap={ keyMap } handlers={ hotKeysHandlers }>
-        <Layout className='authors-list-page'>
+      <HotKeys
+        keyMap={keyMap}
+      >
+        <Layout classes='authors-list-page'>
           <Col sm={4}>
             <div className='page-sidebar'>
-              <AuthorCard onClose={ () => removeAuthorWidget() }/>
-              <AuthorsIndexControls/>
+              <AuthorCard onClose={handleCardClose} />
+
+              <AuthorsIndexControls />
             </div>
           </Col>
 
           <Col sm={8}>
             <Row className='authors-list'>
-              { authors.map(author =>
-                <AuthorsListItem key={ author.id } author={ author }/>
-              ) }
+              { authors.map(author => (
+                <AuthorsListItem
+                  author={author}
+                  key={author.id}
+                />
+              )) }
             </Row>
           </Col>
         </Layout>

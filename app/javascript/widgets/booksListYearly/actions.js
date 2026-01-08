@@ -27,7 +27,6 @@ import {
   selectYearCurrentBookId,
 } from 'widgets/booksListYearly/selectors'
 
-import { clearSelection, toggleId } from 'store/selectables/actions'
 import {
   clearState as clearYearsInnerState,
   requestYearRefsLoaded,
@@ -167,22 +166,29 @@ export const jumpToYear = year => dispatch => {
 
 // PRIVATES
 
-
 const changeSelectedYear = selectTargetYear => (dispatch, getState) => {
   const targetYear = selectTargetYear(getState())
   dispatch(jumpToYear(targetYear))
 }
 
-const switchToBookByYear = targetYear => (dispatch, getState) => {
-  const state = getState()
+const selectBookIdToShow = (targetYear, currentBookId, bookIdsInYear, state) => {
+  if (currentBookId && bookIdsInYear.includes(currentBookId))
+    return currentBookId
+
   const bookIdPreselected = selectYearCurrentBookId(targetYear)(state)
   if (bookIdPreselected)
-    dispatch(showBook(bookIdPreselected))
-  else {
-    const bookId = first(selectBookIdsByYear(targetYear)(state))
-    if (!bookId) return
+    return bookIdPreselected
+
+  return first(bookIdsInYear)
+}
+
+const switchToBookByYear = targetYear => (dispatch, getState) => {
+  const state = getState()
+  const currentBookId = selectCurrentBookId()(state)
+  const bookIdsInYear = selectBookIdsByYear(targetYear)(state)
+  const bookId = selectBookIdToShow(targetYear, currentBookId, bookIdsInYear, state)
+  if (bookId)
     dispatch(showBook(bookId))
-  }
 }
 
 export const requestBookIndexNeighboursLoaded = () => (dispatch, getState) => {
@@ -195,10 +201,5 @@ export const clearListState = () => dispatch => {
   dispatch(clearBooksRefs())
   dispatch(clearListInnerState())
   dispatch(clearYearsInnerState())
-  dispatch(clearSelection())
 }
 
-export const toggleCurrentBookSelected = () => (dispatch, getState) => {
-  const id = selectCurrentBookId()(getState())
-  dispatch(toggleId(id))
-}

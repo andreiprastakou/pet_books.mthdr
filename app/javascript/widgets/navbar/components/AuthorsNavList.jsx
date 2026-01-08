@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import {  NavDropdown } from 'react-bootstrap'
 
 import apiClient from 'store/authors/apiClient'
@@ -9,22 +9,27 @@ const AuthorsNavList = () => {
   const { routes: { authorPagePath } } = useContext(UrlStoreContext)
   const [authorsSearchEntries, setAuthorsSearchEntries] = useState([])
 
-  const apiSearcher = (key) => {
-    return apiClient.search(key).then(searchEntries => {
-      setAuthorsSearchEntries(searchEntries)
-    })
-  }
+  const handleApiSearcher = useCallback(key => apiClient.search(key).then(searchEntries => {
+    setAuthorsSearchEntries(searchEntries)
+  }), [])
 
   return (
     <div className='authors-nav'>
       <div className='nav-search-form'>
-        <SearchForm focusEvent='AUTHORS_NAV_CLICKED' apiSearcher={ apiSearcher }/>
+        <SearchForm
+          apiSearcher={handleApiSearcher}
+          focusEvent='AUTHORS_NAV_CLICKED'
+        />
       </div>
+
       <div className='nav-search-list'>
-        { authorsSearchEntries.map((searchEntry, i) =>
-          <NavDropdown.Item href={ authorPagePath(searchEntry.authorId) } key={ i }>
-            { searchEntry.highlight }
-          </NavDropdown.Item>
+        { authorsSearchEntries.map(searchEntry => (
+          <NavDropdown.Item
+            href={authorPagePath(searchEntry.authorId)}
+            key={searchEntry.authorId}
+          >
+            { searchEntry.label }
+          </NavDropdown.Item>)
         ) }
       </div>
     </div>

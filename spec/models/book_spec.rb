@@ -147,6 +147,23 @@ RSpec.describe Book do
         expect(result).to match_array(books.values_at(0, 1, 6))
       end
     end
+
+    describe '.search_by_title' do
+      subject(:result) { described_class.search_by_title(key) }
+
+      let(:key) { 'Ipsum' }
+      let(:books) do
+        [
+          create(:book, title: 'Lorem ipsum dolor'),
+          create(:book, title: 'IPSUM'),
+          create(:book, title: 'ipsun')
+        ]
+      end
+
+      it 'returns the books that match the title' do
+        expect(result).to match_array(books.values_at(0, 1))
+      end
+    end
   end
 
   it_behaves_like 'has wiki links' do

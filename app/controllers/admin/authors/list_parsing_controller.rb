@@ -1,7 +1,7 @@
 module Admin
   module Authors
     class ListParsingController < AdminController
-      before_action :fetch_author, only: %i[new create edit]
+      before_action :fetch_author, only: %i[new create edit apply]
       before_action :fetch_task, only: %i[edit apply]
 
       def new; end

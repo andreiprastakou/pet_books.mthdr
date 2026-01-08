@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import { NavDropdown } from 'react-bootstrap'
 
 import apiClient from 'store/tags/apiClient'
@@ -9,23 +9,28 @@ const TagsNavList = () => {
   const { routes: { tagPagePath } } = useContext(UrlStoreContext)
   const [searchEntries, setSearchEntries] = useState([])
 
-  const apiSearcher = (key) => {
-    return apiClient.search(key).then(searchEntries => {
-      setSearchEntries(searchEntries)
-    })
-  }
+  const apiSearcher = useCallback(key => apiClient.search(key).then(results => {
+    setSearchEntries(results)
+  }), [])
 
   return (
     <div className='tags-nav'>
       <div className='nav-search-form'>
-        <SearchForm focusEvent='TAGS_NAV_CLICKED' apiSearcher={ apiSearcher }/>
+        <SearchForm
+          apiSearcher={apiSearcher}
+          focusEvent='TAGS_NAV_CLICKED'
+        />
       </div>
+
       <div className='nav-search-list'>
-        { searchEntries.map((searchEntry, i) =>
-          <NavDropdown.Item href={ tagPagePath(searchEntry.tagId) } key={ i }>
-            { searchEntry.highlight }
+        { searchEntries.map(searchEntry => (
+          <NavDropdown.Item
+            href={tagPagePath(searchEntry.tagId)}
+            key={searchEntry.tagId}
+          >
+            { searchEntry.label }
           </NavDropdown.Item>
-        ) }
+        )) }
       </div>
     </div>
   )

@@ -15,7 +15,7 @@ module Admin
       def perform_search
         return [] if @key.blank?
 
-        Book.where('title LIKE ?', "%#{@key}%").order(id: :desc).to_a
+        Book.search_by_title(@key).order(id: :desc).to_a
       end
     end
   end

@@ -1,20 +1,30 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-const ImageContainer = (props) => {
-  const { children, className, url, ...options } = props
+const ImageContainer = ({ children = null, classes = '', url, onClick = null }) => {
   const styles = {
     backgroundImage: `url(${url})`,
     backgroundSize: 'contain',
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
-    ...options.styles
   }
   return (
-    <div className={ classNames('image-container', className) } style={ styles } { ...options }>
+    <div
+      className={classNames('image-container', classes)}
+      onClick={onClick}
+      style={styles}
+    >
       { children }
     </div>
   )
+}
+
+ImageContainer.propTypes = {
+  children: PropTypes.node,
+  classes: PropTypes.string,
+  onClick: PropTypes.func,
+  url: PropTypes.string.isRequired,
 }
 
 export default ImageContainer

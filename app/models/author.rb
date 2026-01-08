@@ -44,6 +44,7 @@ class Author < ApplicationRecord
   scope :order_by_fullname, -> { order(:fullname) }
   scope :not_synced, -> { where(synced_at: nil) }
   scope :without_tasks, -> { where.missing(:books_list_tasks).where.missing(:list_parsing_tasks) }
+  scope :search_by_name, ->(key) { where('fullname LIKE ?', "%#{key}%") }
 
   def tag_ids
     tag_connections.map(&:tag_id)

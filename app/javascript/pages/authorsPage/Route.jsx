@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { Route, useParams } from 'react-router-dom'
 
 import { setCurrentAuthorId } from 'store/axis/actions'
 import { assignPage, assignPerPage, assignSortBy } from 'pages/authorsPage/actions'
@@ -11,31 +10,31 @@ const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('authorsPagePath', (id) => buildPath({ path: '/authors' }))
+    addRoute('authorsPagePath', () => buildPath({ path: '/authors' }))
   }, [])
   return null
 }
 
 const path = '/authors'
 
-const Renderer = () => {
-  return (
-    <>
-      <LocalStoreConfigurer/>
-      <AuthorsPage/>
-    </>
-  )
-}
+const Renderer = () => (
+  <>
+    <LocalStoreConfigurer />
+
+    <AuthorsPage />
+  </>
+)
 
 const LocalStoreConfigurer = () => {
   const dispatch = useDispatch()
 
   const { actions: { addRoute, addUrlAction, addUrlState, patch },
-          helpers: { buildPath, buildRelativePath },
-          pageState: { authorId, page, perPage, sortBy },
-          getRoutes,
-        } = useContext(UrlStoreContext)
+    helpers: { buildPath, buildRelativePath },
+    pageState,
+    getRoutes,
+  } = useContext(UrlStoreContext)
 
+  /* eslint-disable camelcase */
   useEffect(() => {
     addRoute('indexPaginationPath', (page, perPage) => buildRelativePath({ params: { page, per_page: perPage } }))
 
@@ -43,11 +42,11 @@ const LocalStoreConfigurer = () => {
 
     addUrlState('sortOrder', url => url.queryParameter('sort_order'))
 
-    addUrlState('page', (url) => parseInt(url.queryParameter('page')) || null)
+    addUrlState('page', url => parseInt(url.queryParameter('page')) || null)
 
-    addUrlState('perPage', (url) => parseInt(url.queryParameter('per_page')) || null)
+    addUrlState('perPage', url => parseInt(url.queryParameter('per_page')) || null)
 
-    addUrlState('sortBy', (url) => url.queryParameter('sort_by'))
+    addUrlState('sortBy', url => url.queryParameter('sort_by'))
 
     addUrlAction('changeSortOrder', order => patch(buildPath({ params: { 'sort_order': order } })))
 
@@ -57,8 +56,11 @@ const LocalStoreConfigurer = () => {
 
     addUrlAction('switchToIndexPage', (page, perPage) => patch(getRoutes().indexPaginationPath(page, perPage)))
 
-    addUrlAction('switchToIndexSort', (sortBy) => patch(buildRelativePath({ params: { page: 1, sort_by: sortBy } })))
+    addUrlAction('switchToIndexSort', sortBy => patch(buildRelativePath({ params: { page: 1, sort_by: sortBy } })))
   }, [])
+  /* eslint-enable camelcase */
+
+  const { authorId, page, perPage, sortBy } = pageState
 
   useEffect(() => {
     dispatch(assignPage(page))

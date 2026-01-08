@@ -13,7 +13,7 @@ RSpec.describe Admin::Authors::ListParsingController do
     end
   end
 
-  describe 'POST /admin/authors/:id/list_parsing' do
+  describe 'POST /admin/authors/:author_id/list_parsing' do
     let(:send_request) do
       post admin_author_list_parsing_index_path(author), params: params, headers: authorization_header
     end
@@ -34,7 +34,7 @@ RSpec.describe Admin::Authors::ListParsingController do
     end
   end
 
-  describe 'GET /admin/authors/:id/list_parsing/:id/edit' do
+  describe 'GET /admin/authors/:author_id/list_parsing/:(task_)id/edit' do
     let(:send_request) { get edit_admin_author_list_parsing_path(author, task), headers: authorization_header }
     let(:task) do
       create(:author_books_list_parsing_task, target: author, fetched_data: fetched_data, status: :fetched)
@@ -68,6 +68,60 @@ RSpec.describe Admin::Authors::ListParsingController do
         [nil, 'TITLE_3', 2023, 'TYPE_3']
       ]
       expect(assigns(:books).map { |b| [b.id, b.title, b.year_published, b.literary_form] }).to eq(expected_books)
+    end
+  end
+
+  describe 'POST /admin/authors/:author_id/list_parsing/:(task_)id/apply' do
+    let(:send_request) do
+      post apply_admin_author_list_parsing_path(author, task), params: params, headers: authorization_header
+    end
+    let(:task) { create(:author_books_list_parsing_task, target: author, status: :fetched, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      [{ 'title' => 'TITLE_1', 'year' => '2021', 'type' => 'TYPE_2' }]
+    end
+    let(:params) do
+      {
+        batch: {
+          '0' => { id: book.id, title: 'TITLE_1', year: '2025', type: 'TYPE_2' }
+        }
+      }
+    end
+    let(:book) { build_stubbed(:book) }
+    let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
+
+    before do
+      book
+      allow(Forms::Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
+      allow(updater).to receive_messages(update: true, books: [book])
+    end
+
+    it 'updates books via the updater' do
+      send_request
+      expect(updater).to have_received(:update)
+      expect(assigns(:books)).to contain_exactly(book)
+    end
+
+    it 'marks the task as verified' do
+      send_request
+      expect(task.reload).to be_verified
+    end
+
+    it 'redirects to the data fetch task page' do
+      send_request
+      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(flash[:notice]).to eq('Updates applied.')
+    end
+
+    context 'with invalid params' do
+      before do
+        allow(updater).to receive_messages(update: false, collect_errors: 'Title cannot be blank')
+      end
+
+      it 'renders the edit template again' do
+        send_request
+        expect(response).to render_template 'admin/authors/list_parsing/edit'
+        expect(flash[:error]).to include('Title cannot be blank')
+      end
     end
   end
 end

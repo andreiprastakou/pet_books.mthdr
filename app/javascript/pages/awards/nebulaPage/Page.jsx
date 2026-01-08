@@ -5,25 +5,33 @@ import ExternalTextLink from 'components/ExternalTextLink'
 
 const TAG_IDS = [31]
 
-const Page = () => {
-  const pageConfig = {
-    booksListFilter: { tagIds: TAG_IDS },
-    SidebarCardWidget: () => (
-      <Card className='sidebar-card-widget'>
-        <Card.Header className='widget-title'>
-          Nebula awards
-        </Card.Header>
-        <Card.Body>
-          <ExternalTextLink href='https://nebulas.sfwa.org/' text='Official site'/>
-          <br/>
-          <ExternalTextLink href='https://en.wikipedia.org/wiki/Nebula_Award' text='Wiki'/>
-        </Card.Body>
-      </Card>
-    ),
-  }
-  return (
-    <PageTemplate config={ pageConfig }/>
-  )
+const pageConfig = {
+  booksListFilter: { tagIds: TAG_IDS },
+  SidebarCardWidget: () => (
+    <Card className='sidebar-card-widget'>
+      <Card.Header className='widget-title'>
+        { 'Nebula awards' }
+      </Card.Header>
+
+      <Card.Body>
+        <ExternalTextLink
+          href='https://nebulas.sfwa.org/'
+          text='Official site'
+        />
+
+        <br />
+
+        <ExternalTextLink
+          href='https://en.wikipedia.org/wiki/Nebula_Award'
+          text='Wiki'
+        />
+      </Card.Body>
+    </Card>
+  ),
 }
+
+const Page = () => (
+  <PageTemplate config={pageConfig} />
+)
 
 export default Page

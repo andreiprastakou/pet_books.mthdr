@@ -1,5 +1,4 @@
 import { objectToParams } from 'utils/objectToParams'
-import AuthorForm from 'store/authors/api/AuthorForm'
 import AuthorFull from 'store/authors/api/AuthorFull'
 import AuthorIndexEntry from 'store/authors/api/AuthorIndexEntry'
 import AuthorRef from 'store/authors/api/AuthorRef'
@@ -41,24 +40,6 @@ class ApiClient {
     return jQuery.ajax({
       url: `/api/authors/full_entries/${id}.json`
     }).then(entry => AuthorFull.parse(entry))
-  }
-
-  static putAuthorUpdates(id, formData) {
-    const body = AuthorForm.buildServerData(formData)
-    return jQuery.ajax({
-      url: `/api/authors/full_entries/${id}.json`,
-      type: 'PUT',
-      data: { author: body }
-    })
-  }
-
-  static postNewAuthor(formData) {
-    const body = AuthorForm.buildServerData(formData)
-    return jQuery.ajax({
-      url: '/api/authors/full_entries.json',
-      type: 'POST',
-      data: { author: body }
-    })
   }
 
   static search(key) {

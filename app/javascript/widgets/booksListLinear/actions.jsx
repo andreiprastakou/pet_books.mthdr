@@ -1,19 +1,14 @@
-import { first, last } from 'lodash'
 import apiClient from 'store/books/apiClient'
 import { selectCurrentBookId } from 'store/axis/selectors'
-import { clearSelection } from 'store/selectables/actions'
-import { selectBooksRefIds, selectCurrentBookRef } from 'store/books/selectors'
+import { selectCurrentBookRef } from 'store/books/selectors'
 import {
-  addBooks,
   addBooksRefs,
   fetchMissingBookIndexEntries,
   setRequestedBookId,
   showBook,
 } from 'store/books/actions'
-import { pickNearEntries } from 'utils/pickNearEntries'
 import { selectBookIds, selectFilter, selectPage, selectPerPage, selectSortBy } from 'widgets/booksListLinear/selectors'
 import { slice } from 'widgets/booksListLinear/slice'
-import { toggleId } from 'store/selectables/actions'
 export const {
   assignBookIds,
   assignBooksTotal,
@@ -43,25 +38,24 @@ export const fetchBooks = () => (dispatch, getState) => {
   })
 }
 
-export const shiftSelection = (shift) => (dispatch, getState) => {
+export const shiftSelection = shift => (dispatch, getState) => {
   const state = getState()
   const currentBookRef = selectCurrentBookRef()(state)
   const allBookIds = selectBookIds()(state)
   const currentIndex = allBookIds.indexOf(currentBookRef.id)
-  var targetIndex = currentIndex + shift
-  if (targetIndex < 0) { targetIndex = allBookIds.length - 1 }
-  if (targetIndex >= allBookIds.length) { targetIndex = 0 }
+  let targetIndex = currentIndex + shift
+  if (targetIndex < 0)  targetIndex = allBookIds.length - 1 
+  if (targetIndex >= allBookIds.length)  targetIndex = 0 
 
   dispatch(setRequestedBookId(allBookIds[targetIndex]))
 }
 
 export const setupBooksListSelection = () => (dispatch, getState) => {
   const currentBookRef = selectCurrentBookRef()(getState())
-  if (currentBookRef) {
+  if (currentBookRef) 
     dispatch(showBook(currentBookRef.id))
-  } else {
+  else 
     dispatch(switchToFirstBook())
-  }
 }
 
 export const switchToFirstBook = () => (dispatch, getState) => {
@@ -73,12 +67,6 @@ export const switchToFirstBook = () => (dispatch, getState) => {
   dispatch(setRequestedBookId(ids[0]))
 }
 
-export const clearListState = () => (dispatch) => {
+export const clearListState = () => dispatch => {
   dispatch(clearListInnerState())
-  dispatch(clearSelection())
-}
-
-export const toggleCurrentBookSelected = () => (dispatch, getState) => {
-  const id = selectCurrentBookId()(getState())
-  dispatch(toggleId(id))
 }

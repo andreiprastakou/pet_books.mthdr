@@ -1,8 +1,8 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBook, faBookmark, faPen, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { faBook, faBookmark } from '@fortawesome/free-solid-svg-icons'
 import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import PropTypes from 'prop-types'
@@ -11,60 +11,70 @@ import { selectTagBookmark, selectTagNames } from 'store/tags/selectors'
 import { markAuthorAsBookmarked, unmarkAuthorAsBookmarked } from 'sidebar/authorCard/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const Toolbar = (props) => {
+const Toolbar = props => {
   const { authorFull } = props
-  const { routes: { authorPagePath, editAuthorPath, newBookPath },
-          actions: { openEditAuthorModal, openNewBookModal }, routesReady } = useContext(UrlStoreContext)
+  const { routes: { authorPagePath },
+    routesReady } = useContext(UrlStoreContext)
 
   const dispatch = useDispatch()
   const tagNames = useSelector(selectTagNames(authorFull.tagIds))
   const tagBookmark = useSelector(selectTagBookmark())
   const isBookmarked = tagNames.includes(tagBookmark)
 
+  const handleRemoveBookmark = useCallback(() => {
+    dispatch(unmarkAuthorAsBookmarked(authorFull.id, authorFull.tagIds))
+  }, [authorFull.id, authorFull.tagIds])
+
+  const handleBookmark = useCallback(() => {
+    dispatch(markAuthorAsBookmarked(authorFull.id, authorFull.tagIds))
+  }, [authorFull.id, authorFull.tagIds])
+
   if (!routesReady) return null
 
   return (
-    <>
-      <ButtonGroup className='author-toolbar'>
-        { authorFull.reference &&
-          <Button variant='outline-info' title='See info...' href={ authorFull.reference } target='_blank'>
-            <FontAwesomeIcon icon={ faWikipediaW }/>
-          </Button>
-        }
-
-        { authorFull.booksCount > 0 &&
-          <Button variant='outline-info' title='See all books' href={ authorPagePath(authorFull.id) }>
-            <FontAwesomeIcon icon={ faBook }/> ({ authorFull.booksCount })
-          </Button>
-        }
-
-        <Button variant='outline-warning' title='Edit info' href={ editAuthorPath(authorFull.id) }
-                onClick={ e => { e.preventDefault(); openEditAuthorModal() } }>
-          <FontAwesomeIcon icon={ faPen }/>
+    <ButtonGroup className='author-toolbar'>
+      { authorFull.reference ? (
+        <Button
+          href={authorFull.reference}
+          target='_blank'
+          title='See info...'
+          variant='outline-info'
+        >
+          <FontAwesomeIcon icon={faWikipediaW} />
         </Button>
+      ) : null}
 
-        { isBookmarked ?
-          <Button variant='outline-warning' title='Remove bookmark' href='#'
-                  onClick={ () => dispatch(unmarkAuthorAsBookmarked(authorFull.id, authorFull.tagIds)) }>
-            <FontAwesomeIcon icon={ faBookmark }/>
-          </Button>
-          :
-          <Button variant='outline-warning' title='Bookmark' href='#'
-                  onClick={ () => dispatch(markAuthorAsBookmarked(authorFull.id, authorFull.tagIds)) }>
-            <FontAwesomeIcon icon={ faBookmarkEmpty }/>
-          </Button>
-        }
+      { authorFull.booksCount > 0 &&
+      <Button
+        href={authorPagePath(authorFull.id)}
+        title='See all books'
+        variant='outline-info'
+      >
+        <FontAwesomeIcon icon={faBook} />
 
-        <Button variant='outline-danger' title='Delete' href='#' onClick={ (e) => e.preventDefault() }>
-          <FontAwesomeIcon icon={ faTrash }/>
+        { ` (${authorFull.booksCount})` }
+      </Button>}
+
+      { isBookmarked ? (
+        <Button
+          href='#'
+          onClick={handleRemoveBookmark}
+          title='Remove bookmark'
+          variant='outline-warning'
+        >
+          <FontAwesomeIcon icon={faBookmark} />
         </Button>
-
-        <Button variant='outline-warning' title='Add a book' href={ newBookPath() }
-                onClick={ e => { e.preventDefault(); openNewBookModal() } }>
-          + <FontAwesomeIcon icon={ faBook }/>
+      ) : (
+        <Button
+          href='#'
+          onClick={handleBookmark}
+          title='Bookmark'
+          variant='outline-warning'
+        >
+          <FontAwesomeIcon icon={faBookmarkEmpty} />
         </Button>
-      </ButtonGroup>
-    </>
+      ) }
+    </ButtonGroup>
   )
 }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Provider as ReduxProvider } from 'react-redux'
 import store from 'store/store'
 import { Container } from 'react-bootstrap'
@@ -14,30 +15,38 @@ import EventsProvider from 'store/events/Provider'
 import { setDefaultBookImageUrl } from 'store/books/actions'
 import { setDefaultAuthorImageUrl } from 'store/authors/actions'
 
-const Page = (props) => {
-  store.dispatch(setDefaultBookImageUrl(props.default_book_image_url))
-  store.dispatch(setDefaultAuthorImageUrl(props.default_author_image_url))
+/* eslint-disable camelcase */
+const Page = ({ default_book_image_url, default_author_image_url }) => {
+  store.dispatch(setDefaultBookImageUrl(default_book_image_url))
+  store.dispatch(setDefaultAuthorImageUrl(default_author_image_url))
 
   return (
-    <ReduxProvider store={ store }>
+    <ReduxProvider store={store}>
       <BrowserRouter>
         <RootUrlStoreProvider>
           <EventsProvider>
-            <PageRouteHelpers/>
+            <PageRouteHelpers />
 
-            <Modals/>
+            <Modals />
 
-            <Notifications/>
+            <Notifications />
 
             <Container className='page'>
-              <Navbar/>
-              <PageContent/>
+              <Navbar />
+
+              <PageContent />
             </Container>
           </EventsProvider>
         </RootUrlStoreProvider>
       </BrowserRouter>
     </ReduxProvider>
-  );
+  )
 }
+
+Page.propTypes = {
+  default_author_image_url: PropTypes.string.isRequired,
+  default_book_image_url: PropTypes.string.isRequired,
+}
+/* eslint-enable camelcase */
 
 export default Page

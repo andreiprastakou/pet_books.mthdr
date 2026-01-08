@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
-import { Route, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 
 import { setCurrentAuthorId } from 'store/axis/actions'
 import { setPageIsLoading } from 'store/metadata/actions'
@@ -11,21 +11,21 @@ const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('authorPagePath', (id, { bookId } = {}) => buildPath({ path: `/authors/${id}`, params: { 'book_id': bookId } }))
+    addRoute('authorPagePath', (id, { bookId } = {}) =>
+      buildPath({ path: `/authors/${id}`, params: { 'book_id': bookId } }))
   }, [])
   return null
 }
 
 const path = '/authors/:authorId'
 
-const Renderer = () => {
-  return (
-    <>
-      <LocalStoreConfigurer/>
-      <AuthorPage/>
-    </>
-  )
-}
+const Renderer = () => (
+  <>
+    <LocalStoreConfigurer />
+
+    <AuthorPage />
+  </>
+)
 
 const LocalStoreConfigurer = () => {
   const params = useParams()
@@ -34,8 +34,8 @@ const LocalStoreConfigurer = () => {
   const dispatch = useDispatch()
 
   const { actions: { addUrlState },
-          pageState: { authorId }
-        } = useContext(UrlStoreContext)
+    pageState: { authorId }
+  } = useContext(UrlStoreContext)
 
   useEffect(() => {
     addUrlState('authorId', () => parseInt(paramsRef.current.authorId))

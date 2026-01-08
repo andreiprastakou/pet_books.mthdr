@@ -3,19 +3,16 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { HotKeys } from 'react-hotkeys'
 
-import { syncCurrentBookStats } from 'store/bookSync/actions'
-import { shiftSelection, toggleCurrentBookSelected } from 'widgets/booksListLinear/actions'
+import { shiftSelection } from 'widgets/booksListLinear/actions'
 
 const keyMap = {
   DOWN: 'Down',
   UP: 'Up',
   LEFT: 'Left',
   RIGHT: 'Right',
-  SYNC_BOOK_STATS: 's',
-  SELECT_BOOK_FOR_BATCH: 'b',
 }
 
-const HotKeysWrap = (props) => {
+const HotKeysWrap = ({ children }) => {
   const dispatch = useDispatch()
   const ref = useRef(null)
 
@@ -30,17 +27,25 @@ const HotKeysWrap = (props) => {
     LEFT: () => {
       dispatch(shiftSelection(-1))
     },
-    SYNC_BOOK_STATS: () => dispatch(syncCurrentBookStats()),
-    SELECT_BOOK_FOR_BATCH: () => dispatch(toggleCurrentBookSelected()),
   })
 
   return (
-    <HotKeys keyMap={ keyMap } handlers={ hotKeysHandlers() }>
-      <div tabIndex="-1" ref={ ref }>
-        { props.children }
+    <HotKeys
+      handlers={hotKeysHandlers()}
+      keyMap={keyMap}
+    >
+      <div
+        ref={ref}
+        tabIndex="-1"
+      >
+        { children }
       </div>
     </HotKeys>
   )
+}
+
+HotKeysWrap.propTypes = {
+  children: PropTypes.node.isRequired,
 }
 
 export default HotKeysWrap

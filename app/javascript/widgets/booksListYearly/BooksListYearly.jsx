@@ -11,28 +11,32 @@ const BooksListYearly = () => {
   const yearsToDisplay = useSelector(selectYearsToDisplay())
 
   return (
-    <>
-      <HotKeysWrap>
-        <div className='books-list'>
-          <div className='books-list-shadow shadow-top'/>
-          <div className='books-list-shadow shadow-bottom'/>
-          <div className='books-list-shadow shadow-left'/>
-          <div className='books-list-shadow shadow-right'/>
+    <HotKeysWrap>
+      <div className='books-list'>
+        <div className='books-list-shadow shadow-top' />
 
-          <div className='side-scroll'>
-            <YearsSlider/>
-          </div>
+        <div className='books-list-shadow shadow-bottom' />
 
-          <div className='books-list-layer2'>
-            <div className='books-list-layer3'>
-              { yearsToDisplay.map(year =>
-                <YearRow year={ year } key={ year }/>
-              ) }
-            </div>
+        <div className='books-list-shadow shadow-left' />
+
+        <div className='books-list-shadow shadow-right' />
+
+        <div className='side-scroll'>
+          <YearsSlider />
+        </div>
+
+        <div className='books-list-layer2'>
+          <div className='books-list-layer3'>
+            { yearsToDisplay.map(year =>
+              (<YearRow
+                key={year}
+                year={year}
+               />)
+            ) }
           </div>
         </div>
-      </HotKeysWrap>
-    </>
+      </div>
+    </HotKeysWrap>
   )
 }
 

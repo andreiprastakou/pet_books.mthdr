@@ -1,46 +1,51 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import classnames from 'classnames'
 
-import { selectBooksIndexEntry, selectBookDefaultImageUrl } from 'store/books/selectors'
+import { selectBookDefaultImageUrl } from 'store/books/selectors'
 import { selectCurrentBookId } from 'store/axis/selectors'
-import { selectIdIsSelected } from 'store/selectables/selectors'
-import { toggleId } from 'store/selectables/actions'
 
 import ImageContainer from 'components/ImageContainer'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const Book = (props) => {
-  const { bookIndexEntry, showYear, ...options } = props
-  const dispatch = useDispatch()
+const Book = ({ bookIndexEntry, showYear = false }) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const defaultCoverUrl = useSelector(selectBookDefaultImageUrl())
   const ref = useRef(null)
-  const isSelectedForBatch = useSelector(selectIdIsSelected(bookIndexEntry.id))
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
 
-  const isCurrent = bookIndexEntry.id == currentBookId
+  const isCurrent = bookIndexEntry.id === currentBookId
   const coverUrl = bookIndexEntry.coverUrl || defaultCoverUrl
-  const classNames = classnames('book-case', { 'selected': isCurrent, 'selected-for-batch': isSelectedForBatch })
+  const classNames = classnames('book-case', { 'selected': isCurrent })
 
   useEffect(() => {
-    if (isCurrent) { ref.current?.scrollIntoViewIfNeeded() }
+    if (isCurrent)  ref.current?.scrollIntoView()
   })
 
-  const handleClick = (e) => {
-    if (e.ctrlKey) dispatch(toggleId(bookIndexEntry.id))
+  const handleClick = useCallback(() => {
     showBooksIndexEntry(bookIndexEntry.id)
-  }
+  }, [bookIndexEntry.id])
 
   return (
-    <div className={ classNames } onClick={ handleClick } title={ bookIndexEntry.title } ref={ ref } { ...options }>
-      <ImageContainer className='book-cover' url={ coverUrl }/>
-      { showYear &&
-        <div className='year'>{ bookIndexEntry.year }</div>
-      }
+    <div
+      className={classNames}
+      onClick={handleClick}
+      ref={ref}
+      title={bookIndexEntry.title}
+    >
+      <ImageContainer
+        classes='book-cover'
+        url={coverUrl}
+      />
+
+      { showYear ? (
+        <div className='year'>
+          { bookIndexEntry.year }
+        </div>
+      ) : null}
     </div>
-  );
+  )
 }
 
 Book.propTypes = {

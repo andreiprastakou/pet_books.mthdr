@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook } from '@fortawesome/free-solid-svg-icons'
 
-const BookIcon = (props) => {
-  const { onClick } = props
+const BookIcon = ({ onClick }) => {
+  const handleClick = useCallback(e => {
+    e.preventDefault()
+    onClick(e)
+  }, [onClick])
   return (
-    <a className='icon-edit' href='#' onClick={ (e) => { e.preventDefault(); onClick(e) } }>
-      <FontAwesomeIcon icon={ faBook }/>
+    <a
+      className='icon-edit'
+      href='#'
+      onClick={handleClick}
+    >
+      <FontAwesomeIcon icon={faBook} />
     </a>
   )
 }

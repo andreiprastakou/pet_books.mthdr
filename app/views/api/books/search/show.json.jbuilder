@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
-json.array! @entries do |search_entry|
-  json.book_id search_entry.book_id
-  json.title search_entry.title
-  json.year search_entry.year
-  json.author_id search_entry.author_id
-  json.highlight search_entry.highlight
+json.array! @books do |book|
+  json.book_id book.id
+  json.title book.title
+  json.year book.year_published
+  json.author_id book.author_ids.first
 end

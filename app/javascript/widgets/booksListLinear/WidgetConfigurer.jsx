@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { selectPage, selectPerPage, selectSortBy } from 'widgets/booksListLinear/selectors'

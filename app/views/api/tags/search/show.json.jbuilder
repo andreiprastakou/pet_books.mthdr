@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-json.array! @entries do |search_entry|
-  json.tag_id search_entry.tag_id
-  json.highlight search_entry.highlight
+json.array! @tags do |tag|
+  json.tag_id tag.id
+  json.label tag.name
 end
