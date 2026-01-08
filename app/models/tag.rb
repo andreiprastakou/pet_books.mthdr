@@ -47,6 +47,7 @@ class Tag < ApplicationRecord
   validates :category, presence: true
 
   scope :with_name, ->(name) { where(name: Array(name).map { |n| normalize_name_value(n) }) }
+  scope :search_by_name, ->(key) { where('name LIKE ?', "%#{key}%") }
 
   def self.find_or_create_by_name(name, category)
     with_name(name).first ||

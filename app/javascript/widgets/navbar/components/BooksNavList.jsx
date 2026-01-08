@@ -48,13 +48,13 @@ const SearchEntry = ({ entry }) => {
         { authorRef.fullname }
       </span>
 
-      { '&nbsp;' }
+      { ' ' }
 
       <span className='title'>
         { entry.title }
       </span>
 
-      { '&nbsp;' }
+      { ' ' }
 
       <span className='year'>
         { `(${entry.year})` }

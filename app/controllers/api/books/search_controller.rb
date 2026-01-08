@@ -2,7 +2,7 @@ module Api
   module Books
     class SearchController < Api::Authors::BaseController
       def show
-        @entries = [] # TBD: reimplement search
+        @books = Book.search_by_title(params[:key]).order(:title).to_a
       end
     end
   end

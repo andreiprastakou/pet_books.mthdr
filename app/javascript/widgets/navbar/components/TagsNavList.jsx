@@ -28,7 +28,7 @@ const TagsNavList = () => {
             href={tagPagePath(searchEntry.tagId)}
             key={searchEntry.tagId}
           >
-            { searchEntry.highlight }
+            { searchEntry.label }
           </NavDropdown.Item>
         )) }
       </div>

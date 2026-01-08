@@ -68,6 +68,7 @@ class Book < ApplicationRecord
   scope :not_filled, -> { where(data_filled: false) }
   scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
   scope :form_requires_summary, -> { where(literary_form: FORMS_REQUIRE_SUMMARY) }
+  scope :search_by_title, ->(key) { where('title LIKE ?', "%#{key}%") }
 
   def tag_ids
     tag_connections.map(&:tag_id)

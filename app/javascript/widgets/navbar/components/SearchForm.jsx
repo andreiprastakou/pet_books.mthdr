@@ -25,6 +25,7 @@ const SearchForm = ({ focusEvent = null, apiSearcher }) => {
   }, [])
 
   const performSearch = () => {
+    const key = searchKey.current
     if (!key || searchInProgress) return
 
     setSearchState({ searchInProgress: true })

@@ -21,8 +21,6 @@ const Toolbar = props => {
   const tagBookmark = useSelector(selectTagBookmark())
   const isBookmarked = tagNames.includes(tagBookmark)
 
-  if (!routesReady) return null
-
   const handleRemoveBookmark = useCallback(() => {
     dispatch(unmarkAuthorAsBookmarked(authorFull.id, authorFull.tagIds))
   }, [authorFull.id, authorFull.tagIds])
@@ -30,6 +28,8 @@ const Toolbar = props => {
   const handleBookmark = useCallback(() => {
     dispatch(markAuthorAsBookmarked(authorFull.id, authorFull.tagIds))
   }, [authorFull.id, authorFull.tagIds])
+
+  if (!routesReady) return null
 
   return (
     <ButtonGroup className='author-toolbar'>

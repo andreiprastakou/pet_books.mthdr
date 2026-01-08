@@ -17,13 +17,13 @@ const BooksListPagination = () => {
   const lastPage = Math.ceil(totalCount / perPage)
   const { actions: { switchToIndexPage }, routes: { indexPaginationPath }, routesReady } = useContext(UrlStoreContext)
 
-  if (perPage >= totalCount) return null
-  if (!routesReady) return null
-
   const handlePageClick = useCallback(pageNumber => e => {
     e.preventDefault()
     switchToIndexPage(pageNumber, perPage)
   }, [switchToIndexPage, perPage])
+
+  if (perPage >= totalCount) return null
+  if (!routesReady) return null
 
   const renderPageLink = pageNumber => {
     if (pageNumber < 1 || pageNumber > lastPage) return null

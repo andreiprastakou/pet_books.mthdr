@@ -28,8 +28,6 @@ const BookToolbar = props => {
   const tagRead = useSelector(selectTagRead())
   const isRead = tagNames.includes(tagRead)
 
-  if (!routesReady) return null
-
   const handleClickUnbookmark = useCallback(() => {
     dispatch(removeTagFromBook(book.id, tagBookmark))
   }, [book.id, tagBookmark])
@@ -45,6 +43,8 @@ const BookToolbar = props => {
   const handleClickMarkAsRead = useCallback(() => {
     dispatch(addTagToBook(book.id, tagRead))
   }, [book.id, tagRead])
+
+  if (!routesReady) return null
 
   return (
     <div>

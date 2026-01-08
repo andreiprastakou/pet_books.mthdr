@@ -33,11 +33,11 @@ const BookCard = props => {
   const coverUrl = booksIndexEntry.coverUrl || defaultCoverUrl
   const sortedTags = sortBy(visibleTags, tag => -tag.connectionsCount)
 
-  if (!routesReady || !booksIndexEntry) return null
-
   const handleImageClick = useCallback(() => {
     dispatch(setImageSrc(booksIndexEntry.coverFullUrl))
   }, [booksIndexEntry.coverFullUrl])
+
+  if (!routesReady || !booksIndexEntry) return null
 
   return (
     <Card className='sidebar-book-card-widget sidebar-card-widget'>

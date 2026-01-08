@@ -27,9 +27,9 @@ const BookSelected = ({ bookIndexEntry }) => {
 
   useEffect(() => ref.current?.focus(), [])
 
-  if (!routesReady) return null
-
   const handleClick = useCallback(() => dispatch(setImageSrc(bookIndexEntry.coverFullUrl)), [])
+
+  if (!routesReady) return null
 
   return (
     <div

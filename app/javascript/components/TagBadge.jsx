@@ -12,12 +12,11 @@ const TagBadge = ({ text, id = null, renderPostfix = null, classes = '', variant
   const tagRef = useSelector(selectTagRef(id))
   const category = useSelector(selectCategory(tagRef?.categoryId))
   const { routes: { tagPagePath }, actions: { goto }, routesReady } = useContext(UrlStoreContext)
+  const classnames = classNames(['tag-container', `tag-category-${category.name}`, classes])
+  const clickHandler = useCallback(() => onClick ? onClick() : goto(tagPagePath(id)), [goto, tagPagePath])
 
   if (!tagRef || !category) return null
   if (!routesReady) return null
-
-  const classnames = classNames(['tag-container', `tag-category-${category.name}`, classes])
-  const clickHandler = useCallback(() => onClick ? onClick() : goto(tagPagePath(id)), [goto, tagPagePath])
 
   return (
     <Badge

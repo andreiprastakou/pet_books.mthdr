@@ -37,8 +37,6 @@ const AuthorCard = ({ authorFull, onClose = null }) => {
   const sortedTags = sortBy(visibleTags, tag => tag.connectionsCount)
   const defaultPhotoUrl = useSelector(selectAuthorDefaultImageUrl())
 
-  if (!routesReady) return null
-
   const handleClose = useCallback(() => {
     if (onClose) onClose()
   }, [onClose])
@@ -46,6 +44,8 @@ const AuthorCard = ({ authorFull, onClose = null }) => {
   const handleImageClick = useCallback(() => {
     dispatch(setImageSrc(authorFull.imageUrl))
   }, [authorFull.imageUrl])
+
+  if (!routesReady) return null
 
   return (
     <Card className='sidebar-widget-author-card sidebar-card-widget'>

@@ -41,9 +41,9 @@ const RootNavLink = () => {
     actions: { goto },
     routesReady } = useContext(UrlStoreContext)
 
-  if (!routesReady) return null
-
   const handleGotoRoot = useCallback(() => goto(booksPagePath()), [goto, booksPagePath])
+
+  if (!routesReady) return null
 
   return (
     <Nav.Link onClick={handleGotoRoot}>

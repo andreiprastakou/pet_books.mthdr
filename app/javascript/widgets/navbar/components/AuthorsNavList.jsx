@@ -28,7 +28,7 @@ const AuthorsNavList = () => {
             href={authorPagePath(searchEntry.authorId)}
             key={searchEntry.authorId}
           >
-            { searchEntry.highlight }
+            { searchEntry.label }
           </NavDropdown.Item>)
         ) }
       </div>
