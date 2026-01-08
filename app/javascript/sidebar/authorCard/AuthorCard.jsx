@@ -29,7 +29,7 @@ const AuthorCardWrap = () => {
   return (<AuthorCard authorFull={authorFull} />)
 }
 
-const AuthorCard = ({ authorFull, onClose }) => {
+const AuthorCard = ({ authorFull, onClose = null }) => {
   const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
   const dispatch = useDispatch()
   const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds))
@@ -106,10 +106,6 @@ const AuthorCard = ({ authorFull, onClose }) => {
 AuthorCard.propTypes = {
   authorFull: PropTypes.object.isRequired,
   onClose: PropTypes.func,
-}
-
-AuthorCard.defaultProps = {
-  onClose: null,
 }
 
 const renderLifetime = (authorFull, authorsPath) => {

@@ -9,7 +9,7 @@ import { selectCurrentBookId } from 'store/axis/selectors'
 import ImageContainer from 'components/ImageContainer'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const Book = ({ bookIndexEntry, showYear }) => {
+const Book = ({ bookIndexEntry, showYear = false }) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const defaultCoverUrl = useSelector(selectBookDefaultImageUrl())
   const ref = useRef(null)
@@ -51,10 +51,6 @@ const Book = ({ bookIndexEntry, showYear }) => {
 Book.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
   showYear: PropTypes.bool,
-}
-
-Book.defaultProps = {
-  showYear: false,
 }
 
 export default Book

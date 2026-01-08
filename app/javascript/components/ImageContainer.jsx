@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-const ImageContainer = ({ children, classes, url, onClick }) => {
+const ImageContainer = ({ children = null, classes = '', url, onClick = null }) => {
   const styles = {
     backgroundImage: `url(${url})`,
     backgroundSize: 'contain',
@@ -25,12 +25,6 @@ ImageContainer.propTypes = {
   classes: PropTypes.string,
   onClick: PropTypes.func,
   url: PropTypes.string.isRequired,
-}
-
-ImageContainer.defaultProps = {
-  children: null,
-  classes: '',
-  onClick: null,
 }
 
 export default ImageContainer

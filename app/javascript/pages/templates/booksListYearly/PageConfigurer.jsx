@@ -18,7 +18,9 @@ import {
 import { prepareNavRefs } from 'widgets/navbar/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const Configurer = ({ listFilter }) => {
+const EMPTY_OBJECT = {}
+
+const Configurer = ({ listFilter = EMPTY_OBJECT }) => {
   const dispatch = useDispatch()
   const { routesReady } = useContext(UrlStoreContext)
   const currentBookId = useSelector(selectCurrentBookId())
@@ -61,10 +63,6 @@ const Configurer = ({ listFilter }) => {
 
 Configurer.propTypes = {
   listFilter: PropTypes.object,
-}
-
-Configurer.defaultProps = {
-  listFilter: {},
 }
 
 export default Configurer

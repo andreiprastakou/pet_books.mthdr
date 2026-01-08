@@ -73,8 +73,4 @@ SearchForm.propTypes = {
   focusEvent: PropTypes.string,
 }
 
-SearchForm.defaultProps = {
-  focusEvent: null,
-}
-
 export default SearchForm

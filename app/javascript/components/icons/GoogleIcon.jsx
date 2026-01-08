@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoogle } from '@fortawesome/free-brands-svg-icons'
 
-const GoogleIcon = ({ queryParts, optionalParams }) => {
+const EMPTY_OBJECT = {}
+
+const GoogleIcon = ({ queryParts, optionalParams = EMPTY_OBJECT }) => {
   if (compact(queryParts).length !== queryParts.length)  return null
 
   const params = new URLSearchParams()
@@ -27,10 +29,6 @@ const GoogleIcon = ({ queryParts, optionalParams }) => {
 GoogleIcon.propTypes = {
   optionalParams: PropTypes.object,
   queryParts: PropTypes.array.isRequired
-}
-
-GoogleIcon.defaultProps = {
-  optionalParams: {},
 }
 
 export default GoogleIcon

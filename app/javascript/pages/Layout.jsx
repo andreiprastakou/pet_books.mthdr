@@ -5,7 +5,7 @@ import { Row } from 'react-bootstrap'
 
 import { selectPageIsLoading } from 'store/metadata/selectors'
 
-const Layout = ({ children, classes }) => {
+const Layout = ({ children, classes = '' }) => {
   const pageIsLoading = useSelector(selectPageIsLoading())
   if (pageIsLoading)
     return 'Wait...'
@@ -20,10 +20,6 @@ const Layout = ({ children, classes }) => {
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
   classes: PropTypes.string,
-}
-
-Layout.defaultProps = {
-  classes: '',
 }
 
 export default Layout

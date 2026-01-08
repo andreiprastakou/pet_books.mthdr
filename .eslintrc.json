@@ -65,6 +65,7 @@
     "react/jsx-indent-props": ["error", 2],
     "react/jsx-max-depth": ["error", { "max": 5 }],
     "react/no-multi-comp": ["off"],
+    "react/require-default-props": ["off"],
     "require-await": ["off"],
     "semi": ["error", "never"],
     "space-before-function-paren": ["error", "never"],

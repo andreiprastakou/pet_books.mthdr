@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faGoodreadsG } from '@fortawesome/free-brands-svg-icons'
 
-const GoodreadsIcon = ({ url }) => {
+const GoodreadsIcon = ({ url = null }) => {
   if (!url)  return null
 
   return (
@@ -20,10 +20,6 @@ const GoodreadsIcon = ({ url }) => {
 
 GoodreadsIcon.propTypes = {
   url: PropTypes.string
-}
-
-GoodreadsIcon.defaultProps = {
-  url: null,
 }
 
 export default GoodreadsIcon

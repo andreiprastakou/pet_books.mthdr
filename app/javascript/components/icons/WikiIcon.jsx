@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 
-const WikiIcon = ({ url }) => {
+const WikiIcon = ({ url = null }) => {
   if (!url)  return null
 
   return (
@@ -20,10 +20,6 @@ const WikiIcon = ({ url }) => {
 
 WikiIcon.propTypes = {
   url: PropTypes.string
-}
-
-WikiIcon.defaultProps = {
-  url: null,
 }
 
 export default WikiIcon
