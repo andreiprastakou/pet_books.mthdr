@@ -174,11 +174,19 @@ const changeSelectedYear = selectTargetYear => (dispatch, getState) => {
 
 const switchToBookByYear = targetYear => (dispatch, getState) => {
   const state = getState()
+  const currentBookId = selectCurrentBookId()(state)
+  const bookIdsInYear = selectBookIdsByYear(targetYear)(state)
+
+  if (currentBookId && bookIdsInYear.includes(currentBookId)) {
+    dispatch(showBook(currentBookId))
+    return
+  }
+
   const bookIdPreselected = selectYearCurrentBookId(targetYear)(state)
   if (bookIdPreselected)
     dispatch(showBook(bookIdPreselected))
   else {
-    const bookId = first(selectBookIdsByYear(targetYear)(state))
+    const bookId = first(bookIdsInYear)
     if (!bookId) return
     dispatch(showBook(bookId))
   }

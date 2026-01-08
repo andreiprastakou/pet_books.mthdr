@@ -39,7 +39,6 @@ const LocalStoreConfigurer = () => {
     if (routesReady)
       dispatch(setCurrentBookId(bookId))
 
-
     setStoreReady(true)
   }, [bookId])
 
