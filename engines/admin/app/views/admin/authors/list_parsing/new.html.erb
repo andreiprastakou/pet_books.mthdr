@@ -1,0 +1,14 @@
+<% admin_nav_crumbs admin_nav_authors_link, admin_nav_author_link(@author), "Parse List" %>
+
+<div class="container mt-4">
+  <%= form_tag admin_author_list_parsing_index_path(@author), method: :post do %>
+    <div class="row">
+      <div class="col-12 mb-3">
+        <%= text_area_tag :text, nil, class: "form-control", placeholder: "Enter the list of books", rows: 20 %>
+      </div>
+      <div class="col-12">
+        <%= submit_tag "Parse", class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
+</div>

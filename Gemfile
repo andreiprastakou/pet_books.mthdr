@@ -86,3 +86,8 @@ group :test do
   gem 'timecop'
   gem 'webmock'
 end
+
+# Engines
+gem 'frontend', path: 'engines/frontend'
+gem 'frontend_api', path: 'engines/frontend_api'
+gem 'admin', path: 'engines/admin'

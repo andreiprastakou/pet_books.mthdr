@@ -1,0 +1,17 @@
+<div class="row mb-3">
+  <%= form.label :summary, class: "form-label" %>
+  <%= admin_reversible_input(old_value: book.summary_was) do %>
+    <%= form.text_area :summary, class: "form-control mb-1 b-book-summary", style: "height: 130px;",
+      data: { book_form_target: "summaryInput", input_changes_target: "input" } %>
+  <% end %>
+  <div class="col-md-10">
+    <%= admin_reversible_input(old_value: book.summary_src_was) do %>
+      <%= form.text_field :summary_src, class: "form-control", placeholder: "SRC",
+        data: { book_form_target: "summarySrcInput", input_changes_target: "input" } %>
+    <% end %>
+  </div>
+  <div class="col-md-2">
+    <%= button_tag "Clear", class: "btn btn-success",
+      data: { action: "click->book-form#onSrcClearClicked:prevent" } %>
+  </div>
+</div>

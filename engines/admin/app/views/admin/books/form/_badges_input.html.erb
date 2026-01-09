@@ -1,0 +1,23 @@
+<div class="col-md-6" data-badges-input-target="badges" data-values="<%= current_values.to_json %>"
+  data-old-value="<%= old_values.to_json %>">
+  <template data-badges-input-target="badgeTemplate">
+    <span class="badge bg-secondary mr-1 b-badge" data-name="badge">
+      <span class="b-badge-name" data-name="name"></span>
+      <%= hidden_field_tag name, nil, data: { name: "badgeNameInput", badges_input_target: "badgeNameInput" } %>
+      <span class="b-badge-delete-button" data-action="click->badges-input#deleteBadge">
+        -
+      </span>
+      <span class="b-badge-restore-button" data-action="click->badges-input#restoreBadge">
+        +
+      </span>
+    </span>
+  </template>
+</div>
+<div class="col-md-4">
+  <%= text_field nil, nil, class: "form-control",
+    data: { action: "input->badges-input#updateBadgeAddButton", badges_input_target: "badgeNewNameInput" } %>
+</div>
+<div class="col-md-2">
+  <%= button_tag "Add", class: "btn btn-success",
+    data: { action: "click->badges-input#onAddClicked", badges_input_target: "addButton" } %>
+</div>

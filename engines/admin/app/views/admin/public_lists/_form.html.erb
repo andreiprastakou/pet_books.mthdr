@@ -1,0 +1,43 @@
+<%= form_with(model: @public_list, scope: "public_list", class: "needs-validation b-public-list-form", novalidate: true,
+  url: @public_list.new_record? ? admin_public_list_type_public_lists_path(@public_list_type) : admin_public_list_type_public_list_path(@public_list_type, @public_list),
+  method: @public_list.new_record? ? :post : :put) do |form| %>
+  <%= render "admin/common/form_errors", form_record: @public_list %>
+
+  <div class="mb-3">
+    <%= form.label :year, class: "form-label" %>
+    <%= admin_reversible_input(old_value: @public_list.year_was) do %>
+      <%= form.number_field :year, class: "form-control", required: true,
+        data: { input_changes_target: "input" } %>
+    <% end %>
+    <div class="invalid-feedback">
+      Please provide a year.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :wiki_url, "Wiki URL", class: "form-label" %>
+    <%= admin_reversible_input(old_value: @public_list.wiki_url_was) do %>
+      <%= form.url_field :wiki_url, class: "form-control",
+        data: { input_changes_target: "input" } %>
+    <% end %>
+  </div>
+
+  <div class="mb-3" data-controller="generic-links-input">
+    <%= form.label nil, "Generic Links", class: "form-label" %>
+    <%= render "admin/common/generic_links_input",
+      form_scope: "public_list", values: generic_links_to_input_entries(@public_list.generic_links) %>
+  </div>
+
+  <div class="row mb-3 b-public-list-books-input" data-controller="public-list-books-input">
+    <%= render "admin/public_lists/books_input",
+      autocomplete_url: admin_api_books_search_path(format: :json),
+      values: book_public_lists_to_input_entries(@public_list.book_public_lists) %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", admin_public_list_type_path(@public_list_type), class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<%= render "admin/common/bootstrap_form_validator" %>

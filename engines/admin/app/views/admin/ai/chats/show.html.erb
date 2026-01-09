@@ -1,0 +1,64 @@
+<% admin_nav_crumbs admin_nav_ai_chats_link, admin_nav_ai_chat_link(@chat) %>
+
+<div id="<%= dom_id @chat %>" class="container mt-4">
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">ID:</div>
+    <div class="col-md-9"><%= @chat.id %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">Model ID:</div>
+    <div class="col-md-9"><%= @chat.model_id %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">Created At:</div>
+    <div class="col-md-9"><%= admin_timestamp(@chat.created_at) %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
+    <div class="col-md-9"><%= admin_timestamp(@chat.updated_at) %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">Total Messages:</div>
+    <div class="col-md-9"><%= @chat.messages.count %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">Total Tokens:</div>
+    <div class="col-md-9">
+      Input: <%= @chat.messages.sum(:input_tokens) %>,
+      Output: <%= @chat.messages.sum(:output_tokens) %>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-4">
+  <h2>Messages</h2>
+
+  <div class="list-group">
+    <% @messages.each do |message| %>
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">
+            <span class="badge bg-<%= message.role == 'user' ? 'primary' : 'success' %>">
+              <%= message.role.titleize %>
+            </span>
+            <% if message.model_id.present? %>
+              <small class="text-muted">(<%= message.model_id %>)</small>
+            <% end %>
+          </h5>
+          <small class="text-muted"><%= admin_timestamp(message.created_at) %></small>
+        </div>
+        <p class="mb-1"><%= message.content %></p>
+        <% if message.input_tokens.present? || message.output_tokens.present? %>
+          <small class="text-muted">
+            Tokens: <%= message.input_tokens || 0 %> in, <%= message.output_tokens || 0 %> out
+          </small>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

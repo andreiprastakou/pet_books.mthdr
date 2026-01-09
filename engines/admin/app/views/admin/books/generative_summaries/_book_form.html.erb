@@ -1,0 +1,91 @@
+<%= form_with(model: book, scope: "book", local: true, novalidate: true,
+  url: apply_admin_book_generative_summary_path(book, @task),
+  method: :post,
+  data: { controller: "book-form",
+    action: "book-generated-summaries:pickSummary@window->book-form#onSummaryPicked
+      book-generated-summaries:addTags@window->book-form#onTagsAdded" },
+  class: "needs-validation admin-book-form") do |form| %>
+
+  <div class="row mb-3" data-controller="association-input">
+    <%= label_tag nil, "Authors", class: "form-label" %>
+    <% entries = authors_to_badges_entries(book.authors) %>
+    <%= render "admin/books/form/association_badges_input_wide",
+      name: "book[author_ids][]",
+      autocomplete_url: admin_api_authors_search_path(format: :json),
+      label_input_data: { book_form_target: "authorName" },
+      old_values: entries,
+      values: entries %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :title, class: "form-label" %>
+    <%= admin_reversible_input(old_value: book.title_was) do %>
+      <%= form.text_field :title, class: "form-control", required: true,
+        data: { book_form_target: "titleInput", action: "input->book-form#syncQueries",
+          input_changes_target: "input" } %>
+    <% end %>
+    <div class="invalid-feedback">
+      Please provide a title.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :original_title, class: "form-label" %>
+    <%= admin_reversible_input(old_value: book.original_title_was) do %>
+      <%= form.text_field :original_title, class: "form-control", data: { input_changes_target: "input" } %>
+    <% end %>
+  </div>
+
+  <div class="row">
+    <div class="mb-3 col-md-6">
+      <%= form.label :year_published, class: "form-label" %>
+      <%= admin_reversible_input(old_value: book.year_published_was) do %>
+        <%= form.number_field :year_published, class: "form-control", required: true,
+          data: { input_changes_target: "input" } %>
+      <% end %>
+      <div class="invalid-feedback">
+        Please provide a valid year.
+      </div>
+    </div>
+
+    <div class="mb-3 col-md-6">
+      <%= form.label :literary_form, class: "form-label" %>
+      <%= admin_reversible_input(old_value: book.literary_form_was) do %>
+        <%= form.text_field :literary_form, class: "form-control",
+          data: { book_form_target: "literaryFormInput", input_changes_target: "input" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row mb-3" data-controller="badges-input" data-action="book-form:addGenres@window->badges-input#onNamesAdded">
+    <%= label_tag nil, "Genres", class: "form-label" %>
+    <%= render "admin/books/form/badges_input", form: form,
+      name: "book[genre_names][]", old_values: book.current_genre_names, current_values: book.current_genre_names %>
+  </div>
+
+  <div class="row mb-3" data-controller="badges-input" data-action="book-form:addTags@window->badges-input#onNamesAdded">
+    <%= label_tag nil, "Tags", class: "form-label" %>
+    <%= render "admin/books/form/badges_input", form: form,
+      name: "book[tag_names][]", old_values: book.current_tag_names, current_values: book.current_tag_names %>
+  </div>
+
+  <div class="row mb-3" data-controller="association-input">
+    <%= label_tag nil, "Series", class: "form-label" %>
+    <%= hidden_field_tag "book[series_ids][]", "", data: { association_input_target: "sentinelInput" } %>
+    <%= render "admin/books/form/association_badges_input_wide",
+      name: "book[series_ids][]",
+      autocomplete_url: admin_api_series_search_path(format: :json),
+      old_values: series_to_badges_entries(book.series),
+      values: series_to_badges_entries(book.series) %>
+  </div>
+
+  <%= render "admin/books/form/summary_input", form: form, book: book %>
+
+  <%= form.hidden_field :data_filled, data: { book_generated_summaries_target: "dataFilledInput" } %>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary btn-lg", data: { book_form_target: "submitButton" } %>
+  </div>
+<% end %>
+
+<%= render "admin/common/bootstrap_form_validator" %>

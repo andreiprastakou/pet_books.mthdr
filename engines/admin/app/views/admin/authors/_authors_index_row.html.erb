@@ -1,0 +1,30 @@
+<tr>
+  <td>
+    <%= admin_link_to author.id, admin_author_path(author) %>
+  </td>
+  <td>
+    <%= author.fullname %>
+  </td>
+  <td>
+    <%= admin_link_to "show", admin_author_path(author) %>
+    <%= admin_link_to "edit", edit_admin_author_path(author) %>
+    <%= external_link_to "wiki", author.wiki_url if author.wiki_url.present? %>
+    <%= external_link_to "photo", author.photo_thumb_url if author.photo_thumb_url.present? %>
+  </td>
+  <td>
+    <%= author.birth_year || '...' %>
+    <%= "- #{author.death_year}" if author.death_year.present? %>
+  </td>
+  <td>
+    <%= author.books.size %>
+  </td>
+  <td>
+    <%= admin_timestamp(author.synced_at) %>
+  </td>
+  <td>
+    <%= admin_timestamp(author.created_at) %>
+  </td>
+  <td>
+    <%= admin_timestamp(author.updated_at) %>
+  </td>
+</tr>

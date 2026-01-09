@@ -1,0 +1,29 @@
+<% admin_nav_crumbs "Authors" %>
+
+<%= render "admin/authors/search_form" %>
+
+<div class="container mt-4">
+  <%= admin_buttonly_link_to "New author", new_admin_author_path %>
+</div>
+
+<div class="container mt-4">
+  <div>
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+  <table id="admin_authors" class="table">
+    <thead>
+      <th><%= sortable_table_column("ID", "id") %></th>
+      <th><%= sortable_table_column("NAME", "fullname") %></th>
+      <th>LINKS</th>
+      <th><%= sortable_table_column("YEARS", "birth_year") %></th>
+      <th>BOOKS #</th>
+      <th><%= sortable_table_column("SYNCED", "synced_at") %></th>
+      <th><%= sortable_table_column("CREATED", "created_at") %></th>
+      <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
+    </thead>
+    <%= render partial: "admin/authors/authors_index_row", collection: @admin_authors, as: :author %>
+  </table>
+  <div>
+    <%== pagy_bootstrap_nav(@pagy) %>
+  </div>
+</div>

@@ -1,0 +1,197 @@
+<% admin_nav_crumbs admin_nav_books_link, admin_nav_book_link(@book) %>
+
+<div class="container mt-4">
+  <div class="btn-group" role="group">
+    <%= display_link_to "show", book_display_path(@book) %>
+    <%= admin_buttonly_link_to "edit", edit_admin_book_path(@book) %>
+    <%= button_to "generate info", admin_book_generative_summaries_path(@book), method: :post, class: "btn btn-primary me-1" %>
+    <% if @book.wiki_url.present? %>
+      <%= button_to "sync wiki stats", admin_book_wiki_stats_path(@book), method: :put, class: "btn btn-primary me-1" %>
+    <% end %>
+    <%= button_to "delete", admin_book_path(@book), method: :delete, class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+    <% if (next_book = @book.next_author_book).present? %>
+      <%= admin_buttonly_link_to "next: #{truncate(next_book.title, length: 20, escape: false)} (#{next_book.year_published})",
+        admin_book_path(next_book) %>
+    <% end %>
+    <% if @next_summary_task.present? %>
+      <%= admin_buttonly_link_to(
+        "next review: #{truncate(@next_summary_task.book.title, length: 20, escape: false)} (#{@next_summary_task.book.year_published})",
+        admin_data_fetch_task_path(@next_summary_task)
+      ) %>
+    <% end %>
+  </div>
+</div>
+
+<div id="<%= dom_id @book %>" class="container mt-4">
+  <div class="row">
+
+    <div class="container col-md-6">
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Cover:</div>
+
+        <div class="col-md-4">
+          <%= render "admin/books/standard_cover", book: @book %>
+        </div>
+      </div>
+
+      <% if @book.summary.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Summary:</div>
+          <div class="col-md-9 b-book-summary">
+            <%= @book.summary %>
+            <% if @book.summary_src.present? %>
+              <span class="b-book-summary-src">
+                (SRC: <%= @book.summary_src %>)
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="container col-md-6">
+      <% if @book.title != @book.original_title %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Title:</div>
+          <div class="col-md-9"><%= @book.title %></div>
+        </div>
+      <% end %>
+
+      <% if @book.original_title.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Original Title:</div>
+          <div class="col-md-9"><%= @book.original_title %></div>
+        </div>
+      <% end %>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Authors:</div>
+        <div class="col-md-9">
+          <% @book.authors.each do |author| %>
+            <%= admin_link_to author.fullname, admin_author_path(author) %> <%= ',' if author != @book.authors.last %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Year Published:</div>
+        <div class="col-md-9"><%= @book.year_published %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Form:</div>
+        <div class="col-md-9">
+          <%= @book.literary_form.humanize %>
+        </div>
+      </div>
+
+      <% if @book.genres.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Genres:</div>
+          <div class="col-md-9">
+            <% @book.genres.each do |genre| %>
+              <span class="badge bg-secondary mr-1 b-admin-genre-badge-link">
+                <%= link_to genre.genre_name, admin_genre_path(genre.genre_id) %>
+              </span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.series.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Series:</div>
+          <div class="col-md-9">
+            <% @book.series.each do |series| %>
+              <%= admin_link_to series.name, admin_series_path(series) %> <%= ',' if series != @book.series.last %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.tags.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Tags:</div>
+          <div class="col-md-9">
+            <% @book.tags.each do |tag| %>
+              <span class="badge bg-secondary mr-1"><%= tag.name %></span>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.wiki_url.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Wiki:</div>
+          <div class="col-md-9"><%= admin_link_to_wiki_with_stats(@book) %></div>
+        </div>
+      <% end %>
+
+      <% if @book.wiki_popularity.positive? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Popularity (wiki views):</div>
+          <div class="col-md-9"><%= @book.wiki_popularity %></div>
+        </div>
+      <% end %>
+
+      <% if @book.generic_links.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Links:</div>
+          <div class="col-md-9">
+            <% @book.generic_links.each do |generic_link| %>
+              <%= external_link_to generic_link.name, generic_link.url %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.book_public_lists.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Lists:</div>
+          <div class="col-md-9">
+            <% @book.book_public_lists.each do |book_public_list| %>
+              <%= admin_link_to "#{book_public_list.public_list.year} #{book_public_list.public_list.public_list_type.name} - #{book_public_list.role&.humanize}",
+                admin_public_list_type_public_list_path(book_public_list.public_list.public_list_type, book_public_list.public_list) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.collections.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Collections:</div>
+          <div class="col-md-9">
+            <% @book.collections.each do |collection| %>
+              <%= admin_link_to collection.name, admin_collection_path(collection) %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @book.generative_summary_tasks.present? %>
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Data Fetch Tasks:</div>
+          <div class="col-md-9">
+            <% @book.generative_summary_tasks.each do |generative_summary_task| %>
+              <%= link_to admin_data_fetch_task_path(generative_summary_task) do %>
+                <%= generative_summary_task.class.name %>
+                from <%= admin_timestamp(generative_summary_task.created_at) %>
+                (<%= generative_summary_task.status.humanize %>)
+              <% end %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Created At:</div>
+        <div class="col-md-9"><%= admin_timestamp(@book.created_at) %></div>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
+        <div class="col-md-9"><%= admin_timestamp(@book.updated_at) %></div>
+      </div>
+    </div>
+  </div>
+</div>

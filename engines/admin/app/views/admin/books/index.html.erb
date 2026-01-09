@@ -1,0 +1,21 @@
+<% admin_nav_crumbs "Books" %>
+
+<div class="container mt-4">
+  <%= render "admin/books/search_form" %>
+  <%= admin_buttonly_link_to "New book", new_admin_book_path, class: "btn btn-link d-inline-block align-top" %>
+</div>
+
+<div class="container mt-4">
+  <%= turbo_frame_tag "books_index", target: "_top" do %>
+    <%= render "admin/books/books_index_view_controls" %>
+
+    <% if current_index_view == 'table' %>
+      <%= render "admin/books/books_index_table" %>
+    <% elsif current_index_view == 'covers' %>
+      <%= render "admin/books/books_index_display" %>
+    <% end %>
+
+    <%= render "admin/books/books_index_view_controls" %>
+  <% end %>
+</div>
+

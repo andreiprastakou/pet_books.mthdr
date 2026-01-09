@@ -1,0 +1,3 @@
+<% admin_nav_crumbs admin_nav_data_fetch_tasks_link, admin_nav_data_fetch_task_link(@task) %>
+
+<%= render "admin/data_fetch_tasks/types/#{@task.model_name.element}", task: @task %>

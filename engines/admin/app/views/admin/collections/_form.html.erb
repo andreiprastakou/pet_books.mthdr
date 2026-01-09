@@ -1,0 +1,54 @@
+<%= form_with(model: @collection, class: "needs-validation b-collection-form", novalidate: true,
+  url: @collection.new_record? ? admin_collections_path : admin_collection_path(@collection),
+  method: @collection.new_record? ? :post : :put,
+  scope: "collection",
+  data: { controller: "collection-form" }) do |form| %>
+  <%= render "admin/common/form_errors", form_record: @collection %>
+
+  <div class="mb-3">
+    <%= form.label :name, class: "form-label" %>
+    <%= admin_reversible_input(old_value: @collection.name_was) do %>
+      <%= form.text_field :name, class: "form-control", required: true,
+        data: { input_changes_target: "input" } %>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :year_published, class: "form-label" %>
+    <%= admin_reversible_input(old_value: @collection.year_published_was) do %>
+      <%= form.number_field :year_published, class: "form-control", required: true,
+        data: { input_changes_target: "input" } %>
+    <% end %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :wiki_url, "Wiki URL", class: "form-label" %>
+    <%= admin_reversible_input(old_value: @collection.wiki_url_was) do %>
+      <%= form.url_field :wiki_url, class: "form-control",
+        data: { input_changes_target: "input" } %>
+    <% end %>
+  </div>
+
+  <div class="mb-3" data-controller="generic-links-input">
+    <%= form.label nil, "Generic Links", class: "form-label" %>
+    <%= render "admin/common/generic_links_input",
+      form_scope: "collection", values: generic_links_to_input_entries(@collection.generic_links) %>
+  </div>
+
+  <div class="row mb-3 b-collection-books-input" data-controller="association-input"
+    data-action="association-input:association-changed->book-form#onAssociationChanged">
+    <%= label_tag nil, "Books", class: "form-label" %>
+    <%= render "admin/books/form/association_badges_input_wide",
+      name: "collection[book_ids][]",
+      autocomplete_url: admin_api_books_search_path(format: :json),
+      old_values: books_to_badges_entries(@collection.books),
+      values: books_to_badges_entries(@collection.books) %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.submit class: "btn btn-primary" %>
+    <%= link_to "Cancel", admin_collections_path, class: "btn btn-secondary" %>
+  </div>
+<% end %>
+
+<%= render "admin/common/bootstrap_form_validator" %>

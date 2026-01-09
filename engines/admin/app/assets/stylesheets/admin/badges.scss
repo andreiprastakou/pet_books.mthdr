@@ -1,0 +1,33 @@
+.b-badge {
+  .b-badge-name {
+    display: inline-block;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .b-badge-delete-button {
+    cursor: pointer;
+  }
+
+  .b-badge-restore-button {
+    display: none;
+    cursor: pointer;
+  }
+
+  &.new {
+    font-style: italic;
+  }
+
+  &.removed {
+    opacity: 0.5;
+
+    .b-badge-delete-button {
+      display: none;
+    }
+
+    .b-badge-restore-button {
+      display: inline;
+    }
+  }
+}

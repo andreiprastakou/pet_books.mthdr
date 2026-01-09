@@ -1,0 +1,5 @@
+<%= render book.small? ? "admin/books/standard_cover_small" : "admin/books/standard_cover_base",
+      design: book_cover_design(book),
+      title: truncate(book.title, length: 70, separator: ' '),
+      author_name: book.author_names_label %>
+

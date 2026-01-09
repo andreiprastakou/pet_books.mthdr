@@ -1,0 +1,33 @@
+<tr>
+  <td>
+    <%= admin_link_to book.id, admin_book_path(book) %>
+  </td>
+  <td>
+    <%= book_title_marked_for_data_fetch(book) %>
+    <%= "(#{book.original_title})" if book.special_original_title? %>
+  </td>
+  <td>
+    <%= book_summary_icon(book) %>
+  </td>
+  <td>
+    <% book.authors.each do |author| %>
+      <%= admin_link_to author.fullname, admin_author_path(author) %> <%= ',' if author != book.authors.last %>
+    <% end %>
+  </td>
+  <td>
+    <%= admin_link_to "show", admin_book_path(book) %>
+    <%= admin_link_to "edit", edit_admin_book_path(book) %>
+  </td>
+  <td>
+    <%= book.year_published %>
+  </td>
+  <td>
+    <%= book_wiki_link(book) %>
+  </td>
+  <td>
+    <%= admin_timestamp(book.created_at) %>
+  </td>
+  <td>
+    <%= admin_timestamp(book.updated_at) %>
+  </td>
+</tr>
