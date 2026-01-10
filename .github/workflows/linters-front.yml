@@ -15,7 +15,7 @@ jobs:
   analize:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Fetch base for diff
         run: git fetch origin
