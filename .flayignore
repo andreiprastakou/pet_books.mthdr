@@ -1,4 +1,7 @@
-app/controllers/**/*
-app/models/admin/book_form.rb
-db/**/*
-spec/**/*
+**/app/controllers/**/*
+**/db/**/*
+**/engine.rb
+**/spec/**/*
+**/*.gemspec
+
+engines/admin/app/models/admin/book_form.rb

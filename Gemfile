@@ -88,6 +88,6 @@ group :test do
 end
 
 # Engines
+gem 'admin', path: 'engines/admin'
 gem 'frontend', path: 'engines/frontend'
 gem 'frontend_api', path: 'engines/frontend_api'
-gem 'admin', path: 'engines/admin'
