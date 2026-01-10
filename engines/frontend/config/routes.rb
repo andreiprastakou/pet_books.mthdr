@@ -1,4 +1,4 @@
 Frontend::Engine.routes.draw do
-  root to: 'frontend/home#index'
-  get '*path', to: 'frontend/home#index', format: :html
+  root to: 'home#index'
+  get '*path', to: 'home#index', format: :html
 end
