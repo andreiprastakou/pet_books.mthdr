@@ -13,25 +13,25 @@ AllCops:
     - db/queue_schema.rb
     - db/schema.rb
     - tmp/**/*
+    - "**/**/*.gemspec"
 
 Metrics/AbcSize:
   Exclude:
-    - app/helpers/**/*
+    - "**/helpers/**/*"
 
 Metrics/BlockLength:
   Exclude:
-    - config/**/*
-    - lib/tasks/**/*
-    - spec/**/*
-    - app/services/forms/taggable.rb
+    - "**/config/**/*"
+    - "**/lib/tasks/**/*"
+    - "**/spec/**/*"
 
 Metrics/MethodLength:
   Exclude:
-    - app/helpers/**/*
+    - "**/helpers/**/*"
 
 Metrics/ModuleLength:
   Exclude:
-    - app/helpers/**/*
+    - "**/helpers/**/*"
 
 Naming/PredicateMethod:
   Enabled: false

@@ -15,8 +15,6 @@ environment.config.merge({
   }
 })
 
-module.exports = environment
-
 environment.plugins.prepend('Provide',
   new webpack.ProvidePlugin({
     $: 'jquery/src/jquery',
@@ -30,3 +28,17 @@ if (!Array.isArray(nodeModulesLoader.exclude)) {
 }
 
 nodeModulesLoader.exclude.push(/react-table/);
+
+// Add engine entry points
+const path = require('path')
+const engineEntries = {
+  // Admin engine entry point
+  admin: path.resolve(__dirname, '../../engines/admin/app/javascript/packs/admin.js'),
+  // Frontend engine entry point (named 'frontend' to avoid conflict with main app's application.js)
+  frontend: path.resolve(__dirname, '../../engines/frontend/app/javascript/packs/application.js')
+}
+
+// Merge engine entry points with existing entries
+environment.config.entry = Object.assign({}, environment.config.entry || {}, engineEntries)
+
+module.exports = environment

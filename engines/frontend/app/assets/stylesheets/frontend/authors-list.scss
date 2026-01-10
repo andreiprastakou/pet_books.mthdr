@@ -1,0 +1,52 @@
+.authors-list-page {
+  .authors-list-controls {
+    margin-top: 10px;
+    text-align: center;
+
+    .form-control {
+      display: inline-block;
+      width: 150px;
+      margin-left: 10px;
+    }
+  }
+
+  .authors-list {
+    height: calc(100vh - 126px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+
+  .author-item-container {
+    text-align: center;
+  }
+
+  .authors-list-item {
+    display: inline-block;
+    position: relative;
+    width: 140px;
+    padding: 5px;
+    min-height: 190px;
+    margin: 10px 20px 0 0;
+    vertical-align: top;
+
+    .thumb {
+      display: block;
+      position: relative;
+      float: left;
+      height: 130px;
+      width: 130px;
+      border-radius: 70px;
+      margin-bottom: 10px;
+    }
+
+    &.selected {
+      .thumb {
+        box-shadow: 0 0 15px purple;
+      }
+    }
+
+    &:not(.selected) {
+      cursor: pointer;
+    }
+  }
+}

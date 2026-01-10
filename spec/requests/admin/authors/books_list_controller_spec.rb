@@ -89,11 +89,11 @@ RSpec.describe Admin::Authors::BooksListController do
       }
     end
     let(:book) { create(:book, authors: [author], title: 'ORIGINAL_TITLE') }
-    let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
+    let(:updater) { instance_double(Admin::BooksBatchUpdater) }
 
     before do
       book
-      allow(Forms::Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
+      allow(Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
       allow(updater).to receive_messages(update: true, books: [book])
     end
 

@@ -14,10 +14,15 @@ require 'simplecov_support' if ENV.fetch('COVERAGE', false)
 
 Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
 
+# Load support files from engines
+Rails.root.glob('engines/*/spec/support/**/*.rb').each { |f| require f }
+
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-  # config.fixture_paths << Rails.root.join('spec/fixtures').to_s
+  # Include spec files from engines
+  config.pattern = 'spec/**/*_spec.rb,engines/*/spec/**/*_spec.rb'
+
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!
@@ -25,6 +30,12 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
   config.include AuthHelper, type: :request
   config.include ApiRequestsHelper, type: :request
+  config.include Admin::Engine.routes.url_helpers
+
+  # Make engine route helpers available to helper objects in helper specs
+  config.before(:each, type: :helper) do
+    helper.extend(Admin::Engine.routes.url_helpers)
+  end
 
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
