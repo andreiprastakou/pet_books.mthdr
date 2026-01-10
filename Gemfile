@@ -10,7 +10,7 @@ gem 'rails', '~> 8.1'
 
 # data storage
 gem 'redis'
-gem 'sqlite3', '~> 2.6'
+gem 'sqlite3', '~> 2.9'
 
 # integrations
 gem 'foreman'
