@@ -1,6 +1,6 @@
 module FrontendApi
   module Authors
-    class IndexEntriesController < Api::Authors::BaseController
+    class IndexEntriesController < FrontendApi::Authors::BaseController
       before_action :fetch_author, only: :show
 
       def index

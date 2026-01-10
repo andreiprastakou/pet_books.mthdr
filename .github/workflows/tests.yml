@@ -47,4 +47,4 @@ jobs:
           AWS_ACCESS_KEY_ID: STUB
           AWS_SECRET_ACCESS_KEY: STUB
           REDIS_URL: redis://localhost:6379/1
-        run: bundle exec rspec ./spec
+        run: bundle exec rspec ./spec ./engines/admin/spec

@@ -1,6 +1,6 @@
 module FrontendApi
   module Books
-    class BaseController < Api::BaseController
+    class BaseController < FrontendApi::BaseController
       private
 
       def fetch_book

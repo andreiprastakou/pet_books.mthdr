@@ -2,19 +2,19 @@ PATH
   remote: engines/admin
   specs:
     admin (0.1.0)
-      rails (>= 8.1.1)
+      rails (>= 8.1)
 
 PATH
   remote: engines/frontend_api
   specs:
     frontend_api (0.1.0)
-      rails (>= 8.1.1)
+      rails (>= 8.1)
 
 PATH
   remote: engines/frontend
   specs:
     frontend (0.1.0)
-      rails (>= 8.1.1)
+      rails (>= 8.1)
 
 GEM
   remote: https://rubygems.org/
@@ -602,7 +602,7 @@ DEPENDENCIES
   pronto-rubocop
   pry-rails
   puma (~> 6.6)
-  rails (~> 8.0)
+  rails (~> 8.1)
   rails-controller-testing
   react-rails
   redis

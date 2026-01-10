@@ -1,6 +1,6 @@
 module FrontendApi
   module Authors
-    class BaseController < Api::BaseController
+    class BaseController < FrontendApi::BaseController
       private
 
       def fetch_author

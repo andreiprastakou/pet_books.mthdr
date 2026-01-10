@@ -2,6 +2,8 @@ module Admin
   module Api
     module Books
       class SearchController < ::ApplicationController
+        helper Admin::BooksHelper
+
         def show
           query = params[:q].to_s.strip
           @books = if query.present?

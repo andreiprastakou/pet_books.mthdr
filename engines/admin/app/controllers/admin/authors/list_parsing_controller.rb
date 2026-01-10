@@ -17,7 +17,7 @@ module Admin
       end
 
       def apply
-        updater = Forms::Admin::BooksBatchUpdater.new
+        updater = Admin::BooksBatchUpdater.new
         if apply_via_updater(updater)
           @task.verified!
           redirect_to admin_data_fetch_task_path(@task), notice: t('notices.admin.books_batch.updates_applied')

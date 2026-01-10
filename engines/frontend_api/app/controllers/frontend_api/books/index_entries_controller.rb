@@ -2,7 +2,7 @@
 
 module FrontendApi
   module Books
-    class IndexEntriesController < Api::Books::BaseController
+    class IndexEntriesController < FrontendApi::Books::BaseController
       before_action :fetch_book, only: :show
 
       def index

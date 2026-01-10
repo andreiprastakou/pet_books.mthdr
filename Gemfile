@@ -6,7 +6,7 @@ ruby '3.4.8'
 # runners
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'puma', '~> 6.6'
-gem 'rails', '~> 8.0'
+gem 'rails', '~> 8.1'
 
 # data storage
 gem 'redis'

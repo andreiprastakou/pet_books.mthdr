@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# json.partial! 'api/tags/ref_entries/entry', collection: @tags, as: :tag
+# json.partial! 'frontend_api/tags/ref_entries/entry', collection: @tags, as: :tag
 
 json.array! @tags do |tag|
   json.id tag.id

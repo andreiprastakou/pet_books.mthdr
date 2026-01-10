@@ -2,7 +2,7 @@
 
 module FrontendApi
   module Tags
-    class RefEntriesController < Api::Tags::BaseController
+    class RefEntriesController < FrontendApi::Tags::BaseController
       before_action :fetch_tag, only: :show
 
       def index

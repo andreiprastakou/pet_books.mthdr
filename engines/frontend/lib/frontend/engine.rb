@@ -12,7 +12,7 @@ module Frontend
 
     # Add main app asset paths for shared CSS
     initializer 'frontend.assets' do |app|
-      app.config.assets.paths << Rails.root.join('app', 'assets', 'stylesheets')
+      app.config.assets.paths << Rails.root.join('app/assets/stylesheets')
     end
   end
 end

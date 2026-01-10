@@ -1,5 +1,5 @@
-require "admin/version"
-require "admin/engine"
+require 'admin/version'
+require 'admin/engine'
 
 module Admin
   # Your code goes here...

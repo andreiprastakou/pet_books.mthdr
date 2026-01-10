@@ -7,7 +7,7 @@ module Admin
       end
 
       def update
-        updater = Forms::Admin::BooksBatchUpdater.new
+        updater = Admin::BooksBatchUpdater.new
         if apply_via_updater(updater)
           redirect_to redirect_path_after_update, notice: t('notices.admin.books_batch.updates_applied')
         else

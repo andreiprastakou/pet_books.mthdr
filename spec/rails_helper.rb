@@ -14,9 +14,15 @@ require 'simplecov_support' if ENV.fetch('COVERAGE', false)
 
 Rails.root.glob('spec/support/**/*.rb').each { |f| require f }
 
+# Load support files from engines
+Rails.root.glob('engines/*/spec/support/**/*.rb').each { |f| require f }
+
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+  # Include spec files from engines
+  config.pattern = 'spec/**/*_spec.rb,engines/*/spec/**/*_spec.rb'
+
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
   config.filter_rails_from_backtrace!

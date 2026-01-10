@@ -1,3 +1,3 @@
 # frozen_string_literal: true
 
-json.partial! 'api/books/ref_entries/book', book: @book
+json.partial! 'frontend_api/books/ref_entries/book', book: @book

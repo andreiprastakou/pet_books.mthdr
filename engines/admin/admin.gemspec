@@ -1,25 +1,19 @@
-require_relative "lib/admin/version"
+require_relative 'lib/admin/version'
 
 Gem::Specification.new do |spec|
-  spec.name        = "admin"
+  spec.name        = 'admin'
   spec.version     = Admin::VERSION
-  spec.authors     = [ "TODO: Write your name" ]
-  spec.email       = [ "TODO: Write your email address" ]
-  spec.homepage    = "TODO"
-  spec.summary     = "TODO: Summary of Admin."
-  spec.description = "TODO: Description of Admin."
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-
-  spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "TODO: Put your gem's public repo URL here."
-  spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
+  spec.authors     = ['Andrei Prastakou']
+  spec.email       = ['andrew.prostakov@gmail.com']
+  spec.homepage    = 'https://github.com/andreiprastakou/pet_books.mthdr'
+  spec.summary     = 'Admin engine for Infospace Books'
+  spec.description = 'Admin engine for Infospace Books'
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+    Dir['{app,config,db,lib}/**/*', 'MIT-LICENSE', 'Rakefile', 'README.md']
   end
 
-  spec.add_dependency "rails", ">= 8.1.1"
+  spec.add_dependency 'rails', '>= 8.1'
+  spec.required_ruby_version = '>= 3.4'
+  spec.metadata['rubygems_mfa_required'] = 'true'
 end

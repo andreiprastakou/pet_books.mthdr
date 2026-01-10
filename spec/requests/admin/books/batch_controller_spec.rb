@@ -15,10 +15,10 @@ RSpec.describe Admin::Books::BatchController do
     end
     let(:book_a) { build_stubbed(:book, authors: [author], title: 'TITLE_A') }
     let(:author) { create(:author) }
-    let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
+    let(:updater) { instance_double(Admin::BooksBatchUpdater) }
 
     before do
-      allow(Forms::Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
+      allow(Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
       allow(updater).to receive_messages(update: true, books: [book_a])
     end
 

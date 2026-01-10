@@ -87,11 +87,11 @@ RSpec.describe Admin::Authors::ListParsingController do
       }
     end
     let(:book) { build_stubbed(:book) }
-    let(:updater) { instance_double(Forms::Admin::BooksBatchUpdater) }
+    let(:updater) { instance_double(Admin::BooksBatchUpdater) }
 
     before do
       book
-      allow(Forms::Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
+      allow(Admin::BooksBatchUpdater).to receive(:new).and_return(updater)
       allow(updater).to receive_messages(update: true, books: [book])
     end
 
