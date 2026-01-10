@@ -1,0 +1,67 @@
+@import 'bootstrap/scss/bootstrap';
+
+@import 'cover_designs';
+@import 'fonts';
+
+@import 'frontend/palette';
+
+@import 'frontend/author-form';
+@import 'frontend/authors-list';
+@import 'frontend/book-form';
+@import 'frontend/books-list-yearly';
+@import 'frontend/books-list-linear';
+@import 'frontend/navbar';
+@import 'frontend/scaffolds';
+@import 'frontend/tags-page';
+@import 'frontend/widgets/form-input-image';
+@import 'frontend/widgets/form-input-tags';
+@import 'frontend/widgets/icons';
+@import 'frontend/widgets/image-modal';
+@import 'frontend/widgets/tag-container';
+@import 'frontend/widgets/years-slider';
+@import 'frontend/sidebar/sidebar';
+@import 'frontend/sidebar/author-card';
+@import 'frontend/sidebar/authors-index-controls';
+@import 'frontend/sidebar/batch-controls';
+@import 'frontend/sidebar/book-card';
+@import 'frontend/sidebar/books-list-linear-controls';
+
+body {
+  min-width: 900px;
+}
+
+.page-header {
+  .root-link {
+    cursor: pointer;
+    text-transform: uppercase;
+  }
+}
+
+body a {
+  color: #000;
+  text-decoration: none;
+  background-color: transparent;
+
+  &:hover {
+    color: #000;
+    text-decoration: underline;
+    background-color: transparent;
+  }
+}
+
+.page {
+  padding-top: 56px;
+}
+
+.ratings-info {
+  font-size: 10px;
+  font-style: italic;
+
+  .popularity-points {
+    color: darkred;
+  }
+}
+
+::placeholder {
+  color: #aaa !important;
+}

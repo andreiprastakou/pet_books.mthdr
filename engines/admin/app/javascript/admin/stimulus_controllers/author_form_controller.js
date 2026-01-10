@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = [
     'fullnameInput',
     'wikiQueryLink',
-    'photoQueryLink',
+    'photoQueryLink'
   ]
 
   connect() {
