@@ -5,18 +5,26 @@ updates:
   schedule:
     interval: weekly
   open-pull-requests-limit: 2
+  commit-message:
+    prefix: "chore(dependabot-bundler)"
 - package-ecosystem: github-actions
   directory: "/"
   schedule:
     interval: weekly
   open-pull-requests-limit: 2
+  commit-message:
+    prefix: "chore(dependabot-github-actions)"
 - package-ecosystem: docker
   directory: "/"
   schedule:
     interval: weekly
   open-pull-requests-limit: 2
+  commit-message:
+    prefix: "chore(dependabot-docker)"
 - package-ecosystem: npm
   directory: "/"
   schedule:
     interval: weekly
   open-pull-requests-limit: 2
+  commit-message:
+    prefix: "chore(dependabot-npm)"
