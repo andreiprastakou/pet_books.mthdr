@@ -29,11 +29,15 @@ jobs:
           bundler-cache: true
 
       - name: Run Pronto
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login != 'dependabot[bot]'
         run: bundle exec pronto run -f github_status github_pr_review -c origin/${{ github.base_ref }}
         env:
           PRONTO_PULL_REQUEST_ID: ${{ github.event.pull_request.number }}
           PRONTO_GITHUB_ACCESS_TOKEN: "${{ github.token }}"
+
+      - name: Run Pronto (Dependabot PRs)
+        if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]'
+        run: bundle exec pronto run -c origin/${{ github.base_ref }}
 
       - name: Run Rubocop
         if: github.event_name == 'push'
