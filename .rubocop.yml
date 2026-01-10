@@ -13,6 +13,7 @@ AllCops:
     - db/queue_schema.rb
     - db/schema.rb
     - tmp/**/*
+    - "**/*.gemspec"
 
 Metrics/AbcSize:
   Exclude:
