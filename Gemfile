@@ -50,7 +50,7 @@ gem 'ruby_llm', '~> 1.6'
 gem 'benchmark'
 
 # tech debt locks
-gem 'connection_pool', '~> 2.0' # v3 incompatible with react-rails
+gem 'connection_pool', '~> 3.0' # v3 incompatible with react-rails
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
