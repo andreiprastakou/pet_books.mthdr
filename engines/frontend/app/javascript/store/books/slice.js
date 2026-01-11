@@ -6,7 +6,6 @@ export const slice = createSlice({
     booksIndex: {},
     booksRefs: {},
     bookDetailsCurrent: {},
-    defaultCoverUrl: null,
     requestedBookId: null,
   },
   reducers: {
@@ -31,11 +30,6 @@ export const slice = createSlice({
 
     clearBooksRefs: state => {
       state.booksRefs = {}
-    },
-
-    setDefaultBookImageUrl: (state, action) => {
-      const url = action.payload
-      state.defaultCoverUrl = url
     },
 
     setCurrentBookDetails: (state, action) => {

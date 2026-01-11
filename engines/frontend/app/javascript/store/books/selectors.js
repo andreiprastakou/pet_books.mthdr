@@ -2,8 +2,6 @@ import { selectCurrentBookId } from 'store/axis/selectors'
 
 const localState = state => state.storeBooks
 
-export const selectBookDefaultImageUrl = () => state => localState(state).defaultCoverUrl
-
 export const selectCurrentBookDetails = () => state => localState(state).bookDetailsCurrent
 
 export const selectBooksIndexEntry = id => state => localState(state).booksIndex[id]

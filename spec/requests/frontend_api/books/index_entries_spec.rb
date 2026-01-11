@@ -27,7 +27,8 @@ RSpec.describe '/api/books/index_entries' do
         tag_ids: [tag.id],
         popularity: 20_000,
         global_rank: 0,
-        cover_design_id: default_cover_design.id
+        cover_design_id: default_cover_design.id,
+        small: false
       }.to_json)
     end
   end
@@ -56,7 +57,8 @@ RSpec.describe '/api/books/index_entries' do
         tag_ids: [tag.id],
         popularity: 20_000,
         global_rank: 0,
-        cover_design_id: default_cover_design.id
+        cover_design_id: default_cover_design.id,
+        small: false
       }].to_json)
     end
   end

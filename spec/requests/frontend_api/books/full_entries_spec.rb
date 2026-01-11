@@ -19,7 +19,8 @@ RSpec.describe '/api/books/full_entries' do
         author_ids: book.author_ids,
         tag_ids: tags.map(&:id),
         year_published: book.year_published,
-        cover_thumb_url: nil
+        cover_thumb_url: nil,
+        small: false
       )
     end
   end
