@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe FrontendApi::CoverDesignsController, type: :request do
+RSpec.describe FrontendApi::CoverDesignsController do
   describe 'GET #index' do
     subject(:send_request) { get '/api/cover_designs.json', headers: authorization_header }
 

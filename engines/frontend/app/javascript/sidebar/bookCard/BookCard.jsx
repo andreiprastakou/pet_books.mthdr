@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Card } from 'react-bootstrap'
 
-import { selectAuthorRef } from 'store/authors/selectors'
+import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { selectCurrentBookIndexEntry } from 'store/books/selectors'
 import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
 import TagBadge from 'components/TagBadge'
@@ -21,7 +21,7 @@ const BookCardWrap = () => {
 
 const BookCard = props => {
   const { booksIndexEntry } = props
-  const authorRef = useSelector(selectAuthorRef(booksIndexEntry.authorId))
+  const authorRefs = useSelector(selectAuthorsRefsByIds(booksIndexEntry.authorIds))
   const tags = useSelector(selectTagsRefsByIds(booksIndexEntry.tagIds))
   const visibleTags = useSelector(selectVisibleTags(tags))
   const { routes: { authorPagePath }, routesReady } = useContext(UrlStoreContext)
@@ -38,13 +38,19 @@ const BookCard = props => {
       <Card.Body>
         <div className='book-details'>
           <div>
-            <a
-              className='book-author'
-              href={authorPagePath(authorRef.id, { bookId: booksIndexEntry.id })}
-              title={authorRef.fullname}
-            >
-              { authorRef.fullname }
-            </a>
+            { authorRefs.map((authorRef, index) => (
+              <React.Fragment key={authorRef.id}>
+                { index > 0 && ', ' }
+
+                <a
+                  className='book-author'
+                  href={authorPagePath(authorRef.id, { bookId: booksIndexEntry.id })}
+                  title={authorRef.fullname}
+                >
+                  { authorRef.fullname }
+                </a>
+              </React.Fragment>
+            )) }
 
             { ' ' }
 

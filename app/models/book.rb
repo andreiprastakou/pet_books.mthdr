@@ -103,15 +103,6 @@ class Book < ApplicationRecord
     authors.map(&:fullname).join(', ')
   end
 
-  def legacy_author_id
-    ActiveSupport::Deprecation.new.warn('Book#legacy_author_id is deprecated. Use Book#author_ids instead.')
-    author_ids.first
-  end
-
-  def pick_cover_design_id
-    genres.first&.genre&.cover_design_id || CoverDesign.default&.id || raise('No default cover design!')
-  end
-
   protected
 
   def validate_unique_title_per_author

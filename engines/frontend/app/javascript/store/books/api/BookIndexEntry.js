@@ -2,7 +2,7 @@ class BookIndexEntry {
   static parse(data) {
     return {
       ...data,
-      authorId: data['author_id'],
+      authorIds: data['author_ids'],
       coverUrl: data['cover_thumb_url'],
       coverFullUrl: data['cover_full_url'],
       tagIds: data['tag_ids'],

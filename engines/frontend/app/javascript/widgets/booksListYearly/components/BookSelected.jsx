@@ -1,20 +1,18 @@
 import { sortBy } from 'lodash'
 import PropTypes from 'prop-types'
-import React, { useContext, useEffect, useRef, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useContext, useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
 
 import TagBadge from 'components/TagBadge'
 import PopularityBadge from 'components/PopularityBadge'
 import BookToolbar from 'components/BookToolbar'
 import UrlStoreContext from 'store/urlStore/Context'
-import { selectAuthorRef } from 'store/authors/selectors'
+import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
-import { setImageSrc } from 'modals/imageFullShow/actions'
 
 const BookSelected = ({ bookIndexEntry }) => {
   const { id } = bookIndexEntry
-  const authorRef = useSelector(selectAuthorRef(bookIndexEntry.authorId))
-  const dispatch = useDispatch()
+  const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry.authorIds))
   const tags = useSelector(selectTagsRefsByIds(bookIndexEntry.tagIds))
   const visibleTags = useSelector(selectVisibleTags(tags))
   const sortedTags = sortBy(visibleTags, tag => -tag.connectionsCount)
@@ -31,13 +29,20 @@ const BookSelected = ({ bookIndexEntry }) => {
       ref={ref}
     >
       <div className='book-details'>
-        <a
-          className='book-author'
-          href={authorPagePath(authorRef.id, { bookId: id })}
-          title={authorRef.fullname}
-        >
-          { authorRef.fullname }
-        </a>
+        { authorRefs.map((authorRef, index) => (
+          <React.Fragment key={authorRef.id}>
+            { index > 0 && ', ' }
+
+            <a
+              className='book-author'
+              href={authorPagePath(authorRef.id, { bookId: id })}
+              key={authorRef.id}
+              title={authorRef.fullname}
+            >
+              { authorRef.fullname }
+            </a>
+          </React.Fragment>
+        )) }
 
         <div
           className='book-title'

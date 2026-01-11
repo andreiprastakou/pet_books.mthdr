@@ -262,25 +262,6 @@ RSpec.describe Book do
     end
   end
 
-  describe '#legacy_author_id' do
-    subject(:result) { book.legacy_author_id }
-
-    let(:book) { build(:book, authors: authors) }
-    let(:authors) { create_list(:author, 3) }
-
-    it 'returns one author id' do
-      expect(result).to eq(authors.first.id)
-    end
-
-    context 'when the book has no authors' do
-      let(:book) { build(:book, authors: []) }
-
-      it 'returns nil' do
-        expect(result).to be_nil
-      end
-    end
-  end
-
   describe '#needs_data_fetch?' do
     subject(:result) { book.needs_data_fetch? }
 

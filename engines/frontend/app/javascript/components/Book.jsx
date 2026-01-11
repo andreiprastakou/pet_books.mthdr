@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectCoverDesign } from 'store/coverDesigns/selectors'
-import { selectAuthorRef } from 'store/authors/selectors'
+import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Book = ({ bookIndexEntry, showYear = false }) => {
@@ -18,7 +18,7 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
 
   const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
 
-  const authorRef = useSelector(selectAuthorRef(bookIndexEntry.authorId))
+  const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry.authorIds))
 
   useEffect(() => {
     if (isCurrent)  ref.current?.scrollIntoView()
@@ -35,18 +35,24 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
       ref={ref}
       title={bookIndexEntry.title}
     >
-      <div className='b-cover-standard'
-        data-cover-image={coverDesign.coverImage}>
-        <div className='b-standard-cover-title'
+      <div
+        className='b-cover-standard'
+        data-cover-image={coverDesign.coverImage}
+      >
+        <div
+          className='b-standard-cover-title'
+          data-font={coverDesign.titleFont}
           data-text-color={coverDesign.titleColor}
-          data-font={coverDesign.titleFont}>
+        >
           { bookIndexEntry.title }
         </div>
 
-        <div className='b-standard-cover-author'
+        <div
+          className='b-standard-cover-author'
+          data-font={coverDesign.authorNameFont}
           data-text-color={coverDesign.authorNameColor}
-          data-font={coverDesign.authorNameFont}>
-          { authorRef.fullname }
+        >
+          { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
         </div>
       </div>
 

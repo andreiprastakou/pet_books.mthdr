@@ -10,7 +10,7 @@ export const selectAuthorsIndexEntriesByIds = ids => state => ids.map(id => loca
 
 export const selectAuthorRef = id => state => localState(state).authorsRefs[id]
 
-export const selectAuthorsRefs = () => state => Object.values(localState(state).authorsRefs)
+export const selectAuthorsRefsByIds = ids => state => ids.map(id => localState(state).authorsRefs[id])
 
 export const selectAuthorsRefsLoaded = () => state => localState(state).refsLoaded
 

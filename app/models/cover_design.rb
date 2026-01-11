@@ -57,6 +57,8 @@ class CoverDesign < ApplicationRecord
     yellow_vector
   ].freeze
 
+  DEFAULT_NAME = 'default'.freeze
+
   validates :name, presence: true
   validates :title_color, presence: true
   validates :title_font, presence: true
@@ -69,6 +71,6 @@ class CoverDesign < ApplicationRecord
   define_codified_attribute :author_name_font
 
   def self.default
-    find_by(name: 'default')
+    find_by(name: DEFAULT_NAME)
   end
 end
