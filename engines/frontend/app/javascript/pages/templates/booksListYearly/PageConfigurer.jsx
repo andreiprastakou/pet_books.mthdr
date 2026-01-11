@@ -15,6 +15,7 @@ import {
   setFilters,
   setupBooksListSelection,
 } from 'widgets/booksListYearly/actions'
+import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'widgets/navbar/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -36,6 +37,7 @@ const Configurer = ({ listFilter = EMPTY_OBJECT }) => {
 
     Promise.all([
       dispatch(prepareNavRefs()),
+      dispatch(fetchCoverDesigns()),
       dispatch(fetchYears(listFilter)),
     ]).then(() =>
       dispatch(setupBooksListSelection())

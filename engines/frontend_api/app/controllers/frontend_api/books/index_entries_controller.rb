@@ -6,7 +6,7 @@ module FrontendApi
       before_action :fetch_book, only: :show
 
       def index
-        @books = Book.where(id: params[:ids]).preload(:tag_connections)
+        @books = Book.where(id: params[:ids]).preload(:tag_connections, :genres)
       end
 
       def show; end

@@ -108,6 +108,10 @@ class Book < ApplicationRecord
     author_ids.first
   end
 
+  def pick_cover_design_id
+    genres.first&.genre&.cover_design_id || CoverDesign.default&.id || raise('No default cover design!')
+  end
+
   protected
 
   def validate_unique_title_per_author

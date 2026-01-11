@@ -9,4 +9,5 @@ json.array! @books do |book|
   json.tag_ids book.tag_ids
   json.popularity book.popularity
   json.global_rank 0
+  json.cover_design_id book.pick_cover_design_id
 end

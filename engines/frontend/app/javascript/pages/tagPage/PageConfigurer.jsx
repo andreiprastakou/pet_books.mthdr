@@ -10,6 +10,7 @@ import {
   clearListState,
   setupBooksListSelection,
 } from 'widgets/booksListLinear/actions'
+import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'widgets/navbar/actions'
 import { fetchTagsIndexEntry } from 'store/tags/actions'
 
@@ -27,6 +28,7 @@ const Configurer = () => {
     Promise.all([
       dispatch(prepareNavRefs()),
       dispatch(fetchTagsIndexEntry(tagId)),
+      dispatch(fetchCoverDesigns()),
     ]).then(() => {
       dispatch(setPageIsLoading(false))
       dispatch(setupBooksListSelection())

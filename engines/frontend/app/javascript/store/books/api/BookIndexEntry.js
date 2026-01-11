@@ -8,6 +8,7 @@ class BookIndexEntry {
       tagIds: data['tag_ids'],
       popularity: data['popularity'],
       globalRank: data['global_rank'],
+      coverDesignId: data['cover_design_id'],
     }
   }
 }

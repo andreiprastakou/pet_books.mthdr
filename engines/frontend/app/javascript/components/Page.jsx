@@ -31,7 +31,7 @@ const Page = ({ default_book_image_url, default_author_image_url }) => {
 
             <Notifications />
 
-            <Container className='page'>
+            <Container className='page f-page-content-container'>
               <Navbar />
 
               <PageContent />

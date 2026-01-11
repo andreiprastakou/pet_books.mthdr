@@ -3,12 +3,11 @@
 
   .book-details {
     animation: appear 0.3s ease-out;
-    float: right;
     height: 200px;
     overflow: hidden;
     position: relative;
     white-space: normal;
-    width: 150px;
+    width: 100%;
   }
 
   .book-author {
@@ -50,12 +49,8 @@
   }
 
   .book-toolbar {
-    bottom: 40px;
     display: block;
-    left: 0;
-    position: absolute;
-    right: 0;
-    text-align: center;
+    margin-top: 12px;
 
     &:nth-child(2) {
       bottom: 8px;

@@ -3,21 +3,22 @@ import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 import classnames from 'classnames'
 
-import { selectBookDefaultImageUrl } from 'store/books/selectors'
 import { selectCurrentBookId } from 'store/axis/selectors'
-
-import ImageContainer from 'components/ImageContainer'
+import { selectCoverDesign } from 'store/coverDesigns/selectors'
+import { selectAuthorRef } from 'store/authors/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Book = ({ bookIndexEntry, showYear = false }) => {
   const currentBookId = useSelector(selectCurrentBookId())
-  const defaultCoverUrl = useSelector(selectBookDefaultImageUrl())
   const ref = useRef(null)
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
 
   const isCurrent = bookIndexEntry.id === currentBookId
-  const coverUrl = bookIndexEntry.coverUrl || defaultCoverUrl
   const classNames = classnames('book-case', { 'selected': isCurrent })
+
+  const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
+
+  const authorRef = useSelector(selectAuthorRef(bookIndexEntry.authorId))
 
   useEffect(() => {
     if (isCurrent)  ref.current?.scrollIntoView()
@@ -34,10 +35,20 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
       ref={ref}
       title={bookIndexEntry.title}
     >
-      <ImageContainer
-        classes='book-cover'
-        url={coverUrl}
-      />
+      <div className='b-cover-standard'
+        data-cover-image={coverDesign.coverImage}>
+        <div className='b-standard-cover-title'
+          data-text-color={coverDesign.titleColor}
+          data-font={coverDesign.titleFont}>
+          { bookIndexEntry.title }
+        </div>
+
+        <div className='b-standard-cover-author'
+          data-text-color={coverDesign.authorNameColor}
+          data-font={coverDesign.authorNameFont}>
+          { authorRef.fullname }
+        </div>
+      </div>
 
       { showYear ? (
         <div className='year'>

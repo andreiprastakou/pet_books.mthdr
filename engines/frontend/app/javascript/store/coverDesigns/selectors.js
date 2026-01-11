@@ -1,4 +1,4 @@
-const localState = state => state.storeTags
+const localState = state => state.storeCoverDesigns
 
 export const selectCoverDesigns = () => state => Object.values(localState(state).coverDesigns)
 
