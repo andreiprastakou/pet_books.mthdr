@@ -43,7 +43,6 @@ const Page = ({ default_author_image_url }) => {
 
 Page.propTypes = {
   default_author_image_url: PropTypes.string.isRequired,
-  default_book_image_url: PropTypes.string.isRequired,
 }
 /* eslint-enable camelcase */
 

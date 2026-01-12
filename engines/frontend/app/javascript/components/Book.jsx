@@ -38,9 +38,17 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
       title={bookIndexEntry.title}
     >
       { bookIndexEntry.small ? (
-        <BookSmall authorRefs={authorRefs} coverDesign={coverDesign} bookIndexEntry={bookIndexEntry} />
+        <BookSmall
+          authorRefs={authorRefs}
+          bookIndexEntry={bookIndexEntry}
+          coverDesign={coverDesign}
+        />
       ) : (
-        <BookStandard authorRefs={authorRefs} coverDesign={coverDesign} bookIndexEntry={bookIndexEntry} />
+        <BookStandard
+          authorRefs={authorRefs}
+          bookIndexEntry={bookIndexEntry}
+          coverDesign={coverDesign}
+        />
       ) }
 
       { showYear ? (
@@ -50,6 +58,11 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
       ) : null}
     </div>
   )
+}
+
+Book.propTypes = {
+  bookIndexEntry: PropTypes.object.isRequired,
+  showYear: PropTypes.bool,
 }
 
 const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => (
@@ -75,6 +88,12 @@ const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => (
   </div>
 )
 
+BookStandard.propTypes = {
+  authorRefs: PropTypes.array.isRequired,
+  bookIndexEntry: PropTypes.object.isRequired,
+  coverDesign: PropTypes.object.isRequired,
+}
+
 const BookSmall = ({ authorRefs, coverDesign, bookIndexEntry }) => (
   <div
     className='b-cover-standard b-standard-cover-small'
@@ -88,7 +107,7 @@ const BookSmall = ({ authorRefs, coverDesign, bookIndexEntry }) => (
         { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
       </div>
 
-      <div className="b-small-cover-separator"></div>
+      <div className='b-small-cover-separator' />
 
       <div
         className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
@@ -100,9 +119,10 @@ const BookSmall = ({ authorRefs, coverDesign, bookIndexEntry }) => (
   </div>
 )
 
-Book.propTypes = {
+BookSmall.propTypes = {
+  authorRefs: PropTypes.array.isRequired,
   bookIndexEntry: PropTypes.object.isRequired,
-  showYear: PropTypes.bool,
+  coverDesign: PropTypes.object.isRequired,
 }
 
 export default Book
