@@ -29,7 +29,7 @@ class WikiLink < ApplicationRecord
   validates :views, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
   validates :views_last_month, numericality: { only_integer: true, greater_than_or_equal_to: 0, allow_nil: true }
 
-  after_create :enqueue_sync
+  after_commit :enqueue_sync, on: %i[create update]
 
   def same_link?(other_link)
     locale == other_link.locale && name == other_link.name

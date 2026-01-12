@@ -35,6 +35,7 @@ class Book < ApplicationRecord
     non_fiction
   ].freeze
   FORMS_REQUIRE_SUMMARY = %w[novel novella non_fiction].freeze
+  FORMS_SMALL = %w[short short_story poem comics].freeze
 
   include CarrierwaveUrlAssign
   include HasGenericLinks
@@ -88,7 +89,7 @@ class Book < ApplicationRecord
   end
 
   def small?
-    literary_form.in?(%w[short short_story poem comics])
+    literary_form.in?(FORMS_SMALL)
   end
 
   def needs_data_fetch?

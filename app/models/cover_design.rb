@@ -28,14 +28,16 @@ class CoverDesign < ApplicationRecord
   ].freeze
 
   COLORS = %w[
-    white
-    black
     antiquewhite
+    black
+    gold
+    white
   ].freeze
 
   COVER_IMAGES = %w[
     default
     blue_red_marks
+    blue_smoke
     blurry_glass
     brown_skin
     brown_wave
@@ -51,6 +53,7 @@ class CoverDesign < ApplicationRecord
     parchment
     red_scratches
     steps
+    trees_stars
     wall_windows
     water_rocks
     wood_plank

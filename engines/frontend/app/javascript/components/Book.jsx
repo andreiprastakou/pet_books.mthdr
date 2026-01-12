@@ -8,6 +8,8 @@ import { selectCoverDesign } from 'store/coverDesigns/selectors'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
+const TITLE_LENGTH_LONG = 25
+
 const Book = ({ bookIndexEntry, showYear = false }) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
@@ -56,7 +58,7 @@ const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => (
     data-cover-image={coverDesign.coverImage}
   >
     <div
-      className='b-standard-cover-title'
+      className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
       data-font={coverDesign.titleFont}
       data-text-color={coverDesign.titleColor}
     >
@@ -89,7 +91,7 @@ const BookSmall = ({ authorRefs, coverDesign, bookIndexEntry }) => (
       <div className="b-small-cover-separator"></div>
 
       <div
-        className='b-standard-cover-title'
+        className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
         data-font='special_elite'
       >
         { bookIndexEntry.title }
