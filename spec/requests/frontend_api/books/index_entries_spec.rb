@@ -20,8 +20,6 @@ RSpec.describe '/api/books/index_entries' do
       expect(response.body).to eq({
         id: book.id,
         title: book.title,
-        cover_thumb_url: nil,
-        cover_full_url: nil,
         author_ids: book.author_ids,
         year: 2000,
         tag_ids: [tag.id],
@@ -51,7 +49,6 @@ RSpec.describe '/api/books/index_entries' do
       expect(response.body).to eq([{
         id: book.id,
         title: book.title,
-        cover_thumb_url: nil,
         author_ids: book.author_ids,
         year: 2000,
         tag_ids: [tag.id],
