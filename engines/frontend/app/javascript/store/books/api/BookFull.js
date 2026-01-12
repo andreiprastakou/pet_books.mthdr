@@ -3,9 +3,7 @@ class BookFull {
     return {
       ...data,
       originalTitle: data['original_title'],
-      imageUrl: data['cover_thumb_url'],
-      imageFile: null,
-      authorId: data['author_id'],
+      authorIds: data['author_ids'],
       yearPublished: data['year_published'],
       tagIds: data['tag_ids']
     }

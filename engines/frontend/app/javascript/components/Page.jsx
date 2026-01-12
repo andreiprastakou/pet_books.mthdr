@@ -12,12 +12,10 @@ import PageContent from 'components/PageContent'
 import PageRouteHelpers from 'components/PageRouteHelpers'
 import RootUrlStoreProvider from 'store/urlStore/RootStoreProvider'
 import EventsProvider from 'store/events/Provider'
-import { setDefaultBookImageUrl } from 'store/books/actions'
 import { setDefaultAuthorImageUrl } from 'store/authors/actions'
 
 /* eslint-disable camelcase */
-const Page = ({ default_book_image_url, default_author_image_url }) => {
-  store.dispatch(setDefaultBookImageUrl(default_book_image_url))
+const Page = ({ default_author_image_url }) => {
   store.dispatch(setDefaultAuthorImageUrl(default_author_image_url))
 
   return (
@@ -31,7 +29,7 @@ const Page = ({ default_book_image_url, default_author_image_url }) => {
 
             <Notifications />
 
-            <Container className='page'>
+            <Container className='page f-page-content-container'>
               <Navbar />
 
               <PageContent />
@@ -45,7 +43,6 @@ const Page = ({ default_book_image_url, default_author_image_url }) => {
 
 Page.propTypes = {
   default_author_image_url: PropTypes.string.isRequired,
-  default_book_image_url: PropTypes.string.isRequired,
 }
 /* eslint-enable camelcase */
 

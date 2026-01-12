@@ -25,7 +25,7 @@ RSpec.describe '/api/books/search' do
                                       book_id: books[0].id,
                                       title: 'The Three Musketeers',
                                       year: books[0].year_published,
-                                      author_id: books[0].author_ids.first
+                                      author_ids: books[0].author_ids
                                     }
                                   ])
     end

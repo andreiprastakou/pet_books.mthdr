@@ -35,6 +35,7 @@ class Book < ApplicationRecord
     non_fiction
   ].freeze
   FORMS_REQUIRE_SUMMARY = %w[novel novella non_fiction].freeze
+  FORMS_SMALL = %w[short short_story poem comics].freeze
 
   include CarrierwaveUrlAssign
   include HasGenericLinks
@@ -88,7 +89,7 @@ class Book < ApplicationRecord
   end
 
   def small?
-    literary_form.in?(%w[short short_story poem comics])
+    literary_form.in?(FORMS_SMALL)
   end
 
   def needs_data_fetch?
@@ -101,11 +102,6 @@ class Book < ApplicationRecord
     return 'Unknown Author' if authors.empty?
 
     authors.map(&:fullname).join(', ')
-  end
-
-  def legacy_author_id
-    ActiveSupport::Deprecation.new.warn('Book#legacy_author_id is deprecated. Use Book#author_ids instead.')
-    author_ids.first
   end
 
   protected

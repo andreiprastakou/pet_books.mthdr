@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { selectBookPopularities } from 'store/books/selectors'
 import PopularityChart from 'components/PopularityChart'
 
-const BOOK_CASE_WIDTH = 140
+const BOOK_CASE_WIDTH = 180
 const BOOKS_SEPARATOR_WIDTH = 20
 
 const widthOfPopularityChart = length => length * (BOOK_CASE_WIDTH + BOOKS_SEPARATOR_WIDTH) - BOOK_CASE_WIDTH + 60

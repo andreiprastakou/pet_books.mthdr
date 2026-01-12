@@ -18,6 +18,7 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  white-space: normal;
 
   .b-standard-cover-title {
     text-align: center;
@@ -30,6 +31,10 @@
     padding: 10px 0;
     min-height: 190px;
     align-content: center;
+
+    &.b-long {
+      font-size: 16px;
+    }
   }
 
   .b-standard-cover-author {
@@ -88,6 +93,10 @@
 
     background-color: rgba(1, 1, 1, 0.1);
     background-blend-mode: darken;
+  }
+
+  &[data-cover-image='blue_smoke'] {
+    @include b-cover-image('blue_smoke_400');
   }
 
   &[data-cover-image='blurry_glass'] {
@@ -156,6 +165,10 @@
     @include b-cover-image('steps_400');
   }
 
+  &[data-cover-image='trees_stars'] {
+    @include b-cover-image('trees_stars_400');
+  }
+
   &[data-cover-image='wall_windows'] {
     @include b-cover-image('wall_windows_400');
 
@@ -181,6 +194,11 @@
   [data-text-color='black'] {
     color: black;
     text-shadow: 1px 1px 3px white;
+  }
+
+  [data-text-color='gold'] {
+    color: gold;
+    text-shadow: 1px 1px 3px black;
   }
 
   [data-text-color='white'] {

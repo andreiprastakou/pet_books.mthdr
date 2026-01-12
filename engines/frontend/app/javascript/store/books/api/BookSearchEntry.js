@@ -4,7 +4,7 @@ class BookSearchEntry {
       bookId: data['book_id'],
       title: data['title'],
       year: data['year'],
-      authorId: data['author_id'],
+      authorIds: data['author_ids'],
     }
   }
 }

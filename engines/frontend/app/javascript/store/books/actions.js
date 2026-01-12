@@ -11,7 +11,6 @@ export const {
   addBooks,
   addBooksRefs,
   clearBooksRefs,
-  setDefaultBookImageUrl,
   setCurrentBookDetails,
   setRequestedBookId,
 } = slice.actions

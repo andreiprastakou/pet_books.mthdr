@@ -15,6 +15,8 @@ FrontendApi::Engine.routes.draw do
       resource :search, only: :show, controller: 'search'
     end
 
+    resources :cover_designs, only: :index
+
     namespace :tags do
       resources :categories, only: :index
       resources :index_entries, only: %i[show index]

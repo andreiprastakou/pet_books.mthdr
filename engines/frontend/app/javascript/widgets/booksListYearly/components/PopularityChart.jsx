@@ -6,7 +6,7 @@ import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectBookPopularities } from 'store/books/selectors'
 import PopularityChart from 'components/PopularityChart'
 
-const BOOK_CASE_WIDTH = 140
+const BOOK_CASE_WIDTH = 180
 const BOOK_VIEW_WIDTH = 300
 const BOOKS_SEPARATOR_WIDTH = 20
 

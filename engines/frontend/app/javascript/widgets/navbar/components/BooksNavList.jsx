@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { NavDropdown } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
-import { selectAuthorRef } from 'store/authors/selectors'
+import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import apiClient from 'store/books/apiClient'
 import SearchForm from 'widgets/navbar/components/SearchForm'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -37,7 +37,7 @@ const BooksNavList = () => {
 }
 
 const SearchEntry = ({ entry }) => {
-  const authorRef = useSelector(selectAuthorRef(entry.authorId))
+  const authorRefs = useSelector(selectAuthorsRefsByIds(entry.authorIds))
   const { routes: { booksPagePath } } = useContext(UrlStoreContext)
   return (
     <NavDropdown.Item
@@ -45,7 +45,7 @@ const SearchEntry = ({ entry }) => {
       title={`${entry.title} (${entry.year})`}
     >
       <span className='author'>
-        { authorRef.fullname }
+        { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
       </span>
 
       { ' ' }

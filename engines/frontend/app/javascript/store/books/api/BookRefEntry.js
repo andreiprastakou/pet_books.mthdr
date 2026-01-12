@@ -3,7 +3,7 @@ class BookRefEntry {
     return {
       id: data['id'],
       year: data['year'],
-      authorId: data['author_id'],
+      authorIds: data['author_ids'],
     }
   }
 }

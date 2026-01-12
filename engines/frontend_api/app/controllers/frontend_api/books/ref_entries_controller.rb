@@ -6,7 +6,7 @@ module FrontendApi
       before_action :fetch_book, only: :show
 
       def index
-        books = BooksFilter.filtered_scope(params)
+        books = BooksFilter.filtered_scope(params, Book.preload(:authors))
         books = apply_sort(books)
         @count = books.count
         @books = paginate(books)

@@ -25,6 +25,11 @@
 
 body {
   min-width: 900px;
+
+  .f-page-content-container {
+    max-width: 100%;
+    width: 100%;
+  }
 }
 
 .page-header {

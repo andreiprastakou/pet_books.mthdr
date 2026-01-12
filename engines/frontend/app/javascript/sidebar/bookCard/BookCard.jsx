@@ -1,14 +1,12 @@
 import { sortBy } from 'lodash'
-import React, { useContext, useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useContext } from 'react'
+import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import { Card } from 'react-bootstrap'
 
-import { selectAuthorRef } from 'store/authors/selectors'
-import { selectCurrentBookIndexEntry, selectBookDefaultImageUrl } from 'store/books/selectors'
+import { selectAuthorsRefsByIds } from 'store/authors/selectors'
+import { selectCurrentBookIndexEntry } from 'store/books/selectors'
 import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
-import { setImageSrc } from 'modals/imageFullShow/actions'
-import ImageContainer from 'components/ImageContainer'
 import TagBadge from 'components/TagBadge'
 import PopularityBadge from 'components/PopularityBadge'
 import BookToolbar from 'components/BookToolbar'
@@ -23,19 +21,11 @@ const BookCardWrap = () => {
 
 const BookCard = props => {
   const { booksIndexEntry } = props
-  const dispatch = useDispatch()
-  const authorRef = useSelector(selectAuthorRef(booksIndexEntry.authorId))
-  const defaultCoverUrl = useSelector(selectBookDefaultImageUrl())
+  const authorRefs = useSelector(selectAuthorsRefsByIds(booksIndexEntry.authorIds))
   const tags = useSelector(selectTagsRefsByIds(booksIndexEntry.tagIds))
   const visibleTags = useSelector(selectVisibleTags(tags))
   const { routes: { authorPagePath }, routesReady } = useContext(UrlStoreContext)
-
-  const coverUrl = booksIndexEntry.coverUrl || defaultCoverUrl
   const sortedTags = sortBy(visibleTags, tag => -tag.connectionsCount)
-
-  const handleImageClick = useCallback(() => {
-    dispatch(setImageSrc(booksIndexEntry.coverFullUrl))
-  }, [booksIndexEntry.coverFullUrl])
 
   if (!routesReady || !booksIndexEntry) return null
 
@@ -46,21 +36,21 @@ const BookCard = props => {
       </Card.Header>
 
       <Card.Body>
-        <ImageContainer
-          classes='book-cover'
-          onClick={handleImageClick}
-          url={coverUrl}
-        />
-
         <div className='book-details'>
           <div>
-            <a
-              className='book-author'
-              href={authorPagePath(authorRef.id, { bookId: booksIndexEntry.id })}
-              title={authorRef.fullname}
-            >
-              { authorRef.fullname }
-            </a>
+            { authorRefs.map((authorRef, index) => (
+              <React.Fragment key={authorRef.id}>
+                { index > 0 && ', ' }
+
+                <a
+                  className='book-author'
+                  href={authorPagePath(authorRef.id, { bookId: booksIndexEntry.id })}
+                  title={authorRef.fullname}
+                >
+                  { authorRef.fullname }
+                </a>
+              </React.Fragment>
+            )) }
 
             { ' ' }
 
@@ -89,18 +79,18 @@ const BookCard = props => {
             ) : null }
           </div>
 
-          <BookToolbar book={booksIndexEntry} />
-        </div>
+          <div className='book-tags'>
+            { sortedTags.map(tag => (
+              <TagBadge
+                id={tag.id}
+                key={tag.id}
+                text={tag.name}
+                variant='dark'
+              />
+            )) }
+          </div>
 
-        <div className='book-tags'>
-          { sortedTags.map(tag => (
-            <TagBadge
-              id={tag.id}
-              key={tag.id}
-              text={tag.name}
-              variant='dark'
-            />
-          )) }
+          <BookToolbar book={booksIndexEntry} />
         </div>
       </Card.Body>
     </Card>

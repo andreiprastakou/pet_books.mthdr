@@ -21,5 +21,9 @@ FactoryBot.define do
     author_name_color { CoverDesign::COLORS.sample }
     author_name_font { CoverDesign::FONTS.sample }
     cover_image { CoverDesign::COVER_IMAGES.sample }
+
+    trait :default do
+      name { CoverDesign::DEFAULT_NAME }
+    end
   end
 end

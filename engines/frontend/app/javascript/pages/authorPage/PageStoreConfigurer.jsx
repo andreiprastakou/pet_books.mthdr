@@ -11,6 +11,7 @@ import {
   clearListState,
   fetchBooks,
 } from 'widgets/booksListLinear/actions'
+import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'widgets/navbar/actions'
 
 const Configurer = () => {
@@ -26,6 +27,7 @@ const Configurer = () => {
     Promise.all([
       dispatch(prepareNavRefs()),
       dispatch(fetchAuthorFull(authorId)),
+      dispatch(fetchCoverDesigns()),
     ]).then(() => {
       dispatch(assignFilter({ authorId }))
       dispatch(fetchBooks()).then(() => {

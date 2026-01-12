@@ -16,10 +16,10 @@ RSpec.describe '/api/books/full_entries' do
         id: book.id,
         title: book.title,
         original_title: book.original_title,
-        author_id: book.author_ids.first,
+        author_ids: book.author_ids,
         tag_ids: tags.map(&:id),
         year_published: book.year_published,
-        cover_thumb_url: nil
+        small: false
       )
     end
   end
