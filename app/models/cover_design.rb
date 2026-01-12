@@ -39,11 +39,14 @@ class CoverDesign < ApplicationRecord
     blue_red_marks
     blue_smoke
     blurry_glass
+    bright_curves
     brown_skin
     brown_wave
+    brushes
     chalk_board
     dark_red
     dark_room
+    dark_stones
     fire
     gray_marks
     hard_blue_texture
@@ -52,7 +55,9 @@ class CoverDesign < ApplicationRecord
     paper_pieces
     parchment
     red_scratches
+    sea_stones
     steps
+    steps_yellow
     trees_stars
     wall_windows
     water_rocks
