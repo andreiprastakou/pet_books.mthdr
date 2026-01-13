@@ -2,6 +2,8 @@ module Admin
   class WikiLinkSyncJob < Admin::ApplicationJob
     queue_as :default
 
+    limits_concurrency to: 1, key: ->(wiki_link_id) { wiki_link_id }
+
     def perform(wiki_link_id)
       wiki_link = WikiLink.find(wiki_link_id)
       InfoFetchers::Wiki::WikiLinksSyncer.new(wiki_link).sync!

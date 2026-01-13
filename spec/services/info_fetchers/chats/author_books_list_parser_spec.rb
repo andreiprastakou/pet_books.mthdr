@@ -3,6 +3,14 @@ require 'rails_helper'
 RSpec.describe InfoFetchers::Chats::AuthorBooksListParser do
   subject(:parser) { described_class.new }
 
+  describe '.instructions' do
+    subject(:result) { described_class.instructions }
+
+    it 'returns configured instructions' do
+      expect(result).to include(Book::STANDARD_FORMS.join(', '))
+    end
+  end
+
   describe '#parse_books_list' do
     subject(:result) { parser.parse_books_list(text) }
 
@@ -26,7 +34,7 @@ RSpec.describe InfoFetchers::Chats::AuthorBooksListParser do
 
     it 'sets up chat with instructions' do
       result
-      expect(chat).to have_received(:with_instructions).with(described_class::INSTRUCTIONS)
+      expect(chat).to have_received(:with_instructions).with(described_class.instructions)
     end
 
     context 'when chat responds with bad JSON' do

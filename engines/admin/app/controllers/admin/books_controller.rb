@@ -12,14 +12,15 @@ module Admin
     ].index_by(&:to_s).freeze
 
     PARAMS = (%i[
-      title
+      data_filled
+      genre
+      literary_form
       original_title
-      year_published
       summary
       summary_src
+      title
+      year_published
       wiki_url
-      literary_form
-      genre
     ] + [{
       tag_names: [],
       genre_names: [],

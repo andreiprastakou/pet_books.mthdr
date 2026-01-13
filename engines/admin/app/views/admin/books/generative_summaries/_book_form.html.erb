@@ -59,19 +59,21 @@
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addGenres@window->badges-input#onNamesAdded">
     <%= label_tag nil, "Genres", class: "form-label" %>
+    <%= hidden_field_tag "book[genre_names][]", "" %>
     <%= render "admin/books/form/badges_input", form: form,
       name: "book[genre_names][]", old_values: book.current_genre_names, current_values: book.current_genre_names %>
   </div>
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addTags@window->badges-input#onNamesAdded">
     <%= label_tag nil, "Tags", class: "form-label" %>
+    <%= hidden_field_tag "book[tag_names][]", "" %>
     <%= render "admin/books/form/badges_input", form: form,
       name: "book[tag_names][]", old_values: book.current_tag_names, current_values: book.current_tag_names %>
   </div>
 
   <div class="row mb-3" data-controller="association-input">
     <%= label_tag nil, "Series", class: "form-label" %>
-    <%= hidden_field_tag "book[series_ids][]", "", data: { association_input_target: "sentinelInput" } %>
+    <%= hidden_field_tag "book[series_ids][]", "" %>
     <%= render "admin/books/form/association_badges_input_wide",
       name: "book[series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),

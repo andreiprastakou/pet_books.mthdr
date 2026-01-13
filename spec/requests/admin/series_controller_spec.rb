@@ -231,19 +231,5 @@ RSpec.describe Admin::SeriesController do
       expect(response).to have_http_status(:see_other)
       expect(flash[:notice]).to eq('Series was successfully destroyed.')
     end
-
-    context 'with associated books' do
-      let(:book) { create(:book) }
-
-      before do
-        series.books << book
-      end
-
-      it 'shows an alert and does not destroy the series' do
-        send_request
-        expect(response).to redirect_to(admin_series_path(series))
-        expect(flash[:alert]).to include('Series was not destroyed')
-      end
-    end
   end
 end

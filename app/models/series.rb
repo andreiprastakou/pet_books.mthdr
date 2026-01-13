@@ -19,7 +19,7 @@ class Series < ApplicationRecord
   include HasGenericLinks
   include HasWikiLinks
 
-  has_many :book_series, class_name: 'BookSeries', dependent: :restrict_with_error
+  has_many :book_series, class_name: 'BookSeries', dependent: :destroy
   has_many :books, class_name: 'Book', through: :book_series
 
   validates :name, presence: true
