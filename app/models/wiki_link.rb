@@ -50,6 +50,8 @@ class WikiLink < ApplicationRecord
   private
 
   def enqueue_sync
+    return unless url_previously_changed?
+
     Admin::WikiLinkSyncJob.perform_later(id)
   end
 end

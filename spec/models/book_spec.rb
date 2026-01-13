@@ -279,7 +279,7 @@ RSpec.describe Book do
       end
 
       context 'when a book has pending generative_summary_tasks' do
-        before { book.generative_summary_tasks.build }
+        before { book.generative_summary_tasks.build(status: 'fetched') }
 
         it { is_expected.to be false }
       end

@@ -93,7 +93,7 @@ class Book < ApplicationRecord
   end
 
   def needs_data_fetch?
-    generative_summary_tasks.reject(&:rejected?).empty? &&
+    generative_summary_tasks.select(&:fetched?).empty? &&
       !data_filled? &&
       literary_form.in?(FORMS_REQUIRE_SUMMARY)
   end
