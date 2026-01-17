@@ -42,7 +42,7 @@ module InfoFetchers
         chat.ask([
           book.literary_form&.humanize,
           "\"#{book.title}\"",
-          "(#{book.year_published})",
+          "(published #{book.year_published})",
           "by #{book.authors.map(&:fullname).join(', ')}"
         ].compact_blank.join(' '))
       end

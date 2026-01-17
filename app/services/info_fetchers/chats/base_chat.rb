@@ -8,9 +8,9 @@ module InfoFetchers
         end
 
         def instructions(overrides = {})
-          @instructions ||= build_instructions
+          instructions = build_instructions
           apply_instructions_overrides(
-            @instructions, overrides
+            instructions, overrides
           )
         end
 
