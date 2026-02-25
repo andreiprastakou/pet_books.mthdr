@@ -1770,9 +1770,9 @@
     "@rails/actioncable" ">=7.0"
 
 "@hotwired/turbo@^8.0.18":
-  version "8.0.18"
-  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-8.0.18.tgz#10ae3de450b955862f89e30c50d96d676813744e"
-  integrity sha512-dG0N7khQsP8sujclodQE3DYkI4Lq7uKA04fhT0DCC/DwMgn4T4WM3aji6EC6+iCfABQeJncY0SraXqVeOq0vvQ==
+  version "8.0.21"
+  resolved "https://registry.yarnpkg.com/@hotwired/turbo/-/turbo-8.0.21.tgz#a3e80c01d70048200f64bbe3582b84f9bfac034e"
+  integrity sha512-fJTv3JnzFHeDxBb23esZSOhT4r142xf5o3lKMFMvzPC6AllkqbBKk5Yb31UZhtIsKQCwmO/pUQrtTUlYl5CHAQ==
 
 "@humanwhocodes/config-array@^0.13.0":
   version "0.13.0"
@@ -8122,9 +8122,9 @@ postcss@^7.0.0, postcss@^7.0.1, postcss@^7.0.14, postcss@^7.0.17, postcss@^7.0.2
     source-map "^0.6.1"
 
 postcss@^8, postcss@^8.4.19:
-  version "8.5.4"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.4.tgz#d61014ac00e11d5f58458ed7247d899bd65f99c0"
-  integrity sha512-QSa9EBe+uwlGTFmHsPKokv3B/oEMQZxfqW0QqNCyhpa6mB1afzulwn8hihglqAb2pOw+BJgNlmXQ8la2VeHB7w==
+  version "8.5.5"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.5.5.tgz#04de7797f6911fb1c96550e96616d08681537ef3"
+  integrity sha512-d/jtm+rdNT8tpXuHY5MMtcbJFBkhXE6593XVR9UoGCH8jSFGci7jGvMGH5RYd5PBJW+00NZQt6gf7CbagJCrhg==
   dependencies:
     nanoid "^3.3.11"
     picocolors "^1.1.1"
