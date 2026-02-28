@@ -57,7 +57,7 @@
     "react_ujs": "^2.6.1",
     "redux": "^4",
     "redux-thunk": "^2.3.0",
-    "rsuite": "^4.11.0",
+    "rsuite": "^6.1.2",
     "webpack": "^4.46.0",
     "webpack-cli": "^3.3.12"
   },
