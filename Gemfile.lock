@@ -477,7 +477,7 @@ GEM
       ruby_llm-schema (~> 0.2.1)
       zeitwerk (~> 2)
     ruby_llm-schema (0.2.5)
-    rugged (1.6.5)
+    rugged (1.9.0)
     sassc (2.4.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
@@ -606,7 +606,7 @@ DEPENDENCIES
   rubocop-rails
   rubocop-rspec_rails
   ruby_llm (~> 1.6)
-  rugged (< 1.7.1)
+  rugged (< 1.9.1)
   sassc-rails
   shoulda-matchers (~> 6.4)
   simplecov
