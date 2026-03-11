@@ -1,4 +1,4 @@
-import { uniq } from 'lodash'
+import { sortBy, uniq } from 'lodash'
 import { createSlice } from '@reduxjs/toolkit'
 
 export const slice = createSlice({
@@ -18,7 +18,7 @@ export const slice = createSlice({
 
     addYears: (state, action) => {
       const years = action.payload
-      state.years = uniq([...state.years, ...years]).sort()
+      state.years = uniq(sortBy([...state.years, ...years]))
     },
 
     setBookShiftDirectionHorizontal: (state, action) => {

@@ -73,14 +73,14 @@
     <div class="col-md-6">
       <%= form.label :birth_year, class: "form-label" %>
       <%= admin_reversible_input(old_value: author.birth_year_was) do %>
-        <%= form.number_field :birth_year, class: "form-control", min: 0, max: Time.current.year,
+        <%= form.number_field :birth_year, class: "form-control", max: Time.current.year,
           data: { input_changes_target: "input" } %>
       <% end %>
     </div>
     <div class="col-md-6">
       <%= form.label :death_year, class: "form-label" %>
       <%= admin_reversible_input(old_value: author.death_year_was) do %>
-        <%= form.number_field :death_year, class: "form-control", min: 0, max: Time.current.year,
+        <%= form.number_field :death_year, class: "form-control", max: Time.current.year,
           data: { input_changes_target: "input" } %>
       <% end %>
     </div>
