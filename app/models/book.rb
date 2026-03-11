@@ -34,7 +34,7 @@ class Book < ApplicationRecord
     comics
     non_fiction
   ].freeze
-  FORMS_REQUIRE_SUMMARY = %w[novel novella non_fiction].freeze
+  FORMS_REQUIRE_SUMMARY = %w[novel novella non_fiction play].freeze
   FORMS_SMALL = %w[short short_story poem comics].freeze
 
   include CarrierwaveUrlAssign
@@ -56,7 +56,7 @@ class Book < ApplicationRecord
   has_many :generic_links, class_name: 'GenericLink', as: :entity, dependent: :destroy, inverse_of: :entity
 
   validates :title, presence: true
-  validates :year_published, presence: true, numericality: { only_integer: true, greater_than: 0 }
+  validates :year_published, presence: true, numericality: { only_integer: true }
   validates :wiki_popularity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
   validate :validate_unique_title_per_author
 
