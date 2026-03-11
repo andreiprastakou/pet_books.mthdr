@@ -3,6 +3,14 @@ require 'rails_helper'
 RSpec.describe InfoFetchers::Chats::AuthorsExpert do
   subject(:fetcher) { described_class.new }
 
+  describe '.instructions' do
+    subject(:result) { described_class.instructions }
+
+    it 'returns configured instructions' do
+      expect(result).to be_a(String)
+    end
+  end
+
   describe '#ask_books_list' do
     let(:author_name) { 'Fyodor Dostoevsky' }
     let(:mock_chat) { instance_double(Ai::Chat) }
@@ -44,7 +52,7 @@ RSpec.describe InfoFetchers::Chats::AuthorsExpert do
 
     it 'sets up chat with correct instructions' do
       fetcher.ask_books_list(author_name)
-      expect(mock_chat).to have_received(:with_instructions)
+      expect(mock_chat).to have_received(:with_instructions).with(described_class.instructions)
     end
 
     it 'asks chat with author name' do

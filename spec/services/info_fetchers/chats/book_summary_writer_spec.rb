@@ -3,6 +3,25 @@ require 'rails_helper'
 RSpec.describe InfoFetchers::Chats::BookSummaryWriter do
   let(:writer) { described_class.new }
 
+  describe '.instructions' do
+    subject(:result) { described_class.instructions(overrides) }
+
+    let(:overrides) { {} }
+
+    it 'returns configured instructions' do
+      expect(result).to include(Book::STANDARD_FORMS.join(', '))
+      expect(result).to include('<GENRES>')
+    end
+
+    context 'when overrides are provided' do
+      let(:overrides) { { '<GENRES>' => 'social_realism' } }
+
+      it 'returns instructions with overrides' do
+        expect(result).to include('social_realism')
+      end
+    end
+  end
+
   describe '#ask' do
     subject(:result) { writer.ask(book) }
 

@@ -144,7 +144,7 @@ RSpec.describe Book do
       end
 
       it 'returns the books that require a summary' do
-        expect(result).to match_array(books.values_at(0, 1, 6))
+        expect(result).to match_array(books.values_at(0, 1, 4, 6))
       end
     end
 
@@ -279,7 +279,7 @@ RSpec.describe Book do
       end
 
       context 'when a book has pending generative_summary_tasks' do
-        before { book.generative_summary_tasks.build }
+        before { book.generative_summary_tasks.build(status: 'fetched') }
 
         it { is_expected.to be false }
       end
