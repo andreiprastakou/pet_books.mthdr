@@ -10,8 +10,7 @@
 #
 module Ai
   class Chat < AiRecord
-    # DEFAULT_MODEL_ID = 'gpt-4.1-nano'.freeze
-    DEFAULT_MODEL_ID = 'gpt-4.1'.freeze
+    DEFAULT_MODEL_ID = 'gpt-5-mini'.freeze
 
     acts_as_chat message_class: 'Ai::Message',
                  tool_call_class: 'Ai::ToolCall'
