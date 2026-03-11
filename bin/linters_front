@@ -1,8 +1,8 @@
-yarn run stylelint "app/assets/stylesheets/**/*.{css,scss}"
-          "engines/admin/app/assets/stylesheets/**/*.{css,scss}"
-          "engines/frontend/app/assets/stylesheets/**/*.{css,scss}"
+yarn run stylelint "app/assets/stylesheets/**/*.{css,scss}" \
+          "engines/admin/app/assets/stylesheets/**/*.{css,scss}" \
+          "engines/frontend/app/assets/stylesheets/**/*.{css,scss}" \
           --formatter verbose
-yarn run eslint "engines/admin/app/javascript/**/*.{js,jsx}"
-          "engines/frontend/app/javascript/**/*.{js,jsx}"
-          --max-warnings 0
+yarn run eslint "engines/admin/app/javascript/**/*.{js,jsx}" \
+          "engines/frontend/app/javascript/**/*.{js,jsx}" \
+          --max-warnings 0 \
           --format stylish
