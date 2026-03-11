@@ -1,7 +1,7 @@
 module InfoFetchers
   module Chats
     class AuthorsExpert < InfoFetchers::Chats::BaseChat
-      has_instructions "authors_expert.md"
+      has_instructions 'authors_expert.md'
 
       def ask_books_list(fullname)
         chat = setup_chat

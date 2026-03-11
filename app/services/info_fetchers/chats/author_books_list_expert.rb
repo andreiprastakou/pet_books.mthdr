@@ -2,7 +2,7 @@ module InfoFetchers
   module Chats
     class AuthorBooksListExpert < InfoFetchers::Chats::BaseChat
       has_instructions 'author_books_list_expert.md',
-        '<FORMS>' => Book::STANDARD_FORMS.join(', ')
+                       '<FORMS>' => Book::STANDARD_FORMS.join(', ')
 
       def ask_books_list(author)
         last_response = chat.ask("Author: #{author.fullname}")

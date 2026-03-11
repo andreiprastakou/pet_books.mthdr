@@ -144,7 +144,7 @@ RSpec.describe Book do
       end
 
       it 'returns the books that require a summary' do
-        expect(result).to match_array(books.values_at(0, 1, 6))
+        expect(result).to match_array(books.values_at(0, 1, 4, 6))
       end
     end
 

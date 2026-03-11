@@ -2,10 +2,12 @@ module InfoFetchers
   module Chats
     class BaseChat
       class << self
+        # rubocop:disable Naming/PredicatePrefix
         def has_instructions(file_name, overrides = {})
           @instructions_file_name = file_name
           @instructions_overrides = overrides
         end
+        # rubocop:enable Naming/PredicatePrefix
 
         def instructions(overrides = {})
           @instructions ||= build_instructions
@@ -31,12 +33,10 @@ module InfoFetchers
         end
 
         def fetch_instructions_template
-          raise "Instructions file not set" if @instructions_file_name.blank?
+          raise 'Instructions file not set' if @instructions_file_name.blank?
 
           path = Rails.root.join('config', 'prompts', @instructions_file_name)
-          unless File.exist?(path)
-            raise ArgumentError, "Instructions file not found: #{path}"
-          end
+          raise ArgumentError, "Instructions file not found: #{path}" unless File.exist?(path)
 
           File.read(path)
         end

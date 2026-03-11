@@ -1,1 +1,1 @@
-COVERAGE=1 bundle exec rspec --format=documentation
+COVERAGE=1 bundle exec rspec --format=documentation ./spec ./engines/admin/spec
