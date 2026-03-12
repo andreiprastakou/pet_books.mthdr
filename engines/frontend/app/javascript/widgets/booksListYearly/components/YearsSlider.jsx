@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Slider } from 'rsuite'
-import 'rsuite/dist/rsuite.css'
+import 'rsuite/Slider/styles/index.css'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { jumpToYear } from 'widgets/booksListYearly/actions'
