@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Slider } from 'rsuite'
-import { useSelector } from 'react-redux'
+import 'rsuite/dist/rsuite.css'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { jumpToYear } from 'widgets/booksListYearly/actions'
 import { selectCurrentYear, selectYears } from 'widgets/booksListYearly/selectors'
 
 const YearsSlider = () => {
   const [state, setState] = useState({ value: 0 })
+  const dispatch = useDispatch()
   const years = useSelector(selectYears())
   const currentYear = useSelector(selectCurrentYear())
 
@@ -24,7 +27,7 @@ const YearsSlider = () => {
         tooltip={false}
         value={state.value}
         vertical
-        // onChangeCommitted={ (i) => dispatch(jumpToYear(years[i])) }
+        onChangeCommitted={ (i) => dispatch(jumpToYear(years[i])) }
       />
     </div>
   )
