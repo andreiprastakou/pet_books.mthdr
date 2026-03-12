@@ -15,6 +15,7 @@ const YearsSlider = () => {
   useEffect(() => currentYear && setState({ value: years.indexOf(currentYear) }), [currentYear])
 
   const handleChange = useCallback(v => setState({ value: v }), [])
+  const handleChangeCommitted = useCallback(i => dispatch(jumpToYear(years[i])), [dispatch, years])
 
   return (
     <div className='years-slider'>
@@ -24,10 +25,10 @@ const YearsSlider = () => {
         max={years.length - 1}
         min={0}
         onChange={handleChange}
+        onChangeCommitted={handleChangeCommitted}
         tooltip={false}
         value={state.value}
         vertical
-        onChangeCommitted={ (i) => dispatch(jumpToYear(years[i])) }
       />
     </div>
   )
