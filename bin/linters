@@ -1,2 +1,4 @@
+#!/bin/bash
+
 bin/linters_back
 bin/linters_front
