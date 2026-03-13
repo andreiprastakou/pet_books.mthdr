@@ -11,6 +11,9 @@ COPY Gemfile Gemfile.lock ./
 COPY engines ./engines
 RUN bundle install && bundle clean --force
 
+COPY package.json yarn.lock ./
+RUN yarn install --check-files
+
 COPY . .
 COPY bin/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
