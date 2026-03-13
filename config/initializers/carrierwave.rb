@@ -1,6 +1,6 @@
 require 'fog/aws'
 
-if ENV['AWS_ACCESS_KEY_ID'] do
+if ENV['AWS_ACCESS_KEY_ID']
   CarrierWave.configure do |config|
     fog_credentials = {
       provider: 'AWS',
