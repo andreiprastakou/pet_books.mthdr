@@ -7,14 +7,16 @@ RUN echo "deb [signed-by=/usr/share/keyrings/yarn-keyring.gpg] https://dl.yarnpk
 RUN apt-get update -qq
 RUN apt-get install -y nodejs cmake yarn
 WORKDIR /app
-COPY Gemfile /app/Gemfile
-COPY Gemfile.lock /app/Gemfile.lock
+COPY Gemfile Gemfile.lock ./
+COPY engines ./engines
 RUN bundle install && bundle clean --force
 
+COPY . .
 COPY bin/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
-ENTRYPOINT ["bin/entrypoint.sh"]
+RUN SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile 2>/dev/null || true
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 EXPOSE 3000
 EXPOSE 8983
 
-# CMD ["bundle", "exec", "rails", "s", "-b", "0.0.0.0"]
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
