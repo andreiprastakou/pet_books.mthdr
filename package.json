@@ -54,7 +54,7 @@
     "react-simple-image-viewer": "^1.1.1",
     "react-table": "^7.7.0",
     "react-tagsinput": "^3.19.0",
-    "react_ujs": "^2.6.1",
+    "react_ujs": "^3.2.1",
     "redux": "^4",
     "redux-thunk": "^2.3.0",
     "rsuite": "^6.1.2",
