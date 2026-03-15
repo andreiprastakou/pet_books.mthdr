@@ -35,7 +35,7 @@ test:
 production:
   primary:
     <<: *default
-    database: db/production.sqlite3
+    database: <%= ENV.fetch('DATABASE_PATH', 'db') %>/production.sqlite3
   queue:
     <<: *default_queue
-    database: db/production_solid_queue.sqlite3
+    database: <%= ENV.fetch('DATABASE_PATH', 'db') %>/production_solid_queue.sqlite3
