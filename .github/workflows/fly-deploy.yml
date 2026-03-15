@@ -8,6 +8,7 @@ jobs:
     name: Deploy app
     permissions:
       contents: read
+    environment: fly.io:development
     runs-on: ubuntu-latest
     concurrency: deploy-group # optional: ensure only one action runs at a time
     steps:
