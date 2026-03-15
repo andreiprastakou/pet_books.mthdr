@@ -44,3 +44,13 @@ rspec
 ```sh
 bundler-audit --update
 ```
+
+## Deployment (Fly.io)
+
+Production uses SQLite on a Fly volume. Before the first deploy (or before deploying with the volume config), create the volume in the app region:
+
+```sh
+fly volumes create data --region fra --size 1
+```
+
+Then deploy. Migrations run automatically on app startup. To scale to more than one machine, create one volume per machine with the same name in the same region.
