@@ -27,6 +27,6 @@ console_command = 'bin/rails console'
   processes = ['app']
 
 [[vm]]
-  memory = '512mb'
+  memory = '1024mb'
   cpus = 1
   cpu_kind = 'shared'
