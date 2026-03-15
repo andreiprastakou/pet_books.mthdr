@@ -4,18 +4,21 @@ set -e
 # Remove a potentially pre-existing server.pid for Rails.
 rm -f /app/tmp/pids/server.pid
 
+env_name="${ENV_NAME:-production}"
+
 # Optional: restore primary DB from a dump (e.g. sync local dev DB to production).
-# Put a file at $DATABASE_PATH/restore.sql (or /data/restore.sql), then restart the machine.
 # Remove existing DB first so the dump replaces it entirely (avoids UNIQUE constraint on schema_migrations).
-if [ "$RAILS_ENV" = "production" ] && [ -f "${DATABASE_PATH:-/data}/restore.sql" ] && [ "$DATABASE_DUMP_AUTOLOAD" = "1" ]; then
-  rm -f "${DATABASE_PATH:-/data}/production.sqlite3"
-  sqlite3 "${DATABASE_PATH:-/data}/production.sqlite3" < "${DATABASE_PATH:-/data}/restore.sql"
-  rm -f "${DATABASE_PATH:-/data}/restore.sql"
+database_path="${DATABASE_PATH:-/data}"
+autoload_file="${DATABASE_AUTOLOAD_FILENAME:-to_load.sql}"
+if [ "$env_name" = "production" ] && [ -f "${database_path}/${autoload_file}" ] && [ "$DATABASE_DUMP_AUTOLOAD" = "1" ]; then
+  rm -f "${database_path}/${env_name}.sqlite3"
+  sqlite3 "${database_path}/${env_name}.sqlite3" < "${database_path}/${autoload_file}"
+  rm -f "${database_path}/${autoload_file}"
 fi
 
 # Run migrations in production (e.g. on Fly.io with volume-mounted SQLite).
 # Fails boot on migration error so deploy does not serve with incompatible schema.
-if [ "$RAILS_ENV" = "production" ]; then
+if [ "$env_name" = "production" ]; then
   bundle exec rails db:migrate
 fi
 
