@@ -74,7 +74,7 @@ To replace production data with your local development database:
    bye
    ```
 
-3. **Restart the machine** so the entrypoint runs again. It will restore from `/data/restore.sql` into the primary DB, remove the file, run migrations, then start the app:
+3. **Restart the machine** so the entrypoint runs again. It will replace the existing primary DB with the dump (then remove `restore.sql`), run migrations, then start the app:
 
    ```sh
    fly machine restart
@@ -83,3 +83,20 @@ To replace production data with your local development database:
    Or restart a specific machine: `fly machine list` then `fly machine restart <id>`.
 
 This only syncs the **primary** database (`production.sqlite3`). The Solid Queue DB is separate; repeat with `production_solid_queue.sqlite3` and a different restore filename if you add support for it in the entrypoint.
+
+### Syncing production DB to local (reverse sync)
+
+To replace your local development database with production data:
+
+1. **Backup** the current local DB (optional):
+
+   ```sh
+   cp db/development.sqlite3 db/development.sqlite3.bak
+   ```
+
+2. **Stream the production dump to a local file, then apply it using sqlite3 inside the project image:**
+
+   ```sh
+   fly ssh console -C "sqlite3 /data/production.sqlite3 .dump" > production_dump.sql
+   bin/shell sh -c "rm -f db/development.sqlite3 && sqlite3 db/development.sqlite3 < production_dump.sql"
+   ```
