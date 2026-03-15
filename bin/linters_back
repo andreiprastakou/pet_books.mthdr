@@ -1,1 +1,3 @@
+#!/bin/bash
+
 bundle exec rubocop -c ./.rubocop.yml app/ lib/ engines/

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Fully detach jobs so the shell continues and exec puma (Puma must be PID 1 for Fly health checks).
+nohup bin/jobs </dev/null >/dev/null 2>&1 &
+exec bundle exec puma -C config/puma.rb
