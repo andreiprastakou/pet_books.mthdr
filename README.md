@@ -54,3 +54,32 @@ fly volumes create data --region fra --size 1
 ```
 
 Then deploy. Migrations run automatically on app startup. To scale to more than one machine, create one volume per machine with the same name in the same region.
+
+### Syncing local DB to production
+
+To replace production data with your local development database:
+
+1. **Dump local primary DB** to SQL (from project root, using the dev DB path):
+
+   ```sh
+   sqlite3 db/development.sqlite3 .dump > restore.sql
+   ```
+
+2. **Upload the dump** to the app volume on Fly (SFTP uses the mounted volume; the file must be named `restore.sql` so the entrypoint picks it up):
+
+   ```sh
+   fly ssh sftp shell
+   # In the sftp prompt:
+   put restore.sql /data/restore.sql
+   bye
+   ```
+
+3. **Restart the machine** so the entrypoint runs again. It will restore from `/data/restore.sql` into the primary DB, remove the file, run migrations, then start the app:
+
+   ```sh
+   fly machine restart
+   ```
+
+   Or restart a specific machine: `fly machine list` then `fly machine restart <id>`.
+
+This only syncs the **primary** database (`production.sqlite3`). The Solid Queue DB is separate; repeat with `production_solid_queue.sqlite3` and a different restore filename if you add support for it in the entrypoint.
