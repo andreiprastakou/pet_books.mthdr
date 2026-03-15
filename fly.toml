@@ -7,13 +7,12 @@ console_command = 'bin/rails console'
 [build]
 
 [processes]
-  app = "bundle exec puma -C config/puma.rb"
-  jobs = "bin/jobs"
+  app = "bin/server"
 
 [mounts]
   source = "data"
   destination = "/data"
-  processes = ["app", "jobs"]
+  processes = ["app"]
 
 [env]
   RAILS_ENV = "production"
