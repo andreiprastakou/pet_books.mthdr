@@ -27,9 +27,9 @@ done
 # Build the docker compose command
 CMD_ARGS=("run" "--rm" "--remove-orphans" "${ENV_FLAGS[@]}" "shell" "${COMMAND_ARGS[@]}")
 
-# Print the full command before executing
-printf '%s ' docker compose "${CMD_ARGS[@]}"
-printf '\n'
+# Print the full command to stderr (so it doesn't get piped into sqlite3 etc.)
+printf '%s ' docker compose "${CMD_ARGS[@]}" >&2
+printf '\n' >&2
 
 # Execute the command
 docker compose "${CMD_ARGS[@]}"

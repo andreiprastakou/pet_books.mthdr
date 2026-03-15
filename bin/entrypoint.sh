@@ -7,7 +7,7 @@ rm -f /app/tmp/pids/server.pid
 # Optional: restore primary DB from a dump (e.g. sync local dev DB to production).
 # Put a file at $DATABASE_PATH/restore.sql (or /data/restore.sql), then restart the machine.
 # Remove existing DB first so the dump replaces it entirely (avoids UNIQUE constraint on schema_migrations).
-if [ "$RAILS_ENV" = "production" ] && [ -f "${DATABASE_PATH:-/data}/restore.sql" ]; then
+if [ "$RAILS_ENV" = "production" ] && [ -f "${DATABASE_PATH:-/data}/restore.sql" ] && [ "$DATABASE_AUTOLOAD" = "1" ]; then
   rm -f "${DATABASE_PATH:-/data}/production.sqlite3"
   sqlite3 "${DATABASE_PATH:-/data}/production.sqlite3" < "${DATABASE_PATH:-/data}/restore.sql"
   rm -f "${DATABASE_PATH:-/data}/restore.sql"
