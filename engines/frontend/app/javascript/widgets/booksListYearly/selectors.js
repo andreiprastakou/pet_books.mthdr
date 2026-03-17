@@ -45,7 +45,7 @@ export const selectDisplayedBookIdsInYear = year => state => {
   const currentBookId = selectCurrentBookId()(state)
   const yearCurrentBookId = selectYearCurrentBookId(year)(state)
   const middleBookId = (bookIds.includes(currentBookId)) ? currentBookId : (yearCurrentBookId || first(bookIds))
-  return pickNearEntries(bookIds, middleBookId, { lengthBefore: 3, lengthAfter: 3 })
+  return pickNearEntries(bookIds, middleBookId, { lengthBefore: 4, lengthAfter: 4 })
 }
 
 export const selectCurrentFilters = () => state => localState(state).filters

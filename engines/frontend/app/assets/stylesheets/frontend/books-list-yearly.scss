@@ -1,13 +1,16 @@
 .books-list {
+  background-color: black;
   overflow: hidden;
   position: relative;
   height: calc(100vh - 56px - 10px);
+
+  perspective: 1200px;
 
   .books-list-shadow {
     position: absolute;
     height: 0;
     width: 0;
-    box-shadow: 0 0 7px 7px white;
+    box-shadow: 0 0 7px 7px black;
     z-index: 2;
 
     &.shadow-top {
@@ -16,20 +19,22 @@
     }
 
     &.shadow-bottom {
-      bottom: 0;
+      bottom: -37px;
       width: 100%;
     }
 
     &.shadow-left {
       left: 0;
       height: 100%;
+      top: 37px;
     }
 
     &.shadow-right {
       right: 0;
       height: 100%;
       width: 45px;
-      background-color: #fff;
+      background-color: black;
+      top: 37px;
     }
   }
 
@@ -104,15 +109,26 @@
   .book-case {
     display: inline-block;
     position: relative;
-    padding: 5px;
+    padding: 0 5px;
     min-height: 200px;
-    margin: 10px 20px 0 0;
+    margin: 10px 0 0 0;
     text-align: center;
     vertical-align: top;
+    transform-style: preserve-3d;
+    transition: transform 0.4s ease;
 
     .year {
       font-size: 12px;
       width: 100%;
+    }
+
+    .b-cover-standard {
+      box-shadow: inset -4px 0 6px rgba(0,0,0,0.3),
+                  inset 4px 0 6px rgba(255,255,255,0.1);
+    }
+
+    &:hover {
+      transform: rotateY(-70deg) translateY(-6px) scale(1.03);
     }
 
     &:focus {
@@ -120,13 +136,8 @@
     }
 
     &.selected {
-      box-shadow: 0 0 18px $color-selection-inner-shadow inset;
-      padding: 5px;
-      width: 300px;
-      height: 260px;
-
-      .book-cover {
-        cursor: zoom-in;
+      .b-cover-standard {
+        box-shadow: 0 0 12px #fff
       }
     }
 
@@ -224,8 +235,10 @@
   }
 
   .year-books {
+    background-color: #322;
     white-space: nowrap;
     overflow: hidden;
+    padding-top: 40px;
 
     &.shifted-left {
       animation-name: move-left;
@@ -250,22 +263,52 @@
 
   .list-year {
     position: relative;
-    border-top: 1px solid;
-    border-bottom: 1px solid;
+    border-top: 1px solid transparent;
     margin-bottom: 2px;
     margin-right: 25px;
     padding: 0 0 20px;
     min-width: 2000px;
     text-align: center;
 
+    .b-bookself-top-desk {
+      width: 100%;
+      position: absolute;
+      height: 24px;
+      top: 0;
+      background: linear-gradient(#8b5a2b, #6e4420);
+      box-shadow: inset 0 -8px 12px rgba(0,0,0,0.4), 0 6px 10px rgba(0,0,0,0.5);
+    }
+
+    .b-bookself-bottom-desk {
+      bottom: 0;
+      height: 24px;
+      position: absolute;
+      width: 100%;
+      z-index: 1;
+      background: linear-gradient(#8b5a2b, #6e4420);
+      box-shadow: inset 0 -8px 12px rgba(0,0,0,0.4), 0 6px 10px rgba(0,0,0,0.5);
+    }
+
     .year-number {
       position: absolute;
       right: 0;
       left: 0;
-      bottom: 0;
+      bottom: 3px;
       margin: auto;
       text-align: center;
       font-size: 12px;
+
+      width: 70px;
+      font-weight: 600;
+      font-style: italic;
+
+      background: linear-gradient(#bbb, #888);
+      border: 1px solid #555;
+      box-shadow:
+        inset 0 1px 1px rgba(255,255,255,0.5),
+        inset 0 -2px 3px rgba(0,0,0,0.4),
+        0 2px 4px rgba(0,0,0,0.5);
+      border-radius: 4px;
     }
 
     &.death-year {
@@ -291,8 +334,6 @@
     }
 
     &.current {
-      height: 430px;
-
       .background {
         position: absolute;
         width: 100%;
@@ -307,14 +348,6 @@
 
       .popularities-chart canvas {
         top: 110px;
-      }
-
-      .year-books {
-        margin-top: 90px;
-      }
-
-      .year-number {
-        bottom: 90px;
       }
     }
   }

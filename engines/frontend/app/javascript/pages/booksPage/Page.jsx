@@ -10,9 +10,7 @@ const BooksPage = () => (
     <PageConfigurer />
 
     <Layout>
-      <Col xs={12}>
-        <BooksListYearly />
-      </Col>
+      <BooksListYearly />
     </Layout>
   </>
 )

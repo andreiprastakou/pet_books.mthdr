@@ -16,7 +16,7 @@ const BookIndexEntry = ({ id }) => {
 
   return (
     id === currentBookId ? (
-      <BookSelected bookIndexEntry={bookIndexEntry} />
+      <Book className='selected' bookIndexEntry={bookIndexEntry} />
     ) : (
       <Book bookIndexEntry={bookIndexEntry} />
     )

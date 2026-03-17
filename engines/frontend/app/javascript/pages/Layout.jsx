@@ -11,9 +11,9 @@ const Layout = ({ children, classes = '' }) => {
     return 'Wait...'
 
   return (
-    <Row className={classes}>
+    <div>
       { children }
-    </Row>
+    </div>
   )
 }
 
