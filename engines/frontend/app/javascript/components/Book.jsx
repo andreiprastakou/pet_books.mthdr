@@ -66,26 +66,50 @@ Book.propTypes = {
 }
 
 const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => (
-  <div
-    className='b-cover-standard'
-    data-cover-image={coverDesign.coverImage}
-  >
-    <div
-      className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
-      data-font={coverDesign.titleFont}
-      data-text-color={coverDesign.titleColor}
-    >
-      { bookIndexEntry.title }
+  <>
+    <div className='b-book-back'></div>
+
+    <div className='b-book-spine'>
+      <div className='b-content-frame'>
+        <div
+          className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
+          data-font={coverDesign.titleFont}
+          data-text-color={coverDesign.titleColor}
+        >
+          { bookIndexEntry.title }
+        </div>
+
+        <div
+          className='b-standard-cover-author'
+          data-font={coverDesign.authorNameFont}
+          data-text-color={coverDesign.authorNameColor}
+        >
+          { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
+        </div>
+      </div>
     </div>
 
     <div
-      className='b-standard-cover-author'
-      data-font={coverDesign.authorNameFont}
-      data-text-color={coverDesign.authorNameColor}
+      className='b-cover-standard'
+      data-cover-image={coverDesign.coverImage}
     >
-      { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
+      <div
+        className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
+        data-font={coverDesign.titleFont}
+        data-text-color={coverDesign.titleColor}
+      >
+        { bookIndexEntry.title }
+      </div>
+
+      <div
+        className='b-standard-cover-author'
+        data-font={coverDesign.authorNameFont}
+        data-text-color={coverDesign.authorNameColor}
+      >
+        { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
+      </div>
     </div>
-  </div>
+  </>
 )
 
 BookStandard.propTypes = {
