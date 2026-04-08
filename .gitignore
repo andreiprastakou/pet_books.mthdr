@@ -45,3 +45,6 @@ yarn-debug.log*
 
 spec/coverage
 
+# Internal engines use root bundle; avoid stale engine lockfiles.
+engines/*/Gemfile.lock
+
