@@ -12,7 +12,7 @@ Local access: <a href="http://localhost:3010/" target="_blank">http://localhost:
 
 ## Development
 
-![rubyBadge](https://img.shields.io/badge/ruby-3.4.8-green)
+![rubyBadge](https://img.shields.io/badge/ruby-4.0.2-green)
 ![railsBadge](https://img.shields.io/badge/rails-8.1.3-green)
 
 ### Local setup
