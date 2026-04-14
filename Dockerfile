@@ -18,7 +18,8 @@ COPY bin/entrypoint.sh /usr/bin/
 RUN chmod +x /usr/bin/entrypoint.sh
 
 COPY . .
-RUN SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile 2>/dev/null || true
+ENV NODE_OPTIONS=--openssl-legacy-provider
+RUN SECRET_KEY_BASE=placeholder bundle exec rails assets:precompile
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 EXPOSE 3000
 EXPOSE 8983
