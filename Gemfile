@@ -23,7 +23,7 @@ gem 'solid_queue', '~> 1.2.4'
 # views
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
-gem 'react-rails'
+gem 'react_on_rails'
 gem 'sassc-rails'
 gem 'slim'
 gem 'turbo-rails', '~> 2.0'
