@@ -123,8 +123,10 @@ development:
       #  port: 8080
     # Should we use gzip compression?
     compress: true
-    # Note that apps that do not check the host are vulnerable to DNS rebinding attacks
-    allowed_hosts: 'auto'
+    # Use 'all' in Docker (Rails proxies /packs to the dev server with Host=shakapacker; the
+    # browser uses localhost). 'auto' can respond 403 Forbidden to those proxied requests.
+    # Note: weaker host checks; acceptable for local development only.
+    allowed_hosts: 'all'
     # Shows progress and colorizes output of bin/shakapacker[-dev-server]
     pretty: true
     headers:
