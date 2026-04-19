@@ -23,7 +23,7 @@ RSpec.configure do |config|
   # Ensure that if we are running js tests, we are using latest Shakapacker assets
   # This will use the defaults of :js and :server_rendering meta tags
   # Requires config.build_test_command in config/initializers/react_on_rails.rb.
-  ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config)
+  ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config, { type: :request })
 
   # Include spec files from engines
   config.pattern = 'spec/**/*_spec.rb,engines/*/spec/**/*_spec.rb'
