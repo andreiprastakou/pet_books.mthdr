@@ -48,9 +48,6 @@ gem 'ruby_llm', '~> 1.6'
 # tools
 gem 'benchmark'
 
-# tech debt locks
-gem 'connection_pool', '~> 2.0' # v3 incompatible with react-rails
-
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '>= 3.1', require: 'dotenv/load'
