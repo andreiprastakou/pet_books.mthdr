@@ -1,8 +1,8 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "fileutils"
-require "json"
+require 'fileutils'
+require 'json'
 
 # Script to switch between webpack and rspack bundlers
 class BundlerSwitcher
@@ -21,7 +21,7 @@ class BundlerSwitcher
 
   def initialize(target_bundler)
     @target_bundler = target_bundler.to_s.downcase
-    @shakapacker_config = "config/shakapacker.yml"
+    @shakapacker_config = 'config/shakapacker.yml'
     validate_bundler!
   end
 
@@ -34,8 +34,8 @@ class BundlerSwitcher
 
     puts "✅ Successfully switched to #{@target_bundler}!"
     puts "\nNext steps:"
-    puts "  1. Review your webpack configuration files in config/webpack/"
-    puts "  2. Restart your development server"
+    puts '  1. Review your webpack configuration files in config/webpack/'
+    puts '  2. Restart your development server'
   end
 
   private
@@ -54,15 +54,15 @@ class BundlerSwitcher
 
     # Use regex replacement to preserve file structure (comments, anchors, aliases)
     # This replaces ALL occurrences of assets_bundler, not just in default section
-    old_bundler = @target_bundler == "rspack" ? "webpack" : "rspack"
+    old_bundler = @target_bundler == 'rspack' ? 'webpack' : 'rspack'
     new_content = content.gsub(
       /^(\s*assets_bundler:\s*)["']?#{old_bundler}["']?(\s*(?:#.*)?)$/,
       "\\1#{@target_bundler}\\2"
     )
 
     # Update javascript_transpiler based on bundler (rspack works best with SWC)
-    new_loader = @target_bundler == "rspack" ? "swc" : "babel"
-    old_loader = @target_bundler == "rspack" ? "babel" : "swc"
+    new_loader = @target_bundler == 'rspack' ? 'swc' : 'babel'
+    old_loader = @target_bundler == 'rspack' ? 'babel' : 'swc'
     new_content = new_content.gsub(
       /^(\s*javascript_transpiler:\s*)["']?#{old_loader}["']?(\s*(?:#.*)?)$/,
       "\\1#{new_loader}\\2"
@@ -73,27 +73,27 @@ class BundlerSwitcher
   end
 
   def update_dependencies
-    puts "📦 Updating package.json dependencies..."
+    puts '📦 Updating package.json dependencies...'
 
-    package_json_path = "package.json"
+    package_json_path = 'package.json'
     unless File.exist?(package_json_path)
-      puts "⚠️  package.json not found, skipping dependency updates"
+      puts '⚠️  package.json not found, skipping dependency updates'
       return
     end
 
     package_json = JSON.parse(File.read(package_json_path))
 
-    remove_deps = @target_bundler == "rspack" ? WEBPACK_DEPS : RSPACK_DEPS
+    remove_deps = @target_bundler == 'rspack' ? WEBPACK_DEPS : RSPACK_DEPS
 
     # Remove old bundler dependencies
     # Strip version suffix (e.g., "webpack@^5.0.0" -> "webpack") since package.json keys are bare names.
     # The regex handles scoped (@scope/name@ver) and unscoped (name@ver) packages, and is a no-op for
     # bare names without a version suffix (e.g., "@pmmmwh/react-refresh-webpack-plugin" stays unchanged).
     remove_deps[:dependencies].each do |dep|
-      package_json["dependencies"]&.delete(dep[%r{\A(@[^/]+/[^@]+|[^@]+)}])
+      package_json['dependencies']&.delete(dep[%r{\A(@[^/]+/[^@]+|[^@]+)}])
     end
     remove_deps[:dev_dependencies].each do |dep|
-      package_json["devDependencies"]&.delete(dep[%r{\A(@[^/]+/[^@]+|[^@]+)}])
+      package_json['devDependencies']&.delete(dep[%r{\A(@[^/]+/[^@]+|[^@]+)}])
     end
 
     puts "✅ Removed #{@target_bundler == 'rspack' ? 'webpack' : 'rspack'} dependencies"
@@ -103,52 +103,52 @@ class BundlerSwitcher
   def install_dependencies
     puts "📥 Installing #{@target_bundler} dependencies..."
 
-    deps = @target_bundler == "rspack" ? RSPACK_DEPS : WEBPACK_DEPS
+    deps = @target_bundler == 'rspack' ? RSPACK_DEPS : WEBPACK_DEPS
 
     # Detect package manager
     package_manager = detect_package_manager
 
     # Install dependencies using array form to prevent command injection
     success = case package_manager
-              when "yarn"
-                system("yarn", "add", *deps[:dependencies])
-              when "pnpm"
-                system("pnpm", "add", *deps[:dependencies])
+              when 'yarn'
+                system('yarn', 'add', *deps[:dependencies])
+              when 'pnpm'
+                system('pnpm', 'add', *deps[:dependencies])
               else
-                system("npm", "install", *deps[:dependencies])
+                system('npm', 'install', *deps[:dependencies])
               end
 
-    abort("❌ Failed to install dependencies") unless success
+    abort('❌ Failed to install dependencies') unless success
 
     # Install dev dependencies using array form to prevent command injection
     success = case package_manager
-              when "yarn"
-                system("yarn", "add", "-D", *deps[:dev_dependencies])
-              when "pnpm"
-                system("pnpm", "add", "-D", *deps[:dev_dependencies])
+              when 'yarn'
+                system('yarn', 'add', '-D', *deps[:dev_dependencies])
+              when 'pnpm'
+                system('pnpm', 'add', '-D', *deps[:dev_dependencies])
               else
-                system("npm", "install", "--save-dev", *deps[:dev_dependencies])
+                system('npm', 'install', '--save-dev', *deps[:dev_dependencies])
               end
 
-    abort("❌ Failed to install dev dependencies") unless success
+    abort('❌ Failed to install dev dependencies') unless success
 
     puts "✅ Installed #{@target_bundler} dependencies"
   end
 
   def detect_package_manager
-    return "yarn" if File.exist?("yarn.lock")
-    return "pnpm" if File.exist?("pnpm-lock.yaml")
+    return 'yarn' if File.exist?('yarn.lock')
+    return 'pnpm' if File.exist?('pnpm-lock.yaml')
 
-    "npm"
+    'npm'
   end
 end
 
 # Main execution
 if ARGV.empty?
-  puts "Usage: bin/switch-bundler [webpack|rspack]"
+  puts 'Usage: bin/switch-bundler [webpack|rspack]'
   puts "\nExamples:"
-  puts "  bin/switch-bundler rspack   # Switch to Rspack"
-  puts "  bin/switch-bundler webpack  # Switch to Webpack"
+  puts '  bin/switch-bundler rspack   # Switch to Rspack'
+  puts '  bin/switch-bundler webpack  # Switch to Webpack'
   puts "\nNote: This also updates javascript_transpiler (rspack uses swc, webpack uses babel)"
   exit 1
 end

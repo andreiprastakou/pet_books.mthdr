@@ -7,7 +7,7 @@
 ReactOnRails.configure do |config|
   # SSR is intentionally disabled in this app.
   # Keep react_on_rails in client-rendered mode unless prerendering is reintroduced.
-  config.server_bundle_js_file = ""
+  config.server_bundle_js_file = ''
 
   ################################################################################
   # Test Configuration (Recommended)
@@ -27,7 +27,7 @@ ReactOnRails.configure do |config|
   # RSpec apps should also add to spec/rails_helper.rb (inside RSpec.configure):
   #   ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config)
   #
-  config.build_test_command = "RAILS_ENV=test bin/shakapacker"
+  config.build_test_command = 'RAILS_ENV=test bin/shakapacker'
 
   # Engine React apps register components in the `frontend` Shakapacker pack, not via
   # react_on_rails file-based packs under app/javascript/packs/generated/.
