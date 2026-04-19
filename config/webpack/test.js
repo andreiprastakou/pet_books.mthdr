@@ -1,5 +1,3 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+const buildConfigWithEnginesAndLegacyPlugins = require('./engine_and_legacy_plugins')
 
-const environment = require('./environment')
-
-module.exports = environment.toWebpackConfig()
+module.exports = buildConfigWithEnginesAndLegacyPlugins()

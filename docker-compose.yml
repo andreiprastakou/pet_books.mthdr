@@ -46,20 +46,28 @@ services:
   web:
     <<: *app-service
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b 0.0.0.0"
+    environment:
+      # Rails must reach the dev server via Docker DNS (not localhost). Otherwise
+      # Shakapacker::DevServer#running? is false, /packs is not proxied, and JS
+      # requests hit Rails and return HTML (MIME text/html) instead of JS.
+      SHAKAPACKER_DEV_SERVER_HOST: shakapacker
     ports:
       - "3010:3000"
     depends_on:
       - jobs
-      - webpacker
+      - shakapacker
     stdin_open: true
     tty: true
     profiles:
       - admin
       - web
 
-  webpacker:
+  shakapacker:
     <<: *app-service
-    command: bash -c "rm -rf /app/public/packs; /app/bin/webpack-dev-server"
+    command: /app/bin/shakapacker-dev-server
+    environment:
+      # Listen on all interfaces so the `web` container can connect to this service.
+      SHAKAPACKER_DEV_SERVER_HOST: 0.0.0.0
     ports:
       - "3035:3035"
     profiles:

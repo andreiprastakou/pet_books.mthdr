@@ -23,11 +23,10 @@ gem 'solid_queue', '~> 1.2.4'
 # views
 gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
-gem 'react-rails'
+gem 'react_on_rails'
 gem 'sassc-rails'
 gem 'slim'
 gem 'turbo-rails', '~> 2.0'
-gem 'webpacker', '~> 5.0'
 
 # media storage
 gem 'carrierwave'
@@ -90,3 +89,5 @@ end
 gem 'admin', path: 'engines/admin'
 gem 'frontend', path: 'engines/frontend'
 gem 'frontend_api', path: 'engines/frontend_api'
+
+gem 'shakapacker', '= 10.0'
