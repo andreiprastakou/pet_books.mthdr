@@ -8,7 +8,7 @@
 
 <div class="container mt-4">
   <div>
-    <%== @pagy.series_nav %>
+    <%== @pagy.series_nav(:bootstrap) %>
   </div>
   <table id="admin_authors" class="table">
     <thead>
@@ -24,6 +24,6 @@
     <%= render partial: "admin/authors/authors_index_row", collection: @admin_authors, as: :author %>
   </table>
   <div>
-    <%== @pagy.series_nav %>
+    <%== @pagy.series_nav(:bootstrap) %>
   </div>
 </div>
