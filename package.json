@@ -55,7 +55,7 @@
     "react-dom": "^19.0.0",
     "react-hotkeys": "^2.0.0",
     "react-on-rails": "16.6.0",
-    "react-redux": "^7.2.4",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^5.2.0",
     "react-simple-image-viewer": "^1.1.1",
     "react-table": "^7.7.0",
