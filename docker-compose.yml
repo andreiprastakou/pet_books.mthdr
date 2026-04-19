@@ -50,16 +50,16 @@ services:
       - "3010:3000"
     depends_on:
       - jobs
-      - webpacker
+      - shakapacker
     stdin_open: true
     tty: true
     profiles:
       - admin
       - web
 
-  webpacker:
+  shakapacker:
     <<: *app-service
-    command: bash -c "rm -rf /app/public/packs; /app/bin/webpack-dev-server"
+    command: /app/bin/shakapacker-dev-server
     ports:
       - "3035:3035"
     profiles:

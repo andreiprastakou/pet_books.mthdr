@@ -5,7 +5,7 @@ Opinionated collections, insightful presentations.
 
 ## Usage
 
-Server boot: `docker compose --profile web up`.
+Server boot: `docker compose --profile web up` (starts Rails and **Shakapacker** dev server on port **3035**).
 You may use `bin/server_local` shortcut.
 
 Local access: <a href="http://localhost:3010/" target="_blank">http://localhost:3010/</a>

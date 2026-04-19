@@ -27,7 +27,6 @@ gem 'react_on_rails'
 gem 'sassc-rails'
 gem 'slim'
 gem 'turbo-rails', '~> 2.0'
-gem 'webpacker', '~> 5.0'
 
 # media storage
 gem 'carrierwave'

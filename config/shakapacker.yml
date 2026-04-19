@@ -34,8 +34,7 @@ default: &default
   # Shakapacker 9.0+ feature - automatically detected by React on Rails
   private_output_path: ssr-generated
 
-  # Additional paths webpack should look up modules (must match Webpacker engine paths
-  # so SWC/Babel rules include engines/*/app/javascript — same as config/webpacker.yml).
+  # Additional paths so SWC/Babel rules include engine JS trees.
   additional_paths:
     - 'engines/admin/app/javascript'
     - 'engines/frontend/app/javascript'

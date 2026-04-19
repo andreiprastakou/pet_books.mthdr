@@ -29,7 +29,7 @@ ReactOnRails.configure do |config|
   #
   config.build_test_command = "RAILS_ENV=test bin/shakapacker"
 
-  # Engine React apps register components in Webpacker packs (e.g. `frontend`), not via
+  # Engine React apps register components in the `frontend` Shakapacker pack, not via
   # react_on_rails file-based packs under app/javascript/packs/generated/.
   config.auto_load_bundle = false
   ################################################################################

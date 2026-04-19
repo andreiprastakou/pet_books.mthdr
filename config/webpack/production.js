@@ -1,3 +1,3 @@
-const mergeWebpackerAndShakapacker = require('./merge_webpacker_and_shakapacker')
+const buildConfigWithEnginesAndLegacyPlugins = require('./engine_and_legacy_plugins')
 
-module.exports = mergeWebpackerAndShakapacker()
+module.exports = buildConfigWithEnginesAndLegacyPlugins()

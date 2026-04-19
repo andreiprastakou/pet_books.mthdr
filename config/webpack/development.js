@@ -1,5 +1,5 @@
 const { config } = require('shakapacker')
-const mergeWebpackerAndShakapacker = require('./merge_webpacker_and_shakapacker')
+const buildConfigWithEnginesAndLegacyPlugins = require('./engine_and_legacy_plugins')
 
 const developmentEnvOnly = (clientConfig) => {
   // React Refresh (Fast Refresh) setup - only when dev server is running (HMR mode)
@@ -21,7 +21,7 @@ const developmentEnvOnly = (clientConfig) => {
   }
 }
 
-const configForDevelopment = mergeWebpackerAndShakapacker()
+const configForDevelopment = buildConfigWithEnginesAndLegacyPlugins()
 developmentEnvOnly(configForDevelopment)
 
 module.exports = configForDevelopment
