@@ -1,5 +1,10 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'production'
+const clientWebpackConfig = require('./clientWebpackConfig')
 
-const environment = require('./environment')
+const configForProduction = clientWebpackConfig()
 
-module.exports = environment.toWebpackConfig()
+// const productionEnvOnly = _clientWebpackConfig => {
+//   place any code here that is for production only
+// }
+// productionEnvOnly(configForProduction)
+
+module.exports = configForProduction

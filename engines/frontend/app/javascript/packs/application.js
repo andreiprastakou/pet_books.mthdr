@@ -6,15 +6,12 @@
 import Rails from '@rails/ujs'
 import 'jquery'
 import 'lodash'
+import ReactOnRails from 'react-on-rails'
+import Page from '../components/Page'
 
 Rails.start()
 
-// Initialize React components
-const componentRequireContext = require.context('components', true)
-const ReactRailsUJS = require('react_ujs')
-ReactRailsUJS.useContext(componentRequireContext)
-
-// Prevent server-side rendering in development
-if (process.env.NODE_ENV === 'development')
-  window.ReactRailsUJS = ReactRailsUJS
+ReactOnRails.register({
+  Page
+})
 

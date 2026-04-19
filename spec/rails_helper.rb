@@ -20,6 +20,12 @@ Rails.root.glob('engines/*/spec/support/**/*.rb').each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+
+  # Ensure that if we are running js tests, we are using latest webpack assets
+  # This will use the defaults of :js and :server_rendering meta tags
+  # Requires config.build_test_command in config/initializers/react_on_rails.rb.
+  # ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config)
+
   # Include spec files from engines
   config.pattern = 'spec/**/*_spec.rb,engines/*/spec/**/*_spec.rb'
 

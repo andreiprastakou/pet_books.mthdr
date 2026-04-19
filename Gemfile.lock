@@ -615,6 +615,7 @@ DEPENDENCIES
   ruby_llm (~> 1.6)
   rugged
   sassc-rails
+  shakapacker (= 10.0)
   shoulda-matchers (~> 6.4)
   simplecov
   slim

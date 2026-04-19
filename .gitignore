@@ -48,3 +48,14 @@ spec/coverage
 # Internal engines use root bundle; avoid stale engine lockfiles.
 engines/*/Gemfile.lock
 
+
+/public/packs
+/public/packs-test
+/node_modules
+/yarn-error.log
+yarn-debug.log*
+.yarn-integrity
+
+# React on Rails (generated and local files)
+**/generated/**
+ssr-generated

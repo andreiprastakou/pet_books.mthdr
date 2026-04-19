@@ -3,8 +3,8 @@ const webpack = require('webpack')
 
 // Add rule for .mjs files
 environment.loaders.append('mjs', {
-  test: /\.mjs$/,
-  include: /node_modules/,
+  test: /\.mjs$/u,
+  include: /node_modules/u,
   type: 'javascript/auto'
 })
 
@@ -22,12 +22,12 @@ environment.plugins.prepend('Provide',
   })
 )
 
-const nodeModulesLoader = environment.loaders.get('nodeModules');
-if (!Array.isArray(nodeModulesLoader.exclude)) {
-  nodeModulesLoader.exclude = nodeModulesLoader.exclude == null ? [] : [nodeModulesLoader.exclude];
-}
+const nodeModulesLoader = environment.loaders.get('nodeModules')
+if (!Array.isArray(nodeModulesLoader.exclude))
+  nodeModulesLoader.exclude = nodeModulesLoader.exclude === null ? [] : [nodeModulesLoader.exclude]
 
-nodeModulesLoader.exclude.push(/react-table/);
+
+nodeModulesLoader.exclude.push(/react-table/u)
 
 // Add engine entry points
 const path = require('path')
@@ -39,6 +39,6 @@ const engineEntries = {
 }
 
 // Merge engine entry points with existing entries
-environment.config.entry = Object.assign({}, environment.config.entry || {}, engineEntries)
+environment.config.entry = { ...environment.config.entry || {}, ...engineEntries }
 
 module.exports = environment

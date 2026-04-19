@@ -1,5 +1,10 @@
-process.env.NODE_ENV = process.env.NODE_ENV || 'development'
+const clientWebpackConfig = require('./clientWebpackConfig')
 
-const environment = require('./environment')
+// const testOnly = _clientWebpackConfig => {
+//   place any code here that is for test only
+// }
+// testOnly(configForTest)
 
-module.exports = environment.toWebpackConfig()
+const configForTest = clientWebpackConfig()
+
+module.exports = configForTest
