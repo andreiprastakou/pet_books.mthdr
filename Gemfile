@@ -25,6 +25,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'react_on_rails'
 gem 'sassc-rails'
+gem 'shakapacker', '= 10.0'
 gem 'slim'
 gem 'turbo-rails', '~> 2.0'
 
@@ -36,13 +37,11 @@ gem 'fog-aws'
 # self-analysis
 gem 'annotaterb', '~> 4.14'
 
-# weird patches
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # admin site
 gem 'pagy', '~> 9.3'
-
 gem 'ruby_llm', '~> 1.6'
 
 # tools
@@ -86,5 +85,3 @@ end
 gem 'admin', path: 'engines/admin'
 gem 'frontend', path: 'engines/frontend'
 gem 'frontend_api', path: 'engines/frontend_api'
-
-gem 'shakapacker', '= 10.0'
