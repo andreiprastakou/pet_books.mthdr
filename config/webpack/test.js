@@ -1,10 +1,3 @@
-const clientWebpackConfig = require('./clientWebpackConfig')
+const mergeWebpackerAndShakapacker = require('./merge_webpacker_and_shakapacker')
 
-// const testOnly = _clientWebpackConfig => {
-//   place any code here that is for test only
-// }
-// testOnly(configForTest)
-
-const configForTest = clientWebpackConfig()
-
-module.exports = configForTest
+module.exports = mergeWebpackerAndShakapacker()

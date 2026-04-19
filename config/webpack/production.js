@@ -1,10 +1,3 @@
-const clientWebpackConfig = require('./clientWebpackConfig')
+const mergeWebpackerAndShakapacker = require('./merge_webpacker_and_shakapacker')
 
-const configForProduction = clientWebpackConfig()
-
-// const productionEnvOnly = _clientWebpackConfig => {
-//   place any code here that is for production only
-// }
-// productionEnvOnly(configForProduction)
-
-module.exports = configForProduction
+module.exports = mergeWebpackerAndShakapacker()
