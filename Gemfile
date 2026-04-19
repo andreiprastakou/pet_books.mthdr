@@ -41,7 +41,7 @@ gem 'annotaterb', '~> 4.14'
 gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # admin site
-gem 'pagy', '~> 9.3'
+gem 'pagy', '~> 43.5'
 gem 'ruby_llm', '~> 1.6'
 
 # tools

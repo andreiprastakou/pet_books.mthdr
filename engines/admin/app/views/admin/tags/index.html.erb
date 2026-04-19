@@ -6,7 +6,7 @@
 
 <div class="container mt-4">
   <div>
-    <%== pagy_bootstrap_nav(@pagy) %>
+    <%== @pagy.series_nav %>
   </div>
   <table id="admin_tags" class="table">
     <thead>
@@ -50,6 +50,6 @@
     <% end %>
   </table>
   <div>
-    <%== pagy_bootstrap_nav(@pagy) %>
+    <%== @pagy.series_nav %>
   </div>
 </div>

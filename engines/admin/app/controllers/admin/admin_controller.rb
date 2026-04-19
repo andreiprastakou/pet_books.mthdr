@@ -1,7 +1,7 @@
 module Admin
   class AdminController < Admin::ApplicationController
     layout :choose_layout
-    include Pagy::Backend
+    include Pagy::Method
 
     helper_method :sorting_params
 
