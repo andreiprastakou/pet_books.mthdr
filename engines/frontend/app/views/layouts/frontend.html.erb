@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Books</title>
+    <title>Books.mthdr <%= Rails.env.production? ? '' : " (#{Rails.env})" %></title>
     <%= favicon_link_tag asset_path('bookshelf-icon.png') %>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
