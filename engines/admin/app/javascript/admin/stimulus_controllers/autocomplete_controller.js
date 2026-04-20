@@ -45,6 +45,8 @@ export default class extends Controller {
       const entries = await response.json()
       this.displayResults(entries)
     } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error fetching autocomplete results:', error)
       this.resultsTarget.hidden = true
     }
   }

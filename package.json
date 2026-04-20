@@ -76,10 +76,12 @@
   },
   "version": "0.1.0",
   "devDependencies": {
-    "@babel/eslint-parser": "^7.17.0",
+    "@babel/eslint-parser": "^7.28.6",
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^9",
     "@pmmmwh/react-refresh-webpack-plugin": "0.6.2",
-    "eslint": "^8.17.0",
-    "eslint-plugin-react": "^7.30.0",
+    "eslint": "^9",
+    "eslint-plugin-react": "^7.37.5",
     "react-refresh": "0.18.0",
     "stylelint": "^14.9.0",
     "stylelint-config-standard": "^26.0.0",
@@ -88,8 +90,5 @@
   },
   "engines": {
     "node": ">= 17.0.0"
-  },
-  "resolutions": {
-    "ajv": "^8.18.0"
   }
 }
