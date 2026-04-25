@@ -270,7 +270,7 @@ GEM
     mini_magick (5.3.1)
       logger
     mini_mime (1.1.5)
-    minitest (6.0.4)
+    minitest (6.0.5)
       drb (~> 2.0)
       prism (~> 1.5)
     mission_control-jobs (1.1.0)
@@ -503,8 +503,8 @@ GEM
       rack-proxy (>= 0.6.1)
       railties (>= 5.2)
       semantic_range (>= 2.3.0)
-    shoulda-matchers (6.5.0)
-      activesupport (>= 5.2.0)
+    shoulda-matchers (7.0.1)
+      activesupport (>= 7.1)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -614,7 +614,7 @@ DEPENDENCIES
   rugged
   sassc-rails
   shakapacker (= 10.0)
-  shoulda-matchers (~> 6.4)
+  shoulda-matchers (~> 7.0)
   simplecov
   slim
   solid_queue (~> 1.2.4)
