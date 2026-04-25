@@ -75,7 +75,7 @@ group :test do
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'
-  gem 'shoulda-matchers', '~> 6.4'
+  gem 'shoulda-matchers', '~> 7.0'
   gem 'simplecov', require: false
   gem 'timecop'
   gem 'webmock'
