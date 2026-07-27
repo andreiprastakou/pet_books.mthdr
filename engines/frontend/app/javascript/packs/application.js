@@ -6,7 +6,8 @@
 import jQuery from 'jquery'
 import 'lodash'
 
-window.jQuery = window.$ = jQuery
+window.$ = jQuery
+window.jQuery = jQuery
 import ReactOnRails from 'react-on-rails'
 import Page from '../components/Page'
 
