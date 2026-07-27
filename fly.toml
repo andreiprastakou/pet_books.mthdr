@@ -17,6 +17,7 @@ console_command = 'bin/rails console'
 [env]
   RAILS_ENV = "production"
   DATABASE_PATH = "/data"
+  RUN_MIGRATIONS = "true"
 
 [http_service]
   internal_port = 3000
