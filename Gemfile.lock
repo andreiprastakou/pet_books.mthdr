@@ -345,8 +345,8 @@ GEM
     raabro (1.5.0)
     racc (1.8.1)
     rack (3.2.6)
-    rack-proxy (1.0.1)
-      rack (>= 2.0, < 4)
+    rack-proxy (0.8.3)
+      rack
     rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -596,6 +596,7 @@ DEPENDENCIES
   pronto-rubocop
   pry-rails
   puma (~> 7.2)
+  rack-proxy (< 1.0)
   rails (~> 8.1)
   rails-controller-testing
   react_on_rails

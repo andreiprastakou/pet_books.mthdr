@@ -3,13 +3,13 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import Rails from '@rails/ujs'
-import 'jquery'
+import jQuery from 'jquery'
 import 'lodash'
+
+window.$ = jQuery
+window.jQuery = jQuery
 import ReactOnRails from 'react-on-rails'
 import Page from '../components/Page'
-
-Rails.start()
 
 ReactOnRails.register({
   Page

@@ -26,6 +26,10 @@ gem 'kaminari'
 gem 'react_on_rails'
 gem 'sassc-rails'
 gem 'shakapacker', '= 10.0'
+# rack-proxy 1.0+ refuses Host-derived backends by default (SSRF hardening),
+# which breaks Shakapacker::DevServerProxy (/packs -> 502).
+# Pin until https://github.com/shakacode/shakapacker/issues/1220 is fixed.
+gem 'rack-proxy', '< 1.0'
 gem 'slim'
 gem 'turbo-rails', '~> 2.0'
 

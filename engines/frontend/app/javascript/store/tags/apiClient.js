@@ -1,9 +1,8 @@
+import jQuery from 'jquery'
 import { objectToParams } from 'utils/objectToParams'
 import TagIndexEntry from 'store/tags/api/TagIndexEntry'
 import TagRef from 'store/tags/api/TagRef'
 import TagSearchEntry from 'store/tags/api/TagSearchEntry'
-
-const jQuery = window.$
 
 class ApiClient {
   static getTagsIndex() {
