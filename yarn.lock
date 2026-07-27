@@ -1552,11 +1552,6 @@
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-8.0.300.tgz#ae78fbb42ae688f66852206ba02fea3518749791"
   integrity sha512-X+jxLnyYciTciEeM9crFFsR6DCodCsnoQIzv4hEST6Lx1rEBEjNQbBopnyDT4gr7lBeHJNfb6fEcvZuWFxUSQg==
 
-"@rails/ujs@^7.1.0":
-  version "7.1.600"
-  resolved "https://registry.yarnpkg.com/@rails/ujs/-/ujs-7.1.600.tgz#781d2737f3a81da81e78d93ec779099871288965"
-  integrity sha512-ntMYJ8++n1zcIJ1g75or7Va9IU3ueCHgp9IJk7Ny7eFEbu0Kx40EHZ2FNhoxoUEjlF5NifCFCbvoK5rDK5HpIQ==
-
 "@react-aria/ssr@^3.5.0":
   version "3.9.10"
   resolved "https://registry.yarnpkg.com/@react-aria/ssr/-/ssr-3.9.10.tgz#7fdc09e811944ce0df1d7e713de1449abd7435e6"
