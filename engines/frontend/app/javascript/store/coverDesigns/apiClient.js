@@ -1,6 +1,5 @@
+import jQuery from 'jquery'
 import CoverDesign from 'store/coverDesigns/api/CoverDesign'
-
-const jQuery = window.$
 
 class ApiClient {
   static getCoverDesigns() {

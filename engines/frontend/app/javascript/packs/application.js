@@ -3,8 +3,10 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import 'jquery'
+import jQuery from 'jquery'
 import 'lodash'
+
+window.jQuery = window.$ = jQuery
 import ReactOnRails from 'react-on-rails'
 import Page from '../components/Page'
 

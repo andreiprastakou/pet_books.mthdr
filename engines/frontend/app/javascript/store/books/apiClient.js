@@ -1,10 +1,9 @@
+import jQuery from 'jquery'
 import { objectToParams } from 'utils/objectToParams'
 import BookFull from 'store/books/api/BookFull'
 import BookIndexEntry from 'store/books/api/BookIndexEntry'
 import BookRefEntry from 'store/books/api/BookRefEntry'
 import BookSearchEntry from 'store/books/api/BookSearchEntry'
-
-const jQuery = window.$
 
 class ApiClient {
   static getBooksYears({ authorId, tagIds } = {}) {
