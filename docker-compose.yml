@@ -22,10 +22,10 @@ services:
       dockerfile: Dockerfile
     image: "books.mtdr-prod:local"
     environment:
-      RAILS_ENV: production
-      ENV_NAME: production
-      SECRET_KEY_BASE: dummy
       DATABASE_PATH: /data
+      RAILS_ENV: production
+      RUN_MIGRATIONS: true
+      SECRET_KEY_BASE: dummy
     command: bundle exec puma -C config/puma.rb
     ports:
       - "3010:3000"

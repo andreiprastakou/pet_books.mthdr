@@ -58,8 +58,9 @@ fly deploy
 
 Preset values on fly deployment:
 
-* DATABASE_DUMP_AUTOLOAD=1
+* DATABASE_DUMP_AUTOLOAD=true
 * DATABASE_AUTOLOAD_FILENAME=to_load.sql
+* RUN_MIGRATIONS=true
 
 ```sh
 sqlite3 db/development.sqlite3 .dump > to_load.sql

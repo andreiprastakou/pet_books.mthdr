@@ -54,7 +54,7 @@
     "react-chartjs-2": "^4.1.0",
     "react-dom": "^19.0.0",
     "react-hotkeys": "^2.0.0",
-    "react-on-rails": "16.6.0",
+    "react-on-rails": "17.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^5.2.0",
     "react-simple-image-viewer": "^1.1.1",
