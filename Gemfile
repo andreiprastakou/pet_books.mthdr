@@ -25,7 +25,7 @@ gem 'jbuilder', '~> 2.7'
 gem 'kaminari'
 gem 'react_on_rails'
 gem 'sassc-rails'
-gem 'shakapacker', '= 10.0'
+gem 'shakapacker', '10.3.0'
 # rack-proxy 1.0+ refuses Host-derived backends by default (SSRF hardening),
 # which breaks Shakapacker::DevServerProxy (/packs -> 502).
 # Pin until https://github.com/shakacode/shakapacker/issues/1220 is fixed.
