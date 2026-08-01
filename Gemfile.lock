@@ -506,7 +506,7 @@ GEM
       semantic_range (>= 2.3.0)
     shoulda-matchers (7.0.1)
       activesupport (>= 7.1)
-    simplecov (1.0.2)
+    simplecov (1.0.3)
     slim (5.2.2)
       temple (~> 0.10.0)
       tilt (>= 2.1.0)
