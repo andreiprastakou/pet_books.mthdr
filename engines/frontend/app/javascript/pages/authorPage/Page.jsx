@@ -3,8 +3,7 @@ import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
 import AuthorCard from 'sidebar/authorCard/AuthorCard'
-import BookCard from 'sidebar/bookCard/BookCard'
-import BooksListLinearControls from 'sidebar/booksListLinearControls/BooksListLinearControls'
+import BooksStack from 'sidebar/booksStack/BooksStack'
 import BooksListLinear from 'widgets/booksListLinear/BooksListLinear'
 import PageStoreConfigurer from 'pages/authorPage/PageStoreConfigurer'
 
@@ -17,9 +16,7 @@ const AuthorPage = () => (
         <div className='page-sidebar'>
           <AuthorCard />
 
-          <BooksListLinearControls />
-
-          <BookCard />
+          <BooksStack />
         </div>
       </Col>
 
