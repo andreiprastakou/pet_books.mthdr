@@ -3,6 +3,9 @@
     align-items: center;
     display: flex;
     gap: 8px;
+    min-height: 48px;
+    padding-bottom: 10px;
+    padding-top: 10px;
   }
 
   .books-spine-widget-title {
@@ -24,20 +27,26 @@
   }
 
   .books-spine-widget-body {
-    padding: 8px 4px 10px;
+    padding: 0 4px 8px;
   }
 
   .list-sort-dropdown {
+    align-items: center;
+    align-self: center;
+    display: flex;
     flex: 1 1 auto;
     margin-left: auto;
     max-width: 130px;
 
     button {
+      align-items: center;
+      display: flex;
       font-size: 10px;
+      height: 28px;
+      line-height: 1;
       overflow: hidden;
-      padding: 2px 8px;
+      padding: 0 8px;
       text-overflow: ellipsis;
-      vertical-align: top;
       white-space: nowrap;
       width: 100%;
     }
@@ -53,11 +62,46 @@
   }
 }
 
+.books-spine-stack-wrap {
+  max-height: 520px;
+  overflow: hidden;
+  position: relative;
+
+  &::before,
+  &::after {
+    content: '';
+    height: 14px;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    z-index: 2;
+  }
+
+  &::before {
+    background: linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    top: 0;
+  }
+
+  &::after {
+    background: linear-gradient(
+      to top,
+      rgba(255, 255, 255, 1) 0%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    bottom: 0;
+  }
+}
+
 .books-spine-stack {
   max-height: 520px;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 20px 4px 20px 2px;
+  padding: 6px 4px 6px 2px;
 
   &::-webkit-scrollbar {
     width: 4px;

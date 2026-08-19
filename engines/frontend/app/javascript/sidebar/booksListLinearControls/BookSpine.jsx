@@ -54,8 +54,6 @@ const BookSpine = ({ id }) => {
           <span className='book-spine-dot' />
 
           { bookIndexEntry.year }
-
-          <span className='book-spine-dot' />
         </span>
       </div>
 
