@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import { selectBookIds } from 'widgets/booksListLinear/selectors'
-import BookSpine from 'sidebar/booksListLinearControls/BookSpine'
+import BookSpine from 'sidebar/booksStack/BookSpine'
 
 const BooksSpineStack = () => {
   const bookIds = useSelector(selectBookIds())
