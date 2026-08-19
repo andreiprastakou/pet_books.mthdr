@@ -10,13 +10,15 @@ const BooksSpineStack = () => {
   if (bookIds.length === 0) return null
 
   return (
-    <div className='books-spine-stack'>
-      { bookIds.map(id => (
-        <BookSpine
-          id={id}
-          key={id}
-        />
-      )) }
+    <div className='books-spine-stack-wrap'>
+      <div className='books-spine-stack'>
+        { bookIds.map(id => (
+          <BookSpine
+            id={id}
+            key={id}
+          />
+        )) }
+      </div>
     </div>
   )
 }
