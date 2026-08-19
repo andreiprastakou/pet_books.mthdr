@@ -23,7 +23,7 @@ const Configurer = () => {
     dispatch(setPageIsLoading(true))
     dispatch(clearListState())
     dispatch(assignSortBy('year'))
-    dispatch(assignPerPage(60))
+    dispatch(assignPerPage(1000))
     Promise.all([
       dispatch(prepareNavRefs()),
       dispatch(fetchAuthorFull(authorId)),
