@@ -21,6 +21,7 @@ module FrontendApi
         when 'name' then books_scope.order(:title)
         when 'year' then books_scope.order(year_published: :desc)
         when 'popularity' then books_scope.order(popularity: :desc)
+        when 'random' then books_scope.order(Arel.sql('RANDOM()'))
         else books_scope
         end
       end
