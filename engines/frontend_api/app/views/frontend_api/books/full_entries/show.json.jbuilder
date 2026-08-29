@@ -8,3 +8,6 @@ json.author_ids book.author_ids
 json.year_published book.year_published
 json.tag_ids book.tag_ids
 json.small book.small?
+json.summary book.summary
+json.wiki_url book.wiki_url
+json.generic_links book.generic_links.map { |link| { name: link.name, url: link.url } }

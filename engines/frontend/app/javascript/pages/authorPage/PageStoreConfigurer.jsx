@@ -10,6 +10,7 @@ import {
   assignSortBy,
   clearListState,
   fetchBooks,
+  switchToFirstBook,
 } from 'widgets/booksListLinear/actions'
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'widgets/navbar/actions'
@@ -31,6 +32,7 @@ const Configurer = () => {
     ]).then(() => {
       dispatch(assignFilter({ authorId }))
       dispatch(fetchBooks()).then(() => {
+        dispatch(switchToFirstBook())
         dispatch(setPageIsLoading(false))
       })
     })
