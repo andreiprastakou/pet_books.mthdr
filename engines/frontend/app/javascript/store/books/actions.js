@@ -17,6 +17,14 @@ export const {
 
 import apiClient from 'store/books/apiClient'
 
+export const fetchCurrentBookDetails = () => async(dispatch, getState) => {
+  const currentId = selectCurrentBookId()(getState())
+  if (!currentId) return
+
+  const details = await apiClient.getBookFull(currentId)
+  dispatch(setCurrentBookDetails(details))
+}
+
 export const showBook = bookId => (dispatch, getState) => {
   if (!bookId) throw new Error('Trying to show nothing!')
 
