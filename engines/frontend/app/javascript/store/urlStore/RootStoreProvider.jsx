@@ -5,6 +5,29 @@ import { useLocation, useHistory } from 'react-router-dom'
 import { objectToParams } from 'utils/objectToParams'
 import Context from 'store/urlStore/Context'
 
+const useWidgetFocus = () => {
+  const [registeredWidgetIds, setRegisteredWidgetIds] = useState([])
+  const [activeWidgetId, setActiveWidgetId] = useState(null)
+
+  const registerWidget = id => setRegisteredWidgetIds(value => (
+    value.includes(id) ? value : [...value, id]
+  ))
+  const unregisterWidget = id => {
+    setRegisteredWidgetIds(value => value.filter(widgetId => widgetId !== id))
+    setActiveWidgetId(value => value === id ? null : value)
+  }
+  const activateWidget = id => {
+    if (registeredWidgetIds.includes(id)) setActiveWidgetId(id)
+  }
+  const deactivateWidget = id => setActiveWidgetId(value => value === id ? null : value)
+
+  return {
+    activeWidgetId,
+    registeredWidgetIds,
+    actions: { registerWidget, unregisterWidget, activateWidget, deactivateWidget },
+  }
+}
+
 const Provider = ({ children }) => {
   const history = useHistory()
   const location = useLocation()
@@ -13,6 +36,11 @@ const Provider = ({ children }) => {
   const actionsRef = useRef()
   actionsRef.current = urlActions
   const [pageState, setPageState] = useState({})
+  const {
+    activeWidgetId,
+    registeredWidgetIds,
+    actions: widgetFocusActions,
+  } = useWidgetFocus()
   const [stateDefiners, setStateDefiners] = useState({})
   const [routes, setRoutes] = useState({})
   const routesRef = useRef(routes)
@@ -22,10 +50,9 @@ const Provider = ({ children }) => {
   const [routesReady, setRoutesReady] = useState(false)
   useEffect(() => setRoutesReady(true), [])
 
-  const urlAccessor = new UrlAccessor({ location: locationRef.current })
-
   const currentActions = {
     ...actionsRef.current,
+    ...widgetFocusActions,
     addRoute: (name, builder) => setRoutes(value => ({ ...value, [name]: builder })),
     addUrlAction: (name, action) => setUrlActions(value => ({ ...value, [name]: action })),
     addUrlState: (name, definer) => setStateDefiners(value => ({ ...value, [name]: definer })),
@@ -38,7 +65,7 @@ const Provider = ({ children }) => {
   }
 
   const contextValue = useMemo(() => ({
-    pageState,
+    pageState: { ...pageState, activeWidgetId, registeredWidgetIds },
     actions: currentActions,
     helpers: {
       buildPath,
@@ -48,9 +75,10 @@ const Provider = ({ children }) => {
     getRoutes: () => routesRef.current,
     getActions: () => currentActions,
     routesReady,
-  }), [pageState, currentActions, routesRef.current, routesReady])
+  }), [pageState, activeWidgetId, registeredWidgetIds, currentActions, routesRef.current, routesReady])
 
   const updatePageState = () => {
+    const urlAccessor = new UrlAccessor({ location: locationRef.current })
     const newPageState = Object.keys(stateDefiners).reduce((newState, key) => (
       { ...newState, [key]: stateDefiners[key](urlAccessor) }
     ), {})

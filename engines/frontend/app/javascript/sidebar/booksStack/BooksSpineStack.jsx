@@ -1,17 +1,23 @@
 import React from 'react'
+import classnames from 'classnames'
+import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
 import { selectBookIds } from 'widgets/booksListLinear/selectors'
 import BookSpine from 'sidebar/booksStack/BookSpine'
 
-const BooksSpineStack = () => {
+const BooksSpineStack = ({ isActive }) => {
   const bookIds = useSelector(selectBookIds())
 
   if (bookIds.length === 0) return null
 
   return (
     <div className='books-spine-stack-wrap'>
-      <div className='books-spine-stack'>
+      <div
+        className={classnames('books-spine-stack', {
+          active: isActive,
+        })}
+      >
         { bookIds.map(id => (
           <BookSpine
             id={id}
@@ -21,6 +27,10 @@ const BooksSpineStack = () => {
       </div>
     </div>
   )
+}
+
+BooksSpineStack.propTypes = {
+  isActive: PropTypes.bool.isRequired,
 }
 
 export default BooksSpineStack

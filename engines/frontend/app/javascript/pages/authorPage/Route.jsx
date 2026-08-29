@@ -33,12 +33,18 @@ const LocalStoreConfigurer = () => {
   paramsRef.current = params
   const dispatch = useDispatch()
 
-  const { actions: { addUrlState },
+  const { actions: { addUrlAction, addUrlState, patch },
+    helpers: { buildRelativePath },
     pageState: { authorId }
   } = useContext(UrlStoreContext)
 
   useEffect(() => {
     addUrlState('authorId', () => parseInt(paramsRef.current.authorId))
+    /* eslint-disable camelcase */
+    addUrlState('sortBy', url => url.queryParameter('sort_by'))
+    addUrlAction('switchToIndexSort', sortBy =>
+      patch(buildRelativePath({ params: { page: 1, sort_by: sortBy } })))
+    /* eslint-enable camelcase */
 
     dispatch(setPageIsLoading(true))
     dispatch(setCurrentAuthorId(authorId))

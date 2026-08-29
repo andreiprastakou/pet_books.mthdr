@@ -19,7 +19,10 @@ const BookSpine = ({ id }) => {
   const palette = spinePaletteForId(id)
 
   useEffect(() => {
-    if (isCurrent) ref.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    if (!isCurrent) return
+
+    ref.current?.focus({ preventScroll: true })
+    ref.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
   }, [isCurrent])
 
   const handleClick = useCallback(() => {
@@ -41,6 +44,7 @@ const BookSpine = ({ id }) => {
       onClick={handleClick}
       ref={ref}
       style={spineBackgroundStyle(palette)}
+      tabIndex={-1}
       title={bookIndexEntry.title}
     >
       <div className='book-spine-trim book-spine-trim-top' />
