@@ -1,13 +1,22 @@
 .tag-container {
-  margin-left: 5px;
+  background-color: #eef4ff;
+  border: 1px solid #dce8fb;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(42, 91, 160, 0.08);
+  display: inline-flex;
+  font-size: 13px;
+  line-height: 1.2;
+  margin: 0 6px 6px 0;
+  padding: 4px 9px;
 
   .tag-name {
-    color: white;
-    font-weight: 400;
+    color: #3f73d9;
+    font-weight: 500;
     cursor: pointer;
 
     &:hover {
-      text-decoration: underline;
+      color: #2859b5;
+      text-decoration: none;
     }
   }
 
