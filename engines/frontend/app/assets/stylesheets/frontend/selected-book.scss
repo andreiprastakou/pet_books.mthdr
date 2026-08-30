@@ -46,17 +46,14 @@
   }
 
   .selected-book-tags {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
     line-height: 20px;
-    margin-top: 12px;
-  }
-
-  .selected-book-annotation,
-  .selected-book-links {
-    margin-top: 18px;
+    padding: 18px 0 12px;
   }
 
   .selected-book-annotation {
     font-style: italic;
+    padding: 18px 0;
   }
 
   h3 {
@@ -74,7 +71,7 @@
 
   .selected-book-links {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
-    padding-top: 14px;
+    padding: 18px 0 12px;
 
     .btn {
       font-size: 12px;
