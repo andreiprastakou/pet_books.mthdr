@@ -44,16 +44,17 @@ const Toolbar = props => {
         </Button>
       ) : null}
 
-      { linkToAuthorPage && authorFull.booksCount > 0 &&
-      <Button
-        href={authorPagePath(authorFull.id)}
-        title='See all books'
-        variant='outline-info'
-      >
-        <FontAwesomeIcon icon={faBook} />
+      { linkToAuthorPage && authorFull.booksCount > 0 ? (
+        <Button
+          href={authorPagePath(authorFull.id)}
+          title='See all books'
+          variant='outline-info'
+        >
+          <FontAwesomeIcon icon={faBook} />
 
-        { ` (${authorFull.booksCount})` }
-      </Button>}
+          { ` (${authorFull.booksCount})` }
+        </Button>
+      ) : null }
 
       { isBookmarked ? (
         <Button

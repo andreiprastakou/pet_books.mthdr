@@ -17,7 +17,7 @@ import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
 import { setImageSrc } from 'modals/imageFullShow/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const AuthorCardWrap = (props) => {
+const AuthorCardWrap = ({ onClose, linkToAuthorPage }) => {
   const authorId = useSelector(selectCurrentAuthorId())
   const authorFull = useSelector(selectAuthorFull(authorId))
   const dispatch = useDispatch()
@@ -26,7 +26,13 @@ const AuthorCardWrap = (props) => {
   }, [authorId])
 
   if (!authorFull) return null
-  return (<AuthorCard {...props} authorFull={authorFull} />)
+  return (
+    <AuthorCard
+      authorFull={authorFull}
+      linkToAuthorPage={linkToAuthorPage}
+      onClose={onClose}
+    />
+  )
 }
 
 const AuthorCard = ({ authorFull, onClose = null, linkToAuthorPage = true }) => {
@@ -97,10 +103,18 @@ const AuthorCard = ({ authorFull, onClose = null, linkToAuthorPage = true }) => 
           </div>
         </div>
 
-        <Toolbar authorFull={authorFull} linkToAuthorPage={linkToAuthorPage} />
+        <Toolbar
+          authorFull={authorFull}
+          linkToAuthorPage={linkToAuthorPage}
+        />
       </Card.Body>
     </Card>
   )
+}
+
+AuthorCardWrap.propTypes = {
+  linkToAuthorPage: PropTypes.bool,
+  onClose: PropTypes.func,
 }
 
 AuthorCard.propTypes = {

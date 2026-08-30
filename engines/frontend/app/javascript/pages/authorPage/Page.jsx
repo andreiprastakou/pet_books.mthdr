@@ -6,9 +6,12 @@ import AuthorCard from 'sidebar/authorCard/AuthorCard'
 import BooksStack from 'sidebar/booksStack/BooksStack'
 import SelectedBook from 'widgets/selectedBook/SelectedBook'
 import PageStoreConfigurer from 'pages/authorPage/PageStoreConfigurer'
+import LocalUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
 
 const AuthorPage = () => (
   <>
+    <LocalUrlStoreConfigurer />
+
     <PageStoreConfigurer />
 
     <Layout>
