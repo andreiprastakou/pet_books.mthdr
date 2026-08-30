@@ -1,7 +1,17 @@
 .selected-book {
   display: flex;
-  gap: 20px;
-  padding: 20px;
+  flex-direction: column;
+  height: calc(100vh - 56px - 40px);
+  margin-top: 10px;
+
+  .selected-book-body {
+    display: flex;
+    flex: 1 1 auto;
+    gap: 20px;
+    min-height: 0;
+    overflow-y: auto;
+    padding: 20px;
+  }
 
   .selected-book-cover {
     flex: 0 0 130px;

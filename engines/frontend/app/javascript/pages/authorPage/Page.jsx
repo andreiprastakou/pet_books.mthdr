@@ -14,7 +14,7 @@ const AuthorPage = () => (
     <Layout>
       <Col xs={4}>
         <div className='page-sidebar'>
-          <AuthorCard />
+          <AuthorCard linkToAuthorPage={false} />
 
           <BooksStack />
         </div>
