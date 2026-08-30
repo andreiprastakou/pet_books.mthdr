@@ -77,7 +77,7 @@ const BooksListControls = () => {
     >
       <Card.Header className='widget-title books-spine-widget-header'>
         <span className='books-spine-widget-title'>
-          { 'Works' }
+          { 'All Works' }
         </span>
 
         { totalCount > 0 ? (

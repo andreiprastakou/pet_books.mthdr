@@ -10,7 +10,6 @@ import {
   selectCurrentBookIndexEntry,
 } from 'store/books/selectors'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
-import LocalUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
 
 const SelectedBook = () => {
   const dispatch = useDispatch()
@@ -31,71 +30,67 @@ const SelectedBook = () => {
     ...(book.genericLinks || []),
   ] : []
 
+  if (!book) return null
+
   return (
-    <>
-      <LocalUrlStoreConfigurer />
+    <Card className='selected-book sidebar-card-widget'>
+      <Card.Header className='widget-title selected-book-header'>
+        { 'Selected Work' }
+      </Card.Header>
 
-      { book ? (
-        <Card className='selected-book sidebar-card-widget'>
-          <Card.Header className='widget-title selected-book-header'>
-            { 'Selected Work' }
-          </Card.Header>
+      <Card.Body className='selected-book-body'>
+        <div className='selected-book-details'>
+          <div className='selected-book-heading'>
+            <h2>
+              { book.title }
+            </h2>
 
-          <Card.Body className='selected-book-body'>
-            <div className='selected-book-details'>
-              <div className='selected-book-heading'>
-                <h2>
-                  { book.title }
-                </h2>
+            <span>
+              { book.yearPublished }
+            </span>
+          </div>
 
-                <span>
-                  { book.yearPublished }
-                </span>
-              </div>
+          <div className='selected-book-annotation'>
+            <p>
+              { book.summary || '<no information>' }
+            </p>
+          </div>
 
-              <div className='selected-book-annotation'>
-                <p>
-                  { book.summary || '<no information>' }
-                </p>
-              </div>
-
-              <div className='selected-book-tags'>
-                { tags.map(tag => (
-                  <TagBadge
-                    id={tag.id}
-                    key={tag.id}
-                    text={tag.name}
-                  />
+          <div className='selected-book-tags'>
+            { tags.map(tag => (
+              <TagBadge
+                id={tag.id}
+                key={tag.id}
+                text={tag.name}
+              />
                 )) }
-              </div>
+          </div>
 
-              { links.length > 0 ? (
-                <div className='selected-book-links'>
-                  <ButtonGroup>
-                    { links.map(link => (
-                      <Button
-                        href={link.url}
-                        key={link.url}
-                        target='_blank'
-                        variant='outline-secondary'
-                      >
-                        { link.name }
-                      </Button>
+          { links.length > 0 ? (
+            <div className='selected-book-links'>
+              <ButtonGroup>
+                { links.map(link => (
+                  <Button
+                    href={link.url}
+                    key={link.url}
+                    target='_blank'
+                    variant='outline-secondary'
+                  >
+                    { link.name }
+                  </Button>
                     )) }
-                  </ButtonGroup>
-                </div>
-              ) : null }
+              </ButtonGroup>
             </div>
+              ) : null }
+        </div>
 
-            { bookIndexEntry.coverDesignId !== 'standard' ? (
-              <div className='selected-book-cover'>
-                <Book bookIndexEntry={bookIndexEntry} />
-              </div>
-            ) : null }
-          </Card.Body>
-        </Card>
-      ) : null }
-    </>
+        { bookIndexEntry.coverDesignId === 'standard' ? null : (
+          <div className='selected-book-cover'>
+            <Book bookIndexEntry={bookIndexEntry} />
+          </div>
+        ) }
+      </Card.Body>
+    </Card>
   )
 }
 
