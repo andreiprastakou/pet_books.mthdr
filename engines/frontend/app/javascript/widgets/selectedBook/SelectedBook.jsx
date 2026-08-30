@@ -1,21 +1,42 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Book from 'components/Book'
 import TagBadge from 'components/TagBadge'
+import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { fetchCurrentBookDetails } from 'store/books/actions'
 import {
   selectCurrentBookDetails,
   selectCurrentBookIndexEntry,
 } from 'store/books/selectors'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
+import UrlStoreContext from 'store/urlStore/Context'
+
+const renderAuthors = (authorRefs, bookId, authorPagePath) => (
+  <>
+    { authorRefs.map((authorRef, index) => (
+      <React.Fragment key={authorRef.id}>
+        { index > 0 && ', ' }
+
+        <a
+          href={authorPagePath(authorRef.id, { bookId })}
+          title={authorRef.fullname}
+        >
+          { authorRef.fullname }
+        </a>
+      </React.Fragment>
+    )) }
+  </>
+)
 
 const SelectedBook = () => {
   const dispatch = useDispatch()
   const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
   const bookDetails = useSelector(selectCurrentBookDetails())
+  const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []))
   const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []))
+  const { routes: { authorPagePath }, routesReady } = useContext(UrlStoreContext)
 
   useEffect(() => {
     if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
@@ -30,7 +51,7 @@ const SelectedBook = () => {
     ...(book.genericLinks || []),
   ] : []
 
-  if (!book) return null
+  if (!book || !routesReady) return null
 
   return (
     <Card className='selected-book sidebar-card-widget'>
@@ -48,6 +69,12 @@ const SelectedBook = () => {
             <span>
               { book.yearPublished }
             </span>
+          </div>
+
+          <div className='selected-book-authors'>
+            { 'by ' }
+
+            { renderAuthors(authorRefs, book.id, authorPagePath) }
           </div>
 
           <div className='selected-book-annotation'>
