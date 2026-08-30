@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { Button, ButtonGroup, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 
 import Book from 'components/Book'
@@ -36,56 +36,64 @@ const SelectedBook = () => {
       <LocalUrlStoreConfigurer />
 
       { book ? (
-        <section className='selected-book sidebar-card-widget'>
-          <div className='selected-book-details'>
-            <div className='selected-book-heading'>
-              <h2>
-                { book.title }
-              </h2>
+        <Card className='selected-book sidebar-card-widget'>
+          <Card.Header className='widget-title selected-book-header'>
+            { 'Selected Work' }
+          </Card.Header>
 
-              <span>
-                { book.yearPublished }
-              </span>
+          <Card.Body className='selected-book-body'>
+            <div className='selected-book-details'>
+              <div className='selected-book-heading'>
+                <h2>
+                  { book.title }
+                </h2>
+
+                <span>
+                  { book.yearPublished }
+                </span>
+              </div>
+
+              <div className='selected-book-annotation'>
+                <p>
+                  { book.summary || '<no information>' }
+                </p>
+              </div>
+
+              <div className='selected-book-tags'>
+                { tags.map(tag => (
+                  <TagBadge
+                    id={tag.id}
+                    key={tag.id}
+                    text={tag.name}
+                  />
+                )) }
+              </div>
+
+              { links.length > 0 ? (
+                <div className='selected-book-links'>
+                  <ButtonGroup>
+                    { links.map(link => (
+                      <Button
+                        href={link.url}
+                        key={link.url}
+                        target='_blank'
+                        variant='outline-secondary'
+                      >
+                        { link.name }
+                      </Button>
+                    )) }
+                  </ButtonGroup>
+                </div>
+              ) : null }
             </div>
 
-            <div className='selected-book-tags'>
-              { tags.map(tag => (
-                <TagBadge
-                  id={tag.id}
-                  key={tag.id}
-                  text={tag.name}
-                />
-              )) }
-            </div>
-
-            <div className='selected-book-annotation'>
-              <p>
-                { book.summary || '<no information>' }
-              </p>
-            </div>
-
-            { links.length > 0 ? (
-              <div className='selected-book-links'>
-                <ButtonGroup>
-                  { links.map(link => (
-                    <Button
-                      href={link.url}
-                      key={link.url}
-                      target='_blank'
-                      variant='outline-secondary'
-                    >
-                      { link.name }
-                    </Button>
-                  )) }
-                </ButtonGroup>
+            { bookIndexEntry.coverDesignId !== 'standard' ? (
+              <div className='selected-book-cover'>
+                <Book bookIndexEntry={bookIndexEntry} />
               </div>
             ) : null }
-          </div>
-
-          <div className='selected-book-cover'>
-            <Book bookIndexEntry={bookIndexEntry} />
-          </div>
-        </section>
+          </Card.Body>
+        </Card>
       ) : null }
     </>
   )

@@ -12,7 +12,7 @@ import { markAuthorAsBookmarked, unmarkAuthorAsBookmarked } from 'sidebar/author
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Toolbar = props => {
-  const { authorFull } = props
+  const { authorFull, linkToAuthorPage = true } = props
   const { routes: { authorPagePath },
     routesReady } = useContext(UrlStoreContext)
 
@@ -44,7 +44,7 @@ const Toolbar = props => {
         </Button>
       ) : null}
 
-      { authorFull.booksCount > 0 &&
+      { linkToAuthorPage && authorFull.booksCount > 0 &&
       <Button
         href={authorPagePath(authorFull.id)}
         title='See all books'
@@ -80,6 +80,7 @@ const Toolbar = props => {
 
 Toolbar.propTypes = {
   authorFull: PropTypes.object.isRequired,
+  linkToAuthorPage: PropTypes.bool,
 }
 
 export default Toolbar
