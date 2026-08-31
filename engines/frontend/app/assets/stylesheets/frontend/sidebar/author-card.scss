@@ -32,12 +32,12 @@
   }
 
   .author-tags {
-    display: box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
     font-size: 14px;
     margin-bottom: 6px;
+    margin-top: 24px;
   }
 
   .author-toolbar {
