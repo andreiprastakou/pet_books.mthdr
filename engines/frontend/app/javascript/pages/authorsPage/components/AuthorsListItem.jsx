@@ -6,7 +6,6 @@ import classNames from 'classnames'
 
 import { selectSortBy } from 'pages/authorsPage/selectors'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
-import { selectAuthorDefaultImageUrl } from 'store/authors/selectors'
 import ImageContainer from 'components/ImageContainer'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -14,14 +13,23 @@ const AuthorsListItem = ({ author }) => {
   const selectedAuthorId = useSelector(selectCurrentAuthorId())
   const isSelected = author.id === selectedAuthorId
   const ref = useRef(null)
-  const defaultPhotoUrl = useSelector(selectAuthorDefaultImageUrl())
 
   const { actions: { showAuthor } } = useContext(UrlStoreContext)
   const sortBy = useSelector(selectSortBy())
 
   useEffect(() => {
-    if (isSelected) ref.current?.scrollIntoView()
-  })
+    if (!isSelected || !ref.current) return
+
+    const list = ref.current.closest('.authors-list')
+    if (!list) return
+
+    const itemRect = ref.current.getBoundingClientRect()
+    const listRect = list.getBoundingClientRect()
+    if (itemRect.top < listRect.top)
+      list.scrollTop -= listRect.top - itemRect.top
+    else if (itemRect.bottom > listRect.bottom)
+      list.scrollTop += itemRect.bottom - listRect.bottom
+  }, [isSelected])
 
   const handleClick = useCallback(() => showAuthor(author.id), [showAuthor, author.id])
 
@@ -30,31 +38,47 @@ const AuthorsListItem = ({ author }) => {
       className='author-item-container'
       key={author.id}
       ref={ref}
-      sm={3}
+      xs={3}
     >
       <div
         className={classNames('authors-list-item', { 'selected': isSelected })}
         onClick={handleClick}
         title={author.fullname}
       >
-        <ImageContainer
-          classes='thumb'
-          url={author.thumbUrl || defaultPhotoUrl}
-        />
+        { author.thumbUrl ? (
+          <ImageContainer
+            classes='thumb'
+            url={author.thumbUrl}
+          />
+        ) : (
+          <div className='thumb author-placeholder'>
+            <div className='author-name'>
+              { author.fullname }
+            </div>
 
-        <div className='author-name'>
-          { author.fullname }
-        </div>
+            <div className='author-years'>
+              { author.birthYear }
+            </div>
+          </div>
+        ) }
 
-        { sortBy === 'years' &&
-          <div className='author-years'>
-            { author.birthYear }
-          </div> }
+        { author.thumbUrl ? (
+          <>
+            <div className='author-name'>
+              { author.fullname }
+            </div>
 
-        { sortBy === 'popularity' &&
-          <div className='author-rank'>
-            { `#${author.rank}` }
-          </div> }
+            { sortBy === 'years' &&
+              <div className='author-years'>
+                { author.birthYear }
+              </div> }
+
+            { sortBy === 'popularity' &&
+              <div className='author-rank'>
+                { `#${author.rank}` }
+              </div> }
+          </>
+        ) : null }
       </div>
     </Col>
   )

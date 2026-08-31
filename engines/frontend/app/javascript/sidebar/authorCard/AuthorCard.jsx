@@ -17,7 +17,7 @@ import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
 import { setImageSrc } from 'modals/imageFullShow/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const AuthorCardWrap = ({ onClose, linkToAuthorPage }) => {
+const AuthorCardWrap = ({ onClose, linkToAuthorPage, showPicture, title }) => {
   const authorId = useSelector(selectCurrentAuthorId())
   const authorFull = useSelector(selectAuthorFull(authorId))
   const dispatch = useDispatch()
@@ -31,11 +31,19 @@ const AuthorCardWrap = ({ onClose, linkToAuthorPage }) => {
       authorFull={authorFull}
       linkToAuthorPage={linkToAuthorPage}
       onClose={onClose}
+      showPicture={showPicture}
+      title={title}
     />
   )
 }
 
-const AuthorCard = ({ authorFull, onClose = null, linkToAuthorPage = true }) => {
+const AuthorCard = ({
+  authorFull,
+  linkToAuthorPage = true,
+  onClose = null,
+  showPicture = true,
+  title = 'Author',
+}) => {
   const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
   const dispatch = useDispatch()
   const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds))
@@ -54,19 +62,25 @@ const AuthorCard = ({ authorFull, onClose = null, linkToAuthorPage = true }) => 
   if (!routesReady) return null
 
   return (
-    <Card className='sidebar-widget-author-card sidebar-card-widget'>
+    <Card
+      className={`sidebar-widget-author-card sidebar-card-widget ${
+        showPicture ? '' : 'author-card-without-picture'
+      }`}
+    >
       <Card.Header className='widget-title'>
-        { 'Author' }
+        { title }
       </Card.Header>
 
       { onClose ? <CloseIcon onClick={handleClose} /> : null}
 
       <Card.Body>
-        <ImageContainer
-          classes='author-image'
-          onClick={handleImageClick}
-          url={authorFull.thumbUrl || defaultPhotoUrl}
-        />
+        { showPicture ? (
+          <ImageContainer
+            classes='author-image'
+            onClick={handleImageClick}
+            url={authorFull.thumbUrl || defaultPhotoUrl}
+          />
+        ) : null }
 
         <div className='details-right'>
           <div className='author-name'>
@@ -115,12 +129,16 @@ const AuthorCard = ({ authorFull, onClose = null, linkToAuthorPage = true }) => 
 AuthorCardWrap.propTypes = {
   linkToAuthorPage: PropTypes.bool,
   onClose: PropTypes.func,
+  showPicture: PropTypes.bool,
+  title: PropTypes.string,
 }
 
 AuthorCard.propTypes = {
   authorFull: PropTypes.object.isRequired,
   linkToAuthorPage: PropTypes.bool,
   onClose: PropTypes.func,
+  showPicture: PropTypes.bool,
+  title: PropTypes.string,
 }
 
 const renderLifetime = (authorFull, authorsPath) => {

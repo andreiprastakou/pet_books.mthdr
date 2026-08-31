@@ -1,52 +1,159 @@
 .authors-list-page {
-  .authors-list-controls {
-    margin-top: 10px;
-    text-align: center;
+  .authors-list-widget {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px - 30px);
+    max-height: 100%;
+    transition: box-shadow 0.2s ease;
 
-    .form-control {
-      display: inline-block;
-      width: 150px;
-      margin-left: 10px;
-    }
-  }
-
-  .authors-list {
-    height: calc(100vh - 126px);
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
-
-  .author-item-container {
-    text-align: center;
-  }
-
-  .authors-list-item {
-    display: inline-block;
-    position: relative;
-    width: 140px;
-    padding: 5px;
-    min-height: 190px;
-    margin: 10px 20px 0 0;
-    vertical-align: top;
-
-    .thumb {
-      display: block;
-      position: relative;
-      float: left;
-      height: 130px;
-      width: 130px;
-      border-radius: 70px;
-      margin-bottom: 10px;
+    &.active {
+      box-shadow:
+        0 0 0 2px rgba(113, 168, 255, 0.35),
+        0 0 14px rgba(113, 168, 255, 0.45),
+        -5px 0 12px rgba(113, 168, 255, 0.3),
+        5px 0 12px rgba(113, 168, 255, 0.3);
     }
 
-    &.selected {
-      .thumb {
-        box-shadow: 0 0 15px purple;
+    .authors-list-widget-header {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 48px;
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
+
+    .authors-list-widget-title {
+      flex: 0 0 auto;
+    }
+
+    .authors-list-count-badge {
+      background-color: #e8e8e8;
+      border-radius: 50%;
+      color: #555;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 600;
+      height: 26px;
+      line-height: 26px;
+      min-width: 26px;
+      padding: 0 6px;
+      text-align: center;
+    }
+
+    .list-sort-dropdown {
+      flex: 1 1 auto;
+      margin-left: auto;
+      max-width: 125px;
+
+      button {
+        font-size: 10px;
+        overflow: hidden;
+        padding: 5px 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .dropdown-menu {
+        max-width: 100%;
+        min-width: 100%;
+
+        .dropdown-item {
+          font-size: 11px;
+        }
       }
     }
 
-    &:not(.selected) {
-      cursor: pointer;
+    .pagination {
+      flex: 0 0 auto;
+      margin: 0;
+
+      .page-item .page-link {
+        font-size: 12px;
+        padding: 4px 7px;
+      }
+
+      .page-item.disabled .page-link {
+        background-color: $color-icon-grey;
+        color: white;
+      }
+
+      .page-item:not(.disabled) .page-link {
+        color: $color-pagination-text;
+      }
     }
+
+    .authors-list-widget-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      padding: 0 4px 8px;
+    }
+
+    .authors-list {
+      height: 100%;
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    .author-item-container {
+      text-align: center;
+    }
+
+    .authors-list-item {
+      display: inline-block;
+      position: relative;
+      width: 140px;
+      padding: 5px;
+      min-height: 190px;
+      margin: 10px 20px 0 0;
+      vertical-align: top;
+
+      .thumb {
+        display: block;
+        position: relative;
+        float: left;
+        height: 130px;
+        width: 130px;
+        border-radius: 70px;
+        margin-bottom: 10px;
+      }
+
+      .author-placeholder {
+        align-items: center;
+        background-color: #e8e8e8;
+        border: 1px solid #ccc;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 12px;
+
+        .author-name {
+          font-size: 12px;
+          line-height: 1.2;
+        }
+
+        .author-years {
+          font-size: 12px;
+          margin-top: 4px;
+        }
+      }
+
+      &.selected {
+        .thumb {
+          box-shadow: 0 0 15px purple;
+        }
+      }
+
+      &:not(.selected) {
+        cursor: pointer;
+      }
+    }
+  }
+
+  .authors-selected-author {
+    padding-top: 10px;
   }
 }

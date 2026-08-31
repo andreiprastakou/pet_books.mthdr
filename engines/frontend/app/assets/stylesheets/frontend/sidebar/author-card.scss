@@ -14,6 +14,13 @@
     width: 148px;
   }
 
+  &.author-card-without-picture {
+    .details-right {
+      float: none;
+      width: 100%;
+    }
+  }
+
   .author-name {
     font-size: 12px;
     font-weight: 600;
