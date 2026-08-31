@@ -1,10 +1,86 @@
 .tags-page {
   padding-top: 20px;
 
+  .tags-list-widget {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px - 30px);
+    max-height: 100%;
+
+    .tags-list-widget-header {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      min-height: 48px;
+      padding-bottom: 10px;
+      padding-top: 10px;
+    }
+
+    .tags-list-widget-title {
+      flex: 0 0 auto;
+    }
+
+    .tags-list-count-badge {
+      background-color: #e8e8e8;
+      border-radius: 50%;
+      color: #555;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 600;
+      height: 26px;
+      line-height: 26px;
+      min-width: 26px;
+      padding: 0 6px;
+      text-align: center;
+    }
+
+    .tags-list-name-filter {
+      flex: 1 1 180px;
+      font-size: 12px;
+      height: 28px;
+      margin-left: auto;
+      max-width: 320px;
+    }
+
+    .tags-list-category-filter {
+      align-self: center;
+      display: flex;
+      flex: 0 1 180px;
+
+      button {
+        font-size: 10px;
+        height: 28px;
+        line-height: 1;
+        overflow: hidden;
+        padding: 0 8px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .dropdown-menu {
+        max-width: 100%;
+        min-width: 100%;
+
+        .dropdown-item {
+          font-size: 11px;
+        }
+      }
+    }
+
+    .tags-list-widget-body {
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      padding: 10px 20px;
+    }
+  }
+
   .tags-index-categories {
-    height: calc(100vh - 126px);
-    overflow-y: scroll;
+    height: 100%;
     overflow-x: hidden;
+    overflow-y: auto;
   }
 
   .tags-index-category {
