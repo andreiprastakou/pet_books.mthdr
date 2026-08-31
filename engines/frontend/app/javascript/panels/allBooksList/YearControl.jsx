@@ -7,6 +7,8 @@ const YearControl = ({ years, value, onChange }) => {
   const [inputValue, setInputValue] = useState(value || '')
   const [sliderValue, setSliderValue] = useState(0)
   const valueIndex = Math.max(0, years.indexOf(value))
+  const previousYear = years[valueIndex - 1]
+  const nextYear = years[valueIndex + 1]
 
   useEffect(() => setInputValue(value || ''), [value])
   useEffect(() => setSliderValue(valueIndex), [valueIndex])
@@ -16,7 +18,7 @@ const YearControl = ({ years, value, onChange }) => {
   }, [onChange, years])
 
   const handleInputChange = useCallback(event => {
-    setInputValue(event.target.value)
+    setInputValue(event.target.value.replace(/\D/gu, ''))
   }, [])
 
   const commitInput = useCallback(() => {
@@ -39,6 +41,9 @@ const YearControl = ({ years, value, onChange }) => {
     selectYear(years[index])
   }, [selectYear, years])
 
+  const selectPreviousYear = useCallback(() => onChange(previousYear), [onChange, previousYear])
+  const selectNextYear = useCallback(() => onChange(nextYear), [nextYear, onChange])
+
   if (years.length === 0) return null
 
   return (
@@ -46,14 +51,35 @@ const YearControl = ({ years, value, onChange }) => {
       <input
         aria-label='Selected year'
         className='all-books-year-input'
-        max={years[years.length - 1]}
-        min={years[0]}
+        inputMode='numeric'
         onBlur={commitInput}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
-        type='number'
+        type='text'
         value={inputValue}
       />
+
+      <span className='all-books-year-buttons'>
+        <button
+          aria-label='Next available year'
+          className='all-books-year-button'
+          disabled={valueIndex >= years.length - 1}
+          onClick={selectNextYear}
+          type='button'
+        >
+          {'▲'}
+        </button>
+
+        <button
+          aria-label='Previous available year'
+          className='all-books-year-button'
+          disabled={valueIndex <= 0}
+          onClick={selectPreviousYear}
+          type='button'
+        >
+          {'▼'}
+        </button>
+      </span>
 
       <Slider
         className='all-books-years-slider'
