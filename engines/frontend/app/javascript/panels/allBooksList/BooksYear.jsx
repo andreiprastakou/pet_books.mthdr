@@ -76,7 +76,7 @@ const buildBookMatrix = (bookIds, selectedId) => {
 }
 
 // eslint-disable-next-line max-lines-per-function, max-statements
-const AllBooksList = () => {
+const BooksYear = () => {
   const dispatch = useDispatch()
   const bookIds = useSelector(selectBookIds())
   const totalCount = useSelector(selectBooksTotal())
@@ -86,9 +86,18 @@ const AllBooksList = () => {
   const ref = useRef(null)
   const contentRef = useRef(null)
   const [contentSize, setContentSize] = useState({ height: 0, width: 0 })
-  const { pageState: { activeWidgetId }, actions: { activateWidget } } = useContext(UrlStoreContext)
+  const {
+    pageState: { activeWidgetId, registeredWidgetIds },
+    actions: {
+      activateWidget,
+      deactivateWidget,
+      registerWidget,
+      unregisterWidget,
+    },
+  } = useContext(UrlStoreContext)
   const selectedYear = filter.years?.[0] || years[years.length - 1]
   const isActive = activeWidgetId === WIDGET_ID
+  const hasActivated = useRef(false)
   const matrixRef = useRef({ key: null, bookIds: [] })
   const bookIdsKey = bookIds.join(',')
   if (matrixRef.current.key !== bookIdsKey) {
@@ -139,6 +148,33 @@ const AllBooksList = () => {
       dispatch(switchToFirstBook())
   }, [bookIds, currentBookId, dispatch])
 
+  useEffect(() => {
+    registerWidget(WIDGET_ID)
+
+    return () => unregisterWidget(WIDGET_ID)
+  }, [])
+
+  useEffect(() => {
+    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
+
+    hasActivated.current = true
+    activateWidget(WIDGET_ID)
+    ref.current?.focus()
+  }, [activateWidget, registeredWidgetIds])
+
+  useEffect(() => {
+    const handleOutsideInteraction = event => {
+      if (!ref.current?.contains(event.target)) deactivateWidget(WIDGET_ID)
+    }
+
+    document.addEventListener('focusin', handleOutsideInteraction)
+    document.addEventListener('click', handleOutsideInteraction)
+    return () => {
+      document.removeEventListener('focusin', handleOutsideInteraction)
+      document.removeEventListener('click', handleOutsideInteraction)
+    }
+  }, [])
+
   const selectYear = useCallback(year => {
     dispatch(clearListState())
     dispatch(assignFilter({ years: [year] }))
@@ -148,9 +184,14 @@ const AllBooksList = () => {
 
   const handleClick = useCallback(event => {
     activateWidget(WIDGET_ID)
-    if (!event.target.closest('button, input, a, select, textarea'))
+    const clickedInteractiveControl = event.target.closest(
+      'button, a, input, select, textarea, [role="menuitem"]'
+    )
+    if (!clickedInteractiveControl)
       ref.current?.focus()
   }, [activateWidget])
+
+  const handleFocus = useCallback(() => activateWidget(WIDGET_ID), [activateWidget])
 
   const handleKeyDown = useCallback(event => {
     const shifts = {
@@ -183,6 +224,7 @@ const AllBooksList = () => {
         aria-label='All books'
         className={`all-books-list-widget sidebar-card-widget ${isActive ? 'active' : ''}`}
         onClick={handleClick}
+        onFocusCapture={handleFocus}
         onKeyDown={handleKeyDown}
         ref={ref}
         tabIndex={0}
@@ -226,4 +268,4 @@ const AllBooksList = () => {
   )
 }
 
-export default AllBooksList
+export default BooksYear

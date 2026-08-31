@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
 import BookDetails from 'panels/bookDetails/BookDetails'
-import AllBooksList from 'panels/allBooksList/AllBooksList'
+import BooksYear from 'panels/allBooksList/BooksYear'
 import PageConfigurer from 'pages/booksPage/PageConfigurer'
 
 const BooksPage = () => (
@@ -13,7 +13,7 @@ const BooksPage = () => (
     <Layout classes='all-books-page'>
       <Col xs={8}>
         <div className='page-sidebar'>
-          <AllBooksList />
+          <BooksYear />
         </div>
       </Col>
 
