@@ -88,21 +88,11 @@ const AuthorCard = ({
           </div>
 
           <div className='author-card-text'>
-            <div>
-              { 'Years: ' }
-
-              { renderLifetime(authorFull, authorsPagePath) }
-            </div>
-
-            <div>
-              { `Popularity: ${authorFull.popularity.toLocaleString()} pts (` }
-
-              <a href={authorsPagePath({ authorId: authorFull.id, sortOrder: orders.BY_RANK_ASCENDING })}>
-                { `#${authorFull.rank}` }
-              </a>
-
-              { ')' }
-            </div>
+            { authorFull.birthYear ? (
+              <div>
+                { renderLifetime(authorFull, authorsPagePath) }
+              </div>
+            ) : null}
           </div>
 
           <div className='author-tags'>
@@ -144,15 +134,14 @@ AuthorCard.propTypes = {
 const renderLifetime = (authorFull, authorsPath) => {
   if (!authorFull.birthYear)  return null
 
-  const birthLabel = `${authorFull.birthYear}--`
   const age = authorFull.deathYear
     ? authorFull.deathYear - authorFull.birthYear
     : new Date().getFullYear() - authorFull.birthYear
   return(
     <>
-      { birthLabel }
+      { authorFull.birthYear }
 
-      { authorFull.deathYear }
+      { authorFull.deathYear ? `-${authorFull.deathYear}` : '' }
 
       { ' (' }
 

@@ -43,14 +43,21 @@
     }
 
     .list-sort-dropdown {
+      align-items: center;
+      align-self: center;
+      display: flex;
       flex: 1 1 auto;
       margin-left: auto;
       max-width: 125px;
 
       button {
+        align-items: center;
+        display: flex;
         font-size: 10px;
+        height: 28px;
+        line-height: 1;
         overflow: hidden;
-        padding: 5px 8px;
+        padding: 0 8px;
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 100%;

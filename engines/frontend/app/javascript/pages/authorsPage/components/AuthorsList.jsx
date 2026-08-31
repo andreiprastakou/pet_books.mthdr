@@ -2,7 +2,12 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { Card, Row } from 'react-bootstrap'
 
-import { selectAuthorsTotal, selectSortedAuthors } from 'pages/authorsPage/selectors'
+import {
+  selectAuthorsTotal,
+  selectPage,
+  selectPerPage,
+  selectSortedAuthors,
+} from 'pages/authorsPage/selectors'
 import AuthorsListItem from 'pages/authorsPage/components/AuthorsListItem'
 import Pagination from 'sidebar/authorsIndexControls/Pagination'
 import SortingDropdown from 'sidebar/authorsIndexControls/SortingDropdown'
@@ -10,24 +15,130 @@ import { selectCurrentAuthorId } from 'store/axis/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
 export const WIDGET_ID = 'authors-list'
+const ROW_SIZE = 4
 
+const keyType = key => {
+  if (key === 'Enter') return 'enter'
+  if (key === 'ArrowLeft' || key === 'Left') return 'left'
+  if (key === 'ArrowRight' || key === 'Right') return 'right'
+  if (key === 'ArrowUp' || key === 'Up') return 'up'
+  if (key === 'ArrowDown' || key === 'Down') return 'down'
+  if (key === 'PageUp') return 'pageUp'
+  if (key === 'PageDown') return 'pageDown'
+  return null
+}
+
+const targetIndex = (type, index, lastIndex) => {
+  if (type === 'left') return index - 1
+  if (type === 'right') return index + 1
+  if (type === 'up') return Math.max(index - ROW_SIZE, 0)
+  return Math.min(index + ROW_SIZE, lastIndex)
+}
+
+const isBlocked = ({ type, index, lastIndex, page, lastPage }) => (
+  (type === 'left' && index % ROW_SIZE === 0) ||
+  (type === 'right' && (index % ROW_SIZE === ROW_SIZE - 1 || index === lastIndex)) ||
+  (type === 'pageUp' && page <= 1) ||
+  (type === 'pageDown' && page >= lastPage)
+)
+
+const usePageSelection = ({ authors, authorsKey, page, pendingPageSelection, showAuthor }) => {
+  const previousAuthorsKey = useRef(authorsKey)
+
+  useEffect(() => {
+    const pending = pendingPageSelection.current
+    const authorsChanged = previousAuthorsKey.current !== authorsKey
+    if (!authorsChanged || authors.length === 0) return
+
+    if (pending?.page === page && pending.authorsKey !== authorsKey) {
+      pendingPageSelection.current = null
+      showAuthor(authors[Math.min(pending.index, authors.length - 1)].id)
+    } else
+      showAuthor(authors[0].id)
+    previousAuthorsKey.current = authorsKey
+  }, [authors, authorsKey, page, pendingPageSelection, showAuthor])
+}
+
+const useInitialSelection = ({ authors, selectedAuthorId, showAuthor }) => {
+  useEffect(() => {
+    if (selectedAuthorId || authors.length === 0) return
+
+    showAuthor(authors[0].id)
+  }, [authors, selectedAuthorId, showAuthor])
+}
+
+const handleAuthorsKeyDown = (event, {
+  authors, authorPagePath, page, perPage, selectedAuthorId, showAuthor,
+  switchToIndexPage, totalCount,
+}) => {
+  const type = keyType(event.key)
+  const index = authors.findIndex(author => author.id === selectedAuthorId)
+  const lastIndex = authors.length - 1
+  const lastPage = Math.ceil(totalCount / perPage)
+
+  if (index < 0 || !type ||
+      (type !== 'enter' && isBlocked({ type, index, lastIndex, page, lastPage }))) return null
+
+  event.preventDefault()
+  event.stopPropagation()
+
+  if (type === 'enter') {
+    window.location.assign(authorPagePath(authors[index].id))
+    return null
+  }
+
+  if (type === 'pageUp' || type === 'pageDown') {
+    const nextPage = page + (type === 'pageDown' ? 1 : -1)
+    const nextLength = Math.min(perPage, totalCount - ((nextPage - 1) * perPage))
+    switchToIndexPage(nextPage, perPage)
+    return { index: Math.min(index, nextLength - 1), page: nextPage }
+  }
+
+  showAuthor(authors[targetIndex(type, index, lastIndex)].id)
+  return null
+}
+
+// eslint-disable-next-line max-lines-per-function
 const AuthorsList = () => {
   const {
-    pageState: { activeWidgetId, sortOrder },
-    actions: { activateWidget, deactivateWidget, registerWidget, showAuthor, unregisterWidget },
+    pageState: { activeWidgetId, registeredWidgetIds, sortOrder },
+    routes: { authorPagePath },
+    routesReady,
+    actions: {
+      activateWidget,
+      deactivateWidget,
+      registerWidget,
+      showAuthor,
+      switchToIndexPage,
+      unregisterWidget,
+    },
   } = useContext(UrlStoreContext)
   const authors = useSelector(selectSortedAuthors(sortOrder))
+  const authorsKey = authors.map(author => author.id).join(',')
   const totalCount = useSelector(selectAuthorsTotal())
+  const page = useSelector(selectPage())
+  const perPage = useSelector(selectPerPage())
   const selectedAuthorId = useSelector(selectCurrentAuthorId())
   const ref = useRef(null)
+  const pendingPageSelection = useRef(null)
+  const hasActivated = useRef(false)
   const isActive = activeWidgetId === WIDGET_ID
-
   useEffect(() => {
     registerWidget(WIDGET_ID)
 
     return () => unregisterWidget(WIDGET_ID)
   }, [])
 
+  useEffect(() => {
+    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
+
+    hasActivated.current = true
+    activateWidget(WIDGET_ID)
+    ref.current?.focus()
+  }, [activateWidget, registeredWidgetIds])
+
+  usePageSelection({ authors, authorsKey, page, pendingPageSelection, showAuthor })
+  useInitialSelection({ authors, selectedAuthorId, showAuthor })
   useEffect(() => {
     const handleOutsideInteraction = event => {
       if (!ref.current?.contains(event.target))
@@ -41,7 +152,6 @@ const AuthorsList = () => {
       document.removeEventListener('click', handleOutsideInteraction)
     }
   }, [])
-
   const handleClick = useCallback(event => {
     activateWidget(WIDGET_ID)
 
@@ -53,22 +163,17 @@ const AuthorsList = () => {
 
   const handleFocus = useCallback(() => activateWidget(WIDGET_ID), [activateWidget])
   const handleKeyDown = useCallback(event => {
-    if (!isActive || authors.length === 0) return
-
-    if (event.key !== 'ArrowLeft' && event.key !== 'Left' &&
-        event.key !== 'ArrowRight' && event.key !== 'Right') return
-
-    event.preventDefault()
-    event.stopPropagation()
-
-    const currentIndex = authors.findIndex(author => author.id === selectedAuthorId)
-    const direction = event.key === 'ArrowLeft' || event.key === 'Left' ? -1 : 1
-    const targetIndex = currentIndex < 0
-      ? 0
-      : (currentIndex + direction + authors.length) % authors.length
-    showAuthor(authors[targetIndex].id)
-  }, [authors, isActive, selectedAuthorId, showAuthor])
-
+    if (!isActive || !routesReady || authors.length === 0) return null
+    const pending = handleAuthorsKeyDown(event, {
+      authors, authorPagePath, page, perPage, selectedAuthorId, showAuthor,
+      switchToIndexPage, totalCount,
+    })
+    if (pending) pendingPageSelection.current = { ...pending, authorsKey }
+    return null
+  }, [
+    authorPagePath, authors, isActive, page, perPage, selectedAuthorId, showAuthor,
+    routesReady, switchToIndexPage, totalCount,
+  ])
   return (
     <Card
       aria-label='Authors'
