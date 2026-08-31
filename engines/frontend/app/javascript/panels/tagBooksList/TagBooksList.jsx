@@ -161,7 +161,7 @@ const TagBooksList = () => {
             </a>
 
             <span className='tag-books-list-widget-separator'>
-              { ' / ' }
+              { '/' }
             </span>
 
             <span title={tag?.name}>

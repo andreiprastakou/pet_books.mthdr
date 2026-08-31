@@ -5,13 +5,16 @@ import { fetchCategories, fetchTagsRefs } from 'store/tags/actions'
 
 export const prepareNavRefs = () => async(dispatch, getState) => {
   const state = getState()
+  const requests = []
 
   const tagsLoaded = selectTagsRefsLoaded()(state)
   if (!tagsLoaded) {
-    dispatch(fetchTagsRefs())
-    dispatch(fetchCategories())
+    requests.push(dispatch(fetchTagsRefs()))
+    requests.push(dispatch(fetchCategories()))
   }
 
   const authorsLoaded = selectAuthorsRefsLoaded()(state)
-  if (!authorsLoaded) dispatch(fetchAuthorsRefs())
+  if (!authorsLoaded) requests.push(dispatch(fetchAuthorsRefs()))
+
+  return Promise.all(requests)
 }
