@@ -10,7 +10,7 @@ import UrlStoreContext from 'store/urlStore/Context'
 
 const TITLE_LENGTH_LONG = 25
 
-const Book = ({ bookIndexEntry, showYear = false }) => {
+const Book = ({ bookIndexEntry, showYear = false, style, scrollIntoView = true }) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
@@ -23,8 +23,8 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry.authorIds))
 
   useEffect(() => {
-    if (isCurrent)  ref.current?.scrollIntoView()
-  })
+    if (isCurrent && scrollIntoView) ref.current?.scrollIntoView()
+  }, [isCurrent, scrollIntoView])
 
   const handleClick = useCallback(() => {
     showBooksIndexEntry(bookIndexEntry.id)
@@ -35,6 +35,7 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
       className={classNames}
       onClick={handleClick}
       ref={ref}
+      style={style}
       title={bookIndexEntry.title}
     >
       { bookIndexEntry.small ? (
@@ -62,7 +63,9 @@ const Book = ({ bookIndexEntry, showYear = false }) => {
 
 Book.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
+  scrollIntoView: PropTypes.bool,
   showYear: PropTypes.bool,
+  style: PropTypes.object,
 }
 
 const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => (
