@@ -13,34 +13,14 @@ import Pagination from 'panels/authorsList/Pagination'
 import SortingDropdown from 'panels/authorsList/SortingDropdown'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import {
+  isBlocked,
+  keyType,
+  pageSelection,
+  targetSelection,
+} from 'utils/paginatedGridNavigation'
 
 export const WIDGET_ID = 'authors-list'
-const ROW_SIZE = 4
-
-const keyType = key => {
-  if (key === 'Enter') return 'enter'
-  if (key === 'ArrowLeft' || key === 'Left') return 'left'
-  if (key === 'ArrowRight' || key === 'Right') return 'right'
-  if (key === 'ArrowUp' || key === 'Up') return 'up'
-  if (key === 'ArrowDown' || key === 'Down') return 'down'
-  if (key === 'PageUp') return 'pageUp'
-  if (key === 'PageDown') return 'pageDown'
-  return null
-}
-
-const targetIndex = (type, index, lastIndex) => {
-  if (type === 'left') return index - 1
-  if (type === 'right') return index + 1
-  if (type === 'up') return Math.max(index - ROW_SIZE, 0)
-  return Math.min(index + ROW_SIZE, lastIndex)
-}
-
-const isBlocked = ({ type, index, lastIndex, page, lastPage }) => (
-  (type === 'left' && index % ROW_SIZE === 0) ||
-  (type === 'right' && (index % ROW_SIZE === ROW_SIZE - 1 || index === lastIndex)) ||
-  (type === 'pageUp' && page <= 1) ||
-  (type === 'pageDown' && page >= lastPage)
-)
 
 const usePageSelection = ({ authors, authorsKey, page, pendingPageSelection, showAuthor }) => {
   const previousAuthorsKey = useRef(authorsKey)
@@ -88,13 +68,20 @@ const handleAuthorsKeyDown = (event, {
   }
 
   if (type === 'pageUp' || type === 'pageDown') {
-    const nextPage = page + (type === 'pageDown' ? 1 : -1)
-    const nextLength = Math.min(perPage, totalCount - ((nextPage - 1) * perPage))
-    switchToIndexPage(nextPage, perPage)
-    return { index: Math.min(index, nextLength - 1), page: nextPage }
+    const target = pageSelection({ type, index, page, perPage, totalCount })
+    switchToIndexPage(target.page, perPage)
+    return target
   }
 
-  showAuthor(authors[targetIndex(type, index, lastIndex)].id)
+  const target = targetSelection({
+    type, index, lastIndex, page, perPage, totalCount,
+  })
+  if (target.page !== page) {
+    switchToIndexPage(target.page, perPage)
+    return target
+  }
+
+  showAuthor(authors[target.index].id)
   return null
 }
 
