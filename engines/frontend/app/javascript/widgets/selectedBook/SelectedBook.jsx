@@ -83,15 +83,17 @@ const SelectedBook = () => {
             </p>
           </div>
 
-          <div className='selected-book-tags'>
-            { tags.map(tag => (
-              <TagBadge
-                id={tag.id}
-                key={tag.id}
-                text={tag.name}
-              />
-                )) }
-          </div>
+          { tags.length > 0 ? (
+            <div className='selected-book-tags'>
+              { tags.map(tag => (
+                <TagBadge
+                  id={tag.id}
+                  key={tag.id}
+                  text={tag.name}
+                />
+                  )) }
+            </div>
+          ) : null }
 
           { links.length > 0 ? (
             <div className='selected-book-links'>
