@@ -74,7 +74,7 @@ const BooksListControls = () => {
   return (
     <Card
       aria-label='Books'
-      className={`sidebar-books-list-linear-controls-widget sidebar-card-widget ${
+      className={`panel--books-stack panel--widget ${
         isActive ? 'active' : ''
       }`}
       id={WIDGET_ID}
@@ -83,8 +83,8 @@ const BooksListControls = () => {
       ref={ref}
       tabIndex={0}
     >
-      <Card.Header className='widget-title books-spine-widget-header'>
-        <span className='books-spine-widget-title'>
+      <Card.Header className='panel--header'>
+        <span>
           { 'All Works' }
         </span>
 

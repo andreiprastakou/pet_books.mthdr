@@ -14,13 +14,11 @@ const AuthorPage = () => (
 
     <PageStoreConfigurer />
 
-    <Layout>
+    <Layout classes='panels-page page--author'>
       <Col xs={4}>
-        <div className='page-sidebar'>
-          <AuthorCard linkToAuthorPage={false} />
+        <AuthorCard linkToAuthorPage={false} />
 
-          <BooksStack />
-        </div>
+        <BooksStack />
       </Col>
 
       <Col xs={8}>

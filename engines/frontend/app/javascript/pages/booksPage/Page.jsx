@@ -10,15 +10,13 @@ const BooksPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='all-books-page'>
+    <Layout classes='panels-page page--books'>
       <Col xs={8}>
-        <div className='page-sidebar'>
-          <BooksYear />
-        </div>
+        <BooksYear />
       </Col>
 
       <Col xs={4}>
-        <div className='all-books-selected-book'>
+        <div className='panel--selected-book--narrow'>
           <BookDetails
             header='Selected book'
             showCover={false}

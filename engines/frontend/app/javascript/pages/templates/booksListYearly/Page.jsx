@@ -15,11 +15,9 @@ const Page = props => {
 
       <PageConfigurer listFilter={config.booksListFilter} />
 
-      <Layout>
+      <Layout classes='panels-page'>
         <Col xs={4}>
-          <div className='page-sidebar'>
-            { config.SidebarCardWidget ? <config.SidebarCardWidget /> : null}
-          </div>
+          { config.SidebarCardWidget ? <config.SidebarCardWidget /> : null}
         </Col>
 
         <Col xs={8}>

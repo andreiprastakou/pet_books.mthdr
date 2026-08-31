@@ -10,20 +10,16 @@ const AuthorsPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='authors-list-page'>
+    <Layout classes='panels-page authors-list-page'>
       <Col xs={8}>
-        <div className='page-sidebar'>
-          <AuthorsList />
-        </div>
+        <AuthorsList />
       </Col>
 
       <Col xs={4}>
-        <div className='authors-selected-author'>
-          <AuthorCard
-            header='Selected Author'
-            showPicture={false}
-          />
-        </div>
+        <AuthorCard
+          header='Selected Author'
+          showPicture={false}
+        />
       </Col>
     </Layout>
   </>

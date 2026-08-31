@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import { Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectCurrentTagIndexEntry } from 'store/tags/selectors'
@@ -29,7 +30,7 @@ import {
 export const WIDGET_ID = 'tag-books-list'
 
 // eslint-disable-next-line max-lines-per-function, max-statements
-const TagBooksList = () => {
+const TagBooksList = ({ configure = true, header = null, showControls = true }) => {
   const dispatch = useDispatch()
   const bookIds = useSelector(selectBookIds())
   const totalCount = useSelector(selectBooksTotal())
@@ -142,32 +143,36 @@ const TagBooksList = () => {
 
   return (
     <>
-      <LocalUrlStoreConfigurer />
+      { configure ? <LocalUrlStoreConfigurer /> : null }
 
-      <WidgetConfigurer selectFirstBook={false} />
+      { configure ? <WidgetConfigurer selectFirstBook={false} /> : null }
 
       <Card
         aria-label='Books'
-        className={`tag-books-list-widget sidebar-card-widget ${isActive ? 'active' : ''}`}
+        className={`tag-books-list-widget panel--widget ${isActive ? 'active' : ''}`}
         onClick={handleClick}
         onFocusCapture={handleFocus}
         onKeyDown={handleKeyDown}
         ref={ref}
         tabIndex={0}
       >
-        <Card.Header className='widget-title tag-books-list-widget-header'>
-          <span className='tag-books-list-widget-title'>
-            <a href='/tags'>
-              { 'Tags' }
-            </a>
+        <Card.Header className='panel--header'>
+          <span>
+            { header || (
+              <>
+                <a href='/tags'>
+                  { 'Tags' }
+                </a>
 
-            <span className='tag-books-list-widget-separator'>
-              { '/' }
-            </span>
+                <span className='tag-books-list-widget-separator'>
+                  { '/' }
+                </span>
 
-            <span title={tag?.name}>
-              { `#${tag?.name || ''}` }
-            </span>
+                <span title={tag?.name}>
+                  { `#${tag?.name || ''}` }
+                </span>
+              </>
+            ) }
           </span>
 
           { totalCount > 0 ? (
@@ -176,16 +181,20 @@ const TagBooksList = () => {
             </span>
           ) : null }
 
-          <SortingDropdown
-            selectSortBy={selectSortBy}
-            sortOptions={['popularity', 'year', 'random', 'name']}
-          />
+          { showControls ? (
+            <>
+              <SortingDropdown
+                selectSortBy={selectSortBy}
+                sortOptions={['popularity', 'year', 'random', 'name']}
+              />
 
-          <Pagination
-            selectPage={selectPage}
-            selectPerPage={selectPerPage}
-            selectTotal={selectBooksTotal}
-          />
+              <Pagination
+                selectPage={selectPage}
+                selectPerPage={selectPerPage}
+                selectTotal={selectBooksTotal}
+              />
+            </>
+          ) : null }
         </Card.Header>
 
         <Card.Body className='tag-books-list-widget-body'>
@@ -209,6 +218,12 @@ const TagBooksList = () => {
       </Card>
     </>
   )
+}
+
+TagBooksList.propTypes = {
+  configure: PropTypes.bool,
+  header: PropTypes.node,
+  showControls: PropTypes.bool,
 }
 
 export default TagBooksList

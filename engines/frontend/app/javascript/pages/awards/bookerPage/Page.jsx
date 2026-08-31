@@ -8,8 +8,8 @@ const TAG_IDS = [247]
 const pageConfig = {
   booksListFilter: { tagIds: TAG_IDS },
   SidebarCardWidget: () => (
-    <Card className='sidebar-card-widget'>
-      <Card.Header className='widget-title'>
+    <Card className='panel--widget'>
+      <Card.Header className='panel--header'>
         { 'Booker Prize winners' }
       </Card.Header>
 
