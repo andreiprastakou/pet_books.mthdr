@@ -4,7 +4,7 @@ import { Card } from 'react-bootstrap'
 import { useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import Toolbar from 'sidebar/authorCard/Toolbar'
+import Toolbar from 'panels/authorCard/Toolbar'
 import ImageContainer from 'components/ImageContainer'
 import TagBadge from 'components/TagBadge'
 import CloseIcon from 'components/icons/CloseIcon'
@@ -17,7 +17,26 @@ import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
 import { setImageSrc } from 'modals/imageFullShow/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const AuthorCardWrap = ({ onClose, linkToAuthorPage, showPicture, title }) => {
+const AuthorCardHeader = ({ header, name }) => header || (
+  <>
+    <a href='/authors'>
+      { 'Authors' }
+    </a>
+
+    <span className='author-card-panel-separator'>
+      { '/ ' }
+    </span>
+
+    <span
+      className='author-card-panel-title'
+      title={name}
+    >
+      { name }
+    </span>
+  </>
+)
+
+const AuthorCardWrap = ({ onClose, linkToAuthorPage, showPicture, header }) => {
   const authorId = useSelector(selectCurrentAuthorId())
   const authorFull = useSelector(selectAuthorFull(authorId))
   const dispatch = useDispatch()
@@ -29,10 +48,10 @@ const AuthorCardWrap = ({ onClose, linkToAuthorPage, showPicture, title }) => {
   return (
     <AuthorCard
       authorFull={authorFull}
+      header={header}
       linkToAuthorPage={linkToAuthorPage}
       onClose={onClose}
       showPicture={showPicture}
-      title={title}
     />
   )
 }
@@ -42,7 +61,7 @@ const AuthorCard = ({
   linkToAuthorPage = true,
   onClose = null,
   showPicture = true,
-  title = 'Author',
+  header = null,
 }) => {
   const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
   const dispatch = useDispatch()
@@ -67,8 +86,11 @@ const AuthorCard = ({
         showPicture ? '' : 'author-card-without-picture'
       }`}
     >
-      <Card.Header className='widget-title'>
-        { title }
+      <Card.Header className='widget-title author-card-panel-header'>
+        <AuthorCardHeader
+          header={header}
+          name={authorFull.fullname}
+        />
       </Card.Header>
 
       { onClose ? <CloseIcon onClick={handleClose} /> : null}
@@ -117,18 +139,23 @@ const AuthorCard = ({
 }
 
 AuthorCardWrap.propTypes = {
+  header: PropTypes.node,
   linkToAuthorPage: PropTypes.bool,
   onClose: PropTypes.func,
   showPicture: PropTypes.bool,
-  title: PropTypes.string,
+}
+
+AuthorCardHeader.propTypes = {
+  header: PropTypes.node,
+  name: PropTypes.string.isRequired,
 }
 
 AuthorCard.propTypes = {
   authorFull: PropTypes.object.isRequired,
+  header: PropTypes.node,
   linkToAuthorPage: PropTypes.bool,
   onClose: PropTypes.func,
   showPicture: PropTypes.bool,
-  title: PropTypes.string,
 }
 
 const renderLifetime = (authorFull, authorsPath) => {

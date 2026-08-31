@@ -4,8 +4,8 @@ import { Card } from 'react-bootstrap'
 
 import { selectBooksTotal } from 'widgets/booksListLinear/selectors'
 import { shiftSelection } from 'widgets/booksListLinear/actions'
-import BooksSpineStack from 'sidebar/booksStack/BooksSpineStack'
-import SortingDropdown from 'sidebar/booksStack/SortingDropdown'
+import BooksSpineStack from 'panels/booksStack/BooksSpineStack'
+import SortingDropdown from 'panels/booksStack/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const WIDGET_ID = 'books-stack'

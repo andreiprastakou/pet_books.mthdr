@@ -8,9 +8,9 @@ import {
   selectPerPage,
   selectSortedAuthors,
 } from 'pages/authorsPage/selectors'
-import AuthorsListItem from 'pages/authorsPage/components/AuthorsListItem'
-import Pagination from 'sidebar/authorsIndexControls/Pagination'
-import SortingDropdown from 'sidebar/authorsIndexControls/SortingDropdown'
+import AuthorsListItem from 'panels/authorsList/AuthorsListItem'
+import Pagination from 'panels/authorsList/Pagination'
+import SortingDropdown from 'panels/authorsList/SortingDropdown'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 

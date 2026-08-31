@@ -1,4 +1,27 @@
 .sidebar-widget-author-card {
+  .author-card-panel-header {
+    align-items: baseline;
+    display: flex;
+    min-width: 0;
+
+    a,
+    > span {
+      flex: 0 0 auto;
+    }
+
+    .author-card-panel-title {
+      flex: 1 1 auto;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .author-card-panel-separator {
+      margin: 0 0.25em 0 0;
+    }
+  }
+
   .author-image {
     cursor: zoom-in;
     display: block;

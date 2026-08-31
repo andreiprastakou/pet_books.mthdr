@@ -2,8 +2,8 @@ import React from 'react'
 import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
-import AuthorsList from 'pages/authorsPage/components/AuthorsList'
-import AuthorCard from 'sidebar/authorCard/AuthorCard'
+import AuthorsList from 'panels/authorsList/AuthorsList'
+import AuthorCard from 'panels/authorCard/AuthorCard'
 import PageConfigurer from 'pages/authorsPage/PageConfigurer'
 
 const AuthorsPage = () => (
@@ -20,8 +20,8 @@ const AuthorsPage = () => (
       <Col xs={4}>
         <div className='authors-selected-author'>
           <AuthorCard
+            header='Selected Author'
             showPicture={false}
-            title='Selected Author'
           />
         </div>
       </Col>
