@@ -2,9 +2,9 @@ import React from 'react'
 import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
-import AuthorCard from 'sidebar/authorCard/AuthorCard'
-import BooksStack from 'sidebar/booksStack/BooksStack'
-import SelectedBook from 'widgets/selectedBook/SelectedBook'
+import AuthorCard from 'panels/authorCard/AuthorCard'
+import BooksStack from 'panels/booksStack/BooksStack'
+import BookDetails from 'panels/bookDetails/BookDetails'
 import PageStoreConfigurer from 'pages/authorPage/PageStoreConfigurer'
 import LocalUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
 
@@ -24,7 +24,7 @@ const AuthorPage = () => (
       </Col>
 
       <Col xs={8}>
-        <SelectedBook />
+        <BookDetails header='Selected Work' />
       </Col>
     </Layout>
   </>

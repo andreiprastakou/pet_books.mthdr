@@ -8,7 +8,7 @@ import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import PropTypes from 'prop-types'
 
 import { selectTagBookmark, selectTagNames } from 'store/tags/selectors'
-import { markAuthorAsBookmarked, unmarkAuthorAsBookmarked } from 'sidebar/authorCard/actions'
+import { markAuthorAsBookmarked, unmarkAuthorAsBookmarked } from 'panels/authorCard/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Toolbar = props => {

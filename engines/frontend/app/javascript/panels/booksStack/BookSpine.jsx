@@ -7,7 +7,7 @@ import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectBooksIndexEntry } from 'store/books/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
-import { spineBackgroundStyle, spinePaletteForId } from 'sidebar/booksStack/spinePalettes'
+import { spineBackgroundStyle, spinePaletteForId } from 'panels/booksStack/spinePalettes'
 
 const BookSpine = ({ id }) => {
   const bookIndexEntry = useSelector(selectBooksIndexEntry(id))

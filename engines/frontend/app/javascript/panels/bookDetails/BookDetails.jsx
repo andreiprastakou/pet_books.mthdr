@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import PropTypes from 'prop-types'
 
 import Book from 'components/Book'
 import TagBadge from 'components/TagBadge'
@@ -30,7 +31,26 @@ const renderAuthors = (authorRefs, bookId, authorPagePath) => (
   </>
 )
 
-const SelectedBook = () => {
+const BookDetailsHeader = ({ header, title }) => header || (
+  <>
+    <a href='/books'>
+      { 'Books' }
+    </a>
+
+    <span className='book-details-panel-separator'>
+      { ' / ' }
+    </span>
+
+    <span
+      className='book-details-panel-title'
+      title={title}
+    >
+      { title }
+    </span>
+  </>
+)
+
+const BookDetails = ({ header = null }) => {
   const dispatch = useDispatch()
   const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
   const bookDetails = useSelector(selectCurrentBookDetails())
@@ -54,14 +74,17 @@ const SelectedBook = () => {
   if (!book || !routesReady) return null
 
   return (
-    <Card className='selected-book sidebar-card-widget'>
-      <Card.Header className='widget-title selected-book-header'>
-        { 'Selected Work' }
+    <Card className='book-details-panel sidebar-card-widget'>
+      <Card.Header className='widget-title book-details-panel-header'>
+        <BookDetailsHeader
+          header={header}
+          title={book.title}
+        />
       </Card.Header>
 
-      <Card.Body className='selected-book-body'>
-        <div className='selected-book-details'>
-          <div className='selected-book-heading'>
+      <Card.Body className='book-details-panel-body'>
+        <div className='book-details-panel-content'>
+          <div className='book-details-panel-heading'>
             <h2>
               { book.title }
             </h2>
@@ -71,20 +94,20 @@ const SelectedBook = () => {
             </span>
           </div>
 
-          <div className='selected-book-authors'>
+          <div className='book-details-panel-authors'>
             { 'by ' }
 
             { renderAuthors(authorRefs, book.id, authorPagePath) }
           </div>
 
-          <div className='selected-book-annotation'>
+          <div className='book-details-panel-annotation'>
             <p>
               { book.summary || '<no information>' }
             </p>
           </div>
 
           { tags.length > 0 ? (
-            <div className='selected-book-tags'>
+            <div className='book-details-panel-tags'>
               { tags.map(tag => (
                 <TagBadge
                   id={tag.id}
@@ -96,7 +119,7 @@ const SelectedBook = () => {
           ) : null }
 
           { links.length > 0 ? (
-            <div className='selected-book-links'>
+            <div className='book-details-panel-links'>
               <ButtonGroup>
                 { links.map(link => (
                   <Button
@@ -114,7 +137,7 @@ const SelectedBook = () => {
         </div>
 
         { bookIndexEntry.coverDesignId === 'standard' ? null : (
-          <div className='selected-book-cover'>
+          <div className='book-details-panel-cover'>
             <Book bookIndexEntry={bookIndexEntry} />
           </div>
         ) }
@@ -123,4 +146,13 @@ const SelectedBook = () => {
   )
 }
 
-export default SelectedBook
+BookDetailsHeader.propTypes = {
+  header: PropTypes.node,
+  title: PropTypes.string.isRequired,
+}
+
+BookDetails.propTypes = {
+  header: PropTypes.node,
+}
+
+export default BookDetails
