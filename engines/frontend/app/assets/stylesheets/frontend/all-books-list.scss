@@ -1,0 +1,134 @@
+.all-books-page {
+  .all-books-list-widget {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 56px - 40px);
+    margin-top: 10px;
+    transition: box-shadow 0.2s ease;
+
+    &.active {
+      box-shadow:
+        0 0 0 2px rgba(113, 168, 255, 0.35),
+        0 0 14px rgba(113, 168, 255, 0.45);
+    }
+  }
+
+  .all-books-list-header {
+    align-items: center;
+    display: flex;
+    gap: 8px;
+    min-height: 48px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
+
+  .all-books-count-badge {
+    background-color: #e8e8e8;
+    border-radius: 50%;
+    color: #555;
+    font-size: 12px;
+    font-weight: 600;
+    height: 26px;
+    line-height: 26px;
+    min-width: 26px;
+    padding: 0 6px;
+    text-align: center;
+  }
+
+  .all-books-list-header > div {
+    flex: 0 0 auto;
+  }
+
+  .all-books-year-control {
+    align-items: center;
+    display: flex;
+    gap: 12px;
+    width: 360px;
+  }
+
+  .all-books-year-input {
+    font-size: 12px;
+    height: 28px;
+    text-align: center;
+    width: 72px;
+  }
+
+  .all-books-years-slider {
+    flex: 1 1 auto;
+    margin: 0 8px;
+
+    .rs-slider-bar {
+      background-color: #b8c9de;
+      height: 6px;
+    }
+
+    .rs-slider-progress {
+      background-color: #3f8fe8;
+      height: 6px;
+    }
+
+    .rs-slider-handle {
+      cursor: pointer;
+    }
+
+    .slider-handle {
+      cursor: pointer;
+      height: 12px;
+      width: 12px;
+    }
+
+    .slider-year-label {
+      color: #1d5d9f;
+      font-size: 10px;
+      left: 50%;
+      line-height: 12px;
+      position: absolute;
+      bottom: 2px;
+      transform: translateX(-50%);
+      white-space: nowrap;
+    }
+  }
+
+  .all-books-list-body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 4px 8px;
+  }
+
+  .all-books-list {
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+  }
+
+  .all-books-list .book-case {
+    height: 260px;
+    margin: 0;
+    padding: 5px;
+    position: absolute;
+    text-align: center;
+    width: 180px;
+
+    &:not(.selected) {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+
+    &.selected {
+      .b-cover-standard {
+        box-shadow:
+          0 0 0 3px rgba(70, 145, 255, 0.85),
+          0 0 24px 6px rgba(70, 145, 255, 0.85);
+      }
+    }
+  }
+
+  .all-books-selected-book {
+    padding-top: 10px;
+
+    .book-details-panel {
+      height: calc(100vh - 56px - 40px);
+    }
+  }
+}

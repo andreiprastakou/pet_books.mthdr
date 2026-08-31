@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 
 import BooksPage from 'pages/booksPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
-import ListUrlStoreConfigurer from 'widgets/booksListYearly/UrlStore'
+import ListUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
 
 const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
