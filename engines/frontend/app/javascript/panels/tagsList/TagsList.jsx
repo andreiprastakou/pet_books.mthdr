@@ -1,21 +1,18 @@
 import { sortBy, upperCase } from 'lodash'
-import React, { useCallback, useContext, useMemo, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Card, Dropdown, Form } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
 import TagBadge from 'components/TagBadge'
 import { selectCategories, selectTagsCategoriesIndex } from 'store/tags/selectors'
-import UrlStoreContext from 'store/urlStore/Context'
 
 // eslint-disable-next-line max-lines-per-function
 const TagsList = () => {
   const categories = sortBy(useSelector(selectCategories()), 'name')
   const tagsByCategories = useSelector(selectTagsCategoriesIndex())
-  const { actions: { showTagIndexEntry } } = useContext(UrlStoreContext)
   const [nameFilter, setNameFilter] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
 
-  const handleTagClick = useCallback(id => showTagIndexEntry(id), [showTagIndexEntry])
   const handleNameFilterChange = useCallback(event => setNameFilter(event.target.value), [])
   const handleCategoryFilterChange = useCallback(value => () => setCategoryFilter(value), [])
   const handleRenderPostfix = useCallback(tag => () => (
@@ -113,7 +110,6 @@ const TagsList = () => {
                     >
                       <TagBadge
                         id={tag.id}
-                        onClick={handleTagClick}
                         renderPostfix={handleRenderPostfix(tag)}
                         text={tag.name}
                         variant='dark'

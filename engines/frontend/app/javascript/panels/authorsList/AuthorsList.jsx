@@ -6,11 +6,12 @@ import {
   selectAuthorsTotal,
   selectPage,
   selectPerPage,
+  selectSortBy,
   selectSortedAuthors,
 } from 'pages/authorsPage/selectors'
+import Pagination from 'components/Pagination'
+import SortingDropdown from 'components/SortingDropdown'
 import AuthorsListItem from 'panels/authorsList/AuthorsListItem'
-import Pagination from 'panels/authorsList/Pagination'
-import SortingDropdown from 'panels/authorsList/SortingDropdown'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 import {
@@ -183,9 +184,16 @@ const AuthorsList = () => {
           </span>
         ) : null }
 
-        <SortingDropdown />
+        <SortingDropdown
+          selectSortBy={selectSortBy}
+          sortOptions={['popularity', 'years', 'name']}
+        />
 
-        <Pagination />
+        <Pagination
+          selectPage={selectPage}
+          selectPerPage={selectPerPage}
+          selectTotal={selectAuthorsTotal}
+        />
       </Card.Header>
 
       <Card.Body className='authors-list-widget-body'>

@@ -1,16 +1,12 @@
 import React, { useCallback, useContext } from 'react'
 import { useSelector } from 'react-redux'
-import { Pagination } from 'react-bootstrap'
+import { Pagination as BootstrapPagination } from 'react-bootstrap'
+import PropTypes from 'prop-types'
 
-import {
-  selectBooksTotal,
-  selectPage,
-  selectPerPage,
-} from 'widgets/booksListLinear/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const BooksListPagination = () => {
-  const totalCount = useSelector(selectBooksTotal())
+const Pagination = ({ selectTotal, selectPage, selectPerPage }) => {
+  const totalCount = useSelector(selectTotal())
   const page = useSelector(selectPage())
   const perPage = useSelector(selectPerPage())
 
@@ -28,33 +24,40 @@ const BooksListPagination = () => {
   const renderPageLink = pageNumber => {
     if (pageNumber < 1 || pageNumber > lastPage) return null
     return (
-      <Pagination.Item
+      <BootstrapPagination.Item
         href={indexPaginationPath(pageNumber, perPage)}
         onClick={handlePageClick(pageNumber)}
         title={pageNumber}
       >
         { pageNumber }
-      </Pagination.Item>
+      </BootstrapPagination.Item>
     )
   }
+
   return (
-    <Pagination className='pagination'>
+    <BootstrapPagination className='pagination'>
       { page > 2 && renderPageLink(1) }
 
       { renderPageLink(page - 1) }
 
-      <Pagination.Item
+      <BootstrapPagination.Item
         active
         disabled
       >
         { page }
-      </Pagination.Item>
+      </BootstrapPagination.Item>
 
       { renderPageLink(page + 1) }
 
       { lastPage - page > 1 && renderPageLink(lastPage) }
-    </Pagination>
+    </BootstrapPagination>
   )
 }
 
-export default BooksListPagination
+Pagination.propTypes = {
+  selectPage: PropTypes.func.isRequired,
+  selectPerPage: PropTypes.func.isRequired,
+  selectTotal: PropTypes.func.isRequired,
+}
+
+export default Pagination
