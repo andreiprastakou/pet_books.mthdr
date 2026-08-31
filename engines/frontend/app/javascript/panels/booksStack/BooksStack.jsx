@@ -14,8 +14,9 @@ const BooksListControls = () => {
   const dispatch = useDispatch()
   const totalCount = useSelector(selectBooksTotal())
   const ref = useRef(null)
+  const hasActivated = useRef(false)
   const {
-    pageState: { activeWidgetId },
+    pageState: { activeWidgetId, registeredWidgetIds },
     actions: { activateWidget, deactivateWidget, registerWidget, unregisterWidget },
   } = useContext(UrlStoreContext)
   const isActive = activeWidgetId === WIDGET_ID
@@ -25,6 +26,13 @@ const BooksListControls = () => {
 
     return () => unregisterWidget(WIDGET_ID)
   }, [])
+
+  useEffect(() => {
+    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
+    hasActivated.current = true
+    activateWidget(WIDGET_ID)
+    ref.current?.focus()
+  }, [activateWidget, registeredWidgetIds])
 
   useEffect(() => {
     const handleOutsideInteraction = event => {
