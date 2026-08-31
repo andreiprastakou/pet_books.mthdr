@@ -17,33 +17,15 @@ import BookIndexEntry from 'widgets/booksListLinear/components/BookIndexEntry'
 import Pagination from 'sidebar/booksListLinearControls/Pagination'
 import SortingDropdown from 'sidebar/booksListLinearControls/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
+import {
+  GRID_ROW_SIZE,
+  isBlocked,
+  keyType,
+  pageSelection,
+  targetSelection,
+} from 'utils/paginatedGridNavigation'
 
 export const WIDGET_ID = 'tag-books-list'
-const ROW_SIZE = 4
-
-const keyType = key => {
-  if (key === 'ArrowLeft' || key === 'Left') return 'left'
-  if (key === 'ArrowRight' || key === 'Right') return 'right'
-  if (key === 'ArrowUp' || key === 'Up') return 'up'
-  if (key === 'ArrowDown' || key === 'Down') return 'down'
-  if (key === 'PageUp') return 'pageUp'
-  if (key === 'PageDown') return 'pageDown'
-  return null
-}
-
-const isBlocked = ({ type, index, lastIndex, page, lastPage }) => (
-  (type === 'left' && index % ROW_SIZE === 0) ||
-  (type === 'right' && (index % ROW_SIZE === ROW_SIZE - 1 || index === lastIndex)) ||
-  (type === 'pageUp' && page <= 1) ||
-  (type === 'pageDown' && page >= lastPage)
-)
-
-const targetIndex = (type, index, lastIndex) => {
-  if (type === 'left') return index - 1
-  if (type === 'right') return index + 1
-  if (type === 'up') return Math.max(index - ROW_SIZE, 0)
-  return Math.min(index + ROW_SIZE, lastIndex)
-}
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 const TagBooksList = () => {
@@ -130,25 +112,32 @@ const TagBooksList = () => {
     event.stopPropagation()
 
     if (type === 'pageUp' || type === 'pageDown') {
-      const nextPage = page + (type === 'pageDown' ? 1 : -1)
-      const nextLength = Math.min(perPage, totalCount - ((nextPage - 1) * perPage))
+      const target = pageSelection({ type, index, page, perPage, totalCount })
       pendingPageSelection.current = {
         booksKey,
-        index: Math.min(index, nextLength - 1),
-        page: nextPage,
+        ...target,
       }
-      switchToIndexPage(nextPage, perPage)
+      switchToIndexPage(target.page, perPage)
       return
     }
 
-    dispatch(setRequestedBookId(bookIds[targetIndex(type, index, lastIndex)]))
+    const target = targetSelection({
+      type, index, lastIndex, page, perPage, totalCount,
+    })
+    if (target.page !== page) {
+      pendingPageSelection.current = { booksKey, ...target }
+      switchToIndexPage(target.page, perPage)
+      return
+    }
+
+    dispatch(setRequestedBookId(bookIds[target.index]))
   }, [
     bookIds, booksKey, currentBookId, dispatch, isActive, page, perPage,
     switchToIndexPage, totalCount,
   ])
 
-  const rows = [...Array(Math.ceil(bookIds.length / ROW_SIZE)).keys()]
-    .map(index => bookIds.slice(index * ROW_SIZE, (index + 1) * ROW_SIZE))
+  const rows = [...Array(Math.ceil(bookIds.length / GRID_ROW_SIZE)).keys()]
+    .map(index => bookIds.slice(index * GRID_ROW_SIZE, (index + 1) * GRID_ROW_SIZE))
 
   return (
     <>
