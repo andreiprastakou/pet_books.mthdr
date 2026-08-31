@@ -9,13 +9,14 @@ import {
   selectBooksTotal,
   selectPage,
   selectPerPage,
+  selectSortBy,
 } from 'widgets/booksListLinear/selectors'
 import { setRequestedBookId } from 'store/books/actions'
 import LocalUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
 import WidgetConfigurer from 'widgets/booksListLinear/WidgetConfigurer'
 import BookIndexEntry from 'widgets/booksListLinear/components/BookIndexEntry'
-import Pagination from 'sidebar/booksListLinearControls/Pagination'
-import SortingDropdown from 'sidebar/booksListLinearControls/SortingDropdown'
+import Pagination from 'components/Pagination'
+import SortingDropdown from 'components/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
 import {
   GRID_ROW_SIZE,
@@ -175,9 +176,16 @@ const TagBooksList = () => {
             </span>
           ) : null }
 
-          <SortingDropdown />
+          <SortingDropdown
+            selectSortBy={selectSortBy}
+            sortOptions={['popularity', 'year', 'random', 'name']}
+          />
 
-          <Pagination />
+          <Pagination
+            selectPage={selectPage}
+            selectPerPage={selectPerPage}
+            selectTotal={selectBooksTotal}
+          />
         </Card.Header>
 
         <Card.Body className='tag-books-list-widget-body'>
