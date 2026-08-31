@@ -50,7 +50,7 @@ const BookDetailsHeader = ({ header, title }) => header || (
   </>
 )
 
-const BookDetails = ({ header = null }) => {
+const BookDetails = ({ header = null, showCover = true }) => {
   const dispatch = useDispatch()
   const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
   const bookDetails = useSelector(selectCurrentBookDetails())
@@ -136,11 +136,11 @@ const BookDetails = ({ header = null }) => {
               ) : null }
         </div>
 
-        { bookIndexEntry.coverDesignId === 'standard' ? null : (
+        { showCover && bookIndexEntry.coverDesignId !== 'standard' ? (
           <div className='book-details-panel-cover'>
             <Book bookIndexEntry={bookIndexEntry} />
           </div>
-        ) }
+        ) : null }
       </Card.Body>
     </Card>
   )
@@ -153,6 +153,7 @@ BookDetailsHeader.propTypes = {
 
 BookDetails.propTypes = {
   header: PropTypes.node,
+  showCover: PropTypes.bool,
 }
 
 export default BookDetails

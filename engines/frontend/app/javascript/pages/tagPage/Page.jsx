@@ -2,29 +2,28 @@ import React from 'react'
 import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
-import TagCard from 'sidebar/tagCard/TagCard'
-import BookCard from 'sidebar/bookCard/BookCard'
-import BooksListLinearControls from 'sidebar/booksListLinearControls/BooksListLinearControls'
-import BooksListLinear from 'widgets/booksListLinear/BooksListLinear'
+import TagBooksList from 'panels/tagBooksList/TagBooksList'
+import BookDetails from 'panels/bookDetails/BookDetails'
 import PageConfigurer from 'pages/tagPage/PageConfigurer'
 
 const TagPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout>
-      <Col xs={4}>
+    <Layout classes='tag-page'>
+      <Col xs={8}>
         <div className='page-sidebar'>
-          <BookCard />
-
-          <TagCard />
-
-          <BooksListLinearControls />
+          <TagBooksList />
         </div>
       </Col>
 
-      <Col xs={8}>
-        <BooksListLinear />
+      <Col xs={4}>
+        <div className='tag-selected-book'>
+          <BookDetails
+            header='Selected book'
+            showCover={false}
+          />
+        </div>
       </Col>
     </Layout>
   </>
