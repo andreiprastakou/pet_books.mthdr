@@ -1,25 +1,11 @@
-.tags-page {
+.page--tags {
   padding-top: 20px;
 
-  .tags-list-widget {
+  .panel--tags-list {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 56px - 30px);
     max-height: 100%;
-
-    .tags-list-widget-header {
-      align-items: center;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      min-height: 48px;
-      padding-bottom: 10px;
-      padding-top: 10px;
-    }
-
-    .tags-list-widget-title {
-      flex: 0 0 auto;
-    }
 
     .tags-list-count-badge {
       background-color: #e8e8e8;

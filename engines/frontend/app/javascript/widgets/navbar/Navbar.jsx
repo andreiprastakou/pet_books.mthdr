@@ -5,6 +5,7 @@ import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import AuthorsNavList from 'widgets/navbar/components/AuthorsNavList'
 import BooksNavList from 'widgets/navbar/components/BooksNavList'
 import TagsNavList from 'widgets/navbar/components/TagsNavList'
+import ListsNavList from 'widgets/navbar/components/ListsNavList'
 import EventsContext from 'store/events/Context'
 import UrlStoreContext from 'store/urlStore/Context'
 import { selectTagIdBookmark, selectTagIdRead } from 'store/tags/selectors'
@@ -29,6 +30,8 @@ const PageNavbar = () => {
         <AuthorsNavDropdown />
 
         <TagsNavDropdown />
+
+        <ListsNavDropdown />
 
         <AwardsNavDropdown />
       </Nav>
@@ -163,6 +166,12 @@ const AwardsNavDropdown = () => (
     <NavDropdown.Item href="/awards/pulitzer">
       { 'Pulitzer Prize' }
     </NavDropdown.Item>
+  </NavDropdown>
+)
+
+const ListsNavDropdown = () => (
+  <NavDropdown title='Lists'>
+    <ListsNavList />
   </NavDropdown>
 )
 

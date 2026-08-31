@@ -10,11 +10,9 @@ const TagPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='tag-page'>
+    <Layout classes='panels-page tag-page'>
       <Col xs={8}>
-        <div className='page-sidebar'>
-          <TagBooksList />
-        </div>
+        <TagBooksList />
       </Col>
 
       <Col xs={4}>

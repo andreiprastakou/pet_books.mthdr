@@ -74,8 +74,8 @@ const BookDetails = ({ header = null, showCover = true }) => {
   if (!book || !routesReady) return null
 
   return (
-    <Card className='book-details-panel sidebar-card-widget'>
-      <Card.Header className='widget-title book-details-panel-header'>
+    <Card className='panel--book-details panel--widget'>
+      <Card.Header className='panel--header'>
         <BookDetailsHeader
           header={header}
           title={book.title}

@@ -42,7 +42,14 @@ export const fetchMissingBookIndexEntries = ids => async(dispatch, getState) => 
   const loadedIds = selectBooksIndexIds()(state)
   const idsToLoad = difference(ids, loadedIds)
   if (idsToLoad.length < 1) return
-  await apiClient.getBooksIndex({ ids: idsToLoad }).then(books => {
-    dispatch(addBooks(books))
-  })
+
+  const batches = []
+  for (let index = 0; index < idsToLoad.length; index += 50)
+    batches.push(idsToLoad.slice(index, index + 50))
+
+  await Promise.all(batches.map(batch =>
+    apiClient.getBooksIndex({ ids: batch }).then(books => {
+      dispatch(addBooks(books))
+    })
+  ))
 }

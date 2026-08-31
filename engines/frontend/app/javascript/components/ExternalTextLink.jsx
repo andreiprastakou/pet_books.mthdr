@@ -1,14 +1,16 @@
 import React from 'react'
+import { Button } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 const ExternalTextLink = ({ text, href }) => (
-  <a
+  <Button
     href={href}
     rel='noreferrer'
     target='_blank'
+    variant='outline-secondary'
   >
     { text }
-  </a>
+  </Button>
 )
 
 ExternalTextLink.propTypes = {

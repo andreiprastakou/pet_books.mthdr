@@ -1,28 +1,5 @@
-.sidebar-books-list-linear-controls-widget {
+.panel--books-stack {
   transition: box-shadow 0.2s ease;
-
-  &.active {
-    box-shadow:
-      0 0 0 2px rgba(113, 168, 255, 0.35),
-      0 0 14px rgba(113, 168, 255, 0.45),
-      -5px 0 12px rgba(113, 168, 255, 0.3),
-      5px 0 12px rgba(113, 168, 255, 0.3),
-      inset 5px 0 10px -5px rgba(113, 168, 255, 0.55),
-      inset -5px 0 10px -5px rgba(113, 168, 255, 0.55);
-  }
-
-  .books-spine-widget-header {
-    align-items: center;
-    display: flex;
-    gap: 8px;
-    min-height: 48px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-  }
-
-  .books-spine-widget-title {
-    flex: 0 0 auto;
-  }
 
   .books-spine-count-badge {
     background-color: #e8e8e8;
@@ -246,4 +223,44 @@
   flex: 0 0 auto;
   height: 4px;
   width: 4px;
+}
+
+.panel--books-stack .pagination {
+  float: right;
+  margin: 0;
+
+  .page-item .page-link {
+    font-size: 12px;
+    padding: 4px 9px;
+  }
+
+  .page-item.disabled .page-link {
+    background-color: $color-icon-grey;
+    color: white;
+  }
+
+  .page-item:not(.disabled) .page-link {
+    color: $color-pagination-text;
+  }
+}
+
+.panel--books-stack .list-sort-dropdown {
+  float: left;
+  width: 140px;
+
+  button {
+    font-size: 12px;
+    padding: 3px 15px 2px;
+    vertical-align: top;
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    max-width: 100%;
+    min-width: 100%;
+
+    .dropdown-item {
+      font-size: 12px;
+    }
+  }
 }

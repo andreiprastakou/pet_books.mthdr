@@ -7,7 +7,6 @@ import PropTypes from 'prop-types'
 import Toolbar from 'panels/authorCard/Toolbar'
 import ImageContainer from 'components/ImageContainer'
 import TagBadge from 'components/TagBadge'
-import CloseIcon from 'components/icons/CloseIcon'
 
 import orders from 'pages/authorsPage/sortOrders'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
@@ -36,7 +35,7 @@ const AuthorCardHeader = ({ header, name }) => header || (
   </>
 )
 
-const AuthorCardWrap = ({ onClose, linkToAuthorPage, showPicture, header }) => {
+const AuthorCardWrap = ({ linkToAuthorPage, showPicture, header }) => {
   const authorId = useSelector(selectCurrentAuthorId())
   const authorFull = useSelector(selectAuthorFull(authorId))
   const dispatch = useDispatch()
@@ -50,7 +49,6 @@ const AuthorCardWrap = ({ onClose, linkToAuthorPage, showPicture, header }) => {
       authorFull={authorFull}
       header={header}
       linkToAuthorPage={linkToAuthorPage}
-      onClose={onClose}
       showPicture={showPicture}
     />
   )
@@ -59,7 +57,6 @@ const AuthorCardWrap = ({ onClose, linkToAuthorPage, showPicture, header }) => {
 const AuthorCard = ({
   authorFull,
   linkToAuthorPage = true,
-  onClose = null,
   showPicture = true,
   header = null,
 }) => {
@@ -70,10 +67,6 @@ const AuthorCard = ({
   const sortedTags = sortBy(visibleTags, tag => tag.connectionsCount)
   const defaultPhotoUrl = useSelector(selectAuthorDefaultImageUrl())
 
-  const handleClose = useCallback(() => {
-    if (onClose) onClose()
-  }, [onClose])
-
   const handleImageClick = useCallback(() => {
     dispatch(setImageSrc(authorFull.imageUrl))
   }, [authorFull.imageUrl])
@@ -82,18 +75,16 @@ const AuthorCard = ({
 
   return (
     <Card
-      className={`sidebar-widget-author-card sidebar-card-widget ${
+      className={`panel--author-card panel--widget ${
         showPicture ? '' : 'author-card-without-picture'
       }`}
     >
-      <Card.Header className='widget-title author-card-panel-header'>
+      <Card.Header className='panel--header'>
         <AuthorCardHeader
           header={header}
           name={authorFull.fullname}
         />
       </Card.Header>
-
-      { onClose ? <CloseIcon onClick={handleClose} /> : null}
 
       <Card.Body>
         { showPicture ? (
@@ -141,7 +132,6 @@ const AuthorCard = ({
 AuthorCardWrap.propTypes = {
   header: PropTypes.node,
   linkToAuthorPage: PropTypes.bool,
-  onClose: PropTypes.func,
   showPicture: PropTypes.bool,
 }
 
@@ -154,7 +144,6 @@ AuthorCard.propTypes = {
   authorFull: PropTypes.object.isRequired,
   header: PropTypes.node,
   linkToAuthorPage: PropTypes.bool,
-  onClose: PropTypes.func,
   showPicture: PropTypes.bool,
 }
 

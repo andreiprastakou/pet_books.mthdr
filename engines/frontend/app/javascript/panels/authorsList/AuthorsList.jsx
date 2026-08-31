@@ -165,7 +165,7 @@ const AuthorsList = () => {
   return (
     <Card
       aria-label='Authors'
-      className={`authors-list-widget sidebar-card-widget ${isActive ? 'active' : ''}`}
+      className={`authors-list-widget panel--widget ${isActive ? 'active' : ''}`}
       id={WIDGET_ID}
       onClick={handleClick}
       onFocusCapture={handleFocus}
@@ -173,8 +173,8 @@ const AuthorsList = () => {
       ref={ref}
       tabIndex={0}
     >
-      <Card.Header className='widget-title authors-list-widget-header'>
-        <span className='authors-list-widget-title'>
+      <Card.Header className='panel--header'>
+        <span>
           { 'All Authors' }
         </span>
 

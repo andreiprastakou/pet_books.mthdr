@@ -1,33 +1,11 @@
-.tag-page {
+.tag-page,
+.lists-page {
   .tag-books-list-widget {
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 56px - 40px);
-    margin-top: 10px;
+    height: calc(100vh - 56px - 30px);
     max-height: 100%;
     transition: box-shadow 0.2s ease;
-
-    &.active {
-      box-shadow:
-        0 0 0 2px rgba(113, 168, 255, 0.35),
-        0 0 14px rgba(113, 168, 255, 0.45),
-        -5px 0 12px rgba(113, 168, 255, 0.3),
-        5px 0 12px rgba(113, 168, 255, 0.3);
-    }
-  }
-
-  .tag-books-list-widget-header {
-    align-items: center;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    min-height: 48px;
-    padding-bottom: 10px;
-    padding-top: 10px;
-  }
-
-  .tag-books-list-widget-title {
-    flex: 0 0 auto;
   }
 
   .tag-books-list-widget-separator {
@@ -48,7 +26,7 @@
     text-align: center;
   }
 
-  .tag-books-list-widget-header .list-sort-dropdown {
+  .panel--header .list-sort-dropdown {
     align-items: center;
     display: flex;
     flex: 1 1 auto;
@@ -145,7 +123,7 @@
   .tag-selected-book {
     padding-top: 10px;
 
-    .book-details-panel {
+    .panel--book-details {
       height: calc(100vh - 56px - 40px);
     }
   }

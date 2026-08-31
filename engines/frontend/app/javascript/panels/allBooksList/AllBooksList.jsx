@@ -2,7 +2,6 @@ import React, {
   useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState,
 } from 'react'
 import { Card } from 'react-bootstrap'
-import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
 import YearControl from 'panels/allBooksList/YearControl'
@@ -33,7 +32,6 @@ const CELL_WIDTH = 200
 const CELL_HEIGHT = 280
 const VISIBLE_COLUMN_RADIUS = 2
 const VISIBLE_ROW_RADIUS = 1
-const defaultTitle = () => 'Books of year'
 
 const spiralPositions = count => {
   const result = [[0, 0]]
@@ -78,7 +76,7 @@ const buildBookMatrix = (bookIds, selectedId) => {
 }
 
 // eslint-disable-next-line max-lines-per-function, max-statements
-const BooksYear = ({ title = defaultTitle }) => {
+const AllBooksList = () => {
   const dispatch = useDispatch()
   const bookIds = useSelector(selectBookIds())
   const totalCount = useSelector(selectBooksTotal())
@@ -88,18 +86,9 @@ const BooksYear = ({ title = defaultTitle }) => {
   const ref = useRef(null)
   const contentRef = useRef(null)
   const [contentSize, setContentSize] = useState({ height: 0, width: 0 })
-  const {
-    pageState: { activeWidgetId, registeredWidgetIds },
-    actions: {
-      activateWidget,
-      deactivateWidget,
-      registerWidget,
-      unregisterWidget,
-    },
-  } = useContext(UrlStoreContext)
+  const { pageState: { activeWidgetId }, actions: { activateWidget } } = useContext(UrlStoreContext)
   const selectedYear = filter.years?.[0] || years[years.length - 1]
   const isActive = activeWidgetId === WIDGET_ID
-  const hasActivated = useRef(false)
   const matrixRef = useRef({ key: null, bookIds: [] })
   const bookIdsKey = bookIds.join(',')
   if (matrixRef.current.key !== bookIdsKey) {
@@ -150,33 +139,6 @@ const BooksYear = ({ title = defaultTitle }) => {
       dispatch(switchToFirstBook())
   }, [bookIds, currentBookId, dispatch])
 
-  useEffect(() => {
-    registerWidget(WIDGET_ID)
-
-    return () => unregisterWidget(WIDGET_ID)
-  }, [])
-
-  useEffect(() => {
-    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
-
-    hasActivated.current = true
-    activateWidget(WIDGET_ID)
-    ref.current?.focus()
-  }, [activateWidget, registeredWidgetIds])
-
-  useEffect(() => {
-    const handleOutsideInteraction = event => {
-      if (!ref.current?.contains(event.target)) deactivateWidget(WIDGET_ID)
-    }
-
-    document.addEventListener('focusin', handleOutsideInteraction)
-    document.addEventListener('click', handleOutsideInteraction)
-    return () => {
-      document.removeEventListener('focusin', handleOutsideInteraction)
-      document.removeEventListener('click', handleOutsideInteraction)
-    }
-  }, [])
-
   const selectYear = useCallback(year => {
     dispatch(clearListState())
     dispatch(assignFilter({ years: [year] }))
@@ -186,14 +148,9 @@ const BooksYear = ({ title = defaultTitle }) => {
 
   const handleClick = useCallback(event => {
     activateWidget(WIDGET_ID)
-    const clickedInteractiveControl = event.target.closest(
-      'button, a, input, select, textarea, [role="menuitem"]'
-    )
-    if (!clickedInteractiveControl)
+    if (!event.target.closest('button, input, a, select, textarea'))
       ref.current?.focus()
   }, [activateWidget])
-
-  const handleFocus = useCallback(() => activateWidget(WIDGET_ID), [activateWidget])
 
   const handleKeyDown = useCallback(event => {
     const shifts = {
@@ -226,7 +183,6 @@ const BooksYear = ({ title = defaultTitle }) => {
         aria-label='All books'
         className={`all-books-list-widget panel--widget ${isActive ? 'active' : ''}`}
         onClick={handleClick}
-        onFocusCapture={handleFocus}
         onKeyDown={handleKeyDown}
         ref={ref}
         tabIndex={0}
@@ -237,7 +193,7 @@ const BooksYear = ({ title = defaultTitle }) => {
           </span>
 
           <span>
-            { title(selectedYear) }
+            { 'Books of year' }
           </span>
 
           <div>
@@ -270,8 +226,4 @@ const BooksYear = ({ title = defaultTitle }) => {
   )
 }
 
-BooksYear.propTypes = {
-  title: PropTypes.func,
-}
-
-export default BooksYear
+export default AllBooksList

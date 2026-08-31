@@ -8,8 +8,8 @@ const TAG_IDS = [31]
 const pageConfig = {
   booksListFilter: { tagIds: TAG_IDS },
   SidebarCardWidget: () => (
-    <Card className='sidebar-card-widget'>
-      <Card.Header className='widget-title'>
+    <Card className='panel--widget'>
+      <Card.Header className='panel--header'>
         { 'Nebula awards' }
       </Card.Header>
 

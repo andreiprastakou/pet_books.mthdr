@@ -9,7 +9,7 @@ const TagsPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='tags-page'>
+    <Layout classes='panels-page page--tags'>
       <Col xs={12}>
         <TagsList />
       </Col>

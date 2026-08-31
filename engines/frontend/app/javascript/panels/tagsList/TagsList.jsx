@@ -41,10 +41,10 @@ const TagsList = () => {
   return (
     <Card
       aria-label='Tags'
-      className='tags-list-widget sidebar-card-widget'
+      className='panel--tags-list panel--widget'
     >
-      <Card.Header className='widget-title tags-list-widget-header'>
-        <span className='tags-list-widget-title'>
+      <Card.Header className='panel--header'>
+        <span>
           { 'All Tags' }
         </span>
 
