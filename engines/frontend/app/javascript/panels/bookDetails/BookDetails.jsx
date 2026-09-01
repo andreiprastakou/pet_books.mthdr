@@ -107,18 +107,6 @@ const BookDetails = ({ header = null, showCover = true }) => {
             </p>
           </div>
 
-          { tags.length > 0 ? (
-            <div className='book-details-panel-tags'>
-              { tags.map(tag => (
-                <TagBadge
-                  id={tag.id}
-                  key={tag.id}
-                  text={tag.name}
-                />
-                  )) }
-            </div>
-          ) : null }
-
           { links.length > 0 ? (
             <div className='book-details-panel-links'>
               <ButtonGroup>
@@ -140,6 +128,18 @@ const BookDetails = ({ header = null, showCover = true }) => {
           <div className='book-details-panel-toolbar'>
             <BookToolbar />
           </div>
+
+          { tags.length > 0 ? (
+            <div className='book-details-panel-tags'>
+              { tags.map(tag => (
+                <TagBadge
+                  id={tag.id}
+                  key={tag.id}
+                  text={tag.name}
+                />
+                  )) }
+            </div>
+          ) : null }
         </div>
 
         { showCover && bookIndexEntry.coverDesignId !== 'standard' ? (
