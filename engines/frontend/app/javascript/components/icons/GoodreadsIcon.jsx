@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faGoodreadsG } from '@fortawesome/free-brands-svg-icons'
+import { faGoodreadsG } from '@fortawesome/free-brands-svg-icons/faGoodreadsG'
 
 const GoodreadsIcon = ({ url = null }) => {
   if (!url)  return null
