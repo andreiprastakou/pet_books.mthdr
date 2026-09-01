@@ -64,15 +64,20 @@
   }
 
   .author-toolbar {
-    display: block;
+    align-items: center;
+    display: flex;
+    gap: 8px;
     margin-top: 12px;
     float: left;
     width: 100%;
 
-    a,
-    a:visited {
+    .btn {
       font-size: 12px;
       padding: 4px 8px;
+    }
+
+    a,
+    a:visited {
       color: rgb(102, 102, 102);
     }
   }

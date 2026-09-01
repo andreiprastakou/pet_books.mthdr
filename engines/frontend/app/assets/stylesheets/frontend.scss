@@ -69,3 +69,23 @@ body a {
 ::placeholder {
   color: #aaa !important;
 }
+
+.notifications {
+  z-index: 1100;
+
+  .alert {
+    padding-bottom: 17px;
+    padding-top: 17px;
+  }
+}
+
+.external-link.btn {
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 4px 8px;
+
+  &:hover,
+  &:focus {
+    color: #fff !important;
+  }
+}

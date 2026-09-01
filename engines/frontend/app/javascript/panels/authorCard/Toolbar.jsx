@@ -1,46 +1,39 @@
 import React, { useCallback, useContext } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Button, ButtonGroup } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook, faBookmark } from '@fortawesome/free-solid-svg-icons'
 import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons'
-import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
 import PropTypes from 'prop-types'
 
-import { selectTagBookmark, selectTagNames } from 'store/tags/selectors'
-import { markAuthorAsBookmarked, unmarkAuthorAsBookmarked } from 'panels/authorCard/actions'
+import { addSuccessMessage } from 'store/notifications/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Toolbar = props => {
   const { authorFull, linkToAuthorPage = true } = props
   const { routes: { authorPagePath },
     routesReady } = useContext(UrlStoreContext)
-
   const dispatch = useDispatch()
-  const tagNames = useSelector(selectTagNames(authorFull.tagIds))
-  const tagBookmark = useSelector(selectTagBookmark())
-  const isBookmarked = tagNames.includes(tagBookmark)
 
-  const handleRemoveBookmark = useCallback(() => {
-    dispatch(unmarkAuthorAsBookmarked(authorFull.id, authorFull.tagIds))
-  }, [authorFull.id, authorFull.tagIds])
+  const isBookmarked = false
 
   const handleBookmark = useCallback(() => {
-    dispatch(markAuthorAsBookmarked(authorFull.id, authorFull.tagIds))
-  }, [authorFull.id, authorFull.tagIds])
+    dispatch(addSuccessMessage('Dev note: not implemented!'))
+  }, [dispatch])
 
   if (!routesReady) return null
 
   return (
-    <ButtonGroup className='author-toolbar'>
+    <div className='author-toolbar'>
       { authorFull.reference ? (
         <Button
+          className='external-link'
           href={authorFull.reference}
           target='_blank'
           title='See info...'
-          variant='outline-info'
+          variant='outline-secondary'
         >
-          <FontAwesomeIcon icon={faWikipediaW} />
+          { 'wikipedia' }
         </Button>
       ) : null}
 
@@ -58,24 +51,24 @@ const Toolbar = props => {
 
       { isBookmarked ? (
         <Button
-          href='#'
-          onClick={handleRemoveBookmark}
+          onClick={handleBookmark}
           title='Remove bookmark'
+          type='button'
           variant='outline-warning'
         >
           <FontAwesomeIcon icon={faBookmark} />
         </Button>
       ) : (
         <Button
-          href='#'
           onClick={handleBookmark}
           title='Bookmark'
+          type='button'
           variant='outline-warning'
         >
           <FontAwesomeIcon icon={faBookmarkEmpty} />
         </Button>
       ) }
-    </ButtonGroup>
+    </div>
   )
 }
 

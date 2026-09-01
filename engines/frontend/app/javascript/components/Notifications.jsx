@@ -1,10 +1,35 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { connect } from 'react-redux'
-import { AlertList } from 'react-bs-notifier'
+import { Alert } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 import { removeMessage } from 'store/notifications/actions'
 import { selectMessages } from 'store/notifications/selectors'
+
+const NotificationAlert = ({ message, onDismiss }) => {
+  const handleDismiss = useCallback(() => {
+    onDismiss(message.id)
+  }, [message.id, onDismiss])
+
+  return (
+    <Alert
+      dismissible
+      onClose={handleDismiss}
+      variant={message.type}
+    >
+      { message.message }
+    </Alert>
+  )
+}
+
+NotificationAlert.propTypes = {
+  message: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    message: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+  }).isRequired,
+  onDismiss: PropTypes.func.isRequired,
+}
 
 class Notifications extends React.Component {
   static propTypes = {
@@ -28,13 +53,15 @@ class Notifications extends React.Component {
     const { messages } = this.props
 
     return (
-      <AlertList
-        alerts={messages}
-        dismissTitle='Close'
-        onDismiss={this.handleDismiss}
-        position='top-right'
-        timeout={5000}
-      />
+      <div className='notifications position-fixed top-0 end-0 p-3'>
+        { messages.map(message => (
+          <NotificationAlert
+            key={message.id}
+            message={message}
+            onDismiss={this.handleDismiss}
+          />
+        )) }
+      </div>
     )
   }
 }
