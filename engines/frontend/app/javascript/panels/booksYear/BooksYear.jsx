@@ -24,7 +24,7 @@ import {
 import { selectYears } from 'store/booksYears/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
-export const WIDGET_ID = 'books-list-yearly'
+export const PANEL_ID = 'books-list-yearly'
 
 const BOOK_WIDTH = 190
 const BOOK_HEIGHT = 270
@@ -88,16 +88,16 @@ const BooksYear = ({ title = defaultTitle }) => {
   const contentRef = useRef(null)
   const [contentSize, setContentSize] = useState({ height: 0, width: 0 })
   const {
-    pageState: { activeWidgetId, registeredWidgetIds },
+    pageState: { activePanelId, registeredPanelIds },
     actions: {
-      activateWidget,
-      deactivateWidget,
-      registerWidget,
-      unregisterWidget,
+      activatePanel,
+      deactivatePanel,
+      registerPanel,
+      unregisterPanel,
     },
   } = useContext(UrlStoreContext)
   const selectedYear = filter.years?.[0] || years[years.length - 1]
-  const isActive = activeWidgetId === WIDGET_ID
+  const isActive = activePanelId === PANEL_ID
   const hasActivated = useRef(false)
   const matrixRef = useRef({ key: null, bookIds: [] })
   const bookIdsKey = bookIds.join(',')
@@ -150,22 +150,22 @@ const BooksYear = ({ title = defaultTitle }) => {
   }, [bookIds, currentBookId, dispatch])
 
   useEffect(() => {
-    registerWidget(WIDGET_ID)
+    registerPanel(PANEL_ID)
 
-    return () => unregisterWidget(WIDGET_ID)
+    return () => unregisterPanel(PANEL_ID)
   }, [])
 
   useEffect(() => {
-    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
+    if (hasActivated.current || !registeredPanelIds.includes(PANEL_ID)) return
 
     hasActivated.current = true
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
     ref.current?.focus()
-  }, [activateWidget, registeredWidgetIds])
+  }, [activatePanel, registeredPanelIds])
 
   useEffect(() => {
     const handleOutsideInteraction = event => {
-      if (!ref.current?.contains(event.target)) deactivateWidget(WIDGET_ID)
+      if (!ref.current?.contains(event.target)) deactivatePanel(PANEL_ID)
     }
 
     document.addEventListener('focusin', handleOutsideInteraction)
@@ -184,15 +184,15 @@ const BooksYear = ({ title = defaultTitle }) => {
   }, [dispatch])
 
   const handleClick = useCallback(event => {
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
     const clickedInteractiveControl = event.target.closest(
       'button, a, input, select, textarea, [role="menuitem"]'
     )
     if (!clickedInteractiveControl)
       ref.current?.focus()
-  }, [activateWidget])
+  }, [activatePanel])
 
-  const handleFocus = useCallback(() => activateWidget(WIDGET_ID), [activateWidget])
+  const handleFocus = useCallback(() => activatePanel(PANEL_ID), [activatePanel])
 
   const handleKeyDown = useCallback(event => {
     const shifts = {

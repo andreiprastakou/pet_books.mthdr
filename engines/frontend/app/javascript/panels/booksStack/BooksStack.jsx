@@ -8,7 +8,7 @@ import BooksSpineStack from 'panels/booksStack/BooksSpineStack'
 import SortingDropdown from 'panels/booksStack/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const WIDGET_ID = 'books-stack'
+const PANEL_ID = 'books-stack'
 
 const BooksListControls = () => {
   const dispatch = useDispatch()
@@ -16,28 +16,28 @@ const BooksListControls = () => {
   const ref = useRef(null)
   const hasActivated = useRef(false)
   const {
-    pageState: { activeWidgetId, registeredWidgetIds },
-    actions: { activateWidget, deactivateWidget, registerWidget, unregisterWidget },
+    pageState: { activePanelId, registeredPanelIds },
+    actions: { activatePanel, deactivatePanel, registerPanel, unregisterPanel },
   } = useContext(UrlStoreContext)
-  const isActive = activeWidgetId === WIDGET_ID
+  const isActive = activePanelId === PANEL_ID
 
   useEffect(() => {
-    registerWidget(WIDGET_ID)
+    registerPanel(PANEL_ID)
 
-    return () => unregisterWidget(WIDGET_ID)
+    return () => unregisterPanel(PANEL_ID)
   }, [])
 
   useEffect(() => {
-    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
+    if (hasActivated.current || !registeredPanelIds.includes(PANEL_ID)) return
     hasActivated.current = true
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
     ref.current?.focus()
-  }, [activateWidget, registeredWidgetIds])
+  }, [activatePanel, registeredPanelIds])
 
   useEffect(() => {
     const handleOutsideInteraction = event => {
       if (!ref.current?.contains(event.target))
-        deactivateWidget(WIDGET_ID)
+        deactivatePanel(PANEL_ID)
     }
 
     document.addEventListener('focusin', handleOutsideInteraction)
@@ -49,13 +49,13 @@ const BooksListControls = () => {
   }, [])
 
   const handleClick = useCallback(event => {
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
 
     const clickedInteractiveControl = event.target.closest(
       'button, a, input, select, textarea, [role="menuitem"]'
     )
     if (!clickedInteractiveControl) ref.current?.focus()
-  }, [activateWidget])
+  }, [activatePanel])
 
   const handleKeyDown = useCallback(event => {
     if (!isActive) return
@@ -77,7 +77,7 @@ const BooksListControls = () => {
       className={`panel--books-stack panel--widget ${
         isActive ? 'active' : ''
       }`}
-      id={WIDGET_ID}
+      id={PANEL_ID}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       ref={ref}

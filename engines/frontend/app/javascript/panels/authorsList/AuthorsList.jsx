@@ -21,7 +21,7 @@ import {
   targetSelection,
 } from 'utils/paginatedGridNavigation'
 
-export const WIDGET_ID = 'authors-list'
+export const PANEL_ID = 'authors-list'
 
 const usePageSelection = ({ authors, authorsKey, page, pendingPageSelection, showAuthor }) => {
   const previousAuthorsKey = useRef(authorsKey)
@@ -89,16 +89,16 @@ const handleAuthorsKeyDown = (event, {
 // eslint-disable-next-line max-lines-per-function
 const AuthorsList = () => {
   const {
-    pageState: { activeWidgetId, registeredWidgetIds, sortOrder },
+    pageState: { activePanelId, registeredPanelIds, sortOrder },
     routes: { authorPagePath },
     routesReady,
     actions: {
-      activateWidget,
-      deactivateWidget,
-      registerWidget,
+      activatePanel,
+      deactivatePanel,
+      registerPanel,
       showAuthor,
       switchToIndexPage,
-      unregisterWidget,
+      unregisterPanel,
     },
   } = useContext(UrlStoreContext)
   const authors = useSelector(selectSortedAuthors(sortOrder), shallowEqual)
@@ -110,27 +110,27 @@ const AuthorsList = () => {
   const ref = useRef(null)
   const pendingPageSelection = useRef(null)
   const hasActivated = useRef(false)
-  const isActive = activeWidgetId === WIDGET_ID
+  const isActive = activePanelId === PANEL_ID
   useEffect(() => {
-    registerWidget(WIDGET_ID)
+    registerPanel(PANEL_ID)
 
-    return () => unregisterWidget(WIDGET_ID)
+    return () => unregisterPanel(PANEL_ID)
   }, [])
 
   useEffect(() => {
-    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
+    if (hasActivated.current || !registeredPanelIds.includes(PANEL_ID)) return
 
     hasActivated.current = true
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
     ref.current?.focus()
-  }, [activateWidget, registeredWidgetIds])
+  }, [activatePanel, registeredPanelIds])
 
   usePageSelection({ authors, authorsKey, page, pendingPageSelection, showAuthor })
   useInitialSelection({ authors, selectedAuthorId, showAuthor })
   useEffect(() => {
     const handleOutsideInteraction = event => {
       if (!ref.current?.contains(event.target))
-        deactivateWidget(WIDGET_ID)
+        deactivatePanel(PANEL_ID)
     }
 
     document.addEventListener('focusin', handleOutsideInteraction)
@@ -141,15 +141,15 @@ const AuthorsList = () => {
     }
   }, [])
   const handleClick = useCallback(event => {
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
 
     const clickedInteractiveControl = event.target.closest(
       'button, a, input, select, textarea, [role="menuitem"]'
     )
     if (!clickedInteractiveControl) ref.current?.focus()
-  }, [activateWidget])
+  }, [activatePanel])
 
-  const handleFocus = useCallback(() => activateWidget(WIDGET_ID), [activateWidget])
+  const handleFocus = useCallback(() => activatePanel(PANEL_ID), [activatePanel])
   const handleKeyDown = useCallback(event => {
     if (!isActive || !routesReady || authors.length === 0) return null
     const pending = handleAuthorsKeyDown(event, {
@@ -166,7 +166,7 @@ const AuthorsList = () => {
     <Card
       aria-label='Authors'
       className={`panel--authors-list panel--widget ${isActive ? 'active' : ''}`}
-      id={WIDGET_ID}
+      id={PANEL_ID}
       onClick={handleClick}
       onFocusCapture={handleFocus}
       onKeyDown={handleKeyDown}

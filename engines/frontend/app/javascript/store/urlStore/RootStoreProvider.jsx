@@ -1,46 +1,107 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useLocation, useHistory } from 'react-router-dom'
 
 import { objectToParams } from 'utils/objectToParams'
 import Context from 'store/urlStore/Context'
 
-const useWidgetFocus = () => {
-  const [registeredWidgetIds, setRegisteredWidgetIds] = useState([])
-  const [activeWidgetId, setActiveWidgetId] = useState(null)
+const usePanelFocus = () => {
+  const [registeredPanelIds, setRegisteredPanelIds] = useState([])
+  const [activePanelId, setActivePanelId] = useState(null)
+  const registeredPanelIdsRef = useRef(registeredPanelIds)
+  registeredPanelIdsRef.current = registeredPanelIds
 
-  const registerWidget = id => setRegisteredWidgetIds(value => (
+  const registerPanel = useCallback(id => setRegisteredPanelIds(value => (
     value.includes(id) ? value : [...value, id]
-  ))
-  const unregisterWidget = id => {
-    setRegisteredWidgetIds(value => value.filter(widgetId => widgetId !== id))
-    setActiveWidgetId(value => value === id ? null : value)
-  }
-  const activateWidget = id => {
-    if (registeredWidgetIds.includes(id)) setActiveWidgetId(id)
-  }
-  const deactivateWidget = id => setActiveWidgetId(value => value === id ? null : value)
+  )), [])
+  const unregisterPanel = useCallback(id => {
+    setRegisteredPanelIds(value => value.filter(panelId => panelId !== id))
+    setActivePanelId(value => value === id ? null : value)
+  }, [])
+  const activatePanel = useCallback(id => {
+    if (registeredPanelIdsRef.current.includes(id)) setActivePanelId(id)
+  }, [])
+  const deactivatePanel = useCallback(id => setActivePanelId(value => value === id ? null : value), [])
+  const actions = useMemo(() => ({
+    registerPanel,
+    unregisterPanel,
+    activatePanel,
+    deactivatePanel,
+  }), [registerPanel, unregisterPanel, activatePanel, deactivatePanel])
 
   return {
-    activeWidgetId,
-    registeredWidgetIds,
-    actions: { registerWidget, unregisterWidget, activateWidget, deactivateWidget },
+    activePanelId,
+    registeredPanelIds,
+    actions,
   }
 }
 
+const useUrlActions = ({
+  history,
+  locationRef,
+  setRoutes,
+  setUrlActions,
+  setStateDefiners,
+  urlActions,
+  panelFocusActions,
+  updatePageState,
+}) => {
+  const addRoute = useCallback((name, builder) => {
+    setRoutes(value => ({ ...value, [name]: builder }))
+    return () => setRoutes(value => {
+      if (value[name] !== builder) return value
+      const remaining = { ...value }
+      delete remaining[name]
+      return remaining
+    })
+  }, [setRoutes])
+  const addUrlAction = useCallback((name, action) => {
+    setUrlActions(value => ({ ...value, [name]: action }))
+    return () => setUrlActions(value => {
+      if (value[name] !== action) return value
+      const remaining = { ...value }
+      delete remaining[name]
+      return remaining
+    })
+  }, [setUrlActions])
+  const addUrlState = useCallback((name, definer) => {
+    setStateDefiners(value => ({ ...value, [name]: definer }))
+    return () => setStateDefiners(value => {
+      if (value[name] !== definer) return value
+      const remaining = { ...value }
+      delete remaining[name]
+      return remaining
+    })
+  }, [setStateDefiners])
+  const updateLocation = useCallback(newLocation => {
+    locationRef.current = newLocation
+    updatePageState()
+  }, [locationRef, updatePageState])
+  const goto = useCallback(path => history.push(path), [history])
+  const patch = useCallback(path => history.replace(path), [history])
+
+  return useMemo(() => ({
+    ...urlActions,
+    ...panelFocusActions,
+    addRoute,
+    addUrlAction,
+    addUrlState,
+    updateLocation,
+    goto,
+    patch,
+  }), [urlActions, panelFocusActions, addRoute, addUrlAction, addUrlState, updateLocation, goto, patch])
+}
+
 const Provider = ({ children }) => {
-  const history = useHistory()
-  const location = useLocation()
+  const history = useHistory(), location = useLocation()
 
   const [urlActions, setUrlActions] = useState({})
-  const actionsRef = useRef()
-  actionsRef.current = urlActions
   const [pageState, setPageState] = useState({})
   const {
-    activeWidgetId,
-    registeredWidgetIds,
-    actions: widgetFocusActions,
-  } = useWidgetFocus()
+    activePanelId,
+    registeredPanelIds,
+    actions: panelFocusActions,
+  } = usePanelFocus()
   const [stateDefiners, setStateDefiners] = useState({})
   const [routes, setRoutes] = useState({})
   const routesRef = useRef(routes)
@@ -50,68 +111,46 @@ const Provider = ({ children }) => {
   const [routesReady, setRoutesReady] = useState(false)
   useEffect(() => setRoutesReady(true), [])
 
-  const currentActions = {
-    ...actionsRef.current,
-    ...widgetFocusActions,
-    addRoute: (name, builder) => {
-      setRoutes(value => ({ ...value, [name]: builder }))
-      return () => setRoutes(value => {
-        if (value[name] !== builder) return value
-        const remaining = { ...value }
-        delete remaining[name]
-        return remaining
-      })
-    },
-    addUrlAction: (name, action) => {
-      setUrlActions(value => ({ ...value, [name]: action }))
-      return () => setUrlActions(value => {
-        if (value[name] !== action) return value
-        const remaining = { ...value }
-        delete remaining[name]
-        return remaining
-      })
-    },
-    addUrlState: (name, definer) => {
-      setStateDefiners(value => ({ ...value, [name]: definer }))
-      return () => setStateDefiners(value => {
-        if (value[name] !== definer) return value
-        const remaining = { ...value }
-        delete remaining[name]
-        return remaining
-      })
-    },
-    updateLocation: newLocation => {
-      locationRef.current = newLocation
-      updatePageState()
-    },
-    goto: path => history.push(path),
-    patch: path => history.replace(path),
-  }
-
-  const contextValue = useMemo(() => ({
-    pageState: { ...pageState, activeWidgetId, registeredWidgetIds },
-    actions: currentActions,
-    helpers: {
-      buildPath,
-      buildRelativePath: callToBuildRelativePath(locationRef),
-    },
-    routes: { ...routesRef.current },
-    getRoutes: () => routesRef.current,
-    getActions: () => currentActions,
-    routesReady,
-  }), [pageState, activeWidgetId, registeredWidgetIds, currentActions, routesRef.current, routesReady])
-
-  const updatePageState = () => {
+  const updatePageState = useCallback(() => {
     const urlAccessor = new UrlAccessor({ location: locationRef.current })
     const newPageState = Object.keys(stateDefiners).reduce((newState, key) => (
       { ...newState, [key]: stateDefiners[key](urlAccessor) }
     ), {})
     setPageState(newPageState)
-  }
+  }, [stateDefiners])
+
+  const currentActions = useUrlActions({
+    history,
+    locationRef,
+    setRoutes,
+    setUrlActions,
+    setStateDefiners,
+    urlActions,
+    panelFocusActions,
+    updatePageState,
+  })
+  const helpers = useMemo(() => ({
+    buildPath,
+    buildRelativePath: callToBuildRelativePath(locationRef),
+  }), [])
+  const getRoutes = useCallback(() => routesRef.current, [])
+  const getActions = useCallback(() => currentActions, [currentActions])
+  const contextValue = useMemo(() => ({
+    pageState: { ...pageState, activePanelId, registeredPanelIds },
+    actions: currentActions,
+    helpers,
+    routes: { ...routes },
+    getRoutes,
+    getActions,
+    routesReady,
+  }), [
+    pageState, activePanelId, registeredPanelIds, currentActions,
+    helpers, routes, getRoutes, getActions, routesReady,
+  ])
 
   useEffect(() => {
     updatePageState()
-  }, [location, stateDefiners])
+  }, [location, stateDefiners, updatePageState])
 
   return (
     <Context.Provider value={contextValue}>
