@@ -5,5 +5,3 @@ export const selectCurrentAuthorId = () => state => localState(state).currentAut
 export const selectCurrentBookId = () => state => localState(state).currentBookId
 
 export const selectCurrentTagId = () => state => localState(state).currentTagId
-
-export const selectSeed = () => state => localState(state).seed

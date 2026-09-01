@@ -15,16 +15,6 @@ export const slice = createSlice({
       state.authorsFull[authorFull.id] = authorFull
     },
 
-    addAuthorIndexEntry: (state, action) => {
-      const authorIndexEntry = action.payload
-      state.authorsIndex[authorIndexEntry.id] = authorIndexEntry
-    },
-
-    addAuthorRef: (state, action) => {
-      const authorRef = action.payload
-      state.authorsRefs[authorRef.id] = authorRef
-    },
-
     assignAuthorsIndex: (state, action) => {
       const authorIndexEntries = action.payload
       state.authorsIndex = {}

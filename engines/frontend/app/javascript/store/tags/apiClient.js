@@ -23,12 +23,6 @@ class ApiClient {
     }).then(list => list.map(entry => TagRef.parse(entry)))
   }
 
-  static getTagRef(id) {
-    return jQuery.ajax({
-      url: `/api/tags/ref_entries/${id}.json`
-    }).then(entry => TagRef.parse(entry))
-  }
-
   static getCategories() {
     return jQuery.ajax({
       url: '/api/tags/categories.json'
