@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import apiClient from 'store/books/apiClient'
-import SearchForm from 'widgets/navbar/components/SearchForm'
+import SearchForm from 'components/navbar/SearchForm'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const BooksNavList = () => {
@@ -26,10 +26,10 @@ const BooksNavList = () => {
 
       <div className='nav-search-list'>
         { searchEntries.map(searchEntry => (
-          (<SearchEntry
+          <SearchEntry
             entry={searchEntry}
             key={searchEntry.bookId}
-           />)
+          />
         )) }
       </div>
     </div>

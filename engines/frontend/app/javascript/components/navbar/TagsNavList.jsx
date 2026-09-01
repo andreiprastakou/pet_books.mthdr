@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useState } from 'react'
 import { NavDropdown } from 'react-bootstrap'
 
 import apiClient from 'store/tags/apiClient'
-import SearchForm from 'widgets/navbar/components/SearchForm'
+import SearchForm from 'components/navbar/SearchForm'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const TagsNavList = () => {

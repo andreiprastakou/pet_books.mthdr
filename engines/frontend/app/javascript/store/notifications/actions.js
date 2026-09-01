@@ -1,4 +1,4 @@
-import { slice } from 'widgets/notifications/slice'
+import { slice } from 'store/notifications/slice'
 
 export const {
   addMessage,

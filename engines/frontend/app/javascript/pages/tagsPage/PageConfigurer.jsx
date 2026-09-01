@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { setPageIsLoading } from 'store/metadata/actions'
 import { fetchTagsIndex } from 'store/tags/actions'
-import { prepareNavRefs } from 'widgets/navbar/actions'
+import { prepareNavRefs } from 'store/navbar/actions'
 
 const Configurer = () => {
   const dispatch = useDispatch()

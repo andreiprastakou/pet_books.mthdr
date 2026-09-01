@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 import { Form, Spinner } from 'react-bootstrap'
 
-import { addErrorMessage } from 'widgets/notifications/actions'
+import { addErrorMessage } from 'store/notifications/actions'
 import EventsContext from 'store/events/Context'
 
 const SearchForm = ({ focusEvent = null, apiSearcher }) => {

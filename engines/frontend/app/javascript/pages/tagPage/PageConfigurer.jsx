@@ -8,10 +8,11 @@ import {
   assignPerPage,
   assignSortBy,
   clearListState,
+  fetchBooks,
   setupBooksListSelection,
 } from 'store/booksList/actions'
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
-import { prepareNavRefs } from 'widgets/navbar/actions'
+import { prepareNavRefs } from 'store/navbar/actions'
 import { fetchTagsIndexEntry } from 'store/tags/actions'
 
 const Configurer = () => {
@@ -29,7 +30,7 @@ const Configurer = () => {
       dispatch(prepareNavRefs()),
       dispatch(fetchTagsIndexEntry(tagId)),
       dispatch(fetchCoverDesigns()),
-    ]).then(() => {
+    ]).then(() => dispatch(fetchBooks())).then(() => {
       dispatch(setPageIsLoading(false))
       dispatch(setupBooksListSelection())
     })

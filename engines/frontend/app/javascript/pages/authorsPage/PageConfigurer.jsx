@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setPageIsLoading } from 'store/metadata/actions'
 import { selectPage, selectPerPage, selectSortBy } from 'pages/authorsPage/selectors'
 import { fetchAuthorsIndex } from 'pages/authorsPage/actions'
-import { prepareNavRefs } from 'widgets/navbar/actions'
+import { prepareNavRefs } from 'store/navbar/actions'
 
 const Configurer = () => {
   const dispatch = useDispatch()

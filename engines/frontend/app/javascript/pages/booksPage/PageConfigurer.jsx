@@ -3,11 +3,11 @@ import { useDispatch } from 'react-redux'
 
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { setCurrentBookId } from 'store/axis/actions'
-import { prepareNavRefs } from 'widgets/navbar/actions'
+import { prepareNavRefs } from 'store/navbar/actions'
 import {
   addYears,
-  clearListInnerState as clearYears,
-} from 'widgets/booksListYearly/actions'
+  clearState as clearYears,
+} from 'store/booksYears/actions'
 import {
   assignFilter,
   assignPerPage,

@@ -3,14 +3,15 @@ import { connect } from 'react-redux'
 import { AlertList } from 'react-bs-notifier'
 import PropTypes from 'prop-types'
 
-import { removeMessage } from 'widgets/notifications/actions'
-import { selectMessages } from 'widgets/notifications/selectors'
+import { removeMessage } from 'store/notifications/actions'
+import { selectMessages } from 'store/notifications/selectors'
 
 class Notifications extends React.Component {
   static propTypes = {
     messages: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number,
-    })).isRequired
+    })).isRequired,
+    onRemoveMessage: PropTypes.func.isRequired,
   }
 
   shouldComponentUpdate(nextProps) {
@@ -19,7 +20,8 @@ class Notifications extends React.Component {
   }
 
   handleDismiss = message => {
-    removeMessage(message.id)
+    const { onRemoveMessage } = this.props
+    onRemoveMessage(message.id)
   }
 
   render() {
@@ -41,7 +43,9 @@ const mapStateToProps = state => ({
   messages: selectMessages()(state),
 })
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+  onRemoveMessage: removeMessage,
+}
 
 export default connect(
   mapStateToProps,

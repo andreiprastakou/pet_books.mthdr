@@ -7,9 +7,8 @@ import storeBooksReducer from 'store/books/slice'
 import storeCoverDesignsReducer from 'store/coverDesigns/slice'
 import storeTagsReducer from 'store/tags/slice'
 import booksListReducer from 'store/booksList/slice'
-import booksListYearlyReducer from 'widgets/booksListYearly/slice'
-import booksListYearsRefsReducer from 'widgets/booksListYearly/refsLoader/slice'
-import notificationsReducer from 'widgets/notifications/slice'
+import booksYearsReducer from 'store/booksYears/slice'
+import notificationsReducer from 'store/notifications/slice'
 
 import imageModalReducer from 'modals/imageFullShow/slice'
 
@@ -20,8 +19,7 @@ export default configureStore({
     authorsPage: authorsPageReducer,
     axis: axisReducer,
     booksList: booksListReducer,
-    booksListYearly: booksListYearlyReducer,
-    booksListYearlyRefs: booksListYearsRefsReducer,
+    booksYears: booksYearsReducer,
     imageModal: imageModalReducer,
     metadata: metadataReducer,
     notifications: notificationsReducer,
