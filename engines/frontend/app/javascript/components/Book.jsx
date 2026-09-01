@@ -10,7 +10,9 @@ import UrlStoreContext from 'store/urlStore/Context'
 
 const TITLE_LENGTH_LONG = 25
 
-const Book = ({ bookIndexEntry, showYear = false, style, scrollIntoView = true }) => {
+const Book = ({
+  bookIndexEntry, label, showYear = false, style, scrollIntoView = true,
+}) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
@@ -52,17 +54,27 @@ const Book = ({ bookIndexEntry, showYear = false, style, scrollIntoView = true }
         />
       ) }
 
-      { showYear ? (
+      { label === null && showYear ? (
         <div className='year'>
           { bookIndexEntry.year }
         </div>
-      ) : null}
+      ) : null }
+
+      { label !== null && (
+        <div
+          className='book-label'
+          title={label}
+        >
+          { label }
+        </div>
+      ) }
     </div>
   )
 }
 
 Book.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
+  label: PropTypes.string,
   scrollIntoView: PropTypes.bool,
   showYear: PropTypes.bool,
   style: PropTypes.object,

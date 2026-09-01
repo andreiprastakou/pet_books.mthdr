@@ -19,12 +19,15 @@ const BOOKS_PER_PAGE = 1000
 const PublicListsPageConfigurer = ({ bookIds }) => {
   const dispatch = useDispatch()
   const { routesReady } = useContext(UrlStoreContext)
+  const bookIdsKey = bookIds.join(',')
 
   useEffect(() => {
     if (!routesReady) return
 
     dispatch(clearListState())
-    dispatch(assignFilter({ ids: bookIds }))
+    const ids = bookIdsKey ? bookIdsKey.split(',').map(Number) : []
+
+    dispatch(assignFilter({ ids }))
     dispatch(assignPage(1))
     dispatch(assignPerPage(BOOKS_PER_PAGE))
     dispatch(assignSortBy('random'))
@@ -33,9 +36,9 @@ const PublicListsPageConfigurer = ({ bookIds }) => {
       dispatch(prepareNavRefs()),
       dispatch(fetchCoverDesigns()),
     ]).then(() => {
-      if (bookIds.length > 0) dispatch(fetchBooks())
+      if (ids.length > 0) dispatch(fetchBooks())
     })
-  }, [bookIds, routesReady])
+  }, [bookIdsKey, routesReady])
 
   return null
 }
