@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Book from 'components/Book'
+import BookToolbar from 'components/BookToolbar'
 import TagBadge from 'components/TagBadge'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { fetchCurrentBookDetails } from 'store/books/actions'
@@ -67,7 +68,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
     ? bookDetails
     : null
   const links = book ? [
-    ...(book.wikiUrl ? [{ name: 'Wikipedia', url: book.wikiUrl }] : []),
+    ...(book.wikiUrl ? [{ name: 'wikipedia', url: book.wikiUrl }] : []),
     ...(book.genericLinks || []),
   ] : []
 
@@ -123,6 +124,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
               <ButtonGroup>
                 { links.map(link => (
                   <Button
+                    className='external-link'
                     href={link.url}
                     key={link.url}
                     target='_blank'
@@ -134,6 +136,10 @@ const BookDetails = ({ header = null, showCover = true }) => {
               </ButtonGroup>
             </div>
               ) : null }
+
+          <div className='book-details-panel-toolbar'>
+            <BookToolbar />
+          </div>
         </div>
 
         { showCover && bookIndexEntry.coverDesignId !== 'standard' ? (

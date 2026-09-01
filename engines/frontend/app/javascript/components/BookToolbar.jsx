@@ -1,87 +1,43 @@
 import React, { useCallback, useContext } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Button, ButtonGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBookmark, faUserNinja } from '@fortawesome/free-solid-svg-icons'
-import { faBookmark as faBookmarkEmpty, faCalendarAlt, faUser } from '@fortawesome/free-regular-svg-icons'
-import { faGoodreadsG } from '@fortawesome/free-brands-svg-icons'
-import PropTypes from 'prop-types'
+import { faBookmark as faBookmarkEmpty, faUser } from '@fortawesome/free-regular-svg-icons'
 
-import {
-  selectTagBookmark,
-  selectTagRead,
-  selectTagNames,
-} from 'store/tags/selectors'
-
-import { addTagToBook, removeTagFromBook } from 'store/books/actions'
+import { addSuccessMessage } from 'store/notifications/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const BookToolbar = props => {
-  const { book } = props
+const BookToolbar = () => {
   const dispatch = useDispatch()
-  const { routesReady,
-    routes: { booksPagePath } } = useContext(UrlStoreContext)
-  const tagNames = useSelector(selectTagNames(book.tagIds))
+  const { routesReady } = useContext(UrlStoreContext)
 
-  const tagBookmark = useSelector(selectTagBookmark())
-  const isBookmarked = tagNames.includes(tagBookmark)
-  const tagRead = useSelector(selectTagRead())
-  const isRead = tagNames.includes(tagRead)
+  const isBookmarked = false
+  const isRead = false
 
-  const handleClickUnbookmark = useCallback(() => {
-    dispatch(removeTagFromBook(book.id, tagBookmark))
-  }, [book.id, tagBookmark])
-
-  const handleClickBookmark = useCallback(() => {
-    dispatch(addTagToBook(book.id, tagBookmark))
-  }, [book.id, tagBookmark])
-
-  const handleClickMarkAsNotRead = useCallback(() => {
-    dispatch(removeTagFromBook(book.id, tagRead))
-  }, [book.id, tagRead])
-
-  const handleClickMarkAsRead = useCallback(() => {
-    dispatch(addTagToBook(book.id, tagRead))
-  }, [book.id, tagRead])
+  const handleClick = useCallback(() => {
+    dispatch(addSuccessMessage('Dev note: not implemented!'))
+  }, [dispatch])
 
   if (!routesReady) return null
 
   return (
     <div>
       <ButtonGroup className='book-toolbar'>
-        { book.goodreadsUrl ? (
-          <Button
-            href={book.goodreadsUrl}
-            target='_blank'
-            title='See info...'
-            variant='outline-info'
-          >
-            <FontAwesomeIcon icon={faGoodreadsG} />
-          </Button>
-        ) : null }
-
-        <Button
-          href={booksPagePath({ bookId: book.id })}
-          title='See what was then...'
-          variant='outline-info'
-        >
-          <FontAwesomeIcon icon={faCalendarAlt} />
-        </Button>
-
         { isBookmarked ?
           <Button
-            href='#'
-            onClick={handleClickUnbookmark}
+            onClick={handleClick}
             title='Remove bookmark'
+            type='button'
             variant='outline-warning'
           >
             <FontAwesomeIcon icon={faBookmark} />
           </Button>
           :
           <Button
-            href='#'
-            onClick={handleClickBookmark}
+            onClick={handleClick}
             title='Bookmark'
+            type='button'
             variant='outline-warning'
           >
             <FontAwesomeIcon icon={faBookmarkEmpty} />
@@ -89,18 +45,18 @@ const BookToolbar = props => {
 
         { isRead ?
           <Button
-            href='#'
-            onClick={handleClickMarkAsNotRead}
+            onClick={handleClick}
             title='Mark as not read'
+            type='button'
             variant='outline-warning'
           >
             <FontAwesomeIcon icon={faUserNinja} />
           </Button>
           :
           <Button
-            href='#'
-            onClick={handleClickMarkAsRead}
+            onClick={handleClick}
             title='Mark as read'
+            type='button'
             variant='outline-warning'
           >
             <FontAwesomeIcon icon={faUser} />
@@ -110,9 +66,4 @@ const BookToolbar = props => {
     </div>
   )
 }
-
-BookToolbar.propTypes = {
-  book: PropTypes.object.isRequired,
-}
-
 export default BookToolbar
