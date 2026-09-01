@@ -11,16 +11,23 @@ const SearchForm = ({ focusEvent = null, apiSearcher }) => {
   const [searchKey, setSearchKey] = useState('')
   const [searchInProgress, setSearchInProgress] = useState(false)
   const searchRef = useRef()
+  const focusTimeoutRef = useRef()
   const dispatch = useDispatch()
 
-  const setFocus = () => setTimeout(() => searchRef.current.focus(), 100)
+  const setFocus = useCallback(() => {
+    clearTimeout(focusTimeoutRef.current)
+    focusTimeoutRef.current = setTimeout(() => searchRef.current?.focus(), 100)
+  }, [])
 
   useEffect(() => {
     setFocus()
-    subscribeToEvent(focusEvent, () => {
-      setFocus()
-    })
-  }, [])
+    const unsubscribe = subscribeToEvent(focusEvent, setFocus)
+
+    return () => {
+      clearTimeout(focusTimeoutRef.current)
+      unsubscribe()
+    }
+  }, [focusEvent, setFocus, subscribeToEvent])
 
   const performSearch = useCallback(() => {
     const currentKey = searchKey
