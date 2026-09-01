@@ -24,7 +24,7 @@ import {
   targetSelection,
 } from 'utils/paginatedGridNavigation'
 
-export const WIDGET_ID = 'books-list-covers'
+export const PANEL_ID = 'books-list-covers'
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 const BooksListCovers = ({ header = null, showControls = true }) => {
@@ -37,23 +37,23 @@ const BooksListCovers = ({ header = null, showControls = true }) => {
   const ref = useRef(null)
   const hasActivated = useRef(false)
   const {
-    pageState: { activeWidgetId, registeredWidgetIds },
+    pageState: { activePanelId, registeredPanelIds },
     actions: {
-      activateWidget,
-      deactivateWidget,
-      registerWidget,
+      activatePanel,
+      deactivatePanel,
+      registerPanel,
       switchToIndexPage,
-      unregisterWidget,
+      unregisterPanel,
     },
   } = useContext(UrlStoreContext)
-  const isActive = activeWidgetId === WIDGET_ID
+  const isActive = activePanelId === PANEL_ID
   const booksKey = bookIds.join(',')
   const previousBooksKey = useRef(booksKey)
   const pendingPageSelection = useRef(null)
 
   useEffect(() => {
-    registerWidget(WIDGET_ID)
-    return () => unregisterWidget(WIDGET_ID)
+    registerPanel(PANEL_ID)
+    return () => unregisterPanel(PANEL_ID)
   }, [])
 
   useEffect(() => {
@@ -70,15 +70,15 @@ const BooksListCovers = ({ header = null, showControls = true }) => {
   }, [bookIds, booksKey, currentBookId, dispatch, page])
 
   useEffect(() => {
-    if (hasActivated.current || !registeredWidgetIds.includes(WIDGET_ID)) return
+    if (hasActivated.current || !registeredPanelIds.includes(PANEL_ID)) return
     hasActivated.current = true
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
     ref.current?.focus()
-  }, [activateWidget, registeredWidgetIds])
+  }, [activatePanel, registeredPanelIds])
 
   useEffect(() => {
     const handleOutsideInteraction = event => {
-      if (!ref.current?.contains(event.target)) deactivateWidget(WIDGET_ID)
+      if (!ref.current?.contains(event.target)) deactivatePanel(PANEL_ID)
     }
 
     document.addEventListener('focusin', handleOutsideInteraction)
@@ -90,13 +90,13 @@ const BooksListCovers = ({ header = null, showControls = true }) => {
   }, [])
 
   const handleClick = useCallback(event => {
-    activateWidget(WIDGET_ID)
+    activatePanel(PANEL_ID)
     const clickedInteractiveControl = event.target.closest(
       'button, a, input, select, textarea, [role="menuitem"]'
     )
     if (!clickedInteractiveControl) ref.current?.focus()
-  }, [activateWidget])
-  const handleFocus = useCallback(() => activateWidget(WIDGET_ID), [activateWidget])
+  }, [activatePanel])
+  const handleFocus = useCallback(() => activatePanel(PANEL_ID), [activatePanel])
 
   const handleKeyDown = useCallback(event => {
     const type = keyType(event.key)
