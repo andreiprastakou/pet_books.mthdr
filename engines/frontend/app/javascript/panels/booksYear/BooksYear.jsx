@@ -245,7 +245,7 @@ const BooksYear = ({ title = defaultTitle }) => {
         </div>
       </Card.Header>
 
-      <Card.Body className='all-books-list-body'>
+      <Card.Body className='panel--body'>
         <div
           className='all-books-list'
           ref={contentRef}

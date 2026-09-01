@@ -1,19 +1,4 @@
 .lists-page {
-  .panel--list-intro .panel--header {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .panel--list-intro .panel--header .form-select {
-    font-size: 12px;
-    width: 90px;
-  }
-
-  .list-intro-list-links {
-    margin-top: 10px;
-  }
-
   .panel--books-list-covers {
     height: calc(100vh - 56px - 235px);
   }

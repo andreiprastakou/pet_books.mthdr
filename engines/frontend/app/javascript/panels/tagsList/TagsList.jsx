@@ -88,7 +88,7 @@ const TagsList = () => {
         </Dropdown>
       </Card.Header>
 
-      <Card.Body className='tags-list-widget-body'>
+      <Card.Body className='panel--body'>
         <div className='tags-index-categories'>
           { categories.map(category => {
             const tags = filteredTagsByCategory[category.id]

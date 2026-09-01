@@ -83,7 +83,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
         />
       </Card.Header>
 
-      <Card.Body className='book-details-panel-body'>
+      <Card.Body className='panel--body'>
         <div className='book-details-panel-content'>
           <div className='book-details-panel-heading'>
             <h2>
