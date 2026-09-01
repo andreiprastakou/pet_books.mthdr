@@ -6,13 +6,15 @@ import { setCurrentAuthorId } from 'store/axis/actions'
 import { setPageIsLoading } from 'store/metadata/actions'
 import AuthorPage from 'pages/authorPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
+import BooksListConfigurer from 'store/urlStore/BooksListConfigurer'
 
 const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('authorPagePath', (id, { bookId } = {}) =>
+    const removeRoute = addRoute('authorPagePath', (id, { bookId } = {}) =>
       buildPath({ path: `/authors/${id}`, params: { 'book_id': bookId } }))
+    return removeRoute
   }, [])
   return null
 }
@@ -21,6 +23,8 @@ const path = '/authors/:authorId'
 
 const Renderer = () => (
   <>
+    <BooksListConfigurer />
+
     <LocalStoreConfigurer />
 
     <AuthorPage />
@@ -39,15 +43,21 @@ const LocalStoreConfigurer = () => {
   } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addUrlState('authorId', () => parseInt(paramsRef.current.authorId))
+    const removeAuthorState = addUrlState('authorId', () => parseInt(paramsRef.current.authorId))
     /* eslint-disable camelcase */
-    addUrlState('sortBy', url => url.queryParameter('sort_by'))
-    addUrlAction('switchToIndexSort', sortBy =>
+    const removeSortState = addUrlState('sortBy', url => url.queryParameter('sort_by'))
+    const removeSortAction = addUrlAction('switchToIndexSort', sortBy =>
       patch(buildRelativePath({ params: { page: 1, sort_by: sortBy } })))
     /* eslint-enable camelcase */
 
     dispatch(setPageIsLoading(true))
     dispatch(setCurrentAuthorId(authorId))
+
+    return () => {
+      removeAuthorState()
+      removeSortState()
+      removeSortAction()
+    }
   }, [authorId])
 
   return null

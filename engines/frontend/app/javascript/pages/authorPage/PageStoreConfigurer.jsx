@@ -11,7 +11,7 @@ import {
   clearListState,
   fetchBooks,
   switchToFirstBook,
-} from 'widgets/booksListLinear/actions'
+} from 'store/booksList/actions'
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'widgets/navbar/actions'
 import UrlStoreContext from 'store/urlStore/Context'

@@ -2,13 +2,17 @@ import React, { useContext, useEffect } from 'react'
 
 import BooksPage from 'pages/booksPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
-import ListUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
+import BooksListConfigurer from 'store/urlStore/BooksListConfigurer'
 
 const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('booksPagePath', ({ bookId } = {}) => buildPath({ path: '/books', params: { 'book_id': bookId } }))
+    const removeRoute = addRoute(
+      'booksPagePath',
+      ({ bookId } = {}) => buildPath({ path: '/books', params: { 'book_id': bookId } })
+    )
+    return removeRoute
   }, [])
   return null
 }
@@ -17,7 +21,7 @@ const path = '/books'
 
 const Renderer = () => (
   <>
-    <ListUrlStoreConfigurer />
+    <BooksListConfigurer />
 
     <BooksPage />
   </>

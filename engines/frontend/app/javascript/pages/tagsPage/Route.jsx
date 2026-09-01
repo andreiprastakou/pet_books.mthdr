@@ -7,7 +7,8 @@ const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('tagsPagePath', () => buildPath({ path: '/tags/' }))
+    const removeRoute = addRoute('tagsPagePath', () => buildPath({ path: '/tags/' }))
+    return removeRoute
   }, [])
 
   return null

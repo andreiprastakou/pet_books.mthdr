@@ -1,4 +1,4 @@
-const localState = state => state.booksListLinear
+const localState = state => state.booksList
 
 export const selectBookIds = () => state => localState(state).bookIds
 

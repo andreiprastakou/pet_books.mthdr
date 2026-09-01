@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import ExternalTextLink from 'components/ExternalTextLink'
 import Layout from 'pages/Layout'
 import BookDetails from 'panels/bookDetails/BookDetails'
-import TagBooksList from 'panels/tagBooksList/TagBooksList'
+import BooksListCovers from 'panels/BooksListCovers'
 import PageConfigurer from 'pages/listsPage/PageConfigurer'
 import apiClient from 'store/publicLists/apiClient'
 
@@ -109,8 +109,7 @@ const ListsPage = () => {
             setSelectedYear={setSelectedYear}
           />
 
-          <TagBooksList
-            configure={false}
+          <BooksListCovers
             header='Noted Works'
             showControls={false}
           />

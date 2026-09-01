@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
-import { selectBookIds } from 'widgets/booksListLinear/selectors'
+import { selectBookIds } from 'store/booksList/selectors'
 import BookSpine from 'panels/booksStack/BookSpine'
 
 const BooksSpineStack = ({ isActive }) => {

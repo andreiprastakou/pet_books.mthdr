@@ -16,7 +16,7 @@ import {
   assignPage,
   fetchBooks,
   switchToFirstBook,
-} from 'widgets/booksListLinear/actions'
+} from 'store/booksList/actions'
 import apiClient from 'store/books/apiClient'
 import { setPageIsLoading } from 'store/metadata/actions'
 import UrlStoreContext from 'store/urlStore/Context'

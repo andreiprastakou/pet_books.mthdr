@@ -4,7 +4,6 @@
 @import 'frontend/palette';
 @import 'frontend/books-list-linear';
 @import 'frontend/all-books-list';
-@import 'frontend/tag-books-list';
 @import 'frontend/lists';
 @import 'frontend/navbar';
 @import 'frontend/panels';
@@ -19,6 +18,7 @@
 @import 'frontend/panels/author-card';
 @import 'frontend/panels/authors-list';
 @import 'frontend/panels/book-details';
+@import 'frontend/panels/books-list-covers';
 @import 'frontend/panels/books-stack';
 
 body {
