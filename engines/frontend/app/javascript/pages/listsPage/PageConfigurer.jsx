@@ -16,7 +16,7 @@ import UrlStoreContext from 'store/urlStore/Context'
 
 const BOOKS_PER_PAGE = 1000
 
-const ListsPageConfigurer = ({ bookIds }) => {
+const PublicListsPageConfigurer = ({ bookIds }) => {
   const dispatch = useDispatch()
   const { routesReady } = useContext(UrlStoreContext)
 
@@ -32,14 +32,16 @@ const ListsPageConfigurer = ({ bookIds }) => {
     Promise.all([
       dispatch(prepareNavRefs()),
       dispatch(fetchCoverDesigns()),
-    ]).then(() => dispatch(fetchBooks()))
+    ]).then(() => {
+      if (bookIds.length > 0) dispatch(fetchBooks())
+    })
   }, [bookIds, routesReady])
 
   return null
 }
 
-ListsPageConfigurer.propTypes = {
+PublicListsPageConfigurer.propTypes = {
   bookIds: PropTypes.arrayOf(PropTypes.number).isRequired,
 }
 
-export default ListsPageConfigurer
+export default PublicListsPageConfigurer

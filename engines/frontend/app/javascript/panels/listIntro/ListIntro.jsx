@@ -4,7 +4,8 @@ import PropTypes from 'prop-types'
 
 import ExternalTextLink from 'components/ExternalTextLink'
 
-const ListIntro = ({ listType, selectedYear, setSelectedYear }) => {
+const PublicListIntro = ({ listType, selectedYear, setSelectedYear }) => {
+  const publicLists = listType.public_lists || []
   const typeLinks = [
     ...(listType.wiki_url ? [{ name: 'wikipedia', url: listType.wiki_url }] : []),
     ...(listType.generic_links || []),
@@ -16,26 +17,28 @@ const ListIntro = ({ listType, selectedYear, setSelectedYear }) => {
   }, [setSelectedYear])
 
   return (
-    <Card className='panel--list-intro panel--widget'>
+    <Card className='panel--public-list-intro panel--widget'>
       <Card.Header className='panel--header'>
         <span>
-          { `Lists/ ${listType.name}` }
+          { `Public lists/ ${listType.name}` }
         </span>
 
-        <Form.Select
-          aria-label='List year'
-          onChange={handleYearChange}
-          value={selectedYear}
-        >
-          { listType.public_lists.map(list => (
-            <option
-              key={list.year}
-              value={list.year}
-            >
-              { list.year }
-            </option>
-          )) }
-        </Form.Select>
+        { selectedYear === null ? null : (
+          <Form.Select
+            aria-label='List year'
+            onChange={handleYearChange}
+            value={selectedYear}
+          >
+            { publicLists.map(list => (
+              <option
+                key={list.year}
+                value={list.year}
+              >
+                { list.year }
+              </option>
+            )) }
+          </Form.Select>
+        ) }
       </Card.Header>
 
       <Card.Body className='panel--body'>
@@ -50,13 +53,13 @@ const ListIntro = ({ listType, selectedYear, setSelectedYear }) => {
         </ButtonGroup>
 
         { listLinks.length > 0 ? (
-          <div className='list-intro-list-links'>
+          <div className='public-list-intro-list-links'>
             <ButtonGroup>
               { listLinks.map(link => (
                 <ExternalTextLink
                   href={link.url}
                   key={link.url}
-                  text={link.name}
+                  text={`${selectedYear} ${link.name}`}
                 />
               )) }
             </ButtonGroup>
@@ -67,10 +70,10 @@ const ListIntro = ({ listType, selectedYear, setSelectedYear }) => {
   )
 }
 
-ListIntro.propTypes = {
+PublicListIntro.propTypes = {
   listType: PropTypes.object.isRequired,
-  selectedYear: PropTypes.number.isRequired,
+  selectedYear: PropTypes.number,
   setSelectedYear: PropTypes.func.isRequired,
 }
 
-export default ListIntro
+export default PublicListIntro

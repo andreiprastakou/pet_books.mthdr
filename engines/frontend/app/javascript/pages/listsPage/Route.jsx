@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 
-import ListsPage from 'pages/listsPage/Page'
+import PublicListsPage from 'pages/listsPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
 import BooksListConfigurer from 'store/urlStore/BooksListConfigurer'
 
@@ -21,7 +21,7 @@ const Renderer = () => (
   <>
     <BooksListConfigurer />
 
-    <ListsPage />
+    <PublicListsPage />
   </>
 )
 

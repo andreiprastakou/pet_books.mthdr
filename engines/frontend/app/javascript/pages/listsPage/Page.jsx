@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { Col } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import Layout from 'pages/Layout'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import BooksListCovers from 'panels/BooksListCovers'
-import ListIntro from 'panels/listIntro/ListIntro'
+import PublicListIntro from 'panels/listIntro/ListIntro'
 import PageConfigurer from 'pages/listsPage/PageConfigurer'
+import { setCurrentBookId } from 'store/axis/actions'
+import { setRequestedBookId } from 'store/books/actions'
 import apiClient from 'store/publicLists/apiClient'
 
-const ListsPage = () => {
+const PublicListsPage = () => {
+  const dispatch = useDispatch()
   const { id } = useParams()
   const [listType, setListType] = useState(null)
   const [selectedYear, setSelectedYear] = useState(null)
@@ -19,30 +23,40 @@ const ListsPage = () => {
     setSelectedYear(null)
     apiClient.getType(id).then(data => {
       setListType(data)
-      setSelectedYear(data.public_lists[0]?.year || null)
+      setSelectedYear(data.public_lists?.[0]?.year ?? null)
     })
   }, [id])
 
-  if (!listType || selectedYear === null) return 'Wait...'
-
-  const selectedList = listType.public_lists.find(list => list.year === selectedYear)
+  const selectedList = listType?.public_lists?.find(list => list.year === selectedYear)
   const bookIds = selectedList?.book_ids || []
+
+  useEffect(() => {
+    if (selectedYear === null || bookIds.length === 0) {
+      dispatch(setCurrentBookId(null))
+      dispatch(setRequestedBookId(null))
+    }
+  }, [bookIds.length, dispatch, selectedYear])
+
+  if (!listType) return 'Wait...'
+
   return (
     <>
-      <PageConfigurer bookIds={bookIds} />
+      { selectedYear === null ? null : <PageConfigurer bookIds={bookIds} /> }
 
-      <Layout classes='panels-page lists-page'>
+      <Layout classes='panels-page public-lists-page'>
         <Col xs={8}>
-          <ListIntro
+          <PublicListIntro
             listType={listType}
             selectedYear={selectedYear}
             setSelectedYear={setSelectedYear}
           />
 
-          <BooksListCovers
-            header='Noted Works'
-            showControls={false}
-          />
+          { selectedYear === null ? null : (
+            <BooksListCovers
+              header='Noted Works'
+              showControls={false}
+            />
+          ) }
         </Col>
 
         <Col xs={4}>
@@ -58,4 +72,4 @@ const ListsPage = () => {
   )
 }
 
-export default ListsPage
+export default PublicListsPage
