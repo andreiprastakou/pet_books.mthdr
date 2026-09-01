@@ -1,30 +1,52 @@
 import React from 'react'
 import { Col } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 import Layout from 'pages/Layout'
-import TagBooksList from 'panels/tagBooksList/TagBooksList'
+import BooksListCovers from 'panels/BooksListCovers'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import PageConfigurer from 'pages/tagPage/PageConfigurer'
+import { selectCurrentTagIndexEntry } from 'store/tags/selectors'
 
-const TagPage = () => (
-  <>
-    <PageConfigurer />
+const TagPage = () => {
+  const tag = useSelector(selectCurrentTagIndexEntry())
 
-    <Layout classes='panels-page tag-page'>
-      <Col xs={8}>
-        <TagBooksList />
-      </Col>
+  return (
+    <>
+      <PageConfigurer />
 
-      <Col xs={4}>
-        <div className='tag-selected-book'>
-          <BookDetails
-            header='Selected book'
-            showCover={false}
+      <Layout classes='panels-page tag-page'>
+        <Col xs={8}>
+          <BooksListCovers
+            header={(
+              <>
+                <a href='/tags'>
+                  { 'Tags' }
+                </a>
+
+                <span className='panel-header-bread-separator'>
+                  { '/' }
+                </span>
+
+                <span title={tag?.name}>
+                  { `#${tag?.name || ''}` }
+                </span>
+              </>
+            )}
           />
-        </div>
-      </Col>
-    </Layout>
-  </>
-)
+        </Col>
+
+        <Col xs={4}>
+          <div className='tag-selected-book'>
+            <BookDetails
+              header='Selected book'
+              showCover={false}
+            />
+          </div>
+        </Col>
+      </Layout>
+    </>
+  )
+}
 
 export default TagPage

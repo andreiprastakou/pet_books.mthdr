@@ -4,18 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { selectCurrentBookId } from 'store/axis/selectors'
-import { selectCurrentTagIndexEntry } from 'store/tags/selectors'
+import BookIndexEntry from 'components/books/BookIndexEntry'
 import {
   selectBookIds,
   selectBooksTotal,
   selectPage,
   selectPerPage,
   selectSortBy,
-} from 'widgets/booksListLinear/selectors'
+} from 'store/booksList/selectors'
 import { setRequestedBookId } from 'store/books/actions'
-import LocalUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
-import WidgetConfigurer from 'widgets/booksListLinear/WidgetConfigurer'
-import BookIndexEntry from 'widgets/booksListLinear/components/BookIndexEntry'
 import Pagination from 'components/Pagination'
 import SortingDropdown from 'components/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -27,17 +24,16 @@ import {
   targetSelection,
 } from 'utils/paginatedGridNavigation'
 
-export const WIDGET_ID = 'tag-books-list'
+export const WIDGET_ID = 'books-list-covers'
 
 // eslint-disable-next-line max-lines-per-function, max-statements
-const TagBooksList = ({ configure = true, header = null, showControls = true }) => {
+const BooksListCovers = ({ header = null, showControls = true }) => {
   const dispatch = useDispatch()
   const bookIds = useSelector(selectBookIds())
   const totalCount = useSelector(selectBooksTotal())
   const page = useSelector(selectPage())
   const perPage = useSelector(selectPerPage())
   const currentBookId = useSelector(selectCurrentBookId())
-  const tag = useSelector(selectCurrentTagIndexEntry())
   const ref = useRef(null)
   const hasActivated = useRef(false)
   const {
@@ -142,88 +138,67 @@ const TagBooksList = ({ configure = true, header = null, showControls = true }) 
     .map(index => bookIds.slice(index * GRID_ROW_SIZE, (index + 1) * GRID_ROW_SIZE))
 
   return (
-    <>
-      { configure ? <LocalUrlStoreConfigurer /> : null }
+    <Card
+      aria-label='Books'
+      className={`panel--books-list-covers panel--widget ${isActive ? 'active' : ''}`}
+      onClick={handleClick}
+      onFocusCapture={handleFocus}
+      onKeyDown={handleKeyDown}
+      ref={ref}
+      tabIndex={0}
+    >
+      <Card.Header className='panel--header'>
+        <span>
+          { header }
+        </span>
 
-      { configure ? <WidgetConfigurer selectFirstBook={false} /> : null }
-
-      <Card
-        aria-label='Books'
-        className={`tag-books-list-widget panel--widget ${isActive ? 'active' : ''}`}
-        onClick={handleClick}
-        onFocusCapture={handleFocus}
-        onKeyDown={handleKeyDown}
-        ref={ref}
-        tabIndex={0}
-      >
-        <Card.Header className='panel--header'>
-          <span>
-            { header || (
-              <>
-                <a href='/tags'>
-                  { 'Tags' }
-                </a>
-
-                <span className='tag-books-list-widget-separator'>
-                  { '/' }
-                </span>
-
-                <span title={tag?.name}>
-                  { `#${tag?.name || ''}` }
-                </span>
-              </>
-            ) }
+        { totalCount > 0 ? (
+          <span className='panel-header-counter'>
+            { totalCount }
           </span>
-
-          { totalCount > 0 ? (
-            <span className='tag-books-list-count-badge'>
-              { totalCount }
-            </span>
           ) : null }
 
-          { showControls ? (
-            <>
-              <SortingDropdown
-                selectSortBy={selectSortBy}
-                sortOptions={['popularity', 'year', 'random', 'name']}
-              />
+        { showControls ? (
+          <>
+            <SortingDropdown
+              selectSortBy={selectSortBy}
+              sortOptions={['popularity', 'year', 'random', 'name']}
+            />
 
-              <Pagination
-                selectPage={selectPage}
-                selectPerPage={selectPerPage}
-                selectTotal={selectBooksTotal}
-              />
-            </>
+            <Pagination
+              selectPage={selectPage}
+              selectPerPage={selectPerPage}
+              selectTotal={selectBooksTotal}
+            />
+          </>
           ) : null }
-        </Card.Header>
+      </Card.Header>
 
-        <Card.Body className='tag-books-list-widget-body'>
-          <div className='tag-books-list'>
-            { rows.map(row => (
-              <div
-                className='tag-books-list-row'
-                key={row.join('-')}
-              >
-                { row.map(bookId => (
-                  <BookIndexEntry
-                    id={bookId}
-                    key={bookId}
-                    showYear
-                  />
+      <Card.Body className='panel--body'>
+        <div className='books-list'>
+          { rows.map(row => (
+            <div
+              className='books-list-row'
+              key={row.join('-')}
+            >
+              { row.map(bookId => (
+                <BookIndexEntry
+                  id={bookId}
+                  key={bookId}
+                  showYear
+                />
                 )) }
-              </div>
+            </div>
             )) }
-          </div>
-        </Card.Body>
-      </Card>
-    </>
+        </div>
+      </Card.Body>
+    </Card>
   )
 }
 
-TagBooksList.propTypes = {
-  configure: PropTypes.bool,
+BooksListCovers.propTypes = {
   header: PropTypes.node,
   showControls: PropTypes.bool,
 }
 
-export default TagBooksList
+export default BooksListCovers

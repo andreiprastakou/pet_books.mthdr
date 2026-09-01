@@ -7,22 +7,21 @@ import { useDispatch, useSelector } from 'react-redux'
 
 import YearControl from 'panels/booksYear/YearControl'
 import { selectCurrentBookId } from 'store/axis/selectors'
+import BookIndexEntry from 'components/books/BookIndexEntry'
 import {
   fetchBooks,
   assignFilter,
   assignPage,
   clearListState,
   switchToFirstBook,
-} from 'widgets/booksListLinear/actions'
+} from 'store/booksList/actions'
 import { setRequestedBookId } from 'store/books/actions'
 import {
   selectBookIds,
   selectBooksTotal,
   selectFilter,
-} from 'widgets/booksListLinear/selectors'
+} from 'store/booksList/selectors'
 import { selectYears } from 'widgets/booksListYearly/selectors'
-import LocalUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
-import BookIndexEntry from 'widgets/booksListLinear/components/BookIndexEntry'
 import UrlStoreContext from 'store/urlStore/Context'
 
 export const WIDGET_ID = 'books-list-yearly'
@@ -219,54 +218,50 @@ const BooksYear = ({ title = defaultTitle }) => {
   }, [coordinatesById, currentBookId, dispatch, idsByCoordinate, selectedCoordinate])
 
   return (
-    <>
-      <LocalUrlStoreConfigurer />
+    <Card
+      aria-label='All books'
+      className={`panel--books-year panel--widget ${isActive ? 'active' : ''}`}
+      onClick={handleClick}
+      onFocusCapture={handleFocus}
+      onKeyDown={handleKeyDown}
+      ref={ref}
+      tabIndex={0}
+    >
+      <Card.Header className='panel--header'>
+        <span className='all-books-count-badge'>
+          { totalCount }
+        </span>
 
-      <Card
-        aria-label='All books'
-        className={`panel--books-year panel--widget ${isActive ? 'active' : ''}`}
-        onClick={handleClick}
-        onFocusCapture={handleFocus}
-        onKeyDown={handleKeyDown}
-        ref={ref}
-        tabIndex={0}
-      >
-        <Card.Header className='panel--header'>
-          <span className='all-books-count-badge'>
-            { totalCount }
-          </span>
+        <span>
+          { title(selectedYear) }
+        </span>
 
-          <span>
-            { title(selectedYear) }
-          </span>
+        <div>
+          <YearControl
+            onChange={selectYear}
+            value={selectedYear}
+            years={years}
+          />
+        </div>
+      </Card.Header>
 
-          <div>
-            <YearControl
-              onChange={selectYear}
-              value={selectedYear}
-              years={years}
+      <Card.Body className='all-books-list-body'>
+        <div
+          className='all-books-list'
+          ref={contentRef}
+        >
+          {visibleBookIds.map(bookId => (
+            <BookIndexEntry
+              id={bookId}
+              key={bookId}
+              scrollIntoView={false}
+              showYear={false}
+              style={bookPositions[bookId]}
             />
-          </div>
-        </Card.Header>
-
-        <Card.Body className='all-books-list-body'>
-          <div
-            className='all-books-list'
-            ref={contentRef}
-          >
-            {visibleBookIds.map(bookId => (
-              <BookIndexEntry
-                id={bookId}
-                key={bookId}
-                scrollIntoView={false}
-                showYear={false}
-                style={bookPositions[bookId]}
-              />
             ))}
-          </div>
-        </Card.Body>
-      </Card>
-    </>
+        </div>
+      </Card.Body>
+    </Card>
   )
 }
 

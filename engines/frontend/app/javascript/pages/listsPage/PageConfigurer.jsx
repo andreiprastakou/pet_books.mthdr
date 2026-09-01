@@ -11,7 +11,7 @@ import {
   assignSortBy,
   clearListState,
   fetchBooks,
-} from 'widgets/booksListLinear/actions'
+} from 'store/booksList/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const BOOKS_PER_PAGE = 1000

@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react'
 import { useSelector } from 'react-redux'
 import { Dropdown } from 'react-bootstrap'
 
-import { selectSortBy } from 'widgets/booksListLinear/selectors'
+import { selectSortBy } from 'store/booksList/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const SORT_OPTIONS = ['popularity', 'year', 'random', 'name']

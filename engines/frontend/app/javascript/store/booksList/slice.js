@@ -5,7 +5,7 @@ const DEFAULT_PAGE = 1
 const DEFAULT_PER_PAGE = 16
 
 export const slice = createSlice({
-  name: 'booksListLinear',
+  name: 'booksList',
   initialState: {
     bookIds: [],
     booksTotal: 0,

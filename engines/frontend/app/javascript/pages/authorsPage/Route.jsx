@@ -10,7 +10,8 @@ const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('authorsPagePath', () => buildPath({ path: '/authors' }))
+    const removeRoute = addRoute('authorsPagePath', () => buildPath({ path: '/authors' }))
+    return removeRoute
   }, [])
   return null
 }
@@ -36,27 +37,59 @@ const LocalStoreConfigurer = () => {
 
   /* eslint-disable camelcase */
   useEffect(() => {
-    addRoute('indexPaginationPath', (page, perPage) => buildRelativePath({ params: { page, per_page: perPage } }))
+    const removePaginationRoute = addRoute(
+      'indexPaginationPath',
+      (page, perPage) => buildRelativePath({ params: { page, per_page: perPage } })
+    )
 
-    addUrlState('authorId', url => parseInt(url.queryParameter('author_id')))
+    const removeAuthorState = addUrlState('authorId', url => parseInt(url.queryParameter('author_id')))
 
-    addUrlState('sortOrder', url => url.queryParameter('sort_order'))
+    const removeSortOrderState = addUrlState('sortOrder', url => url.queryParameter('sort_order'))
 
-    addUrlState('page', url => parseInt(url.queryParameter('page')) || null)
+    const removePageState = addUrlState('page', url => parseInt(url.queryParameter('page')) || null)
 
-    addUrlState('perPage', url => parseInt(url.queryParameter('per_page')) || null)
+    const removePerPageState = addUrlState('perPage', url => parseInt(url.queryParameter('per_page')) || null)
 
-    addUrlState('sortBy', url => url.queryParameter('sort_by'))
+    const removeSortState = addUrlState('sortBy', url => url.queryParameter('sort_by'))
 
-    addUrlAction('changeSortOrder', order => patch(buildPath({ params: { 'sort_order': order } })))
+    const removeChangeSortAction = addUrlAction(
+      'changeSortOrder',
+      order => patch(buildPath({ params: { 'sort_order': order } }))
+    )
 
-    addUrlAction('showAuthor', id => patch(buildRelativePath({ params: { 'author_id': id } })))
+    const removeShowAuthorAction = addUrlAction(
+      'showAuthor',
+      id => patch(buildRelativePath({ params: { 'author_id': id } }))
+    )
 
-    addUrlAction('removeAuthorWidget', () => patch(buildPath({ params: { 'author_id': null } })))
+    const removeAuthorWidgetAction = addUrlAction(
+      'removeAuthorWidget',
+      () => patch(buildPath({ params: { 'author_id': null } }))
+    )
 
-    addUrlAction('switchToIndexPage', (page, perPage) => patch(getRoutes().indexPaginationPath(page, perPage)))
+    const removePageAction = addUrlAction(
+      'switchToIndexPage',
+      (page, perPage) => patch(getRoutes().indexPaginationPath(page, perPage))
+    )
 
-    addUrlAction('switchToIndexSort', sortBy => patch(buildRelativePath({ params: { page: 1, sort_by: sortBy } })))
+    const removeSortAction = addUrlAction(
+      'switchToIndexSort',
+      sortBy => patch(buildRelativePath({ params: { page: 1, sort_by: sortBy } }))
+    )
+
+    return () => {
+      removePaginationRoute()
+      removeAuthorState()
+      removeSortOrderState()
+      removePageState()
+      removePerPageState()
+      removeSortState()
+      removeChangeSortAction()
+      removeShowAuthorAction()
+      removeAuthorWidgetAction()
+      removePageAction()
+      removeSortAction()
+    }
   }, [])
   /* eslint-enable camelcase */
 

@@ -53,9 +53,33 @@ const Provider = ({ children }) => {
   const currentActions = {
     ...actionsRef.current,
     ...widgetFocusActions,
-    addRoute: (name, builder) => setRoutes(value => ({ ...value, [name]: builder })),
-    addUrlAction: (name, action) => setUrlActions(value => ({ ...value, [name]: action })),
-    addUrlState: (name, definer) => setStateDefiners(value => ({ ...value, [name]: definer })),
+    addRoute: (name, builder) => {
+      setRoutes(value => ({ ...value, [name]: builder }))
+      return () => setRoutes(value => {
+        if (value[name] !== builder) return value
+        const remaining = { ...value }
+        delete remaining[name]
+        return remaining
+      })
+    },
+    addUrlAction: (name, action) => {
+      setUrlActions(value => ({ ...value, [name]: action }))
+      return () => setUrlActions(value => {
+        if (value[name] !== action) return value
+        const remaining = { ...value }
+        delete remaining[name]
+        return remaining
+      })
+    },
+    addUrlState: (name, definer) => {
+      setStateDefiners(value => ({ ...value, [name]: definer }))
+      return () => setStateDefiners(value => {
+        if (value[name] !== definer) return value
+        const remaining = { ...value }
+        delete remaining[name]
+        return remaining
+      })
+    },
     updateLocation: newLocation => {
       locationRef.current = newLocation
       updatePageState()

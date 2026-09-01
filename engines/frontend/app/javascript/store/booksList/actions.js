@@ -7,8 +7,9 @@ import {
   setRequestedBookId,
   showBook,
 } from 'store/books/actions'
-import { selectBookIds, selectFilter, selectPage, selectPerPage, selectSortBy } from 'widgets/booksListLinear/selectors'
-import { slice } from 'widgets/booksListLinear/slice'
+import { selectBookIds, selectFilter, selectPage, selectPerPage, selectSortBy } from 'store/booksList/selectors'
+import { slice } from 'store/booksList/slice'
+
 export const {
   assignBookIds,
   assignBooksTotal,
@@ -44,17 +45,17 @@ export const shiftSelection = shift => (dispatch, getState) => {
   const allBookIds = selectBookIds()(state)
   const currentIndex = allBookIds.indexOf(currentBookRef.id)
   let targetIndex = currentIndex + shift
-  if (targetIndex < 0)  targetIndex = allBookIds.length - 1 
-  if (targetIndex >= allBookIds.length)  targetIndex = 0 
+  if (targetIndex < 0) targetIndex = allBookIds.length - 1
+  if (targetIndex >= allBookIds.length) targetIndex = 0
 
   dispatch(setRequestedBookId(allBookIds[targetIndex]))
 }
 
 export const setupBooksListSelection = () => (dispatch, getState) => {
   const currentBookRef = selectCurrentBookRef()(getState())
-  if (currentBookRef) 
+  if (currentBookRef)
     dispatch(showBook(currentBookRef.id))
-  else 
+  else
     dispatch(switchToFirstBook())
 }
 

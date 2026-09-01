@@ -1,18 +1,15 @@
-.tag-page,
-.lists-page {
-  .tag-books-list-widget {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 56px - 30px);
-    max-height: 100%;
-    transition: box-shadow 0.2s ease;
-  }
+.panel--books-list-covers {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 56px - 30px);
+  max-height: 100%;
+  transition: box-shadow 0.2s ease;
 
-  .tag-books-list-widget-separator {
+  .panel-header-bread-separator {
     margin: 0 0.25em 0 0;
   }
 
-  .tag-books-list-count-badge {
+  .panel-header-counter {
     background-color: #e8e8e8;
     border-radius: 50%;
     color: #555;
@@ -59,20 +56,20 @@
     }
   }
 
-  .tag-books-list-widget-body {
+  .panel--body {
     flex: 1 1 auto;
     min-height: 0;
     overflow: hidden;
     padding: 0 4px 8px;
   }
 
-  .tag-books-list {
+  .books-list {
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
   }
 
-  .tag-books-list-row {
+  .books-list-row {
     display: grid;
     gap: 10px;
     grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -9,7 +9,7 @@ import {
   assignSortBy,
   clearListState,
   setupBooksListSelection,
-} from 'widgets/booksListLinear/actions'
+} from 'store/booksList/actions'
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'widgets/navbar/actions'
 import { fetchTagsIndexEntry } from 'store/tags/actions'

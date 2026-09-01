@@ -6,12 +6,14 @@ import { setCurrentTagId } from 'store/axis/actions'
 import { setPageIsLoading } from 'store/metadata/actions'
 import TagPage from 'pages/tagPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
+import BooksListConfigurer from 'store/urlStore/BooksListConfigurer'
 
 const Helper = () => {
   const { actions: { addRoute }, helpers: { buildPath } } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addRoute('tagPagePath', id => buildPath({ path: `/tags/${id}` }))
+    const removeRoute = addRoute('tagPagePath', id => buildPath({ path: `/tags/${id}` }))
+    return removeRoute
   }, [])
   return null
 }
@@ -20,6 +22,8 @@ const path = '/tags/:tagId'
 
 const Renderer = () => (
   <>
+    <BooksListConfigurer />
+
     <LocalStoreConfigurer />
 
     <TagPage />
@@ -37,10 +41,12 @@ const LocalStoreConfigurer = () => {
   } = useContext(UrlStoreContext)
 
   useEffect(() => {
-    addUrlState('tagId', () => parseInt(paramsRef.current.tagId))
+    const removeTagState = addUrlState('tagId', () => parseInt(paramsRef.current.tagId))
 
     dispatch(setPageIsLoading(true))
     dispatch(setCurrentTagId(tagId))
+
+    return removeTagState
   }, [tagId])
 
   return null
