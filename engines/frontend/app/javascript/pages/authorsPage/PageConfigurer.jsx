@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { addErrorMessage } from 'store/notifications/actions'
 import { setPageIsLoading } from 'store/metadata/actions'
 import { selectPage, selectPerPage, selectSortBy } from 'pages/authorsPage/selectors'
 import { fetchAuthorsIndex } from 'pages/authorsPage/actions'
@@ -20,7 +21,9 @@ const Configurer = () => {
     Promise.all([
       dispatch(fetchAuthorsIndex()),
       dispatch(prepareNavRefs()),
-    ]).then(() => {
+    ]).catch(() => {
+      dispatch(addErrorMessage('Unable to load this page. Please try again.'))
+    }).finally(() => {
       dispatch(setPageIsLoading(false))
     })
   }, [page, perPage, sortBy])

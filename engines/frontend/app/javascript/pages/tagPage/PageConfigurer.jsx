@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { addErrorMessage } from 'store/notifications/actions'
 import { selectCurrentTagId } from 'store/axis/selectors'
 import { setPageIsLoading } from 'store/metadata/actions'
 import {
@@ -31,8 +32,11 @@ const Configurer = () => {
       dispatch(fetchTagsIndexEntry(tagId)),
       dispatch(fetchCoverDesigns()),
     ]).then(() => dispatch(fetchBooks())).then(() => {
-      dispatch(setPageIsLoading(false))
       dispatch(setupBooksListSelection())
+    }).catch(() => {
+      dispatch(addErrorMessage('Unable to load this page. Please try again.'))
+    }).finally(() => {
+      dispatch(setPageIsLoading(false))
     })
   }, [tagId])
 
