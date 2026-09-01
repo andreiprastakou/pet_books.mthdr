@@ -46,19 +46,6 @@ export const slice = createSlice({
         state.tagsRefs[tagRef.id] = tagRef
       })
       state.refsLoaded = true
-    },
-
-    resetTagInCategories: (state, action) => {
-      const tagIndexEntry = action.payload
-      const entriesGrouped = Object.values(state.tagsCategoriesIndex)
-      entriesGrouped.forEach(entries => {
-        const index = entries.findIndex(tag => tag.id === tagIndexEntry.id)
-        if (index < 0) return
-
-        entries.splice(index, 1)
-      })
-      state.tagsCategoriesIndex[tagIndexEntry.categoryId] ||= []
-      state.tagsCategoriesIndex[tagIndexEntry.categoryId].push(tagIndexEntry)
     }
   }
 })

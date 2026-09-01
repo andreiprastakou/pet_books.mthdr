@@ -12,12 +12,6 @@ class ApiClient {
     }).then(authors => authors.map(entry => AuthorRef.parse(entry)))
   }
 
-  static getAuthorRef(id) {
-    return jQuery.ajax({
-      url: `/api/authors/ref_entries/${id}.json`
-    }).then(entry => AuthorRef.parse(entry))
-  }
-
   static getAuthorsIndex({ page, perPage, sortBy } = {}) {
     const params = {
       page,
@@ -27,12 +21,6 @@ class ApiClient {
     return jQuery.ajax({
       url: `/api/authors/index_entries.json${ objectToParams(params) }`
     }).then(({ list, total }) => ({ total, list: list.map(entry => AuthorIndexEntry.parse(entry)) }))
-  }
-
-  static getAuthorIndexEntry(id) {
-    return jQuery.ajax({
-      url: `/api/authors/index_entries/${id}.json`
-    }).then(entry => AuthorIndexEntry.parse(entry))
   }
 
   static getAuthorFull(id) {
