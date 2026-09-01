@@ -8,10 +8,8 @@ import EventsContext from 'store/events/Context'
 
 const SearchForm = ({ focusEvent = null, apiSearcher }) => {
   const { subscribeToEvent } = useContext(EventsContext)
-  const [searchState, setSearchState] = useState({})
-  const { lastSearchedKey = null, searchInProgress = false } = searchState
-  const searchKey = useRef(null)
-  const key = searchKey.current
+  const [searchKey, setSearchKey] = useState('')
+  const [searchInProgress, setSearchInProgress] = useState(false)
   const searchRef = useRef()
   const dispatch = useDispatch()
 
@@ -24,39 +22,36 @@ const SearchForm = ({ focusEvent = null, apiSearcher }) => {
     })
   }, [])
 
-  const performSearch = () => {
-    const currentKey = searchKey.current
+  const performSearch = useCallback(() => {
+    const currentKey = searchKey
     if (!currentKey || searchInProgress) return
 
-    setSearchState({ searchInProgress: true })
+    setSearchInProgress(true)
     apiSearcher(currentKey).then(() => {
-      setSearchState({ searchInProgress: false, lastSearchedKey: currentKey })
+      setSearchInProgress(false)
     }).fail(() => {
       dispatch(addErrorMessage('Search failed!'))
-      setSearchState({ searchInProgress: false })
+      setSearchInProgress(false)
     })
-  }
+  }, [apiSearcher, dispatch, searchInProgress, searchKey])
 
   const handleSearchSubmit = useCallback(e => {
     e.preventDefault()
     performSearch()
-  }, [])
+  }, [performSearch])
 
-  const handleChange = useCallback(e => {
-    searchKey.current = e.target.value
-    setTimeout(() => {
-      if (key !== searchKey.current || key === lastSearchedKey) return
-      performSearch()
-    }, 1000)
+  const handleSearchChange = useCallback(e => {
+    setSearchKey(e.target.value)
   }, [])
 
   return (
     <Form onSubmit={handleSearchSubmit}>
       <Form.Control
         autoComplete='off'
-        onChange={handleChange}
+        onChange={handleSearchChange}
         ref={searchRef}
         type='text'
+        value={searchKey}
       />
 
       { searchInProgress ? (
