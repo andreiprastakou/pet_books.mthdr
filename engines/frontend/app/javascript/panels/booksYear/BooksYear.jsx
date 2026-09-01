@@ -3,7 +3,7 @@ import React, {
 } from 'react'
 import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
-import { useDispatch, useSelector } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
 import YearControl from 'panels/booksYear/YearControl'
 import { selectCurrentBookId } from 'store/axis/selectors'
@@ -82,7 +82,7 @@ const BooksYear = ({ title = defaultTitle }) => {
   const bookIds = useSelector(selectBookIds())
   const totalCount = useSelector(selectBooksTotal())
   const filter = useSelector(selectFilter())
-  const years = useSelector(selectYears())
+  const years = useSelector(selectYears(), shallowEqual)
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
   const contentRef = useRef(null)

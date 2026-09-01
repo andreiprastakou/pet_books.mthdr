@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { Button, ButtonGroup, Card } from 'react-bootstrap'
-import { useDispatch, useSelector } from 'react-redux'
+import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Book from 'components/Book'
@@ -55,8 +55,8 @@ const BookDetails = ({ header = null, showCover = true }) => {
   const dispatch = useDispatch()
   const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
   const bookDetails = useSelector(selectCurrentBookDetails())
-  const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []))
-  const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []))
+  const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
+  const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []), shallowEqual)
   const { routes: { authorPagePath }, routesReady } = useContext(UrlStoreContext)
 
   useEffect(() => {

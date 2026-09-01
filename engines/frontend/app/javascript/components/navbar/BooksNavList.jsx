@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { NavDropdown } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
@@ -37,7 +37,7 @@ const BooksNavList = () => {
 }
 
 const SearchEntry = ({ entry }) => {
-  const authorRefs = useSelector(selectAuthorsRefsByIds(entry.authorIds))
+  const authorRefs = useSelector(selectAuthorsRefsByIds(entry.authorIds), shallowEqual)
   const { routes: { booksPagePath } } = useContext(UrlStoreContext)
   return (
     <NavDropdown.Item

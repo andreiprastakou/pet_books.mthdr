@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import classnames from 'classnames'
 
 import { selectCurrentBookId } from 'store/axis/selectors'
@@ -20,7 +20,7 @@ const Book = ({ bookIndexEntry, showYear = false, style, scrollIntoView = true }
 
   const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
 
-  const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry.authorIds))
+  const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry.authorIds), shallowEqual)
 
   useEffect(() => {
     if (isCurrent && scrollIntoView) ref.current?.scrollIntoView()

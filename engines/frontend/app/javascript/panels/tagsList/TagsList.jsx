@@ -1,14 +1,14 @@
 import { sortBy, upperCase } from 'lodash'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Card, Dropdown, Form } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 
 import TagBadge from 'components/TagBadge'
 import { selectCategories, selectTagsCategoriesIndex } from 'store/tags/selectors'
 
 // eslint-disable-next-line max-lines-per-function
 const TagsList = () => {
-  const categories = sortBy(useSelector(selectCategories()), 'name')
+  const categories = sortBy(useSelector(selectCategories(), shallowEqual), 'name')
   const tagsByCategories = useSelector(selectTagsCategoriesIndex())
   const [nameFilter, setNameFilter] = useState('')
   const [categoryFilter, setCategoryFilter] = useState('')
