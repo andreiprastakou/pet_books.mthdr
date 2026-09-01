@@ -1,4 +1,5 @@
-import { sortBy, uniq } from 'lodash'
+import sortBy from 'lodash/sortBy'
+import uniq from 'lodash/uniq'
 import { createSlice } from '@reduxjs/toolkit'
 
 export const slice = createSlice({

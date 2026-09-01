@@ -1,4 +1,4 @@
-import { isArray } from 'lodash'
+import isArray from 'lodash/isArray'
 
 export const objectToParams = (object, initialParams = '') => {
   const params = new URLSearchParams(initialParams)

@@ -4,11 +4,10 @@
 // that code so it'll be compiled.
 
 import jQuery from 'jquery'
-import 'lodash'
 
 window.$ = jQuery
 window.jQuery = jQuery
-import ReactOnRails from 'react-on-rails'
+import ReactOnRails from 'react-on-rails/client'
 import Page from '../components/Page'
 
 ReactOnRails.register({

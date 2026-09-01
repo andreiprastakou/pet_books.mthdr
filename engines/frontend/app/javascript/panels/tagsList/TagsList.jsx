@@ -1,4 +1,5 @@
-import { sortBy, upperCase } from 'lodash'
+import sortBy from 'lodash/sortBy'
+import upperCase from 'lodash/upperCase'
 import React, { useCallback, useMemo, useState } from 'react'
 import { Card, Dropdown, Form } from 'react-bootstrap'
 import { shallowEqual, useSelector } from 'react-redux'
