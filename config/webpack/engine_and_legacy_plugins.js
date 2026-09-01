@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const clientWebpackConfig = require('./clientWebpackConfig')
 
 const REACT_TABLE_IN_NODE_MODULES = /[\\/]node_modules[\\/]react-table[\\/]/u
+const NODE_MODULES = /[\\/]node_modules[\\/]/u
 
 /**
  * Legacy Webpacker behavior: skip react-table inside node_modules for the main JS/SWC rule
@@ -29,6 +30,32 @@ function excludeReactTableFromMainJsRules(config) {
     }
   }
   walk(config.module && config.module.rules)
+}
+
+const productionEntryVendorSplitting = function productionEntryVendorSplitting() {
+  if (process.env.NODE_ENV !== 'production' && process.env.RAILS_ENV !== 'production')
+    return {}
+
+  const entryVendorCacheGroup = entryName => ({
+    test: NODE_MODULES,
+    chunks: chunk => chunk.name === entryName,
+    name: `${entryName}-vendors`,
+    priority: 20,
+    enforce: true,
+  })
+
+  return {
+    optimization: {
+      splitChunks: {
+        cacheGroups: {
+          frontendVendors: entryVendorCacheGroup('frontend'),
+          adminVendors: entryVendorCacheGroup('admin'),
+          defaultVendors: false,
+          default: false,
+        },
+      },
+    },
+  }
 }
 
 /**
@@ -59,6 +86,7 @@ function buildConfigWithEnginesAndLegacyPlugins() {
         },
       ],
     },
+    ...productionEntryVendorSplitting(),
   })
 
   excludeReactTableFromMainJsRules(merged)
