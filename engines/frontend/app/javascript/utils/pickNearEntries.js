@@ -1,4 +1,6 @@
-import { compact, isEmpty, min } from 'lodash'
+import compact from 'lodash/compact'
+import isEmpty from 'lodash/isEmpty'
+import min from 'lodash/min'
 
 const pickNearEntries = (entries, middle, { lengthBefore = 1, lengthAfter = 1, looped = true } = {}) => {
   const middleIndex = entries.indexOf(middle)

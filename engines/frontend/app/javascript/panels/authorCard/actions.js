@@ -1,4 +1,4 @@
-import { pull } from 'lodash'
+import pull from 'lodash/pull'
 import { fetchAuthorFull } from 'store/authors/actions'
 import { selectTagBookmark, selectTagNames } from 'store/tags/selectors'
 import apiClient from 'store/authors/apiClient'

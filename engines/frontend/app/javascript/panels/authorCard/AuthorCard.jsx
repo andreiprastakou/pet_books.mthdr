@@ -1,4 +1,4 @@
-import { sortBy } from 'lodash'
+import sortBy from 'lodash/sortBy'
 import React, { useContext, useEffect, useCallback } from 'react'
 import { Card } from 'react-bootstrap'
 import { shallowEqual, useSelector, useDispatch } from 'react-redux'

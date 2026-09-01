@@ -1,4 +1,4 @@
-import { difference } from 'lodash'
+import difference from 'lodash/difference'
 import { slice } from 'store/books/slice'
 import { selectCurrentBookId } from 'store/axis/selectors'
 

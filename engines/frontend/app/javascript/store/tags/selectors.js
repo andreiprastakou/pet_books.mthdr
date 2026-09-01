@@ -1,4 +1,4 @@
-import { pick } from 'lodash'
+import pick from 'lodash/pick'
 import { selectCurrentTagId } from 'store/axis/selectors'
 
 const BOOKMARK = 'BookmarkedByA'
