@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { shallowEqual, useSelector } from 'react-redux'
 import { Card, Row } from 'react-bootstrap'
 
 import {
@@ -101,7 +101,7 @@ const AuthorsList = () => {
       unregisterWidget,
     },
   } = useContext(UrlStoreContext)
-  const authors = useSelector(selectSortedAuthors(sortOrder))
+  const authors = useSelector(selectSortedAuthors(sortOrder), shallowEqual)
   const authorsKey = authors.map(author => author.id).join(',')
   const totalCount = useSelector(selectAuthorsTotal())
   const page = useSelector(selectPage())

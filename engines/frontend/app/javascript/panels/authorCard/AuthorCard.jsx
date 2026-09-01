@@ -1,7 +1,7 @@
 import { sortBy } from 'lodash'
 import React, { useContext, useEffect, useCallback } from 'react'
 import { Card } from 'react-bootstrap'
-import { useSelector, useDispatch } from 'react-redux'
+import { shallowEqual, useSelector, useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Toolbar from 'panels/authorCard/Toolbar'
@@ -62,8 +62,8 @@ const AuthorCard = ({
 }) => {
   const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
   const dispatch = useDispatch()
-  const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds))
-  const visibleTags = useSelector(selectVisibleTags(tags))
+  const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds), shallowEqual)
+  const visibleTags = useSelector(selectVisibleTags(tags), shallowEqual)
   const sortedTags = sortBy(visibleTags, tag => tag.connectionsCount)
   const defaultPhotoUrl = useSelector(selectAuthorDefaultImageUrl())
 
