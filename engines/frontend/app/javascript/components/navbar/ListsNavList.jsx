@@ -4,7 +4,7 @@ import { NavDropdown } from 'react-bootstrap'
 import apiClient from 'store/publicLists/apiClient'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const ListsNavList = () => {
+const PublicListsNavList = () => {
   const [listTypes, setListTypes] = useState([])
   const { routes: { listPagePath } } = useContext(UrlStoreContext)
 
@@ -26,4 +26,4 @@ const ListsNavList = () => {
   )
 }
 
-export default ListsNavList
+export default PublicListsNavList

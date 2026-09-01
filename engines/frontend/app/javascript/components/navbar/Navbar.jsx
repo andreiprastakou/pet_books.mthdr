@@ -5,7 +5,7 @@ import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 import AuthorsNavList from 'components/navbar/AuthorsNavList'
 import BooksNavList from 'components/navbar/BooksNavList'
 import TagsNavList from 'components/navbar/TagsNavList'
-import ListsNavList from 'components/navbar/ListsNavList'
+import PublicListsNavList from 'components/navbar/ListsNavList'
 import EventsContext from 'store/events/Context'
 import UrlStoreContext from 'store/urlStore/Context'
 import { selectTagIdBookmark, selectTagIdRead } from 'store/tags/selectors'
@@ -31,7 +31,7 @@ const PageNavbar = () => {
 
         <TagsNavDropdown />
 
-        <ListsNavDropdown />
+        <PublicListsNavDropdown />
       </Nav>
     </Navbar>
   )
@@ -135,9 +135,9 @@ const TagsNavDropdown = () => {
   )
 }
 
-const ListsNavDropdown = () => (
-  <NavDropdown title='Lists'>
-    <ListsNavList />
+const PublicListsNavDropdown = () => (
+  <NavDropdown title='Public lists'>
+    <PublicListsNavList />
   </NavDropdown>
 )
 

@@ -176,7 +176,11 @@ const BooksListCovers = ({ header = null, showControls = true }) => {
 
       <Card.Body className='panel--body'>
         <div className='books-list'>
-          { rows.map(row => (
+          { bookIds.length === 0 ? (
+            <div className='books-list-empty'>
+              { 'No books' }
+            </div>
+          ) : rows.map(row => (
             <div
               className='books-list-row'
               key={row.join('-')}
