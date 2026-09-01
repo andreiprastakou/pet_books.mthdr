@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 
+import { addErrorMessage } from 'store/notifications/actions'
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { setCurrentBookId } from 'store/axis/actions'
 import { prepareNavRefs } from 'store/navbar/actions'
@@ -54,6 +55,9 @@ const PageConfigurer = () => {
       return dispatch(fetchBooks())
     }).then(() => {
       dispatch(switchToFirstBook())
+    }).catch(() => {
+      dispatch(addErrorMessage('Unable to load this page. Please try again.'))
+    }).finally(() => {
       dispatch(setPageIsLoading(false))
     })
   }, [bookId, bookIdStateReady, routesReady])
