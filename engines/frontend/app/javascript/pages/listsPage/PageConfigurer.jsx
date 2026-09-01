@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
-import { prepareNavRefs } from 'widgets/navbar/actions'
+import { prepareNavRefs } from 'store/navbar/actions'
 import {
   assignFilter,
   assignPage,

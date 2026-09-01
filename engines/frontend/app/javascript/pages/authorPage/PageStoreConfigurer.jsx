@@ -13,7 +13,7 @@ import {
   switchToFirstBook,
 } from 'store/booksList/actions'
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
-import { prepareNavRefs } from 'widgets/navbar/actions'
+import { prepareNavRefs } from 'store/navbar/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Configurer = () => {

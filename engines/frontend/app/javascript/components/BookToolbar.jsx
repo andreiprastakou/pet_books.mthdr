@@ -13,7 +13,7 @@ import {
   selectTagNames,
 } from 'store/tags/selectors'
 
-import { addTagToBook, removeTagFromBook } from 'widgets/booksListYearly/actions'
+import { addTagToBook, removeTagFromBook } from 'store/books/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const BookToolbar = props => {

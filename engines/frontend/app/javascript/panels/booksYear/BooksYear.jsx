@@ -21,7 +21,7 @@ import {
   selectBooksTotal,
   selectFilter,
 } from 'store/booksList/selectors'
-import { selectYears } from 'widgets/booksListYearly/selectors'
+import { selectYears } from 'store/booksYears/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
 export const WIDGET_ID = 'books-list-yearly'
