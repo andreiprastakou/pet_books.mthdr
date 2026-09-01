@@ -32,8 +32,6 @@ const PageNavbar = () => {
         <TagsNavDropdown />
 
         <ListsNavDropdown />
-
-        <AwardsNavDropdown />
       </Nav>
     </Navbar>
   )
@@ -136,38 +134,6 @@ const TagsNavDropdown = () => {
     </NavDropdown>
   )
 }
-
-const AwardsNavDropdown = () => (
-  <NavDropdown title='Awards'>
-    <NavDropdown.Item href="/awards/booker">
-      { 'Booker Prize' }
-    </NavDropdown.Item>
-
-    <NavDropdown.Item href="/awards/campbell">
-      { 'Campbell Awards' }
-    </NavDropdown.Item>
-
-    <NavDropdown.Item href="/awards/goodreads">
-      { 'Goodreads Choice' }
-    </NavDropdown.Item>
-
-    <NavDropdown.Item href="/awards/hugo">
-      { 'Hugo' }
-    </NavDropdown.Item>
-
-    <NavDropdown.Item href="/awards/nebula">
-      { 'Nebula' }
-    </NavDropdown.Item>
-
-    <NavDropdown.Item href="/awards/nytimes">
-      { 'NY Times Bestsellers' }
-    </NavDropdown.Item>
-
-    <NavDropdown.Item href="/awards/pulitzer">
-      { 'Pulitzer Prize' }
-    </NavDropdown.Item>
-  </NavDropdown>
-)
 
 const ListsNavDropdown = () => (
   <NavDropdown title='Lists'>

@@ -165,7 +165,7 @@ const AuthorsList = () => {
   return (
     <Card
       aria-label='Authors'
-      className={`authors-list-widget panel--widget ${isActive ? 'active' : ''}`}
+      className={`panel--authors-list panel--widget ${isActive ? 'active' : ''}`}
       id={WIDGET_ID}
       onClick={handleClick}
       onFocusCapture={handleFocus}
@@ -196,7 +196,7 @@ const AuthorsList = () => {
         />
       </Card.Header>
 
-      <Card.Body className='authors-list-widget-body'>
+      <Card.Body className='panel--body'>
         <div className='authors-list'>
           <Row>
             { authors.map(author => (

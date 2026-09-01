@@ -1,6 +1,5 @@
-.page--books,
-.lists-page {
-  .all-books-list-widget {
+.page--books {
+  .panel--books-year {
     display: flex;
     flex-direction: column;
     height: calc(100vh - 56px - 40px);
