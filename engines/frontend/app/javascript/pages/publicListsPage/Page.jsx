@@ -16,43 +16,53 @@ const PublicListsPage = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
   const [listType, setListType] = useState(null)
-  const [selectedYear, setSelectedYear] = useState(null)
+  const [selectedListId, setSelectedListId] = useState(null)
+  const [selectedList, setSelectedList] = useState(null)
 
   useEffect(() => {
     setListType(null)
-    setSelectedYear(null)
+    setSelectedListId(null)
+    setSelectedList(null)
     apiClient.getType(id).then(data => {
       setListType(data)
-      setSelectedYear(data.public_lists?.[0]?.year ?? null)
+      setSelectedListId(data.public_lists?.[0]?.id ?? null)
     })
   }, [id])
 
-  const selectedList = listType?.public_lists?.find(list => list.year === selectedYear)
-  const bookIds = selectedList?.book_ids || []
+  useEffect(() => {
+    setSelectedList(null)
+    if (selectedListId) apiClient.getList(selectedListId).then(setSelectedList)
+  }, [selectedListId])
+
+  const books = selectedList?.books || []
+  const bookIds = books.map(book => book.id)
+  const bookLabels = Object.fromEntries(books.map(book => [book.id, book.role || '']))
 
   useEffect(() => {
-    if (selectedYear === null || bookIds.length === 0) {
+    if (selectedListId === null || bookIds.length === 0) {
       dispatch(setCurrentBookId(null))
       dispatch(setRequestedBookId(null))
     }
-  }, [bookIds.length, dispatch, selectedYear])
+  }, [bookIds.length, dispatch, selectedListId])
 
   if (!listType) return 'Wait...'
 
   return (
     <>
-      { selectedYear === null ? null : <PageConfigurer bookIds={bookIds} /> }
+      { selectedListId === null ? null : <PageConfigurer bookIds={bookIds} /> }
 
       <Layout classes='panels-page public-lists-page'>
         <Col xs={8}>
           <PublicListIntro
             listType={listType}
-            selectedYear={selectedYear}
-            setSelectedYear={setSelectedYear}
+            selectedList={selectedList}
+            selectedListId={selectedListId}
+            setSelectedListId={setSelectedListId}
           />
 
-          { selectedYear === null ? null : (
+          { selectedListId === null ? null : (
             <BooksListCovers
+              bookLabels={bookLabels}
               header='Noted Works'
               showControls={false}
             />

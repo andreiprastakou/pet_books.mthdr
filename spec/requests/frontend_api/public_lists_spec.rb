@@ -9,9 +9,11 @@ RSpec.describe '/api/public_lists' do
     let(:public_list) { create(:public_list, year: 2021) }
     let(:book) { create(:book) }
 
-    before { public_list.books << book }
+    before do
+      public_list.book_public_lists.create!(book: book, role: 'winner')
+    end
 
-    it 'returns the list and its book ids' do
+    it 'returns the list and book roles' do
       send_request
 
       expect(response).to be_successful
@@ -21,7 +23,7 @@ RSpec.describe '/api/public_lists' do
         year: 2021,
         wiki_url: nil,
         generic_links: [],
-        book_ids: [book.id]
+        books: [{ id: book.id, role: 'winner' }]
       )
     end
   end

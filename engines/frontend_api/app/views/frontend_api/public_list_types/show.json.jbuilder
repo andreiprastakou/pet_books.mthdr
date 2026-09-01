@@ -7,7 +7,4 @@ json.generic_links @public_list_type.generic_links.map { |link| { name: link.nam
 json.public_lists @public_list_type.public_lists.order(year: :desc) do |public_list|
   json.id public_list.id
   json.year public_list.year
-  json.wiki_url public_list.wiki_url
-  json.generic_links public_list.generic_links.map { |link| { name: link.name, url: link.url } }
-  json.book_ids public_list.book_ids
 end

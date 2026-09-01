@@ -1,5 +1,6 @@
 .panel--books-stack {
   transition: box-shadow 0.2s ease;
+  height: calc(100vh - 56px - 130px);
 
   .books-spine-count-badge {
     background-color: #e8e8e8;

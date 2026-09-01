@@ -4,17 +4,18 @@ import PropTypes from 'prop-types'
 
 import ExternalTextLink from 'components/ExternalTextLink'
 
-const PublicListIntro = ({ listType, selectedYear, setSelectedYear }) => {
+const PublicListIntro = ({
+  listType, selectedListId, setSelectedListId, selectedList,
+}) => {
   const publicLists = listType.public_lists || []
   const typeLinks = [
     ...(listType.wiki_url ? [{ name: 'wikipedia', url: listType.wiki_url }] : []),
     ...(listType.generic_links || []),
   ]
-  const selectedList = listType.public_lists.find(list => list.year === selectedYear)
   const listLinks = selectedList?.generic_links || []
-  const handleYearChange = useCallback(event => {
-    setSelectedYear(parseInt(event.target.value))
-  }, [setSelectedYear])
+  const handleListChange = useCallback(event => {
+    setSelectedListId(parseInt(event.target.value))
+  }, [setSelectedListId])
 
   return (
     <Card className='panel--public-list-intro panel--widget'>
@@ -23,16 +24,16 @@ const PublicListIntro = ({ listType, selectedYear, setSelectedYear }) => {
           { `Public lists/ ${listType.name}` }
         </span>
 
-        { selectedYear === null ? null : (
+        { selectedListId === null ? null : (
           <Form.Select
-            aria-label='List year'
-            onChange={handleYearChange}
-            value={selectedYear}
+            aria-label='Public list'
+            onChange={handleListChange}
+            value={selectedListId}
           >
             { publicLists.map(list => (
               <option
-                key={list.year}
-                value={list.year}
+                key={list.id}
+                value={list.id}
               >
                 { list.year }
               </option>
@@ -59,7 +60,7 @@ const PublicListIntro = ({ listType, selectedYear, setSelectedYear }) => {
                 <ExternalTextLink
                   href={link.url}
                   key={link.url}
-                  text={`${selectedYear} ${link.name}`}
+                  text={`${selectedList.year} ${link.name}`}
                 />
               )) }
             </ButtonGroup>
@@ -72,8 +73,9 @@ const PublicListIntro = ({ listType, selectedYear, setSelectedYear }) => {
 
 PublicListIntro.propTypes = {
   listType: PropTypes.object.isRequired,
-  selectedYear: PropTypes.number,
-  setSelectedYear: PropTypes.func.isRequired,
+  selectedList: PropTypes.object,
+  selectedListId: PropTypes.number,
+  setSelectedListId: PropTypes.func.isRequired,
 }
 
 export default PublicListIntro

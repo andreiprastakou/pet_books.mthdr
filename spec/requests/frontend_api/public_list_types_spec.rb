@@ -32,7 +32,7 @@ RSpec.describe '/api/public_list_types' do
 
     before { newer_list.books << book }
 
-    it 'returns lists and their book ids' do
+    it 'returns lists without their links or books' do
       send_request
 
       expect(response).to be_successful
@@ -41,8 +41,8 @@ RSpec.describe '/api/public_list_types' do
         name: 'Awards',
         wiki_url: 'https://en.wikipedia.org/wiki/Awards',
         public_lists: [
-          { id: newer_list.id, year: 2021, wiki_url: nil, generic_links: [], book_ids: [book.id] },
-          { id: older_list.id, year: 2020, wiki_url: nil, generic_links: [], book_ids: [] },
+          { id: newer_list.id, year: 2021 },
+          { id: older_list.id, year: 2020 },
         ]
       )
     end

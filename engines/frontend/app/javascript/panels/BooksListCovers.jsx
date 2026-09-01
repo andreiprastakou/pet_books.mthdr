@@ -27,7 +27,9 @@ import {
 export const PANEL_ID = 'books-list-covers'
 
 // eslint-disable-next-line max-lines-per-function, max-statements
-const BooksListCovers = ({ header = null, showControls = true }) => {
+const BooksListCovers = ({
+  bookLabels = null, header = null, showControls = true,
+}) => {
   const dispatch = useDispatch()
   const bookIds = useSelector(selectBookIds())
   const totalCount = useSelector(selectBooksTotal())
@@ -189,7 +191,8 @@ const BooksListCovers = ({ header = null, showControls = true }) => {
                 <BookIndexEntry
                   id={bookId}
                   key={bookId}
-                  showYear
+                  label={bookLabels ? bookLabels[bookId] || '' : null}
+                  showYear={!bookLabels}
                 />
                 )) }
             </div>
@@ -201,6 +204,7 @@ const BooksListCovers = ({ header = null, showControls = true }) => {
 }
 
 BooksListCovers.propTypes = {
+  bookLabels: PropTypes.object,
   header: PropTypes.node,
   showControls: PropTypes.bool,
 }
