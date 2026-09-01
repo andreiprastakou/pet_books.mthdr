@@ -97,7 +97,7 @@ const BooksListControls = () => {
         <SortingDropdown />
       </Card.Header>
 
-      <Card.Body className='books-spine-widget-body'>
+      <Card.Body className='panel--body'>
         <BooksSpineStack isActive={isActive} />
       </Card.Body>
     </Card>

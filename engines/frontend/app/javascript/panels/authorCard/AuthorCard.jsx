@@ -86,7 +86,7 @@ const AuthorCard = ({
         />
       </Card.Header>
 
-      <Card.Body>
+      <Card.Body className='panel--body'>
         { showPicture ? (
           <ImageContainer
             classes='author-image'

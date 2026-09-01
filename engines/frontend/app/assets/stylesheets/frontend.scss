@@ -3,12 +3,10 @@
 @import 'fonts';
 @import 'frontend/palette';
 @import 'frontend/books-list-linear';
-@import 'frontend/all-books-list';
 @import 'frontend/lists';
 @import 'frontend/navbar';
 @import 'frontend/panels';
 @import 'frontend/scaffolds';
-@import 'frontend/tags-page';
 @import 'frontend/widgets/form-input-image';
 @import 'frontend/widgets/form-input-tags';
 @import 'frontend/widgets/icons';
@@ -20,6 +18,9 @@
 @import 'frontend/panels/book-details';
 @import 'frontend/panels/books-list-covers';
 @import 'frontend/panels/books-stack';
+@import 'frontend/panels/books-year';
+@import 'frontend/panels/list-intro';
+@import 'frontend/panels/tags-list';
 
 body {
   margin: 0;
