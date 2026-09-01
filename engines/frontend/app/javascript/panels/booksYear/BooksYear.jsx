@@ -5,7 +5,7 @@ import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { useDispatch, useSelector } from 'react-redux'
 
-import YearControl from 'panels/allBooksList/YearControl'
+import YearControl from 'panels/booksYear/YearControl'
 import { selectCurrentBookId } from 'store/axis/selectors'
 import {
   fetchBooks,
@@ -25,7 +25,7 @@ import LocalUrlStoreConfigurer from 'widgets/booksListLinear/UrlStore'
 import BookIndexEntry from 'widgets/booksListLinear/components/BookIndexEntry'
 import UrlStoreContext from 'store/urlStore/Context'
 
-export const WIDGET_ID = 'all-books-list'
+export const WIDGET_ID = 'books-list-yearly'
 
 const BOOK_WIDTH = 190
 const BOOK_HEIGHT = 270
@@ -224,7 +224,7 @@ const BooksYear = ({ title = defaultTitle }) => {
 
       <Card
         aria-label='All books'
-        className={`all-books-list-widget panel--widget ${isActive ? 'active' : ''}`}
+        className={`panel--books-year panel--widget ${isActive ? 'active' : ''}`}
         onClick={handleClick}
         onFocusCapture={handleFocus}
         onKeyDown={handleKeyDown}

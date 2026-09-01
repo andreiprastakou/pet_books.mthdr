@@ -3,7 +3,7 @@ import { Col } from 'react-bootstrap'
 
 import Layout from 'pages/Layout'
 import BookDetails from 'panels/bookDetails/BookDetails'
-import BooksYear from 'panels/allBooksList/BooksYear'
+import BooksYear from 'panels/booksYear/BooksYear'
 import PageConfigurer from 'pages/booksPage/PageConfigurer'
 
 const BooksPage = () => (

@@ -1,0 +1,138 @@
+.panel--authors-list {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 56px - 30px);
+  max-height: 100%;
+  transition: box-shadow 0.2s ease;
+
+  .authors-list-count-badge {
+    background-color: #e8e8e8;
+    border-radius: 50%;
+    color: #555;
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+    height: 26px;
+    line-height: 26px;
+    min-width: 26px;
+    padding: 0 6px;
+    text-align: center;
+  }
+
+  .list-sort-dropdown {
+    align-items: center;
+    align-self: center;
+    display: flex;
+    flex: 1 1 auto;
+    margin-left: auto;
+    max-width: 125px;
+
+    button {
+      align-items: center;
+      display: flex;
+      font-size: 10px;
+      height: 28px;
+      line-height: 1;
+      overflow: hidden;
+      padding: 0 8px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .dropdown-menu {
+      max-width: 100%;
+      min-width: 100%;
+
+      .dropdown-item {
+        font-size: 11px;
+      }
+    }
+  }
+
+  .pagination {
+    flex: 0 0 auto;
+    margin: 0;
+
+    .page-item .page-link {
+      font-size: 12px;
+      padding: 4px 7px;
+    }
+
+    .page-item.disabled .page-link {
+      background-color: $color-icon-grey;
+      color: white;
+    }
+
+    .page-item:not(.disabled) .page-link {
+      color: $color-pagination-text;
+    }
+  }
+
+  .panel--body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
+    padding: 0 4px 8px;
+  }
+
+  .authors-list {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .author-item-container {
+    text-align: center;
+  }
+
+  .authors-list-item {
+    display: inline-block;
+    position: relative;
+    width: 140px;
+    padding: 5px;
+    min-height: 190px;
+    margin: 10px 20px 0 0;
+    vertical-align: top;
+
+    .thumb {
+      display: block;
+      position: relative;
+      float: left;
+      height: 130px;
+      width: 130px;
+      border-radius: 70px;
+      margin-bottom: 10px;
+    }
+
+    .author-placeholder {
+      align-items: center;
+      background-color: #e8e8e8;
+      border: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 12px;
+
+      .author-name {
+        font-size: 12px;
+        line-height: 1.2;
+      }
+
+      .author-years {
+        font-size: 12px;
+        margin-top: 4px;
+      }
+    }
+
+    &.selected {
+      .thumb {
+        box-shadow: 0 0 15px purple;
+      }
+    }
+
+    &:not(.selected) {
+      cursor: pointer;
+    }
+  }
+}
