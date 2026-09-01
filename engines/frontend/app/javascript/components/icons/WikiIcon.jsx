@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faWikipediaW } from '@fortawesome/free-brands-svg-icons'
+import { faWikipediaW } from '@fortawesome/free-brands-svg-icons/faWikipediaW'
 
 const WikiIcon = ({ url = null }) => {
   if (!url)  return null
