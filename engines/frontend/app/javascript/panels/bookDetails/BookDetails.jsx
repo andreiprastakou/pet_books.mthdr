@@ -121,7 +121,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
                   <ExternalTextLink
                     href={link.url}
                     key={link.url}
-                    text={link.name}
+                    resource={link.name}
                   />
                     )) }
               </ButtonGroup>

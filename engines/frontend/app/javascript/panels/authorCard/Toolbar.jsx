@@ -4,10 +4,10 @@ import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook'
 import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
-import { faLink } from '@fortawesome/free-solid-svg-icons/faLink'
 import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons/faBookmark'
 import PropTypes from 'prop-types'
 
+import ExternalTextLink from 'components/ExternalTextLink'
 import { addSuccessMessage } from 'store/notifications/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -28,20 +28,10 @@ const Toolbar = props => {
   return (
     <div className='author-toolbar'>
       { authorFull.reference ? (
-        <Button
-          className='external-link'
+        <ExternalTextLink
           href={authorFull.reference}
-          target='_blank'
-          title='See info...'
-          variant='outline-secondary'
-        >
-          { 'wikipedia' }
-
-          <FontAwesomeIcon
-            className='external-link-icon'
-            icon={faLink}
-          />
-        </Button>
+          resource='wikipedia'
+        />
       ) : null}
 
       { linkToAuthorPage && authorFull.booksCount > 0 ? (
