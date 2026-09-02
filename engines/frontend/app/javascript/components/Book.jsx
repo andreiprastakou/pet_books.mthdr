@@ -30,8 +30,8 @@ const Book = ({
   }, [isCurrent, scrollIntoView])
 
   const handleClick = useCallback(() => {
-    showBooksIndexEntry(bookIndexEntry.id)
-  }, [bookIndexEntry.id])
+    if (showBooksIndexEntry) showBooksIndexEntry(bookIndexEntry.id)
+  }, [bookIndexEntry.id, showBooksIndexEntry])
 
   return (
     <div
