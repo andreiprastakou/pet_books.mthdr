@@ -19,19 +19,15 @@ export const isBlocked = ({ type, index, lastIndex, page, lastPage, rowSize = GR
 )
 
 export const targetSelection = ({
-  type, index, lastIndex, page, perPage, totalCount, rowSize = GRID_ROW_SIZE,
+  type, index, page, perPage, totalCount, rowSize = GRID_ROW_SIZE,
 }) => {
   if (type === 'left') return { index: index - 1, page }
   if (type === 'right') return { index: index + 1, page }
 
   const currentGlobalIndex = ((page - 1) * perPage) + index
-  const targetGlobalIndex = currentGlobalIndex + (type === 'up' ? -rowSize : rowSize)
-
-  if (targetGlobalIndex < 0)
-    return { index: 0, page }
-
-  if (targetGlobalIndex >= totalCount)
-    return { index: lastIndex, page }
+  const shiftedGlobalIndex = currentGlobalIndex + (type === 'up' ? -rowSize : rowSize)
+  // an incomplete last row is left behind unless the shift is clamped across pages
+  const targetGlobalIndex = Math.min(Math.max(shiftedGlobalIndex, 0), totalCount - 1)
 
   return {
     index: targetGlobalIndex % perPage,
