@@ -27,8 +27,23 @@ body {
   min-width: 900px;
 
   .f-page-content-container {
-    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1400px;
     width: 100%;
+
+    // Fixed elements are removed from the container's layout, so constrain
+    // the navbar explicitly to keep it aligned with the page content.
+    > .navbar {
+      left: 50%;
+      right: auto;
+      transform: translateX(-50%);
+      width: 100%;
+
+      .navbar-nav {
+        margin: 0 auto;
+      }
+    }
   }
 }
 

@@ -32,7 +32,7 @@ const BOOK_HEIGHT = 270
 const CELL_WIDTH = 200
 const CELL_HEIGHT = 280
 const VISIBLE_COLUMN_RADIUS = 2
-const VISIBLE_ROW_RADIUS = 1
+const VISIBLE_ROW_RADIUS = 2
 const GHOST_COLUMN_MARGIN = 3
 const GHOST_ROW_MARGIN = 2
 const defaultTitle = () => 'Books of year'
