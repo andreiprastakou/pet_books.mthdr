@@ -8,7 +8,6 @@ import Toolbar from 'panels/authorCard/Toolbar'
 import ImageContainer from 'components/ImageContainer'
 import TagBadge from 'components/TagBadge'
 
-import orders from 'pages/authorsPage/sortOrders'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import { selectAuthorFull, selectAuthorDefaultImageUrl } from 'store/authors/selectors'
 import { fetchAuthorFull } from 'store/authors/actions'
@@ -18,12 +17,15 @@ import UrlStoreContext from 'store/urlStore/Context'
 
 const AuthorCardHeader = ({ header, name }) => header || (
   <>
-    <a href='/authors'>
-      { 'Authors' }
-    </a>
+    <span>
+      <a
+        className='internal-link'
+        href='/authors'
+      >
+        { 'Authors' }
+      </a>
 
-    <span className='author-card-panel-separator'>
-      { '/ ' }
+      { '/' }
     </span>
 
     <span
@@ -60,7 +62,7 @@ const AuthorCard = ({
   showPicture = true,
   header = null,
 }) => {
-  const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
+  const { routesReady } = useContext(UrlStoreContext)
   const dispatch = useDispatch()
   const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds), shallowEqual)
   const visibleTags = useSelector(selectVisibleTags(tags), shallowEqual)
@@ -103,7 +105,7 @@ const AuthorCard = ({
           <div className='author-card-text'>
             { authorFull.birthYear ? (
               <div>
-                { renderLifetime(authorFull, authorsPagePath) }
+                { renderLifetime(authorFull) }
               </div>
             ) : null}
           </div>
@@ -147,7 +149,7 @@ AuthorCard.propTypes = {
   showPicture: PropTypes.bool,
 }
 
-const renderLifetime = (authorFull, authorsPath) => {
+const renderLifetime = authorFull => {
   if (!authorFull.birthYear)  return null
 
   const age = authorFull.deathYear
@@ -161,9 +163,7 @@ const renderLifetime = (authorFull, authorsPath) => {
 
       { ' (' }
 
-      <a href={authorsPath({ authorId: authorFull.id, sortOrder: orders.BY_YEAR_ASCENDING })}>
-        { `age: ${age}` }
-      </a>
+      { `age: ${age}` }
 
       { ')' }
     </>

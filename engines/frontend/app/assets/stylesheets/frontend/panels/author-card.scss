@@ -16,10 +16,6 @@
       text-overflow: ellipsis;
       white-space: nowrap;
     }
-
-    .author-card-panel-separator {
-      margin: 0 0.25em 0 0;
-    }
   }
 
   .author-image {
@@ -74,11 +70,6 @@
     .btn {
       font-size: 12px;
       padding: 4px 8px;
-    }
-
-    a,
-    a:visited {
-      color: rgb(102, 102, 102);
     }
   }
 }

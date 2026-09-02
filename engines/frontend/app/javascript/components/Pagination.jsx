@@ -25,6 +25,7 @@ const Pagination = ({ selectTotal, selectPage, selectPerPage }) => {
     if (pageNumber < 1 || pageNumber > lastPage) return null
     return (
       <BootstrapPagination.Item
+        className='internal-link'
         href={indexPaginationPath(pageNumber, perPage)}
         onClick={handlePageClick(pageNumber)}
         title={pageNumber}

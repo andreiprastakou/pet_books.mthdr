@@ -4,6 +4,7 @@ import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook'
 import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
+import { faLink } from '@fortawesome/free-solid-svg-icons/faLink'
 import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons/faBookmark'
 import PropTypes from 'prop-types'
 
@@ -35,11 +36,17 @@ const Toolbar = props => {
           variant='outline-secondary'
         >
           { 'wikipedia' }
+
+          <FontAwesomeIcon
+            className='external-link-icon'
+            icon={faLink}
+          />
         </Button>
       ) : null}
 
       { linkToAuthorPage && authorFull.booksCount > 0 ? (
         <Button
+          className='internal-link'
           href={authorPagePath(authorFull.id)}
           title='See all books'
           variant='outline-info'

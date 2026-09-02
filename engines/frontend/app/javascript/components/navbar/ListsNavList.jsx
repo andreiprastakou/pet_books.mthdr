@@ -16,6 +16,7 @@ const PublicListsNavList = () => {
     <>
       { listTypes.map(listType => (
         <NavDropdown.Item
+          className='internal-link'
           href={listPagePath(listType.id)}
           key={listType.id}
         >

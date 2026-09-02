@@ -20,13 +20,15 @@ const TagPage = () => {
           <BooksListCovers
             header={(
               <>
-                <a href='/tags'>
+                <a
+                  className='internal-link'
+                  href='/tags'
+                >
                   { 'Tags' }
                 </a>
 
-                <span className='panel-header-bread-separator'>
-                  { '/' }
-                </span>
+                { '/' }
+                &nbsp;
 
                 <span title={tag?.name}>
                   { `#${tag?.name || ''}` }
