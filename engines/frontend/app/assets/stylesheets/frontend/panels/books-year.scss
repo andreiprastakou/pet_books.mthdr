@@ -107,6 +107,31 @@
     position: relative;
   }
 
+  .all-books-ghosts {
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    user-select: none;
+    z-index: 0;
+  }
+
+  .all-books-ghost {
+    height: 260px;
+    padding: 5px;
+    position: absolute;
+    width: 180px;
+  }
+
+  .all-books-ghost-cover {
+    background-color: rgba(0, 0, 0, 0.02);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 3px;
+    box-sizing: border-box;
+    height: 240px;
+    margin: 5px;
+    width: 160px;
+  }
+
   .all-books-list .book-case {
     height: 260px;
     margin: 0;
@@ -114,6 +139,7 @@
     position: absolute;
     text-align: center;
     width: 180px;
+    z-index: 1;
 
     &:not(.selected) {
       cursor: pointer;
