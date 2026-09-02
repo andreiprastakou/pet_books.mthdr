@@ -23,7 +23,7 @@ const TagBadge = ({ text, id = null, renderPostfix = null, classes = '', onClick
       className={classnames}
     >
       <a
-        className='tag-name'
+        className='internal-link tag-name'
         href={tagPagePath(id)}
         onClick={clickHandler}
       >

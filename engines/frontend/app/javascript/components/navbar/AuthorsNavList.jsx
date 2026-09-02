@@ -25,6 +25,7 @@ const AuthorsNavList = () => {
       <div className='nav-search-list'>
         { authorsSearchEntries.map(searchEntry => (
           <NavDropdown.Item
+            className='internal-link'
             href={authorPagePath(searchEntry.authorId)}
             key={searchEntry.authorId}
           >

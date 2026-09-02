@@ -41,6 +41,7 @@ const SearchEntry = ({ entry }) => {
   const { routes: { booksPagePath } } = useContext(UrlStoreContext)
   return (
     <NavDropdown.Item
+      className='internal-link'
       href={booksPagePath({ bookId: entry.bookId })}
       title={`${entry.title} (${entry.year})`}
     >

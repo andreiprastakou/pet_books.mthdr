@@ -8,7 +8,6 @@ import TagsNavList from 'components/navbar/TagsNavList'
 import PublicListsNavList from 'components/navbar/ListsNavList'
 import EventsContext from 'store/events/Context'
 import UrlStoreContext from 'store/urlStore/Context'
-import { selectTagIdBookmark, selectTagIdRead } from 'store/tags/selectors'
 
 const PageNavbar = () => {
   const { routesReady } = useContext(UrlStoreContext)
@@ -38,16 +37,15 @@ const PageNavbar = () => {
 }
 
 const RootNavLink = () => {
-  const { routes: { booksPagePath },
-    actions: { goto },
-    routesReady } = useContext(UrlStoreContext)
-
-  const handleGotoRoot = useCallback(() => goto(booksPagePath()), [goto, booksPagePath])
+  const { routes: { booksPagePath }, routesReady } = useContext(UrlStoreContext)
 
   if (!routesReady) return null
 
   return (
-    <Nav.Link onClick={handleGotoRoot}>
+    <Nav.Link
+      className='internal-link'
+      href={booksPagePath({ bookId: null })}
+    >
       <b>
         { 'Artspace | Literature' }
       </b>
@@ -56,10 +54,8 @@ const RootNavLink = () => {
 }
 
 const BooksNavDropdown = () => {
-  const { routes: { booksPagePath, tagPagePath } } = useContext(UrlStoreContext)
+  const { routes: { booksPagePath } } = useContext(UrlStoreContext)
   const { triggerEvent } = useContext(EventsContext)
-  const tagIdBookmark = useSelector(selectTagIdBookmark())
-  const tagIdRead = useSelector(selectTagIdRead())
 
   const handleTriggerEvent = useCallback(() => triggerEvent('BOOKS_NAV_CLICKED'), [])
 
@@ -72,18 +68,11 @@ const BooksNavDropdown = () => {
 
       <NavDropdown.Divider />
 
-      <NavDropdown.Item href={booksPagePath()}>
+      <NavDropdown.Item
+        className='internal-link'
+        href={booksPagePath()}
+      >
         { 'List all' }
-      </NavDropdown.Item>
-
-      <NavDropdown.Divider />
-
-      <NavDropdown.Item href={tagPagePath(tagIdBookmark)}>
-        { 'Bookmarked by me' }
-      </NavDropdown.Item>
-
-      <NavDropdown.Item href={tagPagePath(tagIdRead)}>
-        { 'Read by me' }
       </NavDropdown.Item>
     </NavDropdown>
   )
@@ -104,11 +93,12 @@ const AuthorsNavDropdown = () => {
 
       <NavDropdown.Divider />
 
-      <NavDropdown.Item href={authorsPagePath()}>
+      <NavDropdown.Item
+        className='internal-link'
+        href={authorsPagePath()}
+      >
         { 'List all' }
       </NavDropdown.Item>
-
-      <NavDropdown.Divider />
     </NavDropdown>
   )
 }
@@ -128,7 +118,10 @@ const TagsNavDropdown = () => {
 
       <NavDropdown.Divider />
 
-      <NavDropdown.Item href={tagsPagePath()}>
+      <NavDropdown.Item
+        className='internal-link'
+        href={tagsPagePath()}
+      >
         { 'List all' }
       </NavDropdown.Item>
     </NavDropdown>

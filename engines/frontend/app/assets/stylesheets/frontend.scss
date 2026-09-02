@@ -43,16 +43,23 @@ body {
   padding: 10px;
 }
 
-body a {
-  color: #000;
+body .internal-link,
+body .internal-link a {
+  color: #3f73d9;
   text-decoration: none;
   background-color: transparent;
+}
 
-  &:hover {
-    color: #000;
-    text-decoration: underline;
-    background-color: transparent;
-  }
+body .internal-link:visited,
+body .internal-link a:visited {
+  color: #6f91cc;
+}
+
+body .internal-link:hover,
+body .internal-link a:hover {
+  color: #2859b5;
+  text-decoration: underline;
+  background-color: transparent;
 }
 
 .page {
@@ -84,7 +91,12 @@ body a {
 .external-link.btn {
   font-size: 12px;
   line-height: 1.5;
-  padding: 4px 8px;
+  padding: 4px 4px 4px 8px;
+
+  .external-link-icon {
+    margin-left: 3px;
+    opacity: 0.5;
+  }
 
   &:hover,
   &:focus {

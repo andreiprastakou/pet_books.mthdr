@@ -1,10 +1,11 @@
 import React, { useContext, useEffect } from 'react'
-import { Button, ButtonGroup, Card } from 'react-bootstrap'
+import { ButtonGroup, Card } from 'react-bootstrap'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
 import Book from 'components/Book'
 import BookToolbar from 'components/BookToolbar'
+import ExternalTextLink from 'components/ExternalTextLink'
 import TagBadge from 'components/TagBadge'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { fetchCurrentBookDetails } from 'store/books/actions'
@@ -22,6 +23,7 @@ const renderAuthors = (authorRefs, bookId, authorPagePath) => (
         { index > 0 && ', ' }
 
         <a
+          className='internal-link'
           href={authorPagePath(authorRef.id, { bookId })}
           title={authorRef.fullname}
         >
@@ -34,13 +36,14 @@ const renderAuthors = (authorRefs, bookId, authorPagePath) => (
 
 const BookDetailsHeader = ({ header, title }) => header || (
   <>
-    <a href='/books'>
+    <a
+      className='internal-link'
+      href='/books'
+    >
       { 'Books' }
     </a>
 
-    <span className='book-details-panel-separator'>
-      { ' / ' }
-    </span>
+    { '/' }
 
     <span
       className='book-details-panel-title'
@@ -57,8 +60,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
   const bookDetails = useSelector(selectCurrentBookDetails())
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []), shallowEqual)
-  const { routes: { authorPagePath }, routesReady } = useContext(UrlStoreContext)
-
+  const { routes: { authorPagePath, booksPagePath }, routesReady } = useContext(UrlStoreContext)
   useEffect(() => {
     if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
       dispatch(fetchCurrentBookDetails())
@@ -91,7 +93,12 @@ const BookDetails = ({ header = null, showCover = true }) => {
             </h2>
 
             <span>
-              { book.yearPublished }
+              <a
+                className='internal-link'
+                href={booksPagePath({ bookId: book.id })}
+              >
+                { book.yearPublished }
+              </a>
             </span>
           </div>
 
@@ -111,15 +118,11 @@ const BookDetails = ({ header = null, showCover = true }) => {
             <div className='book-details-panel-links'>
               <ButtonGroup>
                 { links.map(link => (
-                  <Button
-                    className='external-link'
+                  <ExternalTextLink
                     href={link.url}
                     key={link.url}
-                    target='_blank'
-                    variant='outline-secondary'
-                  >
-                    { link.name }
-                  </Button>
+                    text={link.name}
+                  />
                     )) }
               </ButtonGroup>
             </div>

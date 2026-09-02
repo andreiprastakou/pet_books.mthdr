@@ -25,6 +25,7 @@ const TagsNavList = () => {
       <div className='nav-search-list'>
         { searchEntries.map(searchEntry => (
           <NavDropdown.Item
+            className='internal-link'
             href={tagPagePath(searchEntry.tagId)}
             key={searchEntry.tagId}
           >
