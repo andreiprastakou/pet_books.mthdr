@@ -16,6 +16,8 @@ import { setRequestedBookId } from 'store/books/actions'
 import Pagination from 'components/Pagination'
 import SortingDropdown from 'components/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
+import useCoverSize from 'hooks/useCoverSize'
+import { coverSizeType } from 'utils/coverSizes'
 import {
   GRID_ROW_SIZE,
   isBlocked,
@@ -25,6 +27,11 @@ import {
 } from 'utils/paginatedGridNavigation'
 
 export const PANEL_ID = 'books-list-covers'
+
+// Both match .books-list-row: its `gap`, and the padding .book-case puts
+// around the cover it centers.
+const GRID_GAP = 10
+const GRID_CELL_INSET = 10
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 const BooksListCovers = ({
@@ -37,6 +44,9 @@ const BooksListCovers = ({
   const perPage = useSelector(selectPerPage())
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
+  const [gridRef, coverSize] = useCoverSize({
+    columns: GRID_ROW_SIZE, gap: GRID_GAP, inset: GRID_CELL_INSET,
+  })
   const hasActivated = useRef(false)
   const {
     pageState: { activePanelId, registeredPanelIds },
@@ -136,9 +146,6 @@ const BooksListCovers = ({
     switchToIndexPage, totalCount,
   ])
 
-  const rows = [...Array(Math.ceil(bookIds.length / GRID_ROW_SIZE)).keys()]
-    .map(index => bookIds.slice(index * GRID_ROW_SIZE, (index + 1) * GRID_ROW_SIZE))
-
   return (
     <Card
       aria-label='Books'
@@ -178,25 +185,12 @@ const BooksListCovers = ({
 
       <Card.Body className='panel--body'>
         <div className='books-list'>
-          { bookIds.length === 0 ? (
-            <div className='books-list-empty'>
-              { 'No books' }
-            </div>
-          ) : rows.map(row => (
-            <div
-              className='books-list-row'
-              key={row.join('-')}
-            >
-              { row.map(bookId => (
-                <BookIndexEntry
-                  id={bookId}
-                  key={bookId}
-                  label={bookLabels ? bookLabels[bookId] || '' : null}
-                  showYear={!bookLabels}
-                />
-                )) }
-            </div>
-            )) }
+          <BooksGrid
+            bookIds={bookIds}
+            bookLabels={bookLabels}
+            coverSize={coverSize}
+            gridRef={gridRef}
+          />
         </div>
       </Card.Body>
     </Card>
@@ -207,6 +201,46 @@ BooksListCovers.propTypes = {
   bookLabels: PropTypes.object,
   header: PropTypes.node,
   showControls: PropTypes.bool,
+}
+
+const BooksGrid = ({ bookIds, bookLabels, coverSize, gridRef }) => {
+  const rows = [...Array(Math.ceil(bookIds.length / GRID_ROW_SIZE)).keys()]
+    .map(index => bookIds.slice(index * GRID_ROW_SIZE, (index + 1) * GRID_ROW_SIZE))
+
+  return (
+    <div
+      className='books-list-rows'
+      ref={gridRef}
+    >
+      { bookIds.length === 0 ? (
+        <div className='books-list-empty'>
+          { 'No books' }
+        </div>
+      ) : rows.map(row => (
+        <div
+          className='books-list-row'
+          key={row.join('-')}
+        >
+          { row.map(bookId => (
+            <BookIndexEntry
+              id={bookId}
+              key={bookId}
+              label={bookLabels ? bookLabels[bookId] || '' : null}
+              showYear={!bookLabels}
+              size={coverSize}
+            />
+            )) }
+        </div>
+        )) }
+    </div>
+  )
+}
+
+BooksGrid.propTypes = {
+  bookIds: PropTypes.array.isRequired,
+  bookLabels: PropTypes.object,
+  coverSize: coverSizeType.isRequired,
+  gridRef: PropTypes.object.isRequired,
 }
 
 export default BooksListCovers

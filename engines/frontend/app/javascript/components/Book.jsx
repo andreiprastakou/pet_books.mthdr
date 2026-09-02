@@ -7,18 +7,19 @@ import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectCoverDesign } from 'store/coverDesigns/selectors'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { DEFAULT_COVER_SIZE, coverSizeClass, coverSizeType } from 'utils/coverSizes'
 
 const TITLE_LENGTH_LONG = 25
 
 const Book = ({
-  bookIndexEntry, label, showYear = false, style, scrollIntoView = true,
+  bookIndexEntry, label, showYear = false, size = DEFAULT_COVER_SIZE, style, scrollIntoView = true,
 }) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
 
   const isCurrent = bookIndexEntry.id === currentBookId
-  const classNames = classnames('book-case', { 'selected': isCurrent })
+  const classNames = classnames('book-case', coverSizeClass(size), { 'selected': isCurrent })
 
   const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
 
@@ -77,6 +78,7 @@ Book.propTypes = {
   label: PropTypes.string,
   scrollIntoView: PropTypes.bool,
   showYear: PropTypes.bool,
+  size: coverSizeType,
   style: PropTypes.object,
 }
 

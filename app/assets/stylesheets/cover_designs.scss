@@ -1,11 +1,109 @@
+// Cover geometry presets, from the narrowest to the widest. Panels pick one
+// depending on how much room they can give a single cover.
+// Keep the names and widths in sync with frontend `utils/coverSizes.js`.
+$b-cover-sizes: (
+  'xs': (
+    author-font: 8px,
+    height: 150px,
+    padding: 6px,
+    small-padding: 26px,
+    small-text-font: 9px,
+    title-font: 13px,
+    title-font-long: 11px,
+    title-min-height: 119px,
+    width: 100px,
+  ),
+  'sm': (
+    author-font: 9px,
+    height: 180px,
+    padding: 8px,
+    small-padding: 32px,
+    small-text-font: 10px,
+    title-font: 15px,
+    title-font-long: 12px,
+    title-min-height: 142px,
+    width: 120px,
+  ),
+  'md': (
+    author-font: 9px,
+    height: 210px,
+    padding: 9px,
+    small-padding: 38px,
+    small-text-font: 11px,
+    title-font: 18px,
+    title-font-long: 14px,
+    title-min-height: 166px,
+    width: 140px,
+  ),
+  'lg': (
+    author-font: 10px,
+    height: 240px,
+    padding: 10px,
+    small-padding: 45px,
+    small-text-font: 12px,
+    title-font: 20px,
+    title-font-long: 16px,
+    title-min-height: 190px,
+    width: 160px,
+  ),
+);
+$b-cover-default-size: 'lg';
+
+@function b-cover-value($size, $key) {
+  @return map-get(map-get($b-cover-sizes, $size), $key);
+}
+
+// Outer box of a cover, also used by the loading placeholder that stands in for one.
+@mixin b-cover-box($size) {
+  height: b-cover-value($size, height);
+  width: b-cover-value($size, width);
+}
+
+@mixin b-cover-geometry($size) {
+  $padding: b-cover-value($size, padding);
+  $text-width: b-cover-value($size, width) - ($padding * 2);
+
+  @include b-cover-box($size);
+
+  padding: $padding;
+
+  .b-standard-cover-title {
+    font-size: b-cover-value($size, title-font);
+    max-width: $text-width;
+    min-height: b-cover-value($size, title-min-height);
+    padding: $padding 0;
+
+    &.b-long {
+      font-size: b-cover-value($size, title-font-long);
+    }
+  }
+
+  .b-standard-cover-author {
+    max-width: $text-width;
+    font-size: b-cover-value($size, author-font);
+  }
+
+  &.b-standard-cover-small {
+    padding: b-cover-value($size, small-padding) $padding;
+  }
+
+  .b-standard-cover-small-text-container {
+    padding: $padding;
+
+    .b-standard-cover-author,
+    .b-standard-cover-title {
+      font-size: b-cover-value($size, small-text-font);
+      min-height: auto;
+    }
+  }
+}
+
 .b-cover-custom {
   margin: 5px;
   border-radius: 3px;
 }
 
 .b-cover-standard {
-  width: 160px;
-  height: 240px;
   color: white;
   border-radius: 3px;
   margin: 5px;
@@ -13,7 +111,6 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
   box-sizing: border-box;
   background-size: cover;
   background-position: center;
@@ -23,39 +120,24 @@
   .b-standard-cover-title {
     text-align: center;
     font-weight: bold;
-    font-size: 20px;
-    max-width: 140px;
     word-wrap: break-word;
     line-height: 1.2;
     font-family: PlayfairDisplay, sans-serif;
-    padding: 10px 0;
-    min-height: 190px;
     align-content: center;
-
-    &.b-long {
-      font-size: 16px;
-    }
   }
 
   .b-standard-cover-author {
     text-align: center;
     font-family: LibreBaskerville, sans-serif;
-    font-size: 10px;
-    max-width: 140px;
     word-wrap: break-word;
     line-height: 1.1;
     text-transform: uppercase;
-  }
-
-  &.b-standard-cover-small {
-    padding: 45px 10px;
   }
 
   .b-standard-cover-small-text-container {
     background-color: white;
     border: 1px solid #ddd;
     border-radius: 3px;
-    padding: 10px;
     text-align: center;
     width: 100%;
     word-wrap: break-word;
@@ -64,9 +146,7 @@
     .b-standard-cover-title {
       align-content: normal;
       color: black;
-      font-size: 12px;
       font-style: italic;
-      min-height: auto;
       text-shadow: none;
     }
 
@@ -77,6 +157,8 @@
       margin: 6px auto 0;
     }
   }
+
+  @include b-cover-geometry($b-cover-default-size);
 
   @mixin b-cover-image($image, $fmt: 'jpg') {
     background-image: image-url('covers/#{$image}.#{$fmt}');
@@ -261,5 +343,11 @@
 
   [data-font='special_elite'] {
     font-family: SpecialElite, sans-serif;
+  }
+}
+
+@each $b-cover-size in map-keys($b-cover-sizes) {
+  .b-cover-size-#{$b-cover-size} .b-cover-standard {
+    @include b-cover-geometry($b-cover-size);
   }
 }
