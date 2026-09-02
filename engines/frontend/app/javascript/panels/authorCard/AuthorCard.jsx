@@ -118,12 +118,12 @@ const AuthorCard = ({
                />)
             ) }
           </div>
-        </div>
 
-        <Toolbar
-          authorFull={authorFull}
-          linkToAuthorPage={linkToAuthorPage}
-        />
+          <Toolbar
+            authorFull={authorFull}
+            linkToAuthorPage={linkToAuthorPage}
+          />
+        </div>
       </Card.Body>
     </Card>
   )

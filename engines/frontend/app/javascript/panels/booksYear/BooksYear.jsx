@@ -5,6 +5,7 @@ import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 
+import GhostBooks from 'panels/booksYear/GhostBooks'
 import YearControl from 'panels/booksYear/YearControl'
 import { selectCurrentBookId } from 'store/axis/selectors'
 import BookIndexEntry from 'components/books/BookIndexEntry'
@@ -32,6 +33,8 @@ const CELL_WIDTH = 200
 const CELL_HEIGHT = 280
 const VISIBLE_COLUMN_RADIUS = 2
 const VISIBLE_ROW_RADIUS = 1
+const GHOST_COLUMN_MARGIN = 3
+const GHOST_ROW_MARGIN = 2
 const defaultTitle = () => 'Books of year'
 
 const spiralPositions = count => {
@@ -115,19 +118,21 @@ const BooksYear = ({ title = defaultTitle }) => {
       row <= selectedCoordinate[1] + VISIBLE_ROW_RADIUS
   }), [coordinatesById, matrixBookIds, selectedCoordinate])
 
-  const bookPositions = useMemo(() => {
-    const positions = spiralPositions(matrixBookIds.length)
-    const centerX = contentSize.width / 2
-    const centerY = contentSize.height / 2
-    return matrixBookIds.reduce((result, bookId, index) => {
-      const [column, row] = positions[index]
-      result[bookId] = {
-        left: centerX + ((column - selectedCoordinate[0]) * CELL_WIDTH) - (BOOK_WIDTH / 2),
-        top: centerY + ((row - selectedCoordinate[1]) * CELL_HEIGHT) - (BOOK_HEIGHT / 2),
-      }
-      return result
-    }, {})
-  }, [contentSize, matrixBookIds, selectedCoordinate])
+  const cellPosition = useCallback((column, row) => ({
+    left: (contentSize.width / 2) + ((column - selectedCoordinate[0]) * CELL_WIDTH) - (BOOK_WIDTH / 2),
+    top: (contentSize.height / 2) + ((row - selectedCoordinate[1]) * CELL_HEIGHT) - (BOOK_HEIGHT / 2),
+  }), [contentSize, selectedCoordinate])
+
+  const bookPositions = useMemo(() => matrixBookIds.reduce((result, bookId) => {
+    const [column, row] = coordinatesById[bookId]
+    result[bookId] = cellPosition(column, row)
+    return result
+  }, {}), [cellPosition, coordinatesById, matrixBookIds])
+
+  const occupiedKeys = useMemo(
+    () => visibleBookIds.map(bookId => coordinatesById[bookId].join(':')),
+    [coordinatesById, visibleBookIds]
+  )
 
   useLayoutEffect(() => {
     const content = contentRef.current
@@ -250,6 +255,14 @@ const BooksYear = ({ title = defaultTitle }) => {
           className='all-books-list'
           ref={contentRef}
         >
+          <GhostBooks
+            cellPosition={cellPosition}
+            centerCoordinate={selectedCoordinate}
+            columnRadius={VISIBLE_COLUMN_RADIUS + GHOST_COLUMN_MARGIN}
+            occupiedKeys={occupiedKeys}
+            rowRadius={VISIBLE_ROW_RADIUS + GHOST_ROW_MARGIN}
+          />
+
           {visibleBookIds.map(bookId => (
             <BookIndexEntry
               id={bookId}
