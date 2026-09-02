@@ -1,15 +1,15 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
-import { Col } from 'react-bootstrap'
 import classNames from 'classnames'
 
 import { selectSortBy } from 'pages/authorsPage/selectors'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import ImageContainer from 'components/ImageContainer'
 import UrlStoreContext from 'store/urlStore/Context'
+import { DEFAULT_AUTHOR_SIZE, authorSizeClass, authorSizeType } from 'utils/authorSizes'
 
-const AuthorsListItem = ({ author }) => {
+const AuthorsListItem = ({ author, size = DEFAULT_AUTHOR_SIZE }) => {
   const selectedAuthorId = useSelector(selectCurrentAuthorId())
   const isSelected = author.id === selectedAuthorId
   const ref = useRef(null)
@@ -34,14 +34,12 @@ const AuthorsListItem = ({ author }) => {
   const handleClick = useCallback(() => showAuthor(author.id), [showAuthor, author.id])
 
   return (
-    <Col
+    <div
       className='author-item-container'
-      key={author.id}
       ref={ref}
-      xs={3}
     >
       <div
-        className={classNames('authors-list-item', { 'selected': isSelected })}
+        className={classNames('authors-list-item', authorSizeClass(size), { 'selected': isSelected })}
         onClick={handleClick}
         title={author.fullname}
       >
@@ -80,12 +78,13 @@ const AuthorsListItem = ({ author }) => {
           </>
         ) : null }
       </div>
-    </Col>
+    </div>
   )
 }
 
 AuthorsListItem.propTypes = {
   author: PropTypes.object.isRequired,
+  size: authorSizeType,
 }
 
 export default AuthorsListItem

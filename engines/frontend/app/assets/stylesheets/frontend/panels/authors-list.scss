@@ -1,3 +1,49 @@
+// Author thumbnail presets, from the narrowest to the widest. The panel picks
+// one depending on how much room a grid column has.
+// Keep the names and thumb sizes in sync with frontend `utils/authorSizes.js`.
+$author-sizes: (
+  'sm': (
+    font: 11px,
+    min-height: 150px,
+    placeholder-padding: 9px,
+    thumb: 100px,
+  ),
+  'lg': (
+    font: 12px,
+    min-height: 190px,
+    placeholder-padding: 12px,
+    thumb: 130px,
+  ),
+);
+$author-default-size: 'lg';
+
+@function author-value($size, $key) {
+  @return map-get(map-get($author-sizes, $size), $key);
+}
+
+@mixin author-geometry($size) {
+  $thumb: author-value($size, thumb);
+
+  min-height: author-value($size, min-height);
+
+  .thumb {
+    height: $thumb;
+    width: $thumb;
+  }
+
+  // The name and the year/rank read the same whether they sit inside a
+  // placeholder circle or below a photo.
+  .author-name,
+  .author-rank,
+  .author-years {
+    font-size: author-value($size, font);
+  }
+
+  .author-placeholder {
+    padding: author-value($size, placeholder-padding);
+  }
+}
+
 .panel--authors-list {
   display: flex;
   flex-direction: column;
@@ -80,6 +126,17 @@
     height: 100%;
     overflow-x: hidden;
     overflow-y: auto;
+    padding: 0 20px 0 10px;
+
+    // Reserve the scrollbar so the measured column width, and with it the
+    // chosen thumbnail size, does not depend on the list being scrollable.
+    scrollbar-gutter: stable;
+  }
+
+  .authors-list-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
   .author-item-container {
@@ -87,22 +144,19 @@
   }
 
   .authors-list-item {
-    display: inline-block;
-    position: relative;
-    width: 140px;
+    display: block;
+    margin: 10px 0 0;
     padding: 5px;
-    min-height: 190px;
-    margin: 10px 20px 0 0;
-    vertical-align: top;
+    position: relative;
+    width: 100%;
+
+    @include author-geometry($author-default-size);
 
     .thumb {
+      border-radius: 50%;
       display: block;
+      margin: 0 auto 10px;
       position: relative;
-      float: left;
-      height: 130px;
-      width: 130px;
-      border-radius: 70px;
-      margin-bottom: 10px;
     }
 
     .author-placeholder {
@@ -112,15 +166,12 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 12px;
 
       .author-name {
-        font-size: 12px;
         line-height: 1.2;
       }
 
       .author-years {
-        font-size: 12px;
         margin-top: 4px;
       }
     }
@@ -133,6 +184,12 @@
 
     &:not(.selected) {
       cursor: pointer;
+    }
+  }
+
+  @each $author-size in map-keys($author-sizes) {
+    .authors-list-item.author-size-#{$author-size} {
+      @include author-geometry($author-size);
     }
   }
 }

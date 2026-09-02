@@ -16,8 +16,8 @@ import { setRequestedBookId } from 'store/books/actions'
 import Pagination from 'components/Pagination'
 import SortingDropdown from 'components/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
-import useCoverSize from 'hooks/useCoverSize'
-import { coverSizeType } from 'utils/coverSizes'
+import useFittedSize from 'hooks/useFittedSize'
+import { coverSizeForWidth, coverSizeType } from 'utils/coverSizes'
 import {
   GRID_ROW_SIZE,
   isBlocked,
@@ -44,8 +44,8 @@ const BooksListCovers = ({
   const perPage = useSelector(selectPerPage())
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
-  const [gridRef, coverSize] = useCoverSize({
-    columns: GRID_ROW_SIZE, gap: GRID_GAP, inset: GRID_CELL_INSET,
+  const [gridRef, coverSize] = useFittedSize({
+    columns: GRID_ROW_SIZE, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: coverSizeForWidth,
   })
   const hasActivated = useRef(false)
   const {
