@@ -123,6 +123,12 @@ development:
       #  port: 8080
     # Should we use gzip compression?
     compress: true
+    # Shakapacker defaults this to `{ disableDotRule: true }`, which rewrites any unknown
+    # path - including `/packs/js/*.js` - to `index.html`. A missing pack then comes back
+    # as an HTML document and the browser reports a confusing
+    # "blocked due to MIME type (text/html) mismatch" error instead of a plain 404.
+    # This server only ever serves /packs, so the SPA fallback has no purpose here.
+    history_api_fallback: false
     # Use 'all' in Docker (Rails proxies /packs to the dev server with Host=shakapacker; the
     # browser uses localhost). 'auto' can respond 403 Forbidden to those proxied requests.
     # Note: weaker host checks; acceptable for local development only.
