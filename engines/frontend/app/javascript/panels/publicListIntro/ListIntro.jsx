@@ -48,7 +48,7 @@ const PublicListIntro = ({
             <ExternalTextLink
               href={link.url}
               key={link.url}
-              text={link.name}
+              resource={link.name}
             />
           )) }
         </ButtonGroup>
@@ -60,7 +60,7 @@ const PublicListIntro = ({
                 <ExternalTextLink
                   href={link.url}
                   key={link.url}
-                  text={`${selectedList.year} ${link.name}`}
+                  resource={`${selectedList.year} ${link.name}`}
                 />
               )) }
             </ButtonGroup>
