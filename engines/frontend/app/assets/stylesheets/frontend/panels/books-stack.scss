@@ -1,6 +1,8 @@
 .panel--books-stack {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 56px - 315px);
   transition: box-shadow 0.2s ease;
-  height: calc(100vh - 56px - 130px);
 
   .books-spine-count-badge {
     background-color: #e8e8e8;
@@ -17,6 +19,9 @@
   }
 
   .panel--body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow: hidden;
     padding: 0 4px 8px;
   }
 
