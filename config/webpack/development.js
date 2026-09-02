@@ -21,7 +21,22 @@ const developmentEnvOnly = (clientConfig) => {
   }
 }
 
+/**
+ * Shakapacker's base config enables `splitChunks: { chunks: 'all' }`, which names the
+ * resulting vendor chunks after the modules they contain (e.g.
+ * `vendors-node_modules_fortawesome_free-regular-svg-icons_faBookmark_js-…-33eb29.js`).
+ * Adding or removing a single import reshuffles those chunks, so the filenames listed in
+ * `manifest.json` change on almost every edit. The dev server only keeps the current
+ * build in memory, so any page still holding the previous filenames requests assets that
+ * no longer exist. Entry-level splitting only matters for production caching, so keep
+ * development on the stable `runtime.js` + `<entry>.js` pair.
+ */
+const stableDevelopmentChunkNames = clientConfig => {
+  clientConfig.optimization.splitChunks = false
+}
+
 const configForDevelopment = buildConfigWithEnginesAndLegacyPlugins()
+stableDevelopmentChunkNames(configForDevelopment)
 developmentEnvOnly(configForDevelopment)
 
 module.exports = configForDevelopment
