@@ -60,7 +60,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
   const bookDetails = useSelector(selectCurrentBookDetails())
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []), shallowEqual)
-  const { routes: { authorPagePath, booksPagePath }, routesReady } = useContext(UrlStoreContext)
+  const { routes: { authorPagePath, booksPagePath, bookPagePath }, routesReady } = useContext(UrlStoreContext)
   useEffect(() => {
     if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
       dispatch(fetchCurrentBookDetails())
@@ -129,7 +129,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
               ) : null }
 
           <div className='book-details-panel-toolbar'>
-            <BookToolbar />
+            <BookToolbar bookPageHref={bookPagePath(book.id)} />
           </div>
 
           { tags.length > 0 ? (
