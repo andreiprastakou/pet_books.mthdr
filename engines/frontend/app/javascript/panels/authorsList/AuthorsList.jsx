@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import { shallowEqual, useSelector } from 'react-redux'
-import { Card, Row } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 
 import {
   selectAuthorsTotal,
@@ -14,7 +14,10 @@ import SortingDropdown from 'components/SortingDropdown'
 import AuthorsListItem from 'panels/authorsList/AuthorsListItem'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import useFittedSize from 'hooks/useFittedSize'
+import { authorSizeForWidth } from 'utils/authorSizes'
 import {
+  GRID_ROW_SIZE,
   isBlocked,
   keyType,
   pageSelection,
@@ -22,6 +25,11 @@ import {
 } from 'utils/paginatedGridNavigation'
 
 export const PANEL_ID = 'authors-list'
+
+// Both match .authors-list-grid: its `gap`, and the padding
+// .authors-list-item puts around the thumbnail it centers.
+const GRID_GAP = 10
+const GRID_CELL_INSET = 10
 
 const usePageSelection = ({ authors, authorsKey, page, pendingPageSelection, showAuthor }) => {
   const previousAuthorsKey = useRef(authorsKey)
@@ -86,7 +94,7 @@ const handleAuthorsKeyDown = (event, {
   return null
 }
 
-// eslint-disable-next-line max-lines-per-function
+// eslint-disable-next-line max-lines-per-function, max-statements
 const AuthorsList = () => {
   const {
     pageState: { activePanelId, registeredPanelIds, sortOrder },
@@ -108,6 +116,9 @@ const AuthorsList = () => {
   const perPage = useSelector(selectPerPage())
   const selectedAuthorId = useSelector(selectCurrentAuthorId())
   const ref = useRef(null)
+  const [gridRef, authorSize] = useFittedSize({
+    columns: GRID_ROW_SIZE, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: authorSizeForWidth,
+  })
   const pendingPageSelection = useRef(null)
   const hasActivated = useRef(false)
   const isActive = activePanelId === PANEL_ID
@@ -198,14 +209,18 @@ const AuthorsList = () => {
 
       <Card.Body className='panel--body'>
         <div className='authors-list'>
-          <Row>
+          <div
+            className='authors-list-grid'
+            ref={gridRef}
+          >
             { authors.map(author => (
               <AuthorsListItem
                 author={author}
                 key={author.id}
+                size={authorSize}
               />
             )) }
-          </Row>
+          </div>
         </div>
       </Card.Body>
     </Card>
