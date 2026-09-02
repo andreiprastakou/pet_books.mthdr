@@ -39,3 +39,23 @@
   padding-top: 10px;
   text-transform: uppercase;
 }
+
+// Stands in for a cover while its book is still loading, so the slot it will
+// occupy does not change size once the data arrives.
+.b-cover-placeholder {
+  align-items: center;
+  background-color: #eee;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  margin: 5px auto;
+  opacity: 0.3;
+
+  @include b-cover-box($b-cover-default-size);
+}
+
+@each $b-cover-size in map-keys($b-cover-sizes) {
+  .b-cover-size-#{$b-cover-size} .b-cover-placeholder {
+    @include b-cover-box($b-cover-size);
+  }
+}

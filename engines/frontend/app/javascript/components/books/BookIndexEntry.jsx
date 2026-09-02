@@ -5,15 +5,17 @@ import { useSelector } from 'react-redux'
 import { selectBooksIndexEntry } from 'store/books/selectors'
 import Book from 'components/Book'
 import BookPlaceholder from 'components/BookPlaceholder'
+import { DEFAULT_COVER_SIZE, coverSizeType } from 'utils/coverSizes'
 
 const BookIndexEntry = ({
-  id, label = null, scrollIntoView = true, showYear = false, style,
+  id, label = null, scrollIntoView = true, showYear = false, size = DEFAULT_COVER_SIZE, style,
 }) => {
   const bookIndexEntry = useSelector(selectBooksIndexEntry(id))
 
   if (!bookIndexEntry) return (
     <BookPlaceholder
       id={id}
+      size={size}
       style={style}
     />
   )
@@ -24,6 +26,7 @@ const BookIndexEntry = ({
       label={label}
       scrollIntoView={scrollIntoView}
       showYear={showYear}
+      size={size}
       style={style}
     />
   )
@@ -34,6 +37,7 @@ BookIndexEntry.propTypes = {
   label: PropTypes.string,
   scrollIntoView: PropTypes.bool,
   showYear: PropTypes.bool,
+  size: coverSizeType,
   style: PropTypes.object,
 }
 
