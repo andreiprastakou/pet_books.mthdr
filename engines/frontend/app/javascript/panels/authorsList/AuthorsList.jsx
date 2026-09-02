@@ -75,7 +75,7 @@ const handleAuthorsKeyDown = (event, {
   }
 
   const target = targetSelection({
-    type, index, lastIndex, page, perPage, totalCount,
+    type, index, page, perPage, totalCount,
   })
   if (target.page !== page) {
     switchToIndexPage(target.page, perPage)
