@@ -47,8 +47,6 @@ const BookSpine = ({ id }) => {
       tabIndex={-1}
       title={bookIndexEntry.title}
     >
-      <div className='book-spine-trim book-spine-trim-top' />
-
       <div className='book-spine-body'>
         <span className='book-spine-title'>
           { bookIndexEntry.title }
@@ -60,8 +58,6 @@ const BookSpine = ({ id }) => {
           { bookIndexEntry.year }
         </span>
       </div>
-
-      <div className='book-spine-trim book-spine-trim-bottom' />
     </div>
   )
 }

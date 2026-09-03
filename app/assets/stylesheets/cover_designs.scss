@@ -115,7 +115,28 @@ $b-cover-default-size: 'lg';
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  position: relative;
   white-space: normal;
+
+  .b-cover-texture {
+    background-image: image-url('covers/linen_buckram_300.png');
+    background-position: center;
+    background-size: 300px 300px;
+    border-radius: inherit;
+    clip-path: inset(0 round 3px);
+    inset: 0;
+    opacity: 0.2;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .b-standard-cover-title,
+  .b-standard-cover-author,
+  .b-standard-cover-small-text-container {
+    position: relative;
+    z-index: 2;
+  }
 
   .b-standard-cover-title {
     text-align: center;
@@ -167,6 +188,7 @@ $b-cover-default-size: 'lg';
   &[data-cover-image='default'] {
     background-image: none;
     background-color: white;
+    background-clip: padding-box !important;
     border: 1px solid #ddd;
   }
 
