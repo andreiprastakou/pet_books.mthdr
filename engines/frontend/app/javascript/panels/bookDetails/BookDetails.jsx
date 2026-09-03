@@ -145,7 +145,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
           ) : null }
         </div>
 
-        { showCover && bookIndexEntry.coverDesignId !== 'standard' ? (
+        { showCover ? (
           <div className='book-details-panel-cover'>
             <Book bookIndexEntry={bookIndexEntry} />
           </div>
