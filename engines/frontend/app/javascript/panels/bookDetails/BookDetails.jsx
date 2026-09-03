@@ -8,6 +8,7 @@ import BookToolbar from 'components/BookToolbar'
 import ExternalTextLink from 'components/ExternalTextLink'
 import TagBadge from 'components/TagBadge'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
+import { selectCoverDesign } from 'store/coverDesigns/selectors'
 import { fetchCurrentBookDetails } from 'store/books/actions'
 import {
   selectCurrentBookDetails,
@@ -15,6 +16,7 @@ import {
 } from 'store/books/selectors'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
 
 const renderAuthors = (authorRefs, bookId, authorPagePath) => (
   <>
@@ -53,6 +55,42 @@ const BookDetailsHeader = ({ header, title }) => header || (
     </span>
   </>
 )
+
+const BookBackCover = ({ bookId, coverImage }) => (
+  <div
+    className='b-cover-standard book-back-cover'
+    data-cover-image={coverImage}
+    style={coverImage === 'default' ? coverBackgroundStyle(coverPaletteForId(bookId)) : null}
+  >
+    { coverImage === 'default' ? <div className='b-cover-texture' /> : null }
+  </div>
+)
+
+BookBackCover.propTypes = {
+  bookId: PropTypes.number.isRequired,
+  coverImage: PropTypes.string.isRequired,
+}
+
+const BookWithBackCover = ({ bookIndexEntry }) => {
+  const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
+
+  return (
+    <>
+      { coverDesign ? (
+        <BookBackCover
+          bookId={bookIndexEntry.id}
+          coverImage={coverDesign.coverImage}
+        />
+      ) : null }
+
+      <Book bookIndexEntry={bookIndexEntry} />
+    </>
+  )
+}
+
+BookWithBackCover.propTypes = {
+  bookIndexEntry: PropTypes.object.isRequired,
+}
 
 const BookDetails = ({ header = null, showCover = true }) => {
   const dispatch = useDispatch()
@@ -147,7 +185,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
 
         { showCover ? (
           <div className='book-details-panel-cover'>
-            <Book bookIndexEntry={bookIndexEntry} />
+            <BookWithBackCover bookIndexEntry={bookIndexEntry} />
           </div>
         ) : null }
       </Card.Body>

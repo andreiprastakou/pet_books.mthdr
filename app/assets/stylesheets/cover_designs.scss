@@ -59,6 +59,21 @@ $b-cover-default-size: 'lg';
   width: b-cover-value($size, width);
 }
 
+// Woven cloth laid over a generated cover colour, on covers and stack spines alike.
+// The radius has to be repeated here because a clip path does not follow `border-radius`.
+@mixin b-cover-texture($radius) {
+  background-image: image-url('covers/linen_buckram_300.png');
+  background-position: center;
+  background-size: 300px 300px;
+  border-radius: inherit;
+  clip-path: inset(0 round $radius);
+  inset: 0;
+  opacity: 0.2;
+  pointer-events: none;
+  position: absolute;
+  z-index: 1;
+}
+
 @mixin b-cover-geometry($size) {
   $padding: b-cover-value($size, padding);
   $text-width: b-cover-value($size, width) - ($padding * 2);
@@ -119,16 +134,7 @@ $b-cover-default-size: 'lg';
   white-space: normal;
 
   .b-cover-texture {
-    background-image: image-url('covers/linen_buckram_300.png');
-    background-position: center;
-    background-size: 300px 300px;
-    border-radius: inherit;
-    clip-path: inset(0 round 3px);
-    inset: 0;
-    opacity: 0.2;
-    pointer-events: none;
-    position: absolute;
-    z-index: 1;
+    @include b-cover-texture(3px);
   }
 
   .b-standard-cover-title,
@@ -189,7 +195,7 @@ $b-cover-default-size: 'lg';
     background-image: none;
     background-color: white;
     background-clip: padding-box !important;
-    border: 1px solid #ddd;
+    border: 0;
   }
 
   &[data-cover-image='blue_red_marks'] {

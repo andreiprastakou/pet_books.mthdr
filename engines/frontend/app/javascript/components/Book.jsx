@@ -8,7 +8,7 @@ import { selectCoverDesign } from 'store/coverDesigns/selectors'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 import { DEFAULT_COVER_SIZE, coverSizeClass, coverSizeType } from 'utils/coverSizes'
-import { spineBackgroundStyle, spinePaletteForId } from 'panels/booksStack/spinePalettes'
+import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
 
 const TITLE_LENGTH_LONG = 25
 
@@ -88,7 +88,7 @@ const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => (
     className='b-cover-standard'
     data-cover-image={coverDesign.coverImage}
     style={coverDesign.coverImage === 'default'
-      ? spineBackgroundStyle(spinePaletteForId(bookIndexEntry.id))
+      ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id))
       : null}
   >
     { coverDesign.coverImage === 'default' ? <div className='b-cover-texture' /> : null }
@@ -122,7 +122,7 @@ const BookSmall = ({ authorRefs, coverDesign, bookIndexEntry }) => (
     className='b-cover-standard b-standard-cover-small'
     data-cover-image={coverDesign.coverImage}
     style={coverDesign.coverImage === 'default'
-      ? spineBackgroundStyle(spinePaletteForId(bookIndexEntry.id))
+      ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id))
       : null}
   >
     { coverDesign.coverImage === 'default' ? <div className='b-cover-texture' /> : null }

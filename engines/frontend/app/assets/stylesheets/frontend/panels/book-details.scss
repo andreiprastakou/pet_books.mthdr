@@ -37,6 +37,7 @@
     justify-content: center;
     perspective: 900px;
     align-self: flex-start;
+    position: relative;
 
     .book-case {
       margin: 0;
@@ -103,6 +104,27 @@
         &::after {
           opacity: 0.55;
         }
+      }
+    }
+
+    // The back board, peeking out above, below and to the right of the front cover.
+    .b-cover-standard.book-back-cover {
+      border-radius: 2px 4px 4px 2px;
+      box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.3);
+      filter: brightness(0.62);
+      height: 238px;
+      margin: 0;
+      overflow: hidden;
+      pointer-events: none;
+      position: absolute;
+      right: -6px;
+      top: 1px;
+      width: 160px;
+      z-index: 0;
+
+      &::before,
+      &::after {
+        content: none;
       }
     }
 
