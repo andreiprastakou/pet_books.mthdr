@@ -1,4 +1,6 @@
-const SPINE_PALETTES = [
+// Cloth colours shared by every generated cover surface: stack spines, default
+// front covers and the back board behind them.
+const COVER_PALETTES = [
   { base: '#6b2222', mid: '#7a2a2a', shadow: '#4a1414', edge: '#3a1010' },
   { base: '#1f2f4f', mid: '#2a3d63', shadow: '#121f35', edge: '#0d1628' },
   { base: '#3a3a3a', mid: '#4a4a4a', shadow: '#252525', edge: '#1a1a1a' },
@@ -11,9 +13,9 @@ const SPINE_PALETTES = [
   { base: '#283838', mid: '#334848', shadow: '#182020', edge: '#101818' },
 ]
 
-export const spinePaletteForId = id => SPINE_PALETTES[Math.abs(id) % SPINE_PALETTES.length]
+export const coverPaletteForId = id => COVER_PALETTES[Math.abs(id) % COVER_PALETTES.length]
 
-export const spineBackgroundStyle = palette => ({
+export const coverBackgroundStyle = palette => ({
   background: `
     linear-gradient(
       180deg,
