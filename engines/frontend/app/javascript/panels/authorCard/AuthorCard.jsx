@@ -114,7 +114,6 @@ const AuthorCard = ({
                 id={tag.id}
                 key={tag.id}
                 text={tag.name}
-                variant='dark'
                />)
             ) }
           </div>

@@ -37,6 +37,9 @@ yarn run stylelint "app/assets/stylesheets/**/*.{css,scss}"
 
 ```sh
 rspec
+yarn test          # frontend Vitest suite (engines/frontend)
+yarn test:watch    # Vitest watch mode
+# or: bin/tests_js
 ```
 
 ### Vulnerabilities:

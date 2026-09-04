@@ -12,7 +12,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  js-unit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Code fetch
+        uses: actions/checkout@v7
+
+      - name: Setup Node JS
+        uses: actions/setup-node@v7
+        with:
+          node-version: 20
+          cache: 'yarn'
+
+      - name: Yarn setup
+        run: yarn install --frozen-lockfile
+
+      - name: Run Vitest
+        run: yarn test
+
+  ruby-unit:
     runs-on: ubuntu-latest
     permissions:
       contents: read

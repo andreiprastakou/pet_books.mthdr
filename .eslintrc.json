@@ -88,6 +88,20 @@
         "max-lines-per-function": ["error", { "max": 100 }],
         "max-statements": ["error", { "max": 20 }]
       }
+    },
+    {
+      "files": ["**/*.{test,spec}.{js,jsx}"],
+      "env": {
+        "jest": true
+      },
+      "globals": {
+        "vi": "readonly"
+      },
+      "rules": {
+        "max-lines-per-function": ["off"],
+        "max-statements": ["off"],
+        "no-undefined": ["off"]
+      }
     }
   ],
   "settings": {

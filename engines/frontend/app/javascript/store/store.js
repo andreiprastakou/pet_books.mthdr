@@ -14,18 +14,23 @@ import imageModalReducer from 'modals/imageFullShow/slice'
 
 import authorsPageReducer from 'pages/authorsPage/slice'
 
-export default configureStore({
-  reducer: {
-    authorsPage: authorsPageReducer,
-    axis: axisReducer,
-    booksList: booksListReducer,
-    booksYears: booksYearsReducer,
-    imageModal: imageModalReducer,
-    metadata: metadataReducer,
-    notifications: notificationsReducer,
-    storeAuthors: storeAuthorsReducer,
-    storeBooks: storeBooksReducer,
-    storeCoverDesigns: storeCoverDesignsReducer,
-    storeTags: storeTagsReducer,
-  }
+export const rootReducer = {
+  authorsPage: authorsPageReducer,
+  axis: axisReducer,
+  booksList: booksListReducer,
+  booksYears: booksYearsReducer,
+  imageModal: imageModalReducer,
+  metadata: metadataReducer,
+  notifications: notificationsReducer,
+  storeAuthors: storeAuthorsReducer,
+  storeBooks: storeBooksReducer,
+  storeCoverDesigns: storeCoverDesignsReducer,
+  storeTags: storeTagsReducer,
+}
+
+export const createAppStore = preloadedState => configureStore({
+  reducer: rootReducer,
+  preloadedState,
 })
+
+export default createAppStore()

@@ -56,7 +56,7 @@ const useInitialSelection = ({ authors, selectedAuthorId, showAuthor }) => {
   }, [authors, selectedAuthorId, showAuthor])
 }
 
-const handleAuthorsKeyDown = (event, {
+export const handleAuthorsKeyDown = (event, {
   authors, authorPagePath, page, perPage, selectedAuthorId, showAuthor,
   switchToIndexPage, totalCount,
 }) => {

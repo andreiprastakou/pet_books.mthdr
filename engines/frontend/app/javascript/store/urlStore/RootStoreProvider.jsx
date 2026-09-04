@@ -171,7 +171,7 @@ class UrlAccessor {
   }
 }
 
-const buildPath = ({ path, params, initialParams = '', hash } = {}) => {
+export const buildPath = ({ path, params, initialParams = '', hash } = {}) => {
   const newPath = [
     path,
     objectToParams(params ?? {}, initialParams),

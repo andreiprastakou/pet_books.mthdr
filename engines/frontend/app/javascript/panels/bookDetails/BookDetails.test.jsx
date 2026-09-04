@@ -1,0 +1,121 @@
+import React from 'react'
+import { screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+
+import BookDetails from 'panels/bookDetails/BookDetails'
+import { renderWithProviders } from 'test/renderWithProviders'
+
+vi.mock('store/books/actions', async() => {
+  const actual = await vi.importActual('store/books/actions')
+  return {
+    ...actual,
+    fetchCurrentBookDetails: vi.fn(() => () => undefined),
+  }
+})
+
+vi.mock('components/Book', () => ({
+  default: ({ bookIndexEntry }) => <div data-testid='book-cover'>{ bookIndexEntry.title }</div>,
+}))
+
+const bookIndexEntry = {
+  id: 5,
+  title: 'Dune',
+  authorIds: [1],
+  coverDesignId: 9,
+  year: 1965,
+}
+
+const bookDetails = {
+  id: 5,
+  title: 'Dune',
+  yearPublished: 1965,
+  summary: 'Sandworms.',
+  wikiUrl: 'https://en.wikipedia.org/wiki/Dune',
+  genericLinks: [{ name: 'goodreads', url: 'https://goodreads.com/dune' }],
+  tagIds: [11],
+}
+
+const baseState = {
+  axis: {
+    currentAuthorId: null,
+    currentBookId: 5,
+    currentTagId: null,
+    seed: null,
+  },
+  storeAuthors: {
+    authorsFull: {},
+    authorsIndex: {},
+    authorsRefs: { 1: { id: 1, fullname: 'Frank Herbert' } },
+    defaultPhotoUrl: null,
+    refsLoaded: true,
+  },
+  storeBooks: {
+    bookDetailsCurrent: bookDetails,
+    booksIndex: { 5: bookIndexEntry },
+    booksRefs: {},
+    requestedBookId: null,
+  },
+  storeCoverDesigns: {
+    coverDesigns: {
+      9: {
+        id: 9,
+        coverImage: 'default',
+        titleFont: 'serif',
+        titleColor: 'dark',
+        authorNameFont: 'serif',
+        authorNameColor: 'dark',
+      },
+    },
+    coverDesignsLoaded: true,
+  },
+  storeTags: {
+    categories: {},
+    refsLoaded: true,
+    tagsCategoriesIndex: {},
+    tagsIndex: {},
+    tagsRefs: { 11: { id: 11, name: 'fiction' } },
+  },
+}
+
+describe('BookDetails', () => {
+  beforeEach(() => {
+    vi.clearAllMocks()
+  })
+
+  it('renders nothing when details are missing or routes are not ready', () => {
+    const { container: empty } = renderWithProviders(<BookDetails />, {
+      preloadedState: {
+        ...baseState,
+        storeBooks: { ...baseState.storeBooks, bookDetailsCurrent: {} },
+      },
+    })
+    expect(empty).toBeEmptyDOMElement()
+
+    const { container: notReady } = renderWithProviders(<BookDetails />, {
+      preloadedState: baseState,
+      urlStore: { routesReady: false },
+    })
+    expect(notReady).toBeEmptyDOMElement()
+  })
+
+  it('renders details, links, tags, and can hide the cover', () => {
+    renderWithProviders(<BookDetails showCover={false} />, {
+      preloadedState: baseState,
+      urlStore: {
+        routes: {
+          authorPagePath: id => `/authors/${id}`,
+          booksPagePath: ({ bookId } = {}) => (bookId ? `/books/${bookId}` : '/books'),
+          bookPagePath: id => `/books/${id}`,
+        },
+      },
+    })
+
+    expect(screen.getByRole('heading', { name: 'Dune' })).toBeInTheDocument()
+    expect(screen.getByText('Sandworms.')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Frank Herbert' })).toHaveAttribute('href', '/authors/1')
+    expect(screen.getByRole('button', { name: /wikipedia/iu })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /goodreads/iu })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: '#fiction' })).toBeInTheDocument()
+    expect(screen.queryByTestId('book-cover')).not.toBeInTheDocument()
+  })
+})

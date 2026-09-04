@@ -113,7 +113,6 @@ const TagsList = () => {
                         id={tag.id}
                         renderPostfix={handleRenderPostfix(tag)}
                         text={tag.name}
-                        variant='dark'
                       />
                     </div>
                   )) }
