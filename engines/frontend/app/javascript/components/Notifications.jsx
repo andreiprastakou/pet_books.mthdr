@@ -44,9 +44,9 @@ class Notifications extends React.Component {
     return messages !== nextProps.messages
   }
 
-  handleDismiss = message => {
+  handleDismiss = messageId => {
     const { onRemoveMessage } = this.props
-    onRemoveMessage(message.id)
+    onRemoveMessage(messageId)
   }
 
   render() {

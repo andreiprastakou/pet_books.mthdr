@@ -37,7 +37,7 @@ const GHOST_COLUMN_MARGIN = 3
 const GHOST_ROW_MARGIN = 2
 const defaultTitle = () => 'Books of year'
 
-const spiralPositions = count => {
+export const spiralPositions = count => {
   const result = [[0, 0]]
   const directions = [[0, 1], [1, 0], [0, -1], [-1, 0]]
   let column = 0
@@ -61,7 +61,7 @@ const spiralPositions = count => {
   return result
 }
 
-const buildBookMatrix = (bookIds, selectedId) => {
+export const buildBookMatrix = (bookIds, selectedId) => {
   const orderedBookIds = selectedId ? [
     selectedId,
     ...bookIds.filter(bookId => bookId !== selectedId),
