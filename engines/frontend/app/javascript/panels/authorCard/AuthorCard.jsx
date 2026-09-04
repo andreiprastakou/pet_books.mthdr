@@ -6,24 +6,22 @@ import PropTypes from 'prop-types'
 
 import Toolbar from 'panels/authorCard/Toolbar'
 import ImageContainer from 'components/ImageContainer'
+import InternalLink from 'components/InternalLink'
 import TagBadge from 'components/TagBadge'
 
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import { selectAuthorFull, selectAuthorDefaultImageUrl } from 'store/authors/selectors'
 import { fetchAuthorFull } from 'store/authors/actions'
-import { selectTagsRefsByIds, selectVisibleTags } from 'store/tags/selectors'
+import { selectTagsRefsByIds } from 'store/tags/selectors'
 import { setImageSrc } from 'modals/imageFullShow/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const AuthorCardHeader = ({ header, name }) => header || (
+const AuthorCardHeader = ({ authorsPagePath, header, name }) => header || (
   <>
     <span>
-      <a
-        className='internal-link'
-        href='/authors'
-      >
+      <InternalLink href={authorsPagePath()}>
         { 'Authors' }
-      </a>
+      </InternalLink>
 
       { '/' }
     </span>
@@ -62,16 +60,15 @@ const AuthorCard = ({
   showPicture = true,
   header = null,
 }) => {
-  const { routesReady } = useContext(UrlStoreContext)
+  const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
   const dispatch = useDispatch()
   const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds), shallowEqual)
-  const visibleTags = useSelector(selectVisibleTags(tags), shallowEqual)
-  const sortedTags = sortBy(visibleTags, tag => tag.connectionsCount)
+  const sortedTags = sortBy(tags, tag => tag.connectionsCount)
   const defaultPhotoUrl = useSelector(selectAuthorDefaultImageUrl())
 
   const handleImageClick = useCallback(() => {
     dispatch(setImageSrc(authorFull.imageUrl))
-  }, [authorFull.imageUrl])
+  }, [authorFull.imageUrl, dispatch])
 
   if (!routesReady) return null
 
@@ -83,6 +80,7 @@ const AuthorCard = ({
     >
       <Card.Header className='panel--header'>
         <AuthorCardHeader
+          authorsPagePath={authorsPagePath}
           header={header}
           name={authorFull.fullname}
         />
@@ -138,6 +136,7 @@ AuthorCardWrap.propTypes = {
 }
 
 AuthorCardHeader.propTypes = {
+  authorsPagePath: PropTypes.func.isRequired,
   header: PropTypes.node,
   name: PropTypes.string.isRequired,
 }

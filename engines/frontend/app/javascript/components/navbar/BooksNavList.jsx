@@ -3,9 +3,10 @@ import { shallowEqual, useSelector } from 'react-redux'
 import { NavDropdown } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
+import InternalLink from 'components/InternalLink'
+import SearchForm from 'components/navbar/SearchForm'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import apiClient from 'store/books/apiClient'
-import SearchForm from 'components/navbar/SearchForm'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const BooksNavList = () => {
@@ -41,7 +42,7 @@ const SearchEntry = ({ entry }) => {
   const { routes: { booksPagePath } } = useContext(UrlStoreContext)
   return (
     <NavDropdown.Item
-      className='internal-link'
+      as={InternalLink}
       href={booksPagePath({ bookId: entry.bookId })}
       title={`${entry.title} (${entry.year})`}
     >

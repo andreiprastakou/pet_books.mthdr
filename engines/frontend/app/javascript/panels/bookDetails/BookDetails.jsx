@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 import Book from 'components/Book'
 import BookToolbar from 'components/BookToolbar'
 import ExternalTextLink from 'components/ExternalTextLink'
+import InternalLink from 'components/InternalLink'
 import TagBadge from 'components/TagBadge'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { selectCoverDesign } from 'store/coverDesigns/selectors'
@@ -24,26 +25,22 @@ const renderAuthors = (authorRefs, bookId, authorPagePath) => (
       <React.Fragment key={authorRef.id}>
         { index > 0 && ', ' }
 
-        <a
-          className='internal-link'
+        <InternalLink
           href={authorPagePath(authorRef.id, { bookId })}
           title={authorRef.fullname}
         >
           { authorRef.fullname }
-        </a>
+        </InternalLink>
       </React.Fragment>
     )) }
   </>
 )
 
-const BookDetailsHeader = ({ header, title }) => header || (
+const BookDetailsHeader = ({ booksPagePath, header, title }) => header || (
   <>
-    <a
-      className='internal-link'
-      href='/books'
-    >
+    <InternalLink href={booksPagePath()}>
       { 'Books' }
-    </a>
+    </InternalLink>
 
     { '/' }
 
@@ -118,6 +115,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
     <Card className='panel--book-details panel--widget'>
       <Card.Header className='panel--header'>
         <BookDetailsHeader
+          booksPagePath={booksPagePath}
           header={header}
           title={book.title}
         />
@@ -131,12 +129,9 @@ const BookDetails = ({ header = null, showCover = true }) => {
             </h2>
 
             <span>
-              <a
-                className='internal-link'
-                href={booksPagePath({ bookId: book.id })}
-              >
+              <InternalLink href={booksPagePath({ bookId: book.id })}>
                 { book.yearPublished }
-              </a>
+              </InternalLink>
             </span>
           </div>
 
@@ -194,6 +189,7 @@ const BookDetails = ({ header = null, showCover = true }) => {
 }
 
 BookDetailsHeader.propTypes = {
+  booksPagePath: PropTypes.func.isRequired,
   header: PropTypes.node,
   title: PropTypes.string.isRequired,
 }

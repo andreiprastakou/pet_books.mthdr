@@ -8,6 +8,7 @@ import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-ico
 import PropTypes from 'prop-types'
 
 import ExternalTextLink from 'components/ExternalTextLink'
+import InternalLink from 'components/InternalLink'
 import { addSuccessMessage } from 'store/notifications/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -36,7 +37,7 @@ const Toolbar = props => {
 
       { linkToAuthorPage && authorFull.booksCount > 0 ? (
         <Button
-          className='internal-link'
+          as={InternalLink}
           href={authorPagePath(authorFull.id)}
           title='See all books'
           variant='outline-info'

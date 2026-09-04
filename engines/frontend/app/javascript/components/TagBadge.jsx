@@ -3,32 +3,37 @@ import { useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-import { selectTagRef, selectCategory } from 'store/tags/selectors'
+import InternalLink from 'components/InternalLink'
+import { selectTagRef } from 'store/tags/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const TagBadge = ({ text, id = null, renderPostfix = null, classes = '', onClick = null }) => {
   const label = `#${text}`
   const tagRef = useSelector(selectTagRef(id))
-  const category = useSelector(selectCategory(tagRef?.categoryId))
-  const { routes: { tagPagePath }, actions: { goto }, routesReady } = useContext(UrlStoreContext)
-  const clickHandler = useCallback(() => onClick ? onClick() : goto(tagPagePath(id)), [goto, tagPagePath])
+  const { routes: { tagPagePath }, routesReady } = useContext(UrlStoreContext)
 
-  if (!tagRef || !category) return null
+  const handleClick = useCallback(event => {
+    if (!onClick) return
+    event.preventDefault()
+    onClick()
+  }, [onClick])
+
+  if (!tagRef) return null
   if (!routesReady) return null
 
-  const classnames = classNames(['tag-container', 'tag-badge', `tag-category-${category.name}`, classes])
+  const classnames = classNames(['tag-container', 'tag-badge', classes])
 
   return (
     <span
       className={classnames}
     >
-      <a
-        className='internal-link tag-name'
+      <InternalLink
+        className='tag-name'
         href={tagPagePath(id)}
-        onClick={clickHandler}
+        onClick={handleClick}
       >
         { label }
-      </a>
+      </InternalLink>
 
       { renderPostfix ? renderPostfix() : null }
     </span>

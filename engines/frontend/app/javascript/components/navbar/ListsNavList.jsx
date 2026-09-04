@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { NavDropdown } from 'react-bootstrap'
 
+import InternalLink from 'components/InternalLink'
 import apiClient from 'store/publicLists/apiClient'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -16,7 +17,7 @@ const PublicListsNavList = () => {
     <>
       { listTypes.map(listType => (
         <NavDropdown.Item
-          className='internal-link'
+          as={InternalLink}
           href={listPagePath(listType.id)}
           key={listType.id}
         >

@@ -1,7 +1,7 @@
 import React, { useCallback, useContext } from 'react'
-import { useSelector } from 'react-redux'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 
+import InternalLink from 'components/InternalLink'
 import AuthorsNavList from 'components/navbar/AuthorsNavList'
 import BooksNavList from 'components/navbar/BooksNavList'
 import TagsNavList from 'components/navbar/TagsNavList'
@@ -43,7 +43,7 @@ const RootNavLink = () => {
 
   return (
     <Nav.Link
-      className='internal-link'
+      as={InternalLink}
       href={booksPagePath({ bookId: null })}
     >
       <b>
@@ -57,7 +57,7 @@ const BooksNavDropdown = () => {
   const { routes: { booksPagePath } } = useContext(UrlStoreContext)
   const { triggerEvent } = useContext(EventsContext)
 
-  const handleTriggerEvent = useCallback(() => triggerEvent('BOOKS_NAV_CLICKED'), [])
+  const handleTriggerEvent = useCallback(() => triggerEvent('BOOKS_NAV_CLICKED'), [triggerEvent])
 
   return (
     <NavDropdown
@@ -69,7 +69,7 @@ const BooksNavDropdown = () => {
       <NavDropdown.Divider />
 
       <NavDropdown.Item
-        className='internal-link'
+        as={InternalLink}
         href={booksPagePath()}
       >
         { 'List all' }
@@ -82,7 +82,7 @@ const AuthorsNavDropdown = () => {
   const { routes: { authorsPagePath } } = useContext(UrlStoreContext)
   const { triggerEvent } = useContext(EventsContext)
 
-  const handleTriggerEvent = useCallback(() => triggerEvent('AUTHORS_NAV_CLICKED'), [])
+  const handleTriggerEvent = useCallback(() => triggerEvent('AUTHORS_NAV_CLICKED'), [triggerEvent])
 
   return (
     <NavDropdown
@@ -94,7 +94,7 @@ const AuthorsNavDropdown = () => {
       <NavDropdown.Divider />
 
       <NavDropdown.Item
-        className='internal-link'
+        as={InternalLink}
         href={authorsPagePath()}
       >
         { 'List all' }
@@ -107,7 +107,7 @@ const TagsNavDropdown = () => {
   const { routes: { tagsPagePath } } = useContext(UrlStoreContext)
   const { triggerEvent } = useContext(EventsContext)
 
-  const handleTriggerEvent = useCallback(() => triggerEvent('TAGS_NAV_CLICKED'), [])
+  const handleTriggerEvent = useCallback(() => triggerEvent('TAGS_NAV_CLICKED'), [triggerEvent])
 
   return (
     <NavDropdown
@@ -119,7 +119,7 @@ const TagsNavDropdown = () => {
       <NavDropdown.Divider />
 
       <NavDropdown.Item
-        className='internal-link'
+        as={InternalLink}
         href={tagsPagePath()}
       >
         { 'List all' }

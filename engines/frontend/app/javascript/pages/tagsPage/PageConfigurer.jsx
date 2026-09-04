@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 
 import { addErrorMessage } from 'store/notifications/actions'
 import { setPageIsLoading } from 'store/metadata/actions'
-import { fetchTagsIndex } from 'store/tags/actions'
+import { fetchCategories, fetchTagsIndex } from 'store/tags/actions'
 import { prepareNavRefs } from 'store/navbar/actions'
 
 const Configurer = () => {
@@ -14,6 +14,7 @@ const Configurer = () => {
     Promise.all([
       dispatch(fetchTagsIndex()),
       dispatch(prepareNavRefs()),
+      dispatch(fetchCategories()),
     ]).catch(() => {
       dispatch(addErrorMessage('Unable to load this page. Please try again.'))
     }).finally(() => {
