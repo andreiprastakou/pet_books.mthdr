@@ -1,8 +1,9 @@
 import React, { useCallback, useContext, useState } from 'react'
 import { NavDropdown } from 'react-bootstrap'
 
-import apiClient from 'store/authors/apiClient'
+import InternalLink from 'components/InternalLink'
 import SearchForm from 'components/navbar/SearchForm'
+import apiClient from 'store/authors/apiClient'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const AuthorsNavList = () => {
@@ -25,7 +26,7 @@ const AuthorsNavList = () => {
       <div className='nav-search-list'>
         { authorsSearchEntries.map(searchEntry => (
           <NavDropdown.Item
-            className='internal-link'
+            as={InternalLink}
             href={authorPagePath(searchEntry.authorId)}
             key={searchEntry.authorId}
           >

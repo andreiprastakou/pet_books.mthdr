@@ -4,6 +4,7 @@ export const slice = createSlice({
   name: 'storeCoverDesigns',
   initialState: {
     coverDesigns: {},
+    coverDesignsLoaded: false,
   },
   reducers: {
     assignCoverDesigns: (state, action) => {
@@ -12,6 +13,7 @@ export const slice = createSlice({
       coverDesigns.forEach(coverDesign => {
         state.coverDesigns[coverDesign.id] = coverDesign
       })
+      state.coverDesignsLoaded = true
     },
   }
 })

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { Pagination as BootstrapPagination } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
+import InternalLink from 'components/InternalLink'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Pagination = ({ selectTotal, selectPage, selectPerPage }) => {
@@ -25,7 +26,7 @@ const Pagination = ({ selectTotal, selectPage, selectPerPage }) => {
     if (pageNumber < 1 || pageNumber > lastPage) return null
     return (
       <BootstrapPagination.Item
-        className='internal-link'
+        as={InternalLink}
         href={indexPaginationPath(pageNumber, perPage)}
         onClick={handlePageClick(pageNumber)}
         title={pageNumber}
