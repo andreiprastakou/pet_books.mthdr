@@ -13,7 +13,7 @@ module FrontendApi
         @book = Book.preload(
           :generic_links,
           genres: :genre,
-          book_public_lists: { public_list: :public_list_type },
+          book_public_lists: { public_list: :public_list_type }
         ).find(params[:id])
       end
     end

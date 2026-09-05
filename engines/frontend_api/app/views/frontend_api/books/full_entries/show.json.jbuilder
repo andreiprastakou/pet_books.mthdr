@@ -12,10 +12,10 @@ json.small book.small?
 json.form_label Books::FormLabel.call(book)
 json.summary book.summary
 json.wiki_url book.wiki_url
-json.generic_links book.generic_links.map { |link| { name: link.name, url: link.url } }
-json.public_lists book.book_public_lists.sort_by { |entry|
+json.generic_links(book.generic_links.map { |link| { name: link.name, url: link.url } })
+json.public_lists(book.book_public_lists.sort_by do |entry|
   [-entry.public_list.year, entry.public_list.public_list_type.name.downcase]
-} do |book_public_list|
+end) do |book_public_list|
   public_list = book_public_list.public_list
   json.public_list_id public_list.id
   json.public_list_type_id public_list.public_list_type_id

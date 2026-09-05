@@ -3,7 +3,7 @@ class AddDataFilledToBooks < ActiveRecord::Migration[8.0]
     add_column :books, :data_filled, :boolean, default: false, null: false
     add_index :books, :data_filled
 
-    execute <<-SQL.squish
+    execute <<~SQL.squish
       UPDATE books SET data_filled = true WHERE summary IS NOT NULL
     SQL
   end
