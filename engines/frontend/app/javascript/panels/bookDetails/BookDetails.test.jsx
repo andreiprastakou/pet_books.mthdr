@@ -29,6 +29,7 @@ const bookDetails = {
   id: 5,
   title: 'Dune',
   yearPublished: 1965,
+  formLabel: 'a science fiction novel',
   summary: 'Sandworms.',
   wikiUrl: 'https://en.wikipedia.org/wiki/Dune',
   genericLinks: [{ name: 'goodreads', url: 'https://goodreads.com/dune' }],
@@ -111,6 +112,7 @@ describe('BookDetails', () => {
     })
 
     expect(screen.getByRole('heading', { name: 'Dune' })).toBeInTheDocument()
+    expect(screen.getByText('a science fiction novel')).toBeInTheDocument()
     expect(screen.getByText('Sandworms.')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Frank Herbert' })).toHaveAttribute('href', '/authors/1')
     expect(screen.getByRole('button', { name: /wikipedia/iu })).toBeInTheDocument()

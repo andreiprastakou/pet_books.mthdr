@@ -15,6 +15,7 @@ describe('books API models', () => {
       year_published: 1900,
       tag_ids: [2],
       series_ids: [4],
+      form_label: 'a fantasy novel',
       wiki_url: 'https://wiki',
       generic_links: [{ url: 'https://x' }],
     })).toMatchObject({
@@ -25,6 +26,7 @@ describe('books API models', () => {
       yearPublished: 1900,
       tagIds: [2],
       seriesIds: [4],
+      formLabel: 'a fantasy novel',
       wikiUrl: 'https://wiki',
       genericLinks: [{ url: 'https://x' }],
     })

@@ -154,6 +154,12 @@ const BookDetails = ({ header = null, showCover = true }) => {
             </span>
           </div>
 
+          { book.formLabel ? (
+            <div className='book-details-panel-form-label'>
+              { book.formLabel }
+            </div>
+          ) : null }
+
           <div className='book-details-panel-authors'>
             { 'by ' }
 
@@ -168,11 +174,13 @@ const BookDetails = ({ header = null, showCover = true }) => {
             </div>
           ) : null }
 
-          <div className='book-details-panel-annotation'>
-            <p>
-              { book.summary || '<no information>' }
-            </p>
-          </div>
+          { book.summary ? (
+            <div className='book-details-panel-annotation'>
+              <p>
+                { book.summary }
+              </p>
+            </div>
+          ) : null }
 
           { links.length > 0 ? (
             <div className='book-details-panel-links'>

@@ -8,6 +8,8 @@ RSpec.describe '/api/books/full_entries' do
       create(
         :book,
         generic_links: generic_links,
+        genres: book_genres,
+        literary_form: 'novel',
         series: series,
         summary: 'A book summary.',
         tags: tags,
@@ -17,6 +19,7 @@ RSpec.describe '/api/books/full_entries' do
     let(:tags) { create_list(:tag, 2) }
     let(:series) { create_list(:series, 2) }
     let(:generic_links) { build_list(:generic_link, 2) }
+    let(:book_genres) { [build(:book_genre, genre: create(:genre, name: 'fantasy'))] }
 
     it 'renders the book' do
       book
@@ -32,6 +35,7 @@ RSpec.describe '/api/books/full_entries' do
         series_ids: series.map(&:id),
         year_published: book.year_published,
         small: false,
+        form_label: 'a fantasy novel',
         summary: book.summary,
         wiki_url: book.wiki_url,
         generic_links: generic_links.map { |link| { name: link.name, url: link.url } },

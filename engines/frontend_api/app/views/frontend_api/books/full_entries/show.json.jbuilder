@@ -9,6 +9,7 @@ json.year_published book.year_published
 json.tag_ids book.tag_ids
 json.series_ids book.series_ids
 json.small book.small?
+json.form_label Books::FormLabel.call(book)
 json.summary book.summary
 json.wiki_url book.wiki_url
 json.generic_links book.generic_links.map { |link| { name: link.name, url: link.url } }
