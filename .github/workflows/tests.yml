@@ -36,11 +36,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-    services:
-      redis:
-        image: redis
-        ports:
-          - 6379:6379
     steps:
       - name: Code fetch
         uses: actions/checkout@v7
@@ -79,5 +74,4 @@ jobs:
           ADMIN_PASSWORD: PASSWORD
           AWS_ACCESS_KEY_ID: STUB
           AWS_SECRET_ACCESS_KEY: STUB
-          REDIS_URL: redis://localhost:6379/1
         run: bundle exec rspec ./spec ./engines/admin/spec
