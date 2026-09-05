@@ -61,14 +61,14 @@ const comparePublicLists = (a, b) => {
   return a.publicListTypeName.localeCompare(b.publicListTypeName)
 }
 
-const renderPublicLists = (publicLists, listPagePath) => (
+const renderPublicLists = (publicLists, listPagePath, bookId) => (
   <div className='book-details-panel-public-lists'>
     { [...publicLists].sort(comparePublicLists).map(entry => (
       <div key={entry.publicListId}>
         { `${entry.publicListYear}: ` }
 
         <InternalLink
-          href={listPagePath(entry.publicListTypeId)}
+          href={listPagePath(entry.publicListTypeId, { bookId: bookId, listId: entry.publicListId })}
           title={entry.publicListTypeName}
         >
           { entry.publicListTypeName }
@@ -229,7 +229,7 @@ const BookDetails = ({ header = null, showCover = true, showPublicLists = true }
           </div>
 
           { showPublicLists && book.publicLists?.length > 0 ?
-            renderPublicLists(book.publicLists, listPagePath) : null }
+            renderPublicLists(book.publicLists, listPagePath, book.id) : null }
 
           { tags.length > 0 ? (
             <div className='book-details-panel-tags'>

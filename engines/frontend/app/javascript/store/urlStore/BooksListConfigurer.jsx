@@ -1,5 +1,6 @@
-import { useContext, useEffect, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 import { setCurrentBookId } from 'store/axis/actions'
 import { selectRequestedBookId } from 'store/books/selectors'
@@ -7,6 +8,7 @@ import { setRequestedBookId } from 'store/books/actions'
 import { selectPageIsLoading } from 'store/metadata/selectors'
 import { assignPage, assignPerPage, assignSortBy } from 'store/booksList/actions'
 import UrlStoreContext from 'store/urlStore/Context'
+import { bookIdFromSearch } from 'utils/bookIdFromLocation'
 
 const BooksListConfigurer = () => {
   const dispatch = useDispatch()
@@ -21,9 +23,14 @@ const BooksListConfigurer = () => {
     getActions,
     getRoutes,
   } = useContext(UrlStoreContext)
+  const location = useLocation()
   const requestedBookId = useSelector(selectRequestedBookId())
   const pageLoading = useSelector(selectPageIsLoading())
   const [storeReady, setStoreReady] = useState(false)
+  const bookIdFromLocation = useMemo(
+    () => bookIdFromSearch(location.search),
+    [location.search]
+  )
 
   /* eslint-disable camelcase */
   useEffect(() => {
@@ -73,24 +80,24 @@ const BooksListConfigurer = () => {
   }, [])
   /* eslint-enable camelcase */
 
-  const { bookId, page, perPage, sortBy } = pageState
+  const { page, perPage, sortBy } = pageState
 
   useEffect(() => {
     if (!storeReady || pageLoading || !requestedBookId) return
 
     dispatch(setRequestedBookId(null))
-    if (requestedBookId !== bookId)
+    if (requestedBookId !== bookIdFromLocation)
       getActions().showBooksIndexEntry(requestedBookId)
-  }, [storeReady, pageLoading, requestedBookId])
+  }, [storeReady, pageLoading, requestedBookId, bookIdFromLocation])
 
   useEffect(() => {
     dispatch(assignPage(page))
     dispatch(assignPerPage(perPage))
     dispatch(assignSortBy(sortBy))
-    dispatch(setCurrentBookId(bookId))
+    dispatch(setCurrentBookId(bookIdFromLocation))
 
     setStoreReady(true)
-  }, [bookId, page, perPage, sortBy])
+  }, [bookIdFromLocation, page, perPage, sortBy])
 
   return null
 }

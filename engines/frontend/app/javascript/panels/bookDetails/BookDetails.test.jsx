@@ -4,6 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import BookDetails from 'panels/bookDetails/BookDetails'
 import { renderWithProviders } from 'test/renderWithProviders'
+import { buildPath } from 'store/urlStore/RootStoreProvider'
 
 vi.mock('store/books/actions', async() => {
   const actual = await vi.importActual('store/books/actions')
@@ -123,7 +124,8 @@ describe('BookDetails', () => {
           authorPagePath: id => `/authors/${id}`,
           booksPagePath: ({ bookId } = {}) => (bookId ? `/books/${bookId}` : '/books'),
           bookPagePath: id => `/books/${id}`,
-          listPagePath: id => `/public-lists/${id}`,
+          listPagePath: (id, { bookId, listId } = {}) =>
+            buildPath({ path: `/public-lists/${id}`, params: { 'book_id': bookId, 'list_id': listId } }),
         },
       },
     })
@@ -134,8 +136,8 @@ describe('BookDetails', () => {
     expect(screen.getByRole('link', { name: 'Frank Herbert' })).toHaveAttribute('href', '/authors/1')
     expect(screen.getByRole('button', { name: /wikipedia/iu })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /goodreads/iu })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'Hugo' })).toHaveAttribute('href', '/public-lists/7')
-    expect(screen.getByRole('link', { name: 'Nebula' })).toHaveAttribute('href', '/public-lists/8')
+    expect(screen.getByRole('link', { name: 'Hugo' })).toHaveAttribute('href', '/public-lists/7?book_id=5&list_id=1')
+    expect(screen.getByRole('link', { name: 'Nebula' })).toHaveAttribute('href', '/public-lists/8?book_id=5&list_id=2')
     expect(screen.getByRole('link', { name: '#fiction' })).toBeInTheDocument()
     expect(screen.queryByTestId('book-cover')).not.toBeInTheDocument()
 

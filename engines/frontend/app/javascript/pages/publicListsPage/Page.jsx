@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Col } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -11,56 +11,68 @@ import PageConfigurer from 'pages/publicListsPage/PageConfigurer'
 import { setCurrentBookId } from 'store/axis/actions'
 import { setRequestedBookId } from 'store/books/actions'
 import apiClient from 'store/publicLists/apiClient'
+import UrlStoreContext from 'store/urlStore/Context'
 
 const PublicListsPage = () => {
   const dispatch = useDispatch()
   const { id } = useParams()
+  const {
+    actions: { selectPublicList },
+    pageState,
+  } = useContext(UrlStoreContext)
+  const { listId } = pageState
+  const listIdReady = Object.hasOwn(pageState, 'listId')
   const [listType, setListType] = useState(null)
-  const [selectedListId, setSelectedListId] = useState(null)
   const [selectedList, setSelectedList] = useState(null)
 
   useEffect(() => {
     setListType(null)
-    setSelectedListId(null)
     setSelectedList(null)
-    apiClient.getType(id).then(data => {
-      setListType(data)
-      setSelectedListId(data.public_lists?.[0]?.id ?? null)
-    })
+    apiClient.getType(id).then(setListType)
   }, [id])
 
   useEffect(() => {
+    if (!listType || !listIdReady || !selectPublicList) return
+
+    const lists = listType.public_lists || []
+    const listIds = lists.map(list => list.id)
+    const nextId = listIds.includes(listId) ? listId : (lists[0]?.id ?? null)
+    if (nextId !== listId) selectPublicList(nextId)
+  }, [listType, listId, listIdReady, selectPublicList])
+
+  useEffect(() => {
     setSelectedList(null)
-    if (selectedListId) apiClient.getList(selectedListId).then(setSelectedList)
-  }, [selectedListId])
+    if (listId) apiClient.getList(listId).then(setSelectedList)
+  }, [listId])
 
   const books = selectedList?.books || []
   const bookIds = books.map(book => book.id)
   const bookLabels = Object.fromEntries(books.map(book => [book.id, book.role || '']))
 
   useEffect(() => {
-    if (selectedListId === null || bookIds.length === 0) {
+    if (!listIdReady) return
+    if (listId == null || (selectedList && bookIds.length === 0)) {
       dispatch(setCurrentBookId(null))
       dispatch(setRequestedBookId(null))
     }
-  }, [bookIds.length, dispatch, selectedListId])
+  }, [bookIds.length, dispatch, listId, listIdReady, selectedList])
 
   if (!listType) return 'Wait...'
 
   return (
     <>
-      { selectedListId === null ? null : <PageConfigurer bookIds={bookIds} /> }
+      { listId == null ? null : <PageConfigurer bookIds={bookIds} /> }
 
       <Layout classes='panels-page public-lists-page'>
         <Col xs={8}>
           <PublicListIntro
             listType={listType}
             selectedList={selectedList}
-            selectedListId={selectedListId}
-            setSelectedListId={setSelectedListId}
+            selectedListId={listId}
+            setSelectedListId={selectPublicList}
           />
 
-          { selectedListId === null ? null : (
+          { listId == null ? null : (
             <BooksListCovers
               bookLabels={bookLabels}
               header='Noted Works'

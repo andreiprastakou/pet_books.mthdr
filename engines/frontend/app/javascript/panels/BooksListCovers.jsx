@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import { setCurrentBookId } from 'store/axis/actions'
 import { selectCurrentBookId } from 'store/axis/selectors'
 import BookIndexEntry from 'components/books/BookIndexEntry'
 import {
@@ -17,6 +18,7 @@ import Pagination from 'components/Pagination'
 import SortingDropdown from 'components/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
 import useFittedSize from 'hooks/useFittedSize'
+import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
 import { coverSizeForWidth, coverSizeType } from 'utils/coverSizes'
 import {
   GRID_ROW_SIZE,
@@ -76,8 +78,13 @@ const BooksListCovers = ({
     if (pending?.page === page && pending.booksKey !== booksKey) {
       pendingPageSelection.current = null
       dispatch(setRequestedBookId(bookIds[Math.min(pending.index, bookIds.length - 1)]))
-    } else if (!bookIds.includes(currentBookId))
-      dispatch(setRequestedBookId(bookIds[0]))
+    } else if (!bookIds.includes(currentBookId)) {
+      const preferred = bookIdFromWindowLocation()
+      if (preferred != null && bookIds.includes(preferred))
+        dispatch(setCurrentBookId(preferred))
+      else
+        dispatch(setRequestedBookId(bookIds[0]))
+    }
     previousBooksKey.current = booksKey
   }, [bookIds, booksKey, currentBookId, dispatch, page])
 

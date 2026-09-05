@@ -1,4 +1,5 @@
 import apiClient from 'store/books/apiClient'
+import { setCurrentBookId } from 'store/axis/actions'
 import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectCurrentBookRef } from 'store/books/selectors'
 import {
@@ -9,6 +10,7 @@ import {
 } from 'store/books/actions'
 import { selectBookIds, selectFilter, selectPage, selectPerPage, selectSortBy } from 'store/booksList/selectors'
 import { slice } from 'store/booksList/slice'
+import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
 
 export const {
   assignBookIds,
@@ -51,8 +53,21 @@ export const shiftSelection = shift => (dispatch, getState) => {
   dispatch(setRequestedBookId(allBookIds[targetIndex]))
 }
 
+const selectPreferredBookInList = ids => {
+  const preferred = bookIdFromWindowLocation()
+  return preferred != null && ids.includes(preferred) ? preferred : null
+}
+
 export const setupBooksListSelection = () => (dispatch, getState) => {
-  const currentBookRef = selectCurrentBookRef()(getState())
+  const state = getState()
+  const ids = selectBookIds()(state)
+  const preferred = selectPreferredBookInList(ids)
+  if (preferred != null) {
+    dispatch(setCurrentBookId(preferred))
+    return
+  }
+
+  const currentBookRef = selectCurrentBookRef()(state)
   if (currentBookRef)
     dispatch(showBook(currentBookRef.id))
   else
@@ -62,10 +77,16 @@ export const setupBooksListSelection = () => (dispatch, getState) => {
 export const switchToFirstBook = () => (dispatch, getState) => {
   const state = getState()
   const ids = selectBookIds()(state)
+  const preferred = selectPreferredBookInList(ids)
+  if (preferred != null) {
+    dispatch(setCurrentBookId(preferred))
+    return
+  }
+
   const currentBookId = selectCurrentBookId()(state)
   if (ids.includes(currentBookId)) return
 
-  dispatch(setRequestedBookId(ids[0]))
+  if (ids[0] != null) dispatch(setRequestedBookId(ids[0]))
 }
 
 export const clearListState = () => dispatch => {
