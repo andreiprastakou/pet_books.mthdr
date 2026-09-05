@@ -12,9 +12,9 @@ RSpec.describe '/api/public_list_types' do
 
       expect(response).to be_successful
       expect(json_response).to eq([
-        { id: first_type.id, name: 'Awards' },
-        { id: second_type.id, name: 'Zines' },
-      ])
+                                    { id: first_type.id, name: 'Awards' },
+                                    { id: second_type.id, name: 'Zines' }
+                                  ])
     end
   end
 
@@ -42,7 +42,7 @@ RSpec.describe '/api/public_list_types' do
         wiki_url: 'https://en.wikipedia.org/wiki/Awards',
         public_lists: [
           { id: newer_list.id, year: 2021 },
-          { id: older_list.id, year: 2020 },
+          { id: older_list.id, year: 2020 }
         ]
       )
     end

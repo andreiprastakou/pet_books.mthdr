@@ -6,7 +6,7 @@ RSpec.describe '/api/series/index_entries' do
       :series,
       generic_links: generic_links,
       name: 'Earthsea',
-      wiki_url: 'https://en.wikipedia.org/wiki/Earthsea',
+      wiki_url: 'https://en.wikipedia.org/wiki/Earthsea'
     )
   end
   let(:generic_links) { build_list(:generic_link, 1) }
@@ -21,7 +21,7 @@ RSpec.describe '/api/series/index_entries' do
         id: series.id,
         name: series.name,
         wiki_url: series.wiki_url,
-        generic_links: generic_links.map { |link| { name: link.name, url: link.url } },
+        generic_links: generic_links.map { |link| { name: link.name, url: link.url } }
       )
     end
   end
@@ -37,7 +37,7 @@ RSpec.describe '/api/series/index_entries' do
       expect(json_response).to eq(
         [{
           id: series.id,
-          name: series.name,
+          name: series.name
         }]
       )
     end

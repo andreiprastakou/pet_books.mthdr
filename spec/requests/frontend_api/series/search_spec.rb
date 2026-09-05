@@ -8,7 +8,7 @@ RSpec.describe '/api/series/search' do
     let(:series_list) do
       [
         create(:series, name: 'Earthsea'),
-        create(:series, name: 'Dune'),
+        create(:series, name: 'Dune')
       ]
     end
 

@@ -2,7 +2,7 @@
 
 require 'system_helper'
 
-RSpec.describe 'Homepage', type: :system do
+RSpec.describe 'Homepage' do
   before do
     create(:cover_design, :default)
     basic_auth_as_admin!

@@ -11,10 +11,8 @@ module CupriteHelpers
   def basic_auth_as_admin!
     page.driver.browser.network.authorize(
       user: ENV.fetch('ADMIN_USERNAME'),
-      password: ENV.fetch('ADMIN_PASSWORD')
-    ) do |request|
-      request.continue
-    end
+      password: ENV.fetch('ADMIN_PASSWORD'), &:continue
+    )
   end
 end
 
@@ -32,7 +30,7 @@ RSpec.configure do |config|
       headless: !ENV['HEADLESS'].in?(%w[n 0 no false]),
       process_timeout: 20,
       timeout: 15,
-      inspector: ENV['INSPECTOR'],
+      inspector: ENV.fetch('INSPECTOR', nil),
       browser_options: {
         'no-sandbox': nil,
         'disable-gpu': nil,

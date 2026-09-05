@@ -23,7 +23,7 @@ RSpec.describe Books::FormLabel do
         [
           build_stubbed(:book_genre, genre: build_stubbed(:genre, name: 'fantasy')),
           build_stubbed(:book_genre, genre: build_stubbed(:genre, name: 'horror')),
-          build_stubbed(:book_genre, genre: build_stubbed(:genre, name: 'mystery')),
+          build_stubbed(:book_genre, genre: build_stubbed(:genre, name: 'mystery'))
         ]
       end
 
@@ -55,7 +55,7 @@ RSpec.describe Books::FormLabel do
       'poem' => 'a poem',
       'play' => 'a play',
       'comics' => 'a comic',
-      'non_fiction' => 'a non-fiction work',
+      'non_fiction' => 'a non-fiction work'
     }.each do |form, expected|
       context "with literary_form #{form.inspect}" do
         let(:literary_form) { form }

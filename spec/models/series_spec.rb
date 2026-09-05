@@ -40,8 +40,10 @@ RSpec.describe Series do
       subject(:result) { described_class.search_by_name(key) }
 
       let(:key) { 'Earth' }
-      let!(:matching) { create(:series, name: 'Earthsea') }
-      let!(:other) { create(:series, name: 'Dune') }
+      let(:matching) { create(:series, name: 'Earthsea') }
+      let(:other) { create(:series, name: 'Dune') }
+
+      before { [matching, other] }
 
       it 'returns series matching the key' do
         expect(result).to contain_exactly(matching)

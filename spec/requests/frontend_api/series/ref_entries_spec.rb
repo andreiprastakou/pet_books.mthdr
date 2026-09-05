@@ -11,7 +11,7 @@ RSpec.describe '/api/series/ref_entries' do
       expect(response).to be_successful
       expect(json_response).to eq(
         id: series.id,
-        name: series.name,
+        name: series.name
       )
     end
   end
@@ -27,7 +27,7 @@ RSpec.describe '/api/series/ref_entries' do
       expect(json_response).to eq(
         [{
           id: series.id,
-          name: series.name,
+          name: series.name
         }]
       )
     end

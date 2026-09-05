@@ -12,11 +12,11 @@ module Books
       'poem' => 'poem',
       'play' => 'play',
       'comics' => 'comic',
-      'non_fiction' => 'non-fiction work',
+      'non_fiction' => 'non-fiction work'
     }.freeze
 
     GENRE_NAMES = {
-      'scifi' => 'sci-fi',
+      'scifi' => 'sci-fi'
     }.freeze
 
     def self.call(book)
