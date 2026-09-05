@@ -4,7 +4,6 @@
   .tags-search-control {
     margin-top: 5px;
 
-    /* stylelint-disable selector-class-pattern */
     .react-autosuggest__suggestions-list {
       max-height: 100px;
       overflow-y: scroll;
@@ -26,6 +25,5 @@
         }
       }
     }
-    /* stylelint-enable selector-class-pattern */
   }
 }

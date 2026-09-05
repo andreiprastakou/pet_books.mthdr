@@ -230,24 +230,3 @@
     color: $color-pagination-text;
   }
 }
-
-.panel--books-stack .list-sort-dropdown {
-  float: left;
-  width: 140px;
-
-  button {
-    font-size: 12px;
-    padding: 3px 15px 2px;
-    vertical-align: top;
-    width: 100%;
-  }
-
-  .dropdown-menu {
-    max-width: 100%;
-    min-width: 100%;
-
-    .dropdown-item {
-      font-size: 12px;
-    }
-  }
-}
