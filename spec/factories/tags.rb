@@ -6,7 +6,7 @@
 # Database name: primary
 #
 #  id         :integer          not null, primary key
-#  category   :integer          default("other")
+#  category   :integer          default(0)
 #  name       :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

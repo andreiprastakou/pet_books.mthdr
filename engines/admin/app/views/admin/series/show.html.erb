@@ -75,7 +75,7 @@
           <% end %>
         </td>
         <td>
-          <%= book.literary_form.humanize %>
+          <%= book.literary_form&.humanize %>
         </td>
         <td>
           <%= admin_link_to "show", admin_book_path(book) %>

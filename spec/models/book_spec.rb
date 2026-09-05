@@ -7,7 +7,7 @@
 #
 #  id              :integer          not null, primary key
 #  data_filled     :boolean          default(FALSE), not null
-#  literary_form   :string           default("novel"), not null
+#  literary_form   :string
 #  original_title  :string
 #  popularity      :integer          default(0)
 #  summary         :text
@@ -241,6 +241,12 @@ RSpec.describe Book do
 
       it { is_expected.to be false }
     end
+
+    context 'when the literary form is nil' do
+      let(:book) { build(:book, literary_form: nil) }
+
+      it { is_expected.to be false }
+    end
   end
 
   describe '#author_names_label' do
@@ -274,6 +280,12 @@ RSpec.describe Book do
         before do
           book.literary_form = (described_class::STANDARD_FORMS - described_class::FORMS_REQUIRE_SUMMARY).sample
         end
+
+        it { is_expected.to be false }
+      end
+
+      context 'when book literary form is nil' do
+        before { book.literary_form = nil }
 
         it { is_expected.to be false }
       end

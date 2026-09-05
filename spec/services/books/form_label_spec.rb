@@ -69,5 +69,17 @@ RSpec.describe Books::FormLabel do
 
       it { is_expected.to eq('an audio drama') }
     end
+
+    context 'when literary_form is nil' do
+      let(:literary_form) { nil }
+
+      it { is_expected.to eq('') }
+
+      context 'with genres' do
+        let(:book_genres) { [build_stubbed(:book_genre, genre: build_stubbed(:genre, name: 'fantasy'))] }
+
+        it { is_expected.to eq('a fantasy') }
+      end
+    end
   end
 end
