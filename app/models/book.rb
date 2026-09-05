@@ -34,7 +34,7 @@ class Book < ApplicationRecord
     comics
     non_fiction
   ].freeze
-  FORMS_REQUIRE_SUMMARY = %w[novel novella non_fiction play].freeze
+  FORMS_REQUIRE_SUMMARY = (%w[novel novella non_fiction play] + [nil]).freeze
   FORMS_SMALL = %w[short short_story poem comics].freeze
 
   include CarrierwaveUrlAssign
