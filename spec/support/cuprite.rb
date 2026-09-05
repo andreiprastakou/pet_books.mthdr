@@ -9,10 +9,12 @@ Capybara.disable_animation = true
 
 module CupriteHelpers
   def basic_auth_as_admin!
+    # Ferrum invokes this as |request, index, total|; &:continue would pass
+    # those extras into kwargs-only #continue and hang pending requests.
     page.driver.browser.network.authorize(
       user: ENV.fetch('ADMIN_USERNAME'),
-      password: ENV.fetch('ADMIN_PASSWORD'), &:continue
-    )
+      password: ENV.fetch('ADMIN_PASSWORD')
+    ) { |request, _index, _total| request.continue }
   end
 end
 
