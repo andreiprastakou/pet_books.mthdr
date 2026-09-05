@@ -139,12 +139,13 @@ RSpec.describe Book do
           create(:book, literary_form: 'poem'),
           create(:book, literary_form: 'play'),
           create(:book, literary_form: 'comics'),
-          create(:book, literary_form: 'non_fiction')
+          create(:book, literary_form: 'non_fiction'),
+          create(:book, literary_form: nil)
         ]
       end
 
       it 'returns the books that require a summary' do
-        expect(result).to match_array(books.values_at(0, 1, 4, 6))
+        expect(result).to match_array(books.values_at(0, 1, 4, 6, 7))
       end
     end
 
@@ -287,7 +288,7 @@ RSpec.describe Book do
       context 'when book literary form is nil' do
         before { book.literary_form = nil }
 
-        it { is_expected.to be false }
+        it { is_expected.to be true }
       end
 
       context 'when a book has pending generative_summary_tasks' do

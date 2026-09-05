@@ -15,6 +15,8 @@ RSpec.describe 'Homepage' do
     visit root_path
 
     expect(page).to have_css('.book-case', text: book.title)
-    expect(page).to have_css('.book-case', text: author.fullname)
+    # Author names stay title-case in the DOM; cover CSS uppercases them for display,
+    # and Cuprite matches against that visible text.
+    expect(page).to have_css('.book-case', text: /#{Regexp.escape(author.fullname)}/i)
   end
 end
