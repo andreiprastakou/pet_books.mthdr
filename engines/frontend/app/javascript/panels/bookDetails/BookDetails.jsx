@@ -54,6 +54,32 @@ const renderSeries = (seriesRefs, bookId, seriesPagePath) => (
   </>
 )
 
+const comparePublicLists = (a, b) => {
+  if (a.publicListYear !== b.publicListYear)
+    return b.publicListYear - a.publicListYear
+
+  return a.publicListTypeName.localeCompare(b.publicListTypeName)
+}
+
+const renderPublicLists = (publicLists, listPagePath) => (
+  <div className='book-details-panel-public-lists'>
+    { [...publicLists].sort(comparePublicLists).map(entry => (
+      <div key={entry.publicListId}>
+        { `${entry.publicListYear}: ` }
+
+        <InternalLink
+          href={listPagePath(entry.publicListTypeId)}
+          title={entry.publicListTypeName}
+        >
+          { entry.publicListTypeName }
+        </InternalLink>
+
+        { ` - ${entry.bookRole}` }
+      </div>
+    )) }
+  </div>
+)
+
 const BookDetailsHeader = ({ booksPagePath, header, title }) => header || (
   <>
     <InternalLink href={booksPagePath()}>
@@ -107,14 +133,14 @@ BookWithBackCover.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
 }
 
-const BookDetails = ({ header = null, showCover = true }) => {
+const BookDetails = ({ header = null, showCover = true, showPublicLists = true }) => {
   const dispatch = useDispatch()
   const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
   const bookDetails = useSelector(selectCurrentBookDetails())
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
   const seriesRefs = useSelector(selectSeriesRefsByIds(bookDetails.seriesIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []), shallowEqual)
-  const { routes: { authorPagePath, booksPagePath, bookPagePath, seriesPagePath }, routesReady } = useContext(UrlStoreContext)
+  const { routes: { authorPagePath, booksPagePath, bookPagePath, listPagePath, seriesPagePath }, routesReady } = useContext(UrlStoreContext)
   useEffect(() => {
     if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
       dispatch(fetchCurrentBookDetails())
@@ -202,6 +228,9 @@ const BookDetails = ({ header = null, showCover = true }) => {
             <BookToolbar bookPageHref={bookPagePath(book.id)} />
           </div>
 
+          { showPublicLists && book.publicLists?.length > 0 ?
+            renderPublicLists(book.publicLists, listPagePath) : null }
+
           { tags.length > 0 ? (
             <div className='book-details-panel-tags'>
               { tags.map(tag => (
@@ -234,6 +263,7 @@ BookDetailsHeader.propTypes = {
 BookDetails.propTypes = {
   header: PropTypes.node,
   showCover: PropTypes.bool,
+  showPublicLists: PropTypes.bool,
 }
 
 export default BookDetails

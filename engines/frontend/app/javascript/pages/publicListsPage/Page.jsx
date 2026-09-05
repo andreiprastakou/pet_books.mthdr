@@ -74,6 +74,7 @@ const PublicListsPage = () => {
             <BookDetails
               header='Selected book'
               showCover={false}
+              showPublicLists={false}
             />
           </div>
         </Col>

@@ -10,7 +10,11 @@ module FrontendApi
       private
 
       def fetch_book
-        @book = Book.preload(genres: :genre).find(params[:id])
+        @book = Book.preload(
+          :generic_links,
+          genres: :genre,
+          book_public_lists: { public_list: :public_list_type },
+        ).find(params[:id])
       end
     end
   end
