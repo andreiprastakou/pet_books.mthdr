@@ -15,6 +15,7 @@ import {
   selectCurrentBookDetails,
   selectCurrentBookIndexEntry,
 } from 'store/books/selectors'
+import { selectSeriesRefsByIds } from 'store/series/selectors'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
@@ -30,6 +31,23 @@ const renderAuthors = (authorRefs, bookId, authorPagePath) => (
           title={authorRef.fullname}
         >
           { authorRef.fullname }
+        </InternalLink>
+      </React.Fragment>
+    )) }
+  </>
+)
+
+const renderSeries = (seriesRefs, bookId, seriesPagePath) => (
+  <>
+    { seriesRefs.map((seriesRef, index) => (
+      <React.Fragment key={seriesRef.id}>
+        { index > 0 && ', ' }
+
+        <InternalLink
+          href={seriesPagePath(seriesRef.id, { bookId })}
+          title={seriesRef.name}
+        >
+          { seriesRef.name }
         </InternalLink>
       </React.Fragment>
     )) }
@@ -94,8 +112,9 @@ const BookDetails = ({ header = null, showCover = true }) => {
   const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
   const bookDetails = useSelector(selectCurrentBookDetails())
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
+  const seriesRefs = useSelector(selectSeriesRefsByIds(bookDetails.seriesIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []), shallowEqual)
-  const { routes: { authorPagePath, booksPagePath, bookPagePath }, routesReady } = useContext(UrlStoreContext)
+  const { routes: { authorPagePath, booksPagePath, bookPagePath, seriesPagePath }, routesReady } = useContext(UrlStoreContext)
   useEffect(() => {
     if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
       dispatch(fetchCurrentBookDetails())
@@ -140,6 +159,14 @@ const BookDetails = ({ header = null, showCover = true }) => {
 
             { renderAuthors(authorRefs, book.id, authorPagePath) }
           </div>
+
+          { seriesRefs.length > 0 ? (
+            <div className='book-details-panel-series'>
+              { 'from series ' }
+
+              { renderSeries(seriesRefs, book.id, seriesPagePath) }
+            </div>
+          ) : null }
 
           <div className='book-details-panel-annotation'>
             <p>

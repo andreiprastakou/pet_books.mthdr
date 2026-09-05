@@ -66,6 +66,7 @@ class Book < ApplicationRecord
     includes(:tags).references(:tags).where(tags: { id: Array(tag_ids) })
   }
   scope :by_author, ->(author) { joins(:book_authors).where(book_authors: { author_id: author }) }
+  scope :by_series, ->(series) { joins(:book_series).where(book_series: { series_id: series }) }
   scope :not_filled, -> { where(data_filled: false) }
   scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
   scope :form_requires_summary, -> { where(literary_form: FORMS_REQUIRE_SUMMARY) }

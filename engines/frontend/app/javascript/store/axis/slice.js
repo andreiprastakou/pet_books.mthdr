@@ -7,6 +7,7 @@ export const slice = createSlice({
   initialState: {
     currentAuthorId: null,
     currentBookId: null,
+    currentSeriesId: null,
     currentTagId: null,
     seed: null,
   },
@@ -19,6 +20,11 @@ export const slice = createSlice({
     setCurrentBookId: (state, action) => {
       const id = action.payload
       state.currentBookId = id
+    },
+
+    setCurrentSeriesId: (state, action) => {
+      const id = action.payload
+      state.currentSeriesId = id
     },
 
     setCurrentTagId: (state, action) => {

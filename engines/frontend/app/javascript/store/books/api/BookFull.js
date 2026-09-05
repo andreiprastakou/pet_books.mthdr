@@ -6,6 +6,7 @@ class BookFull {
       authorIds: data['author_ids'],
       yearPublished: data['year_published'],
       tagIds: data['tag_ids'],
+      seriesIds: data['series_ids'],
       wikiUrl: data['wiki_url'],
       genericLinks: data['generic_links'],
     }

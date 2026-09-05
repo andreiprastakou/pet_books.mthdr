@@ -34,6 +34,7 @@ describe('PageNavbar', () => {
     expect(screen.getByText('Books')).toBeInTheDocument()
     expect(screen.getByText('Authors')).toBeInTheDocument()
     expect(screen.getByText('Tags')).toBeInTheDocument()
+    expect(screen.getByText('Series')).toBeInTheDocument()
     expect(screen.getByText('Public lists')).toBeInTheDocument()
   })
 
