@@ -6,6 +6,10 @@ import { describe, expect, it, vi } from 'vitest'
 import InternalLink from 'components/InternalLink'
 import { renderWithProviders } from 'test/renderWithProviders'
 
+const preventDefaultOnClick = function preventDefaultOnClick(event) {
+  event.preventDefault()
+}
+
 describe('InternalLink', () => {
   it('renders an internal link with the given href and class', () => {
     renderWithProviders(
@@ -40,12 +44,11 @@ describe('InternalLink', () => {
   it('does not navigate when default is prevented', async() => {
     const user = userEvent.setup()
     const goto = vi.fn()
-    const onClick = event => event.preventDefault()
 
     renderWithProviders(
       <InternalLink
         href='/tags/3'
-        onClick={onClick}
+        onClick={preventDefaultOnClick}
       >
         { 'Tag' }
       </InternalLink>,

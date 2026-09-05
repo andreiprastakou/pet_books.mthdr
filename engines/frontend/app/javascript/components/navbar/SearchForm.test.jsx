@@ -7,24 +7,24 @@ import SearchForm from 'components/navbar/SearchForm'
 import { renderWithProviders } from 'test/renderWithProviders'
 
 const deferred = () => {
-  let resolve
-  let reject
+  let onFulfilled = null
+  let onRejected = null
   const promise = {
-    then(onFulfilled) {
-      resolve = onFulfilled
+    then(fulfilled) {
+      onFulfilled = fulfilled
       return {
-        fail(onRejected) {
-          reject = onRejected
+        fail(rejected) {
+          onRejected = rejected
           return this
         },
       }
     },
-    fail(onRejected) {
-      reject = onRejected
+    fail(rejected) {
+      onRejected = rejected
       return this
     },
-    _resolve(value) { resolve?.(value) },
-    _reject(error) { reject?.(error) },
+    resolve(value) { onFulfilled?.(value) },
+    reject(error) { onRejected?.(error) },
   }
   return promise
 }
@@ -59,7 +59,7 @@ describe('SearchForm', () => {
     expect(apiSearcher).toHaveBeenCalledWith('dune')
     expect(document.querySelector('.search-spinner')).toBeInTheDocument()
 
-    request._resolve()
+    request.resolve()
     await waitFor(() => {
       expect(document.querySelector('.search-spinner')).not.toBeInTheDocument()
     })
@@ -74,7 +74,7 @@ describe('SearchForm', () => {
 
     await user.type(screen.getByRole('textbox'), 'dune')
     await user.keyboard('{Enter}')
-    request._reject()
+    request.reject()
 
     await waitFor(() => {
       expect(store.getState().notifications.messages).toEqual([

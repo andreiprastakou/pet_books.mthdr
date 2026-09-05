@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import { cleanup, render, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter } from 'react-router-dom'
@@ -29,34 +29,44 @@ const PanelProbe = () => {
     registerPanel('panel-b')
   }, [registerPanel])
 
+  const handleActivateA = useCallback(() => activatePanel('panel-a'), [activatePanel])
+  const handleActivateB = useCallback(() => activatePanel('panel-b'), [activatePanel])
+  const handleDeactivateB = useCallback(() => deactivatePanel('panel-b'), [deactivatePanel])
+  const handleUnregisterB = useCallback(() => unregisterPanel('panel-b'), [unregisterPanel])
+
   return (
     <div>
       <div data-testid='registered'>
         { registeredPanelIds.join(',') }
       </div>
+
       <div data-testid='active'>
         { activePanelId || '' }
       </div>
+
       <button
-        onClick={() => activatePanel('panel-a')}
+        onClick={handleActivateA}
         type='button'
       >
         { 'activate-a' }
       </button>
+
       <button
-        onClick={() => activatePanel('panel-b')}
+        onClick={handleActivateB}
         type='button'
       >
         { 'activate-b' }
       </button>
+
       <button
-        onClick={() => deactivatePanel('panel-b')}
+        onClick={handleDeactivateB}
         type='button'
       >
         { 'deactivate-b' }
       </button>
+
       <button
-        onClick={() => unregisterPanel('panel-b')}
+        onClick={handleUnregisterB}
         type='button'
       >
         { 'unregister-b' }

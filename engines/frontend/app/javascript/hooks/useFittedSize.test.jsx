@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useCallback } from 'react'
+import PropTypes from 'prop-types'
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -7,24 +8,34 @@ import useFittedSize from 'hooks/useFittedSize'
 const Probe = ({ columns, gap, inset, sizeForWidth, clientWidth }) => {
   const [ref, size] = useFittedSize({ columns, gap, inset, sizeForWidth })
 
+  const assignRef = useCallback(node => {
+    if (!node) return
+    Object.defineProperty(node, 'clientWidth', {
+      configurable: true,
+      get: () => clientWidth,
+    })
+    ref.current = node
+  }, [clientWidth, ref])
+
   return (
     <div
       data-size={size}
-      ref={node => {
-        if (!node) return
-        Object.defineProperty(node, 'clientWidth', {
-          configurable: true,
-          get: () => clientWidth,
-        })
-        ref.current = node
-      }}
+      ref={assignRef}
     />
   )
 }
 
+Probe.propTypes = {
+  clientWidth: PropTypes.number.isRequired,
+  columns: PropTypes.number.isRequired,
+  gap: PropTypes.number.isRequired,
+  inset: PropTypes.number.isRequired,
+  sizeForWidth: PropTypes.func.isRequired,
+}
+
 describe('useFittedSize', () => {
-  let observe
-  let disconnect
+  let observe = null
+  let disconnect = null
 
   beforeEach(() => {
     observe = vi.fn()

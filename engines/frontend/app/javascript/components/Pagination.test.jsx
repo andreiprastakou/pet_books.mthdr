@@ -9,13 +9,14 @@ import { renderWithProviders } from 'test/renderWithProviders'
 const selectTotal = () => () => 100
 const selectPage = () => () => 3
 const selectPerPage = () => () => 10
+const selectPerPageFull = () => () => 100
 
 describe('Pagination', () => {
   it('renders nothing when everything fits on one page', () => {
     const { container } = renderWithProviders(
       <Pagination
         selectPage={selectPage}
-        selectPerPage={() => () => 100}
+        selectPerPage={selectPerPageFull}
         selectTotal={selectTotal}
       />
     )

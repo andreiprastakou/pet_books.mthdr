@@ -32,7 +32,6 @@ const BooksListConfigurer = () => {
     [location.search]
   )
 
-  /* eslint-disable camelcase */
   useEffect(() => {
     const removeRoute = addRoute(
       'indexPaginationPath',
@@ -78,7 +77,6 @@ const BooksListConfigurer = () => {
       removeSortState()
     }
   }, [])
-  /* eslint-enable camelcase */
 
   const { page, perPage, sortBy } = pageState
 

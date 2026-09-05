@@ -30,6 +30,8 @@ vi.mock('store/booksList/actions', async() => {
   }
 })
 
+const titleForYear = year => `Books of ${year}`
+
 describe('spiralPositions / buildBookMatrix', () => {
   it('builds a spiral starting at the origin', () => {
     expect(spiralPositions(1)).toEqual([[0, 0]])
@@ -65,7 +67,7 @@ describe('BooksYear', () => {
     const user = userEvent.setup()
 
     const { store } = renderWithProviders(
-      <BooksYear title={year => `Books of ${year}`} />,
+      <BooksYear title={titleForYear} />,
       {
         preloadedState: {
           axis: {

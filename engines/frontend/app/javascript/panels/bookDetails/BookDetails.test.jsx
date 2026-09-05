@@ -15,7 +15,11 @@ vi.mock('store/books/actions', async() => {
 })
 
 vi.mock('components/Book', () => ({
-  default: ({ bookIndexEntry }) => <div data-testid='book-cover'>{ bookIndexEntry.title }</div>,
+  default: ({ bookIndexEntry }) => (
+    <div data-testid='book-cover'>
+      { bookIndexEntry.title }
+    </div>
+  ),
 }))
 
 const bookIndexEntry = {

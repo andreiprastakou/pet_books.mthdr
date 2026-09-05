@@ -14,7 +14,6 @@ import RootUrlStoreProvider from 'store/urlStore/RootStoreProvider'
 import EventsProvider from 'store/events/Provider'
 import { setDefaultAuthorImageUrl } from 'store/authors/actions'
 
-/* eslint-disable camelcase */
 const Page = ({ default_author_image_url }) => {
   store.dispatch(setDefaultAuthorImageUrl(default_author_image_url))
 
@@ -44,6 +43,5 @@ const Page = ({ default_author_image_url }) => {
 Page.propTypes = {
   default_author_image_url: PropTypes.string.isRequired,
 }
-/* eslint-enable camelcase */
 
 export default Page

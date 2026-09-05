@@ -44,11 +44,9 @@ const LocalStoreConfigurer = () => {
 
   useEffect(() => {
     const removeAuthorState = addUrlState('authorId', () => parseInt(paramsRef.current.authorId))
-    /* eslint-disable camelcase */
     const removeSortState = addUrlState('sortBy', url => url.queryParameter('sort_by'))
     const removeSortAction = addUrlAction('switchToIndexSort', sortBy =>
       patch(buildRelativePath({ params: { page: 1, sort_by: sortBy } })))
-    /* eslint-enable camelcase */
 
     dispatch(setPageIsLoading(true))
     dispatch(setCurrentAuthorId(authorId))

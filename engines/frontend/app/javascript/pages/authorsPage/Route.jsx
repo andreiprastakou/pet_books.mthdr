@@ -35,7 +35,6 @@ const LocalStoreConfigurer = () => {
     getRoutes,
   } = useContext(UrlStoreContext)
 
-  /* eslint-disable camelcase */
   useEffect(() => {
     const removePaginationRoute = addRoute(
       'indexPaginationPath',
@@ -91,7 +90,6 @@ const LocalStoreConfigurer = () => {
       removeSortAction()
     }
   }, [])
-  /* eslint-enable camelcase */
 
   const { authorId, page, perPage, sortBy } = pageState
 

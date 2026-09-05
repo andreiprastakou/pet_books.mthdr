@@ -1,4 +1,5 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
+import PropTypes from 'prop-types'
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { afterEach, describe, expect, it, vi } from 'vitest'
@@ -8,6 +9,12 @@ import EventsProvider from 'store/events/Provider'
 
 afterEach(cleanup)
 
+const apiRef = { current: null }
+
+const handleProbeReady = function handleProbeReady(value) {
+  apiRef.current = value
+}
+
 const Probe = ({ onReady }) => {
   const { subscribeToEvent, triggerEvent } = useContext(EventsContext)
 
@@ -15,9 +22,11 @@ const Probe = ({ onReady }) => {
     onReady({ subscribeToEvent, triggerEvent })
   }, [onReady, subscribeToEvent, triggerEvent])
 
+  const handleClick = useCallback(() => triggerEvent('PING'), [triggerEvent])
+
   return (
     <button
-      onClick={() => triggerEvent('PING')}
+      onClick={handleClick}
       type='button'
     >
       { 'ping' }
@@ -25,20 +34,24 @@ const Probe = ({ onReady }) => {
   )
 }
 
+Probe.propTypes = {
+  onReady: PropTypes.func.isRequired,
+}
+
 describe('events Provider', () => {
   it('notifies subscribers and stops after unsubscribe', async() => {
     const user = userEvent.setup()
     const subscriber = vi.fn()
-    let api
+    apiRef.current = null
 
     render(
       <EventsProvider>
-        <Probe onReady={value => { api = value }} />
+        <Probe onReady={handleProbeReady} />
       </EventsProvider>
     )
 
-    await waitFor(() => expect(api).toBeDefined())
-    const unsubscribe = api.subscribeToEvent('PING', subscriber)
+    await waitFor(() => expect(apiRef.current).toBeDefined())
+    const unsubscribe = apiRef.current.subscribeToEvent('PING', subscriber)
 
     await user.click(screen.getByRole('button', { name: 'ping' }))
     expect(subscriber).toHaveBeenCalledTimes(1)
@@ -52,17 +65,17 @@ describe('events Provider', () => {
   it('ignores unknown events', async() => {
     const user = userEvent.setup()
     const subscriber = vi.fn()
-    let api
+    apiRef.current = null
 
     render(
       <EventsProvider>
-        <Probe onReady={value => { api = value }} />
+        <Probe onReady={handleProbeReady} />
       </EventsProvider>
     )
 
-    await waitFor(() => expect(api).toBeDefined())
-    api.subscribeToEvent('PING', subscriber)
-    api.triggerEvent('OTHER')
+    await waitFor(() => expect(apiRef.current).toBeDefined())
+    apiRef.current.subscribeToEvent('PING', subscriber)
+    apiRef.current.triggerEvent('OTHER')
     expect(subscriber).not.toHaveBeenCalled()
 
     await user.click(screen.getByRole('button', { name: 'ping' }))
