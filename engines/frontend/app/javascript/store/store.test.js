@@ -16,6 +16,7 @@ describe('root store', () => {
       'storeAuthors',
       'storeBooks',
       'storeCoverDesigns',
+      'storeSeries',
       'storeTags',
     ].sort())
   })
