@@ -23,7 +23,7 @@ RSpec.configure do |config|
   # Ensure that if we are running js tests, we are using latest Shakapacker assets
   # This will use the defaults of :js and :server_rendering meta tags
   # Requires config.build_test_command in config/initializers/react_on_rails.rb.
-  ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config, { type: :request })
+  ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config, :system, :request)
 
   # Include spec files from engines
   config.pattern = 'spec/**/*_spec.rb,engines/*/spec/**/*_spec.rb'
@@ -45,6 +45,17 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
+  end
+
+  # System specs run the app in a threaded server; truncate so browser requests see setup data.
+  config.around(:each, type: :system) do |example|
+    previous = RSpec.configuration.use_transactional_fixtures
+    RSpec.configuration.use_transactional_fixtures = false
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.cleaning { example.run }
+  ensure
+    DatabaseCleaner.strategy = :transaction
+    RSpec.configuration.use_transactional_fixtures = previous
   end
 
   config.after do
