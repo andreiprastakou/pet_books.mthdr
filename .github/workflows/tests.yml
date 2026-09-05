@@ -61,11 +61,16 @@ jobs:
         run: |
           yarn install --frozen-lockfile
 
-      - name: Install Chromium
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y chromium
-          echo "BROWSER_PATH=$(command -v chromium || command -v chromium-browser)" >> "$GITHUB_ENV"
+      # apt's chromium on Ubuntu 24.04 is a snap shim; snapcraft.io often 408s in GHA.
+      - name: Install Chrome
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-dependencies: true
+
+      - name: Set BROWSER_PATH
+        run: echo "BROWSER_PATH=${{ steps.setup-chrome.outputs.chrome-path }}" >> "$GITHUB_ENV"
 
       - name: Run tests
         env:
