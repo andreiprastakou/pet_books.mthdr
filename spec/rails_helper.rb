@@ -20,10 +20,11 @@ Rails.root.glob('engines/*/spec/support/**/*.rb').each { |f| require f }
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
-  # Ensure that if we are running js tests, we are using latest Shakapacker assets
-  # This will use the defaults of :js and :server_rendering meta tags
+  # Ensure Shakapacker assets exist before specs that render layouts with pack tags.
+  # Pass `{ type: :… }` hashes — bare `:request`/`:system` mean `request: true` tags, not
+  # `type: :request` / `type: :system` (which broke CI after the system-spec change).
   # Requires config.build_test_command in config/initializers/react_on_rails.rb.
-  ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config, :system, :request)
+  ReactOnRails::TestHelper.configure_rspec_to_compile_assets(config, { type: :system }, { type: :request })
 
   # Include spec files from engines
   config.pattern = 'spec/**/*_spec.rb,engines/*/spec/**/*_spec.rb'

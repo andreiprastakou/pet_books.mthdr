@@ -12,7 +12,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  js-unit:
+  js-frontend:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -32,7 +32,7 @@ jobs:
       - name: Run Vitest
         run: yarn test
 
-  ruby-unit:
+  ruby-plus-system:
     runs-on: ubuntu-latest
     permissions:
       contents: read
