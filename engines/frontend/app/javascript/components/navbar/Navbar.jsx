@@ -5,6 +5,7 @@ import InternalLink from 'components/InternalLink'
 import AuthorsNavList from 'components/navbar/AuthorsNavList'
 import BooksNavList from 'components/navbar/BooksNavList'
 import TagsNavList from 'components/navbar/TagsNavList'
+import SeriesNavList from 'components/navbar/SeriesNavList'
 import PublicListsNavList from 'components/navbar/ListsNavList'
 import EventsContext from 'store/events/Context'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -29,6 +30,8 @@ const PageNavbar = () => {
         <AuthorsNavDropdown />
 
         <TagsNavDropdown />
+
+        <SeriesNavDropdown />
 
         <PublicListsNavDropdown />
       </Nav>
@@ -121,6 +124,31 @@ const TagsNavDropdown = () => {
       <NavDropdown.Item
         as={InternalLink}
         href={tagsPagePath()}
+      >
+        { 'List all' }
+      </NavDropdown.Item>
+    </NavDropdown>
+  )
+}
+
+const SeriesNavDropdown = () => {
+  const { routes: { seriesIndexPagePath } } = useContext(UrlStoreContext)
+  const { triggerEvent } = useContext(EventsContext)
+
+  const handleTriggerEvent = useCallback(() => triggerEvent('SERIES_NAV_CLICKED'), [triggerEvent])
+
+  return (
+    <NavDropdown
+      onClick={handleTriggerEvent}
+      title='Series'
+    >
+      <SeriesNavList />
+
+      <NavDropdown.Divider />
+
+      <NavDropdown.Item
+        as={InternalLink}
+        href={seriesIndexPagePath()}
       >
         { 'List all' }
       </NavDropdown.Item>

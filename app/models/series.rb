@@ -23,4 +23,6 @@ class Series < ApplicationRecord
   has_many :books, class_name: 'Book', through: :book_series
 
   validates :name, presence: true
+
+  scope :search_by_name, ->(key) { where('name LIKE ?', "%#{key}%") }
 end

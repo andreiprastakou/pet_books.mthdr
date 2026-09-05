@@ -5,6 +5,7 @@ import metadataReducer from 'store/metadata/slice'
 import storeAuthorsReducer from 'store/authors/slice'
 import storeBooksReducer from 'store/books/slice'
 import storeCoverDesignsReducer from 'store/coverDesigns/slice'
+import storeSeriesReducer from 'store/series/slice'
 import storeTagsReducer from 'store/tags/slice'
 import booksListReducer from 'store/booksList/slice'
 import booksYearsReducer from 'store/booksYears/slice'
@@ -25,6 +26,7 @@ export const rootReducer = {
   storeAuthors: storeAuthorsReducer,
   storeBooks: storeBooksReducer,
   storeCoverDesigns: storeCoverDesignsReducer,
+  storeSeries: storeSeriesReducer,
   storeTags: storeTagsReducer,
 }
 

@@ -4,12 +4,14 @@ import reducer, { slice } from 'store/axis/slice'
 import {
   selectCurrentAuthorId,
   selectCurrentBookId,
+  selectCurrentSeriesId,
   selectCurrentTagId,
 } from 'store/axis/selectors'
 
 const {
   setCurrentAuthorId,
   setCurrentBookId,
+  setCurrentSeriesId,
   setCurrentTagId,
   setSeed,
 } = slice.actions
@@ -19,18 +21,21 @@ describe('axis slice', () => {
     expect(reducer(undefined, { type: 'unknown' })).toEqual({
       currentAuthorId: null,
       currentBookId: null,
+      currentSeriesId: null,
       currentTagId: null,
       seed: null,
     })
   })
 
-  it('sets current author, book, and tag ids', () => {
+  it('sets current author, book, series, and tag ids', () => {
     let state = reducer(undefined, setCurrentAuthorId(11))
     state = reducer(state, setCurrentBookId(22))
+    state = reducer(state, setCurrentSeriesId(44))
     state = reducer(state, setCurrentTagId(33))
 
     expect(state.currentAuthorId).toBe(11)
     expect(state.currentBookId).toBe(22)
+    expect(state.currentSeriesId).toBe(44)
     expect(state.currentTagId).toBe(33)
   })
 
@@ -46,6 +51,7 @@ describe('axis selectors', () => {
     axis: {
       currentAuthorId: 1,
       currentBookId: 2,
+      currentSeriesId: 4,
       currentTagId: 3,
       seed: 9,
     },
@@ -54,6 +60,7 @@ describe('axis selectors', () => {
   it('reads current ids from axis state', () => {
     expect(selectCurrentAuthorId()(state)).toBe(1)
     expect(selectCurrentBookId()(state)).toBe(2)
+    expect(selectCurrentSeriesId()(state)).toBe(4)
     expect(selectCurrentTagId()(state)).toBe(3)
   })
 })

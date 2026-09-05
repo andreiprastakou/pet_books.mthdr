@@ -4,4 +4,6 @@ export const selectCurrentAuthorId = () => state => localState(state).currentAut
 
 export const selectCurrentBookId = () => state => localState(state).currentBookId
 
+export const selectCurrentSeriesId = () => state => localState(state).currentSeriesId
+
 export const selectCurrentTagId = () => state => localState(state).currentTagId

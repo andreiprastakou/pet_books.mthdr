@@ -7,13 +7,15 @@ RSpec.describe BooksFilter do
     let(:params) { { foo: 'bar' } }
     let(:books) do
       [
-        create(:book, year_published: 1900, tags: []),
-        create(:book, year_published: 1901, tags: [tag_a]),
-        create(:book, year_published: 1902, tags: [tag_b])
+        create(:book, year_published: 1900, tags: [], series: []),
+        create(:book, year_published: 1901, tags: [tag_a], series: [series_a]),
+        create(:book, year_published: 1902, tags: [tag_b], series: [series_b])
       ]
     end
     let(:tag_a) { create(:tag) }
     let(:tag_b) { create(:tag) }
+    let(:series_a) { create(:series) }
+    let(:series_b) { create(:series) }
 
     before { books }
 
@@ -51,6 +53,22 @@ RSpec.describe BooksFilter do
       let(:params) { { tag_ids: [tag_a.id, tag_b.id] } }
 
       it 'returns only books with those tags' do
+        expect(result.to_a).to match_array(books.values_at(1, 2))
+      end
+    end
+
+    context 'with :series_id' do
+      let(:params) { { series_id: series_a.id } }
+
+      it 'returns only books in that series' do
+        expect(result.to_a).to match_array(books.values_at(1))
+      end
+    end
+
+    context 'with :series_ids' do
+      let(:params) { { series_ids: [series_a.id, series_b.id] } }
+
+      it 'returns only books in those series' do
         expect(result.to_a).to match_array(books.values_at(1, 2))
       end
     end

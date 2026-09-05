@@ -23,6 +23,8 @@ export const createUrlStoreValue = (overrides = {}) => {
     authorsPagePath: () => '/authors',
     booksPagePath: ({ bookId } = {}) => (bookId ? `/books/${bookId}` : '/books'),
     listPagePath: id => `/lists/${id}`,
+    seriesIndexPagePath: () => '/series',
+    seriesPagePath: (id, { bookId } = {}) => (bookId ? `/series/${id}?book_id=${bookId}` : `/series/${id}`),
     tagPagePath: id => `/tags/${id}`,
     tagsPagePath: () => '/tags',
     ...routeOverrides,

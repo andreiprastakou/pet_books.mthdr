@@ -8,12 +8,14 @@ RSpec.describe '/api/books/full_entries' do
       create(
         :book,
         generic_links: generic_links,
+        series: series,
         summary: 'A book summary.',
         tags: tags,
         wiki_url: 'https://en.wikipedia.org/wiki/Book',
       )
     end
     let(:tags) { create_list(:tag, 2) }
+    let(:series) { create_list(:series, 2) }
     let(:generic_links) { build_list(:generic_link, 2) }
 
     it 'renders the book' do
@@ -27,6 +29,7 @@ RSpec.describe '/api/books/full_entries' do
         original_title: book.original_title,
         author_ids: book.author_ids,
         tag_ids: tags.map(&:id),
+        series_ids: series.map(&:id),
         year_published: book.year_published,
         small: false,
         summary: book.summary,

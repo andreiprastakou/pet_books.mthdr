@@ -35,6 +35,20 @@ RSpec.describe Series do
     end
   end
 
+  describe 'scopes' do
+    describe '.search_by_name' do
+      subject(:result) { described_class.search_by_name(key) }
+
+      let(:key) { 'Earth' }
+      let!(:matching) { create(:series, name: 'Earthsea') }
+      let!(:other) { create(:series, name: 'Dune') }
+
+      it 'returns series matching the key' do
+        expect(result).to contain_exactly(matching)
+      end
+    end
+  end
+
   it_behaves_like 'has wiki links' do
     let(:record) { build(:series) }
   end

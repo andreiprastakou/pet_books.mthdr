@@ -26,5 +26,11 @@ FrontendApi::Engine.routes.draw do
       resources :ref_entries, only: %i[show index]
       resource :search, only: :show, controller: 'search'
     end
+
+    namespace :series do
+      resources :index_entries, only: %i[show index]
+      resources :ref_entries, only: %i[show index]
+      resource :search, only: :show, controller: 'search'
+    end
   end
 end

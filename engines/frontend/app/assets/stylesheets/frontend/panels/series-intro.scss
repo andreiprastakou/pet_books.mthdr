@@ -1,0 +1,14 @@
+.panel--series-intro {
+  margin-bottom: 10px;
+
+  .panel--header {
+    align-items: center;
+    display: flex;
+  }
+}
+
+.series-page {
+  .panel--books-list-covers {
+    height: calc(100vh - 56px - 180px);
+  }
+}

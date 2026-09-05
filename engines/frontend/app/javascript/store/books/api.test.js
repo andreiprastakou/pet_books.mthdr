@@ -14,6 +14,7 @@ describe('books API models', () => {
       author_ids: [9],
       year_published: 1900,
       tag_ids: [2],
+      series_ids: [4],
       wiki_url: 'https://wiki',
       generic_links: [{ url: 'https://x' }],
     })).toMatchObject({
@@ -23,6 +24,7 @@ describe('books API models', () => {
       authorIds: [9],
       yearPublished: 1900,
       tagIds: [2],
+      seriesIds: [4],
       wikiUrl: 'https://wiki',
       genericLinks: [{ url: 'https://x' }],
     })

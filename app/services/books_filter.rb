@@ -11,6 +11,7 @@ class BooksFilter
   def filtered_scope
     apply_authors_filter
     apply_tags_filter
+    apply_series_filter
     apply_years_filter
     apply_ids_filter
     scope
@@ -32,6 +33,13 @@ class BooksFilter
     return if ids.blank?
 
     @scope = scope.with_tags(ids)
+  end
+
+  def apply_series_filter
+    ids = Array.wrap(params[:series_id]).presence || params[:series_ids]
+    return if ids.blank?
+
+    @scope = scope.by_series(ids)
   end
 
   def apply_years_filter
