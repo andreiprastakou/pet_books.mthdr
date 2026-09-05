@@ -40,10 +40,8 @@ const LocalStoreConfigurer = () => {
       const value = parseInt(raw)
       return Number.isNaN(value) ? null : value
     })
-    /* eslint-disable camelcase */
     const removeSelectAction = addUrlAction('selectPublicList', listId =>
       patch(buildRelativePath({ params: { list_id: listId } })))
-    /* eslint-enable camelcase */
 
     return () => {
       removeListIdState()

@@ -11,6 +11,7 @@ import {
 import { selectBookIds, selectFilter, selectPage, selectPerPage, selectSortBy } from 'store/booksList/selectors'
 import { slice } from 'store/booksList/slice'
 import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
+import { notNullish } from 'utils/nullish'
 
 export const {
   assignBookIds,
@@ -55,14 +56,14 @@ export const shiftSelection = shift => (dispatch, getState) => {
 
 const selectPreferredBookInList = ids => {
   const preferred = bookIdFromWindowLocation()
-  return preferred != null && ids.includes(preferred) ? preferred : null
+  return notNullish(preferred) && ids.includes(preferred) ? preferred : null
 }
 
 export const setupBooksListSelection = () => (dispatch, getState) => {
   const state = getState()
   const ids = selectBookIds()(state)
   const preferred = selectPreferredBookInList(ids)
-  if (preferred != null) {
+  if (notNullish(preferred)) {
     dispatch(setCurrentBookId(preferred))
     return
   }
@@ -78,7 +79,7 @@ export const switchToFirstBook = () => (dispatch, getState) => {
   const state = getState()
   const ids = selectBookIds()(state)
   const preferred = selectPreferredBookInList(ids)
-  if (preferred != null) {
+  if (notNullish(preferred)) {
     dispatch(setCurrentBookId(preferred))
     return
   }
@@ -86,7 +87,7 @@ export const switchToFirstBook = () => (dispatch, getState) => {
   const currentBookId = selectCurrentBookId()(state)
   if (ids.includes(currentBookId)) return
 
-  if (ids[0] != null) dispatch(setRequestedBookId(ids[0]))
+  if (notNullish(ids[0])) dispatch(setRequestedBookId(ids[0]))
 }
 
 export const clearListState = () => dispatch => {

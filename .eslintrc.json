@@ -102,6 +102,21 @@
         "max-statements": ["off"],
         "no-undefined": ["off"]
       }
+    },
+    {
+      "files": [
+        "**/store/**/api.test.js",
+        "**/store/**/apiClient.test.js",
+        "**/panels/publicListIntro/ListIntro.test.jsx",
+        "**/components/Page.jsx",
+        "**/pages/authorPage/Route.jsx",
+        "**/pages/authorsPage/Route.jsx",
+        "**/pages/publicListsPage/Route.jsx",
+        "**/store/urlStore/BooksListConfigurer.jsx"
+      ],
+      "rules": {
+        "camelcase": ["off"]
+      }
     }
   ],
   "settings": {

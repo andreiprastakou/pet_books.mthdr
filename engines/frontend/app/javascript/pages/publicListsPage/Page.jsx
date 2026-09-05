@@ -12,6 +12,7 @@ import { setCurrentBookId } from 'store/axis/actions'
 import { setRequestedBookId } from 'store/books/actions'
 import apiClient from 'store/publicLists/apiClient'
 import UrlStoreContext from 'store/urlStore/Context'
+import { isNullish } from 'utils/nullish'
 
 const PublicListsPage = () => {
   const dispatch = useDispatch()
@@ -51,7 +52,7 @@ const PublicListsPage = () => {
 
   useEffect(() => {
     if (!listIdReady) return
-    if (listId == null || (selectedList && bookIds.length === 0)) {
+    if (isNullish(listId) || (selectedList && bookIds.length === 0)) {
       dispatch(setCurrentBookId(null))
       dispatch(setRequestedBookId(null))
     }
@@ -61,7 +62,7 @@ const PublicListsPage = () => {
 
   return (
     <>
-      { listId == null ? null : <PageConfigurer bookIds={bookIds} /> }
+      { isNullish(listId) ? null : <PageConfigurer bookIds={bookIds} /> }
 
       <Layout classes='panels-page public-lists-page'>
         <Col xs={8}>
@@ -72,7 +73,7 @@ const PublicListsPage = () => {
             setSelectedListId={selectPublicList}
           />
 
-          { listId == null ? null : (
+          { isNullish(listId) ? null : (
             <BooksListCovers
               bookLabels={bookLabels}
               header='Noted Works'

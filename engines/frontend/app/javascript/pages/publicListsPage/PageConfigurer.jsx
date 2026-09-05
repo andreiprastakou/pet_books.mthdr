@@ -37,7 +37,7 @@ const PublicListsPageConfigurer = ({ bookIds }) => {
       dispatch(prepareNavRefs()),
       dispatch(fetchCoverDesigns()),
     ]).then(() => {
-      if (ids.length === 0) return
+      if (ids.length === 0) return null
       return dispatch(fetchBooks()).then(() => dispatch(setupBooksListSelection()))
     })
   }, [bookIdsKey, routesReady])
