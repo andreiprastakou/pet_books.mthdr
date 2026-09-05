@@ -83,7 +83,7 @@
           <% end %>
         </td>
         <td>
-          <%= book.literary_form.humanize %>
+          <%= book.literary_form&.humanize %>
         </td>
         <td>
           <%= book_public_list.role&.humanize %>

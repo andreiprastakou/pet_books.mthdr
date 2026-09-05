@@ -142,45 +142,47 @@ const BookDetails = ({ header = null, showCover = true }) => {
 
       <Card.Body className='panel--body'>
         <div className='book-details-panel-content'>
-          <div className='book-details-panel-heading'>
-            <h2>
-              { book.title }
-            </h2>
+          <div className='book-details-panel-main-info'>
+            <div className='book-details-panel-heading'>
+              <h2>
+                { book.title }
+              </h2>
 
-            <span>
-              <InternalLink href={booksPagePath({ bookId: book.id })}>
-                { book.yearPublished }
-              </InternalLink>
-            </span>
+              <span>
+                <InternalLink href={booksPagePath({ bookId: book.id })}>
+                  { book.yearPublished }
+                </InternalLink>
+              </span>
+            </div>
+
+            { book.formLabel ? (
+              <div className='book-details-panel-form-label'>
+                { book.formLabel }
+              </div>
+            ) : null }
+
+            <div className='book-details-panel-authors'>
+              { 'by ' }
+
+              { renderAuthors(authorRefs, book.id, authorPagePath) }
+            </div>
+
+            { seriesRefs.length > 0 ? (
+              <div className='book-details-panel-series'>
+                { 'from series ' }
+
+                { renderSeries(seriesRefs, book.id, seriesPagePath) }
+              </div>
+            ) : null }
+
+            { book.summary ? (
+              <div className='book-details-panel-annotation'>
+                <p>
+                  { book.summary }
+                </p>
+              </div>
+            ) : null }
           </div>
-
-          { book.formLabel ? (
-            <div className='book-details-panel-form-label'>
-              { book.formLabel }
-            </div>
-          ) : null }
-
-          <div className='book-details-panel-authors'>
-            { 'by ' }
-
-            { renderAuthors(authorRefs, book.id, authorPagePath) }
-          </div>
-
-          { seriesRefs.length > 0 ? (
-            <div className='book-details-panel-series'>
-              { 'from series ' }
-
-              { renderSeries(seriesRefs, book.id, seriesPagePath) }
-            </div>
-          ) : null }
-
-          { book.summary ? (
-            <div className='book-details-panel-annotation'>
-              <p>
-                { book.summary }
-              </p>
-            </div>
-          ) : null }
 
           { links.length > 0 ? (
             <div className='book-details-panel-links'>

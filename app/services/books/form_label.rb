@@ -28,6 +28,8 @@ module Books
     end
 
     def to_s
+      return '' if body.blank?
+
       "#{article} #{body}"
     end
 
@@ -53,6 +55,8 @@ module Books
     end
 
     def form_name
+      return if book.literary_form.blank?
+
       FORM_NAMES.fetch(book.literary_form) { humanize_codified(book.literary_form) }
     end
 

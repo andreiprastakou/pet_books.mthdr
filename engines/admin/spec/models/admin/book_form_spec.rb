@@ -7,7 +7,7 @@
 #
 #  id              :integer          not null, primary key
 #  data_filled     :boolean          default(FALSE), not null
-#  literary_form   :string           default("novel"), not null
+#  literary_form   :string
 #  original_title  :string
 #  popularity      :integer          default(0)
 #  summary         :text
