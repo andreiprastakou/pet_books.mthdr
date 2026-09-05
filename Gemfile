@@ -76,6 +76,7 @@ group :test do
   gem 'rspec-rails', '~> 8.0'
 
   gem 'capybara', '>= 3.26'
+  gem 'cuprite'
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
   gem 'rails-controller-testing'

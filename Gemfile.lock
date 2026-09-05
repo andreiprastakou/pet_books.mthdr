@@ -139,6 +139,9 @@ GEM
       rexml
     crass (1.0.7)
     csv (3.3.5)
+    cuprite (0.18)
+      capybara (~> 3.0)
+      ferrum (~> 0.18.0)
     database_cleaner-active_record (2.2.2)
       activerecord (>= 5.a)
       database_cleaner-core (~> 2.0)
@@ -173,6 +176,11 @@ GEM
       net-http (~> 0.5)
     faraday-retry (2.4.0)
       faraday (~> 2.0)
+    ferrum (0.18.0)
+      addressable (~> 2.5)
+      base64 (~> 0.2)
+      concurrent-ruby (~> 1.1)
+      websocket-driver (~> 0.7)
     ffi (1.17.4-x86_64-linux-gnu)
     flay (2.14.4)
       erubi (~> 1.10)
@@ -578,6 +586,7 @@ DEPENDENCIES
   capybara (>= 3.26)
   carrierwave
   carrierwave-base64
+  cuprite
   database_cleaner-active_record
   dotenv-rails (>= 3.1)
   factory_bot_rails
