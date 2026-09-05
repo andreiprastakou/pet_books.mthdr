@@ -9,7 +9,6 @@ gem 'puma', '~> 7.2'
 gem 'rails', '~> 8.1'
 
 # data storage
-gem 'redis'
 gem 'sqlite3', '~> 2.9'
 
 # integrations

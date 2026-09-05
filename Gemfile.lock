@@ -416,10 +416,6 @@ GEM
       rails (>= 5.2)
       rainbow (~> 3.0)
       shakapacker (>= 6.0)
-    redis (6.0.0)
-      redis-client (= 0.30.1)
-    redis-client (0.30.1)
-      connection_pool
     regexp_parser (2.12.0)
     reline (0.7.0)
       io-console (~> 0.5)
@@ -606,7 +602,6 @@ DEPENDENCIES
   rails (~> 8.1)
   rails-controller-testing
   react_on_rails
-  redis
   rspec-rails (~> 8.0)
   rubocop-capybara
   rubocop-factory_bot
