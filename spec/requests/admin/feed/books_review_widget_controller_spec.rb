@@ -11,7 +11,10 @@ RSpec.describe Admin::Feed::BooksReviewWidgetController do
     end
 
     describe 'rendered data' do
-      let(:books) { create_list(:book, 6) + create_list(:book, 3, data_filled: true) }
+      let(:books) do
+        create_list(:book, 6, literary_form: 'novel') +
+          create_list(:book, 3, data_filled: true, literary_form: 'novel')
+      end
       let(:summaries) do
         [
           create(:book_summary_task, target: books[3], status: :requested),
