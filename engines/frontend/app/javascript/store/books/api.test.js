@@ -18,6 +18,13 @@ describe('books API models', () => {
       form_label: 'a fantasy novel',
       wiki_url: 'https://wiki',
       generic_links: [{ url: 'https://x' }],
+      public_lists: [{
+        public_list_id: 10,
+        public_list_type_id: 3,
+        public_list_type_name: 'Hugo',
+        public_list_year: 2020,
+        book_role: 'winner',
+      }],
     })).toMatchObject({
       id: 1,
       title: 'One',
@@ -29,6 +36,13 @@ describe('books API models', () => {
       formLabel: 'a fantasy novel',
       wikiUrl: 'https://wiki',
       genericLinks: [{ url: 'https://x' }],
+      publicLists: [{
+        publicListId: 10,
+        publicListTypeId: 3,
+        publicListTypeName: 'Hugo',
+        publicListYear: 2020,
+        bookRole: 'winner',
+      }],
     })
 
     expect(BookIndexEntry.parse({

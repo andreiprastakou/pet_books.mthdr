@@ -1,3 +1,11 @@
+const parsePublicList = entry => ({
+  publicListId: entry.public_list_id,
+  publicListTypeId: entry.public_list_type_id,
+  publicListTypeName: entry.public_list_type_name,
+  publicListYear: entry.public_list_year,
+  bookRole: entry.book_role,
+})
+
 class BookFull {
   static parse(data) {
     return {
@@ -10,6 +18,7 @@ class BookFull {
       formLabel: data['form_label'],
       wikiUrl: data['wiki_url'],
       genericLinks: data['generic_links'],
+      publicLists: (data.public_lists || []).map(parsePublicList),
     }
   }
 }
