@@ -132,6 +132,29 @@ describe('booksList actions', () => {
     expect(store.getState().storeBooks.requestedBookId).toBe(4)
   })
 
+  it('prefers book_id from the URL when it is in the list', () => {
+    const previousSearch = window.location.search
+    window.history.pushState({}, '', '/authors/7?book_id=5')
+
+    const store = makeStore({
+      axis: { currentBookId: 99, currentAuthorId: null, currentTagId: null, seed: null },
+      booksList: {
+        bookIds: [4, 5],
+        booksTotal: 2,
+        listFilter: {},
+        sortBy: 'name',
+        page: 1,
+        perPage: 16,
+      },
+    })
+
+    store.dispatch(switchToFirstBook())
+    expect(store.getState().axis.currentBookId).toBe(5)
+    expect(store.getState().storeBooks.requestedBookId).toBeNull()
+
+    window.history.pushState({}, '', previousSearch || '/')
+  })
+
   it('keeps the current book when it is already in the list', () => {
     const store = makeStore({
       axis: { currentBookId: 5, currentAuthorId: null, currentTagId: null, seed: null },

@@ -1,5 +1,6 @@
 import { useContext, useEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 
 import { addErrorMessage } from 'store/notifications/actions'
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
@@ -21,14 +22,16 @@ import {
 import apiClient from 'store/books/apiClient'
 import { setPageIsLoading } from 'store/metadata/actions'
 import UrlStoreContext from 'store/urlStore/Context'
+import { bookIdFromSearch } from 'utils/bookIdFromLocation'
 
 const BOOKS_PER_PAGE = 1000
 
 const PageConfigurer = () => {
   const dispatch = useDispatch()
+  const location = useLocation()
   const { pageState, routesReady } = useContext(UrlStoreContext)
-  const { bookId } = pageState
   const bookIdStateReady = Object.hasOwn(pageState, 'bookId')
+  const bookId = bookIdFromSearch(location.search)
   const hasConfigured = useRef(false)
 
   useEffect(() => {

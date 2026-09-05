@@ -11,6 +11,7 @@ import {
   assignSortBy,
   clearListState,
   fetchBooks,
+  setupBooksListSelection,
 } from 'store/booksList/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -36,7 +37,8 @@ const PublicListsPageConfigurer = ({ bookIds }) => {
       dispatch(prepareNavRefs()),
       dispatch(fetchCoverDesigns()),
     ]).then(() => {
-      if (ids.length > 0) dispatch(fetchBooks())
+      if (ids.length === 0) return
+      return dispatch(fetchBooks()).then(() => dispatch(setupBooksListSelection()))
     })
   }, [bookIdsKey, routesReady])
 

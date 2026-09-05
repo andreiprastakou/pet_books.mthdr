@@ -24,6 +24,7 @@ import {
 } from 'store/booksList/selectors'
 import { selectYears } from 'store/booksYears/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
 
 export const PANEL_ID = 'books-list-yearly'
 
@@ -105,7 +106,10 @@ const BooksYear = ({ title = defaultTitle }) => {
   const matrixRef = useRef({ key: null, bookIds: [] })
   const bookIdsKey = bookIds.join(',')
   if (matrixRef.current.key !== bookIdsKey) {
-    const selectedId = bookIds.includes(currentBookId) ? currentBookId : bookIds[0]
+    const preferred = bookIdFromWindowLocation()
+    const selectedId = preferred != null && bookIds.includes(preferred)
+      ? preferred
+      : (bookIds.includes(currentBookId) ? currentBookId : bookIds[0])
     matrixRef.current = { key: bookIdsKey, ...buildBookMatrix(bookIds, selectedId) }
   }
   const { coordinatesById, idsByCoordinate, orderedBookIds: matrixBookIds } = matrixRef.current
