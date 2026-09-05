@@ -22,24 +22,15 @@ class BooksFilter
   attr_reader :params, :scope
 
   def apply_authors_filter
-    ids = Array.wrap(params[:author_id]).presence || params[:author_ids]
-    return if ids.blank?
-
-    @scope = scope.by_author(ids)
+    apply_ids_param_filter(:author_id, :author_ids) { |ids| scope.by_author(ids) }
   end
 
   def apply_tags_filter
-    ids = Array.wrap(params[:tag_id]).presence || params[:tag_ids]
-    return if ids.blank?
-
-    @scope = scope.with_tags(ids)
+    apply_ids_param_filter(:tag_id, :tag_ids) { |ids| scope.with_tags(ids) }
   end
 
   def apply_series_filter
-    ids = Array.wrap(params[:series_id]).presence || params[:series_ids]
-    return if ids.blank?
-
-    @scope = scope.by_series(ids)
+    apply_ids_param_filter(:series_id, :series_ids) { |ids| scope.by_series(ids) }
   end
 
   def apply_years_filter
@@ -52,5 +43,12 @@ class BooksFilter
     return if (ids = params[:ids]).blank?
 
     @scope = scope.where(id: ids)
+  end
+
+  def apply_ids_param_filter(singular_key, plural_key)
+    ids = Array.wrap(params[singular_key]).presence || params[plural_key]
+    return if ids.blank?
+
+    @scope = yield(ids)
   end
 end
