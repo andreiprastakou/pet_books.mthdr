@@ -37,6 +37,8 @@ gem 'turbo-rails', '~> 2.0'
 gem 'carrierwave'
 gem 'carrierwave-base64'
 gem 'fog-aws'
+# image_processing 2.x made mini_magick a soft dependency; CarrierWave::MiniMagick still needs it
+gem 'mini_magick', '~> 5.0'
 
 # self-analysis
 gem 'annotaterb', '~> 4.14'
