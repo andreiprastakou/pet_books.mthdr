@@ -5,12 +5,8 @@ module Books
   # e.g. "a fantasy novel" or "an epic, horror and mystery short story".
   class FormLabel
     FORM_NAMES = {
-      'novel' => 'novel',
-      'novella' => 'novella',
       'short' => 'short story',
       'short_story' => 'short story',
-      'poem' => 'poem',
-      'play' => 'play',
       'comics' => 'comic',
       'non_fiction' => 'non-fiction work'
     }.freeze
