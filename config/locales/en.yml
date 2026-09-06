@@ -65,6 +65,13 @@ en:
           success: "Cover design was successfully updated."
         destroy:
           success: "Cover design was successfully destroyed."
+      external_identities:
+        create:
+          success: "External identity was successfully created."
+        update:
+          success: "External identity was successfully updated."
+        destroy:
+          success: "External identity was successfully destroyed."
       generative_summaries:
         create:
           success: "Task has been queued for processing."

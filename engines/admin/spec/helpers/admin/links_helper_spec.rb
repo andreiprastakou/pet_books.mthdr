@@ -24,4 +24,17 @@ RSpec.describe Admin::LinksHelper do
       end
     end
   end
+
+  describe '#admin_nav_external_identity_link' do
+    let(:book) { build_stubbed(:book) }
+    let(:external_identity) do
+      build_stubbed(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL1W')
+    end
+
+    it 'returns a crumb with resource and identificator' do
+      expect(helper.admin_nav_external_identity_link(book, external_identity)).to eq(
+        ['Open Library: OL1W', admin_book_external_identity_path(book, external_identity)]
+      )
+    end
+  end
 end

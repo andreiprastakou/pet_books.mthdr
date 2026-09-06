@@ -197,6 +197,22 @@
           </div>
         </div>
       <% end %>
+
+      <div class="row mb-3">
+        <div class="col-md-3 font-weight-bold text-end">External identities:</div>
+        <div class="col-md-9">
+          <% @book.external_identities.each do |external_identity| %>
+            <div>
+              <%= external_identity.external_resource.to_s.titleize %>:
+              <%= admin_link_to(
+                external_identity.identificator.presence || '—',
+                admin_book_external_identity_path(@book, external_identity)
+              ) %>
+            </div>
+          <% end %>
+          <%= admin_buttonly_link_to "Add", new_admin_book_external_identity_path(@book) %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

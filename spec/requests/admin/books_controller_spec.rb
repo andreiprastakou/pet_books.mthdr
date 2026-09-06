@@ -40,6 +40,15 @@ RSpec.describe Admin::BooksController do
       expect(response).to be_successful
       expect(response).to render_template 'admin/books/show'
     end
+
+    it 'renders external identities with links and an Add button' do
+      create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL99W')
+      send_request
+      expect(response.body).to include('External identities:')
+      expect(response.body).to include('Open Library:')
+      expect(response.body).to include('OL99W')
+      expect(response.body).to include(new_admin_book_external_identity_path(book))
+    end
   end
 
   describe 'GET /admin/books/new' do
