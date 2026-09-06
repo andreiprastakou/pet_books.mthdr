@@ -31,6 +31,7 @@ Admin::Engine.routes.draw do
         resources :generative_summaries, only: %i[create edit update] do
           post :apply, on: :member
         end
+        resources :external_identities
       end
     end
 

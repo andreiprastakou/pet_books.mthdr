@@ -32,6 +32,8 @@ class Author < ApplicationRecord
   has_many :tags, through: :tag_connections, class_name: 'Tag'
   has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy
   has_many :list_parsing_tasks, class_name: 'Admin::AuthorBooksListParsingTask', as: :target, dependent: :destroy
+  has_many :external_identities, class_name: 'ExternalIdentity', as: :owner, dependent: :destroy,
+                                 inverse_of: :owner
 
   mount_base64_uploader :aws_photos, Uploaders::AwsAuthorPhotoUploader
 

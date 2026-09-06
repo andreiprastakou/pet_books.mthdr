@@ -39,6 +39,7 @@ RSpec.describe Book do
     it { is_expected.to have_many(:collections).class_name(Collection.name).through(:book_collections) }
     it { is_expected.to have_many(:book_public_lists).class_name(BookPublicList.name) }
     it { is_expected.to have_many(:public_lists).class_name(PublicList.name).through(:book_public_lists) }
+    it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
   end
 
   describe 'validation' do
