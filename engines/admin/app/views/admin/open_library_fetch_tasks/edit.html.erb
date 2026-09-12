@@ -1,0 +1,68 @@
+<%= turbo_frame_tag "task_apply_form", target: "_top" do %>
+  <div class="card mt-2">
+    <div class="card-header">
+      Open Library fetch results
+    </div>
+
+    <div class="card-body">
+      <div class="mb-4">
+        <div class="row mb-2">
+          <div class="col-md-3 font-weight-bold text-end">Current summary:</div>
+          <div class="col-md-9">
+            <% if @book.summary.present? %>
+              <%= @book.summary %>
+            <% else %>
+              <span class="text-muted">None</span>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <% if @fetched_data.blank? %>
+        <p class="text-muted">No fetch results returned.</p>
+      <% else %>
+        <table class="table table-bordered align-top mb-0 b-task-fetch-results">
+          <tbody>
+            <tr>
+              <td class="w-50">
+                <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(@fetched_data) %></pre>
+              </td>
+              <td class="text-center">
+                <% @identifiers.each do |external_resource, identificator| %>
+                  <% link_builder = Admin::OpenLibraryFetchTask::EXTERNAL_LINK_BUILDERS[external_resource] %>
+                  <% identity_url = link_builder&.call(identificator) %>
+                  <% already_added = @book_identity_keys.include?([external_resource, identificator]) %>
+                  <%= form_with url: add_identity_admin_open_library_fetch_task_path(@task),
+                    method: :post,
+                    class: "d-flex align-items-center justify-content-center gap-2 mb-2 flex-wrap",
+                    data: { turbo: false } do %>
+                    <%= hidden_field_tag :external_resource, external_resource %>
+                    <%= hidden_field_tag :identificator, identificator %>
+                    <span><%= external_resource %></span>
+                    <% if identity_url.present? %>
+                      <%= external_link_to identificator, identity_url %>
+                    <% else %>
+                      <%= identificator %>
+                    <% end %>
+                    <%= submit_tag "add to the book", class: "btn btn-sm btn-outline-primary",
+                      disabled: already_added %>
+                  <% end %>
+                <% end %>
+
+                <%= form_with url: apply_summary_admin_open_library_fetch_task_path(@task),
+                  method: :post,
+                  class: "mt-3 text-start",
+                  data: { turbo: false } do %>
+                  <%= label_tag :summary, "Summary", class: "form-label" %>
+                  <%= text_area_tag :summary, @description, class: "form-control mb-2", rows: 6 %>
+                  <%= submit_tag "apply summary", class: "btn btn-sm btn-outline-primary",
+                    disabled: @description.blank? %>
+                <% end %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+<% end %>

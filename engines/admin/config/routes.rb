@@ -68,6 +68,13 @@ Admin::Engine.routes.draw do
       end
     end
 
+    resources :open_library_fetch_tasks, only: %i[edit] do
+      member do
+        post :add_identity
+        post :apply_summary
+      end
+    end
+
     resources :genres
 
     resources :public_list_types do

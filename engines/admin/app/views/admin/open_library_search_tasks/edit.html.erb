@@ -45,7 +45,7 @@
       <% if @search_results.empty? %>
         <p class="text-muted">No search results returned.</p>
       <% else %>
-        <table class="table table-bordered align-middle mb-0">
+        <table class="table table-bordered align-top mb-0 b-task-fetch-results">
           <tbody>
             <% @search_results.each_with_index do |result, index| %>
               <% result_data = result.is_a?(Hash) ? result : {} %>
@@ -56,7 +56,7 @@
               <% author_keys = Array(result_data['author_key'] || result_data[:author_key]) %>
               <tr>
                 <td class="w-50">
-                  <pre class="mb-0 small"><%= JSON.pretty_generate(result) %></pre>
+                  <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(result) %></pre>
                 </td>
                 <td class="text-center">
                   <% if work_olid.present? %>
