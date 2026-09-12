@@ -1,0 +1,122 @@
+<% book_ol_links = @book.external_identities.open_library.filter_map { |identity|
+  url = ExternalLinks::OpenLibrary::Work.call(identity.identificator)
+  url && external_link_to(identity.identificator, url)
+} %>
+<%= turbo_frame_tag "task_apply_form", target: "_top" do %>
+  <div class="card mt-2">
+    <div class="card-header">
+      Open Library search results
+    </div>
+
+    <div class="card-body">
+      <div class="mb-4">
+        <div class="row mb-2">
+          <div class="col-md-3 font-weight-bold text-end">Title:</div>
+          <div class="col-md-9">
+            <%= @book.title %><% if book_ol_links.any? %> (<%= safe_join(book_ol_links, ', ') %>)<% end %>
+          </div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-3 font-weight-bold text-end">Year:</div>
+          <div class="col-md-9"><%= @book.year_published %></div>
+        </div>
+        <div class="row mb-2">
+          <div class="col-md-3 font-weight-bold text-end">Authors:</div>
+          <div class="col-md-9">
+            <% if @book.authors.empty? %>
+              Unknown Author
+            <% else %>
+              <%= safe_join(@book.authors.map { |author|
+                links = author.external_identities.open_library.filter_map { |identity|
+                  url = ExternalLinks::OpenLibrary::Author.call(identity.identificator)
+                  url && external_link_to(identity.identificator, url)
+                }
+                if links.any?
+                  safe_join([author.fullname, ' (', safe_join(links, ', '), ')'])
+                else
+                  author.fullname
+                end
+              }, ', ') %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+
+      <% if @search_results.empty? %>
+        <p class="text-muted">No search results returned.</p>
+      <% else %>
+        <table class="table table-bordered align-middle mb-0">
+          <tbody>
+            <% @search_results.each_with_index do |result, index| %>
+              <% result_data = result.is_a?(Hash) ? result : {} %>
+              <% work_key = result_data['key'] || result_data[:key] %>
+              <% work_olid = InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.normalize_work_key(work_key) %>
+              <% work_url = work_olid && ExternalLinks::OpenLibrary::Work.call(work_olid) %>
+              <% work_already_added = work_olid.present? && @book_open_library_ids.include?(work_olid) %>
+              <% author_keys = Array(result_data['author_key'] || result_data[:author_key]) %>
+              <tr>
+                <td class="w-50">
+                  <pre class="mb-0 small"><%= JSON.pretty_generate(result) %></pre>
+                </td>
+                <td class="text-center">
+                  <% if work_olid.present? %>
+                    <%= form_with url: add_work_identity_admin_open_library_search_task_path(@task),
+                      method: :post,
+                      class: "d-flex align-items-center justify-content-center gap-2 mb-2",
+                      data: { turbo: false } do %>
+                      <%= hidden_field_tag :work_key, work_olid %>
+                      <% if work_url %>
+                        <%= external_link_to work_olid, work_url %>
+                      <% else %>
+                        <%= work_olid %>
+                      <% end %>
+                      <%= submit_tag "add to the book", class: "btn btn-sm btn-outline-primary",
+                        disabled: work_already_added %>
+                    <% end %>
+                  <% end %>
+
+                  <% author_keys.each_with_index do |author_key, author_index| %>
+                    <% author_olid = ExternalLinks::OpenLibrary::Author.normalize_id(author_key) %>
+                    <% next if author_olid.blank? %>
+                    <% author_url = ExternalLinks::OpenLibrary::Author.call(author_olid) %>
+                    <% existing_identity = @author_identities_by_olid[author_olid] %>
+                    <% existing_author = existing_identity&.owner %>
+                    <% already_assigned = existing_author.present? %>
+                    <% author_on_book = existing_author && @book.authors.include?(existing_author) %>
+                    <% select_authors = @book.authors.to_a %>
+                    <% select_authors = (select_authors + [existing_author]).uniq if existing_author && !author_on_book %>
+                    <div class="mb-2">
+                      <%= form_with url: add_author_identity_admin_open_library_search_task_path(@task),
+                        method: :post,
+                        class: "d-flex align-items-center justify-content-center gap-2 flex-wrap",
+                        data: { turbo: false } do %>
+                        <%= hidden_field_tag :author_key, author_olid %>
+                        <% if author_url %>
+                          <%= external_link_to author_olid, author_url %>
+                        <% else %>
+                          <%= author_olid %>
+                        <% end %>
+                        <%= select_tag :author_id,
+                          options_from_collection_for_select(select_authors, :id, :fullname, existing_author&.id),
+                          class: "form-select form-select-sm w-auto",
+                          id: "author_id_#{index}_#{author_index}",
+                          disabled: already_assigned || select_authors.empty? %>
+                        <%= submit_tag "add to the author", class: "btn btn-sm btn-outline-primary",
+                          disabled: already_assigned || select_authors.empty? %>
+                      <% end %>
+                      <% if existing_author && !author_on_book %>
+                        <div class="text-danger small mt-1">
+                          Author "<%= existing_author.fullname %>" is not linked to this book.
+                        </div>
+                      <% end %>
+                    </div>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+<% end %>

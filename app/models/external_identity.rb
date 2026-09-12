@@ -23,6 +23,7 @@ class ExternalIdentity < ApplicationRecord
   belongs_to :owner, polymorphic: true, inverse_of: :external_identities
   has_many :external_data_fetches, class_name: 'ExternalDataFetch', dependent: :destroy,
                                    inverse_of: :external_identity
+  has_many :open_library_fetch_tasks, class_name: 'Admin::OpenLibraryFetchTask', as: :target, dependent: :destroy
 
   enum :external_resource, {
     open_library: 1,

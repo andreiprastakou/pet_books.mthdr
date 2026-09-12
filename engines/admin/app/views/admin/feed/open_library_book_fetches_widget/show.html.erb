@@ -1,0 +1,21 @@
+<%= turbo_frame_tag "open_library_book_fetches_widget", target: "_top" do %>
+  <div class="container mt-4">
+    <h3>OpenLibrary Book Fetches: <%= @tasks_count %></h3>
+    <ul class="list-group">
+      <% if @tasks.empty? %>
+        <li class="list-group-item">No Open Library fetches to review</li>
+      <% end %>
+      <% @tasks.each do |task| %>
+        <% identity = task.external_identity %>
+        <% owner = identity.owner %>
+        <li class="list-group-item">
+          <% if owner.is_a?(Book) %>
+            <%= admin_link_to "#{owner.title} — #{identity.identificator}", admin_data_fetch_task_path(task) %>
+          <% else %>
+            <%= admin_link_to identity.identificator.to_s, admin_data_fetch_task_path(task) %>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

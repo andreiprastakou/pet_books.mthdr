@@ -45,6 +45,7 @@ class Book < ApplicationRecord
   has_many :tags, through: :tag_connections, class_name: 'Tag'
   has_many :genres, class_name: 'BookGenre', dependent: :destroy
   has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
+  has_many :open_library_search_tasks, class_name: 'Admin::OpenLibrarySearchTask', as: :target, dependent: :destroy
   has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
   has_many :book_series, class_name: 'BookSeries', dependent: :destroy, inverse_of: :book
@@ -71,6 +72,8 @@ class Book < ApplicationRecord
   scope :by_series, ->(series) { joins(:book_series).where(book_series: { series_id: series }) }
   scope :not_filled, -> { where(data_filled: false) }
   scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
+  scope :without_open_library_search_tasks, -> { where.missing(:open_library_search_tasks) }
+  scope :without_open_library_fetch_tasks, -> { where.missing(:open_library_fetch_tasks) }
   scope :form_requires_summary, -> { where(literary_form: FORMS_REQUIRE_SUMMARY) }
   scope :search_by_title, ->(key) { where('title LIKE ?', "%#{key}%") }
 

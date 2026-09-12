@@ -65,6 +65,9 @@ en:
           success: "Cover design was successfully updated."
         destroy:
           success: "Cover design was successfully destroyed."
+      data_fetch_tasks:
+        status_change:
+          success: "Task ID=%{id} marked as %{status}"
       external_identities:
         create:
           success: "External identity was successfully created."
@@ -80,6 +83,14 @@ en:
         reject:
           success: "Summaries rejected!"
           nothing_else: "Nothing else to review"
+      open_library_search_tasks:
+        add_work_identity:
+          success: "Open Library work identity added."
+        add_author_identity:
+          success: "Open Library author identity added."
+      open_library_searches:
+        create:
+          success: "Open Library search has been queued."
       genres:
         create:
           success: "Genre was successfully created."

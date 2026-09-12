@@ -31,6 +31,7 @@ Admin::Engine.routes.draw do
         resources :generative_summaries, only: %i[create edit update] do
           post :apply, on: :member
         end
+        resources :open_library_searches, only: %i[create]
         resources :external_identities
       end
     end
@@ -49,11 +50,20 @@ Admin::Engine.routes.draw do
         post :request_books_list
         post :fill_books_list
       end
+      resource :open_library_book_searches_widget, only: %i[show], controller: 'open_library_book_searches_widget'
+      resource :open_library_book_fetches_widget, only: %i[show], controller: 'open_library_book_fetches_widget'
     end
 
     resources :data_fetch_tasks, only: %i[index show] do
       put :verify, on: :member
       put :reject, on: :member
+    end
+
+    resources :open_library_search_tasks, only: %i[edit] do
+      member do
+        post :add_work_identity
+        post :add_author_identity
+      end
     end
 
     resources :genres

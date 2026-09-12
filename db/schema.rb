@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_06_150000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_06_213034) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -156,6 +156,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_06_150000) do
     t.string "title_color", null: false
     t.string "title_font", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "external_api_rate_limits", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "last_requested_at"
+    t.float "min_interval_seconds", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_external_api_rate_limits_on_name", unique: true
   end
 
   create_table "external_data_fetches", force: :cascade do |t|

@@ -25,35 +25,20 @@
 #  chat_id  (chat_id => ai_chats.id)
 #
 module Admin
-  class BaseDataFetchTask < ApplicationRecord
-    self.table_name = 'admin_data_fetch_tasks'
-
-    belongs_to :chat, class_name: 'Ai::Chat', optional: true
-    belongs_to :target, polymorphic: true
-
-    enum :status, {
-      requested: 'requested',
-      fetched: 'fetched',
-      failed: 'failed',
-      rejected: 'rejected',
-      verified: 'verified'
-    }, default: :requested
-
-    def enqueue_for_processing!
-      Admin::DataFetchJob.perform_later(id)
+  class OpenLibraryFetchTask < BaseDataFetchTask
+    def self.setup(external_identity)
+      create!(target: external_identity)
     end
 
-    def save_results!(data, chat: nil, errors: [])
-      if errors.present?
-        update!(status: :failed, chat: chat, fetched_data: data,
-                fetch_error_details: errors.map(&:message).join(', '))
+    alias external_identity target
+
+    def perform
+      result = InfoFetchers::OpenLibrary::BookExternalDataFetcher.new(external_identity).fetch!
+      if result
+        save_results!(result.data)
       else
-        update!(status: :fetched, chat: chat, fetched_data: data)
+        save_results!(nil, errors: [StandardError.new('Failed to fetch Open Library work data')])
       end
-    end
-
-    def review_stage?
-      fetched?
     end
   end
 end

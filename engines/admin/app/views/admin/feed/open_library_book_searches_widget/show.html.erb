@@ -1,0 +1,16 @@
+<%= turbo_frame_tag "open_library_book_searches_widget", target: "_top" do %>
+  <div class="container mt-4">
+    <h3>OpenLibrary Book Searches: <%= @tasks_count %></h3>
+    <ul class="list-group">
+      <% if @tasks.empty? %>
+        <li class="list-group-item">No Open Library searches to review</li>
+      <% end %>
+      <% @tasks.each do |task| %>
+        <li class="list-group-item">
+          <%= admin_link_to "#{task.book.title} (#{task.book.year_published}) by #{task.book.author_names_label}",
+            admin_data_fetch_task_path(task) %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
