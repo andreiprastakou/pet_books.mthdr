@@ -1,6 +1,13 @@
+<% default_cover = design.cover_image == 'default' %>
+<% apply_palette = default_cover && local_assigns[:palette_id].present? %>
 <div class="b-cover-standard"
   data-cover-image="<%= design.cover_image %>"
+  <% if apply_palette %>style="<%= cover_background_style(palette_id) %>"<% end %>
   title="<%= "\"#{title}\" by #{author_name}" %>">
+
+  <% if apply_palette %>
+    <div class="b-cover-texture"></div>
+  <% end %>
 
   <div class="b-standard-cover-title"
     data-text-color="<%= design.title_color %>"

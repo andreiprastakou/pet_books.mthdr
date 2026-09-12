@@ -62,4 +62,12 @@ RSpec.describe BooksHelper do
       expect(CoverDesign).to have_received(:default).once
     end
   end
+
+  describe '#cover_background_style' do
+    subject(:result) { helper.cover_background_style(0) }
+
+    it 'returns the shared cover palette CSS' do
+      expect(result).to eq(CoverPalettes.background_css_for_id(0))
+    end
+  end
 end

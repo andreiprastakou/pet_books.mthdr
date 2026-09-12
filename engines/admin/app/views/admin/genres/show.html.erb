@@ -32,7 +32,8 @@
           <%= render "admin/books/standard_cover_base",
                 design: @genre.cover_design,
                 title: @genre.name,
-                author_name: "John Doe" %>
+                author_name: "John Doe",
+                palette_id: @genre.id %>
         </div>
       <% end %>
     </div>
