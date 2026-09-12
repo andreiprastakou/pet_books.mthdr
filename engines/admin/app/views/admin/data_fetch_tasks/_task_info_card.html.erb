@@ -58,7 +58,7 @@
 
         <div class="row mb-3">
           <div class="col-md-3 font-weight-bold text-end">Output:</div>
-          <div class="col-md-9"><%= task.fetched_data.to_json %></div>
+          <div class="col-md-9"><pre class="mb-0 small"><%= JSON.pretty_generate(task.fetched_data) %></pre></div>
         </div>
 
         <div class="row mb-3">

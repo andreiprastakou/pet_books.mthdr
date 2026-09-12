@@ -91,6 +91,9 @@ en:
       open_library_searches:
         create:
           success: "Open Library search has been queued."
+      open_library_fetches:
+        create:
+          success: "Open Library data fetch has been queued."
       genres:
         create:
           success: "Genre was successfully created."
