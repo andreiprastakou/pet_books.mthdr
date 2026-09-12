@@ -76,4 +76,94 @@ RSpec.describe Admin::OpenLibraryFetchTask do
       end
     end
   end
+
+  describe '#book' do
+    let(:book) { create(:book) }
+    let(:external_identity) { create(:external_identity, owner: book) }
+    let(:task) { create(:open_library_fetch_task, target: external_identity) }
+
+    it 'returns the external identity owner book' do
+      expect(task.book).to eq(book)
+    end
+
+    context 'when the owner is not a book' do
+      let(:external_identity) { create(:external_identity, owner: create(:author)) }
+
+      it 'raises' do
+        expect { task.book }.to raise_error(ArgumentError, 'Open Library fetch target must belong to a book')
+      end
+    end
+  end
+
+  describe '#fetched_identifiers' do
+    let(:task) { build(:open_library_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      {
+        'identifiers' => {
+          'wikidata' => ['Q137179018'],
+          'goodreads' => ['87596585'],
+          'librarything' => ['33363109'],
+          'isfdb' => ['3537436']
+        }
+      }
+    end
+
+    it 'returns allowed identifier pairs and skips unknown resources' do
+      expect(task.fetched_identifiers).to eq(
+        [
+          ['wikidata', 'Q137179018'],
+          ['goodreads', '87596585'],
+          ['librarything', '33363109']
+        ]
+      )
+    end
+  end
+
+  describe '#fetched_description' do
+    let(:task) { build(:open_library_fetch_task, fetched_data: fetched_data) }
+
+    context 'when description is a typed text object' do
+      let(:fetched_data) { { 'description' => { 'type' => '/type/text', 'value' => 'An epic fantasy novel.' } } }
+
+      it 'returns the value' do
+        expect(task.fetched_description).to eq('An epic fantasy novel.')
+      end
+    end
+
+    context 'when description is a string' do
+      let(:fetched_data) { { 'description' => 'Plain description' } }
+
+      it 'returns the string' do
+        expect(task.fetched_description).to eq('Plain description')
+      end
+    end
+  end
+
+  describe '#add_identity!' do
+    subject(:call) { task.add_identity!('wikidata', 'Q137179018') }
+
+    let(:book) { create(:book) }
+    let(:external_identity) { create(:external_identity, owner: book) }
+    let(:task) { create(:open_library_fetch_task, target: external_identity) }
+
+    it 'creates an external identity on the book' do
+      expect { call }.to change(book.external_identities, :count).by(1)
+      identity = book.external_identities.find_by!(external_resource: :wikidata)
+      expect(identity.identificator).to eq('Q137179018')
+      expect(identity.url).to eq('https://www.wikidata.org/wiki/Q137179018')
+    end
+  end
+
+  describe '#apply_summary!' do
+    subject(:call) { task.apply_summary!('Updated summary from Open Library') }
+
+    let(:book) { create(:book, summary: 'Old summary') }
+    let(:external_identity) { create(:external_identity, owner: book) }
+    let(:task) { create(:open_library_fetch_task, target: external_identity) }
+
+    it 'updates the book summary' do
+      call
+      expect(book.reload.summary).to eq('Updated summary from Open Library')
+    end
+  end
 end
