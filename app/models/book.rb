@@ -110,6 +110,16 @@ class Book < ApplicationRecord
     authors.map(&:fullname).join(', ')
   end
 
+  def history_data_fetch_tasks
+    fetch_tasks = Admin::OpenLibraryFetchTask.where(
+      target_type: ExternalIdentity.name,
+      target_id: external_identities.select(:id)
+    )
+    (generative_summary_tasks.to_a + open_library_search_tasks.to_a + fetch_tasks.to_a)
+      .sort_by(&:updated_at)
+      .reverse
+  end
+
   protected
 
   def validate_unique_title_per_author

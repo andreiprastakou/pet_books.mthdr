@@ -42,11 +42,15 @@ RSpec.describe Admin::BooksController do
     end
 
     it 'renders external identities with links and an Add button' do
-      create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL99W')
+      identity = create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL99W')
       send_request
       expect(response.body).to include('External identities:')
       expect(response.body).to include('Open Library:')
       expect(response.body).to include('OL99W')
+      expect(response.body).to include('https://openlibrary.org/works/OL99W')
+      expect(response.body).to include(edit_admin_book_external_identity_path(book, identity))
+      expect(response.body).to include(admin_book_external_identity_path(book, identity))
+      expect(response.body).to include(admin_book_external_identity_open_library_fetches_path(book, identity))
       expect(response.body).to include(new_admin_book_external_identity_path(book))
       expect(response.body).not_to include('search in OpenLibrary')
     end

@@ -47,6 +47,7 @@ module Admin
     def show
       @next_book = @book.next_author_book
       @next_summary_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first
+      @history_tasks = @book.history_data_fetch_tasks
     end
 
     def new

@@ -32,7 +32,9 @@ Admin::Engine.routes.draw do
           post :apply, on: :member
         end
         resources :open_library_searches, only: %i[create]
-        resources :external_identities
+        resources :external_identities do
+          resources :open_library_fetches, only: %i[create]
+        end
       end
     end
 
