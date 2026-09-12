@@ -36,6 +36,7 @@ default: &default
 
   # Additional paths so SWC/Babel rules include engine JS trees.
   additional_paths:
+    - 'app/assets/javascripts'
     - 'engines/admin/app/javascript'
     - 'engines/frontend/app/javascript'
 

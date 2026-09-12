@@ -8,4 +8,8 @@ module BooksHelper
   def default_book_cover_design
     @default_book_cover_design ||= CoverDesign.default
   end
+
+  def cover_background_style(palette_id)
+    CoverPalettes.background_css_for_id(palette_id)
+  end
 end
