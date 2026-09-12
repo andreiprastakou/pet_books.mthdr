@@ -48,6 +48,13 @@ RSpec.describe Admin::BooksController do
       expect(response.body).to include('Open Library:')
       expect(response.body).to include('OL99W')
       expect(response.body).to include(new_admin_book_external_identity_path(book))
+      expect(response.body).not_to include('search in OpenLibrary')
+    end
+
+    it 'renders the OpenLibrary search button when the book has no Open Library identity' do
+      send_request
+      expect(response.body).to include('search in OpenLibrary')
+      expect(response.body).to include(admin_book_open_library_searches_path(book))
     end
   end
 
@@ -81,6 +88,12 @@ RSpec.describe Admin::BooksController do
         expect do
           send_request
         end.to change(Book, :count).by(1)
+      end
+
+      it 'schedules an Open Library search task' do
+        expect { send_request }.to change(Admin::OpenLibrarySearchTask, :count).by(1)
+          .and have_enqueued_job(Admin::DataFetchJob)
+        expect(Admin::OpenLibrarySearchTask.last.target).to eq(Book.last)
       end
 
       it 'redirects to the created book' do

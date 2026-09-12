@@ -104,8 +104,17 @@ module Admin
 
     def admin_link_to_data_fetch_task_target(task)
       case task
-      when Admin::BookSummaryTask
+      when Admin::BookSummaryTask, Admin::OpenLibrarySearchTask
         admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
+      when Admin::OpenLibraryFetchTask
+        identity = task.external_identity
+        owner = identity.owner
+        if owner.is_a?(Book)
+          admin_link_to "Open Library #{identity.identificator} (#{owner.title})",
+                        admin_book_external_identity_path(owner, identity)
+        else
+          "Open Library #{identity.identificator}"
+        end
       when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask
         admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)
       else

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe InfoFetchers::OpenLibrary::BookSearch do
+RSpec.describe InfoFetchers::OpenLibrary::Api::BookSearcher do
   describe '#search' do
     subject(:results) { described_class.new(book).search(**options) }
 
@@ -41,10 +41,11 @@ RSpec.describe InfoFetchers::OpenLibrary::BookSearch do
     end
 
     before do
+      allow(ExternalApiRateLimit).to receive(:throttle!)
       stub_request(:get, 'https://openlibrary.org/search.json')
         .with(
           query: expected_params,
-          headers: { 'User-Agent' => InfoFetchers::OpenLibrary::BaseFetcher::USER_AGENT }
+          headers: { 'User-Agent' => InfoFetchers::OpenLibrary::Api::BaseCaller::USER_AGENT }
         )
         .to_return(status: 200, body: service_api_response.to_json)
     end
@@ -121,7 +122,7 @@ RSpec.describe InfoFetchers::OpenLibrary::BookSearch do
         expect(results).to eq([])
         expect(
           a_request(:get, 'https://openlibrary.org/search.json').with(query: expected_params)
-        ).to have_been_made.times(1 + InfoFetchers::OpenLibrary::BaseFetcher::MAX_RETRIES)
+        ).to have_been_made.times(1 + InfoFetchers::OpenLibrary::Api::BaseCaller::MAX_RETRIES)
       end
     end
 

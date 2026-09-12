@@ -40,6 +40,10 @@ RSpec.describe Book do
     it { is_expected.to have_many(:book_public_lists).class_name(BookPublicList.name) }
     it { is_expected.to have_many(:public_lists).class_name(PublicList.name).through(:book_public_lists) }
     it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
+    it {
+      is_expected.to have_many(:open_library_search_tasks).class_name(Admin::OpenLibrarySearchTask.name)
+                                                         .dependent(:destroy)
+    }
   end
 
   describe 'validation' do

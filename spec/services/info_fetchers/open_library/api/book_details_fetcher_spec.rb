@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe InfoFetchers::OpenLibrary::BookDetails do
+RSpec.describe InfoFetchers::OpenLibrary::Api::BookDetailsFetcher do
   describe '#fetch' do
     subject(:result) { described_class.new(work_key).fetch }
 
@@ -22,8 +22,9 @@ RSpec.describe InfoFetchers::OpenLibrary::BookDetails do
     end
 
     before do
+      allow(ExternalApiRateLimit).to receive(:throttle!)
       stub_request(:get, expected_url)
-        .with(headers: { 'User-Agent' => InfoFetchers::OpenLibrary::BaseFetcher::USER_AGENT })
+        .with(headers: { 'User-Agent' => InfoFetchers::OpenLibrary::Api::BaseCaller::USER_AGENT })
         .to_return(status: 200, body: service_api_response.to_json)
     end
 
