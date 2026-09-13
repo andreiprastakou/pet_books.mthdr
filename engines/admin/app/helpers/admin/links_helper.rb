@@ -115,7 +115,7 @@ module Admin
         else
           "Open Library #{identity.identificator}"
         end
-      when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask
+      when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask, Admin::OpenLibraryAuthorSearchTask
         admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)
       else
         "Entity #{task.target_type} with ID=#{task.target_id}"
