@@ -54,7 +54,7 @@ RSpec.describe Admin::WikidataFetchTask do
     let(:external_identity) do
       create(:external_identity, external_resource: :wikidata, identificator: "Q#{SecureRandom.random_number(1_000_000_000)}")
     end
-    let(:fetcher) { instance_double(InfoFetchers::Wikidata::BookExternalDataFetcher) }
+    let(:fetcher) { instance_double(InfoFetchers::Wikidata::Api::BookDetailsFetcher) }
     let(:api_data) do
       {
         'id' => external_identity.identificator,
@@ -62,12 +62,11 @@ RSpec.describe Admin::WikidataFetchTask do
         'descriptions' => { 'en' => '1937 novel by J. R. R. Tolkien' }
       }
     end
-    let(:fetch_record) { create(:external_data_fetch, external_identity: external_identity, data: api_data) }
 
     before do
-      allow(InfoFetchers::Wikidata::BookExternalDataFetcher)
-        .to receive(:new).with(external_identity).and_return(fetcher)
-      allow(fetcher).to receive(:fetch!).and_return(fetch_record)
+      allow(InfoFetchers::Wikidata::Api::BookDetailsFetcher)
+        .to receive(:new).with(external_identity.identificator).and_return(fetcher)
+      allow(fetcher).to receive(:fetch).and_return(api_data)
     end
 
     it 'stores fetched data on the task' do
@@ -77,7 +76,7 @@ RSpec.describe Admin::WikidataFetchTask do
     end
 
     context 'when the fetch fails' do
-      before { allow(fetcher).to receive(:fetch!).and_return(nil) }
+      before { allow(fetcher).to receive(:fetch).and_return(nil) }
 
       it 'marks the task as failed' do
         call

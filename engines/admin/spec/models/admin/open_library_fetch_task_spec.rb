@@ -49,15 +49,14 @@ RSpec.describe Admin::OpenLibraryFetchTask do
     subject(:call) { task.perform }
 
     let(:task) { create(:open_library_fetch_task, target: external_identity) }
-    let(:external_identity) { create(:external_identity) }
-    let(:fetcher) { instance_double(InfoFetchers::OpenLibrary::BookExternalDataFetcher) }
+    let(:external_identity) { create(:external_identity, identificator: 'OL27448W') }
+    let(:fetcher) { instance_double(InfoFetchers::OpenLibrary::Api::BookDetailsFetcher) }
     let(:api_data) { { 'key' => '/works/OL27448W', 'title' => 'The Lord of the Rings' } }
-    let(:fetch_record) { create(:external_data_fetch, external_identity: external_identity, data: api_data) }
 
     before do
-      allow(InfoFetchers::OpenLibrary::BookExternalDataFetcher)
-        .to receive(:new).with(external_identity).and_return(fetcher)
-      allow(fetcher).to receive(:fetch!).and_return(fetch_record)
+      allow(InfoFetchers::OpenLibrary::Api::BookDetailsFetcher)
+        .to receive(:new).with(external_identity.identificator).and_return(fetcher)
+      allow(fetcher).to receive(:fetch).and_return(api_data)
     end
 
     it 'stores fetched data on the task' do
@@ -67,7 +66,7 @@ RSpec.describe Admin::OpenLibraryFetchTask do
     end
 
     context 'when the fetch fails' do
-      before { allow(fetcher).to receive(:fetch!).and_return(nil) }
+      before { allow(fetcher).to receive(:fetch).and_return(nil) }
 
       it 'marks the task as failed' do
         call

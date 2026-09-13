@@ -40,13 +40,14 @@ module Admin
     end
 
     def perform
-      result = InfoFetchers::Wikidata::BookExternalDataFetcher.new(external_identity).fetch!
+      result = InfoFetchers::Wikidata::Api::BookDetailsFetcher.new(external_identity.identificator).fetch
       if result
-        save_results!(result.data)
+        save_results!(result)
       else
         save_results!(nil, errors: [StandardError.new('Failed to fetch Wikidata item data')])
       end
     end
+
 
     def fetched_description
       data = fetched_data
