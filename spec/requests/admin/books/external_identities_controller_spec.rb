@@ -9,16 +9,14 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
   let(:valid_attributes) do
     {
       external_resource: 'wikidata',
-      identificator: 'Q123',
-      url: 'https://www.wikidata.org/wiki/Q123'
+      identificator: 'Q123'
     }
   end
 
   let(:invalid_attributes) do
     {
       external_resource: 'open_library',
-      identificator: external_identity.identificator,
-      url: ''
+      identificator: external_identity.identificator
     }
   end
 
@@ -71,7 +69,6 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
         identity = book.external_identities.order(:id).last
         expect(identity.external_resource).to eq('wikidata')
         expect(identity.identificator).to eq('Q123')
-        expect(identity.url).to eq('https://www.wikidata.org/wiki/Q123')
       end
 
       it 'redirects to the created external identity' do
@@ -108,8 +105,7 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
       let(:new_attributes) do
         {
           external_resource: 'goodreads',
-          identificator: 'gr-99',
-          url: 'https://www.goodreads.com/book/show/99'
+          identificator: 'gr-99'
         }
       end
       let(:send_request) do
@@ -123,7 +119,6 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
         external_identity.reload
         expect(external_identity.external_resource).to eq('goodreads')
         expect(external_identity.identificator).to eq('gr-99')
-        expect(external_identity.url).to eq('https://www.goodreads.com/book/show/99')
       end
 
       it 'redirects to the external identity' do

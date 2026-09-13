@@ -159,7 +159,7 @@ RSpec.describe Admin::OpenLibraryFetchTask do
       expect { call }.to change(book.external_identities, :count).by(1)
       identity = book.external_identities.find_by!(external_resource: :wikidata)
       expect(identity.identificator).to eq('Q137179018')
-      expect(identity.url).to eq('https://www.wikidata.org/wiki/Q137179018')
+      expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q137179018')
     end
   end
 

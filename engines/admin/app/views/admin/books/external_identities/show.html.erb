@@ -22,8 +22,8 @@
   <div class="row mb-3">
     <div class="col-md-3 font-weight-bold text-end">URL:</div>
     <div class="col-md-9">
-      <% if @external_identity.url.present? %>
-        <%= external_link_to @external_identity.url, @external_identity.url %>
+      <% if @external_identity.external_link&.url.present? %>
+        <%= external_link_to @external_identity.external_link.url, @external_identity.external_link.url %>
       <% end %>
     </div>
   </div>

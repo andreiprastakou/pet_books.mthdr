@@ -94,11 +94,11 @@ module Admin
       raise ArgumentError, 'Identificator is required' if id.blank?
 
       url = EXTERNAL_LINK_BUILDERS[resource]&.call(id)
-      book.external_identities.create!(
-        external_resource: resource,
-        identificator: id,
-        url: url
-      )
+      attrs = { external_resource: resource, identificator: id }
+      if url.present?
+        attrs[:external_link] = book.external_links.where(name: resource, url: url).first_or_create!
+      end
+      book.external_identities.create!(attrs)
     end
 
     def apply_summary!(summary, summary_src = nil)

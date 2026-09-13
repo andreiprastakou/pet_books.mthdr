@@ -48,10 +48,12 @@ module Admin
       id = ExternalLinks::LibraryThing.normalize_id(work_id)
       raise ArgumentError, 'Invalid LibraryThing work id' if id.blank?
 
+      url = ExternalLinks::LibraryThing.call(id)
+      external_link = book.external_links.where(name: ExternalResources::LIBRARYTHING, url: url).first_or_create!
       book.external_identities.create!(
         external_resource: ExternalResources::LIBRARYTHING,
         identificator: id,
-        url: ExternalLinks::LibraryThing.call(id)
+        external_link: external_link
       )
     end
   end

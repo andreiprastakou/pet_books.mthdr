@@ -11,21 +11,27 @@ require 'rails_helper'
 #  external_resource :integer          not null
 #  identificator     :string
 #  owner_type        :string           not null
-#  url               :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  external_link_id  :integer
 #  owner_id          :integer          not null
 #
 # Indexes
 #
 #  idx_on_external_resource_identificator_ab3aeda95b     (external_resource,identificator) UNIQUE
+#  index_external_identities_on_external_link_id         (external_link_id)
 #  index_external_identities_on_owner_type_and_owner_id  (owner_type,owner_id)
+#
+# Foreign Keys
+#
+#  external_link_id  (external_link_id => external_links.id) ON DELETE => nullify
 #
 RSpec.describe ExternalIdentity do
   subject(:identity) { build(:external_identity) }
 
   describe 'associations' do
     it { is_expected.to belong_to(:owner) }
+    it { is_expected.to belong_to(:external_link).optional }
     it {
       is_expected.to have_many(:open_library_fetch_tasks).class_name(Admin::OpenLibraryFetchTask.name)
                                                         .dependent(:destroy)
@@ -58,8 +64,8 @@ RSpec.describe ExternalIdentity do
       expect(build(:external_identity, owner: build_stubbed(:book))).to be_valid
     end
 
-    it 'allows blank identificator and url' do
-      identity = build(:external_identity, identificator: nil, url: nil)
+    it 'allows blank identificator and external_link' do
+      identity = build(:external_identity, identificator: nil, external_link: nil)
       expect(identity).to be_valid
     end
   end
