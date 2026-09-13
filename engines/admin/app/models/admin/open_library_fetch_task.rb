@@ -96,7 +96,7 @@ module Admin
       url = EXTERNAL_LINK_BUILDERS[resource]&.call(id)
       attrs = { external_resource: resource, external_id: id }
       if url.present?
-        attrs[:external_link] = book.external_links.where(name: resource, url: url).first_or_create!
+        attrs[:external_link] = book.external_links.where(external_resource: resource, url: url).first_or_create!
       end
       book.external_identities.create!(attrs)
     end

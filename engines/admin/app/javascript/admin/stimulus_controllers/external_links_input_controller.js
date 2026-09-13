@@ -27,7 +27,7 @@ export default class extends Controller {
     tempWorkbench.innerHTML = tempWorkbench.innerHTML.replaceAll('ENTRY_ID', index)
 
     const newLinkEntry = this.linksListTarget.appendChild(tempWorkbench.firstElementChild)
-    newLinkEntry.querySelector('[data-name="name"]').value = link.name || null
+    newLinkEntry.querySelector('[data-name="externalResource"]').value = link.external_resource || null
     newLinkEntry.querySelector('[data-name="url"]').value = link.url || null
   }
 

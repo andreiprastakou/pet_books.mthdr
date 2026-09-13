@@ -37,7 +37,7 @@ const bookDetails = {
   formLabel: 'a science fiction novel',
   summary: 'Sandworms.',
   wikiUrl: 'https://en.wikipedia.org/wiki/Dune',
-  externalLinks: [{ name: 'goodreads', url: 'https://goodreads.com/dune' }],
+  externalLinks: [{ external_resource: 'goodreads', url: 'https://goodreads.com/dune' }],
   tagIds: [11],
   publicLists: [
     {

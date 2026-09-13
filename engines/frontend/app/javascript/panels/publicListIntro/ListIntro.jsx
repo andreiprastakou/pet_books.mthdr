@@ -9,7 +9,7 @@ const PublicListIntro = ({
 }) => {
   const publicLists = listType.public_lists || []
   const typeLinks = [
-    ...(listType.wiki_url ? [{ name: 'wikipedia', url: listType.wiki_url }] : []),
+    ...(listType.wiki_url ? [{ external_resource: 'wikipedia', url: listType.wiki_url }] : []),
     ...(listType.external_links || []),
   ]
   const listLinks = selectedList?.external_links || []
@@ -48,7 +48,7 @@ const PublicListIntro = ({
             <ExternalTextLink
               href={link.url}
               key={link.url}
-              resource={link.name}
+              resource={link.external_resource}
             />
           )) }
         </ButtonGroup>
@@ -60,7 +60,7 @@ const PublicListIntro = ({
                 <ExternalTextLink
                   href={link.url}
                   key={link.url}
-                  resource={`${selectedList.year} ${link.name}`}
+                  resource={`${selectedList.year} ${link.external_resource}`}
                 />
               )) }
             </ButtonGroup>

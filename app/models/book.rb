@@ -55,7 +55,7 @@ class Book < ApplicationRecord
   has_many :collections, through: :book_collections, class_name: 'Collection'
   has_many :book_public_lists, class_name: 'BookPublicList', dependent: :destroy, inverse_of: :book
   has_many :public_lists, through: :book_public_lists, class_name: 'PublicList'
-  has_many :external_links, class_name: 'ExternalLink', as: :entity, dependent: :destroy, inverse_of: :entity
+  has_many :external_links, class_name: 'ExternalLink', as: :owner, dependent: :destroy, inverse_of: :owner
   has_many :external_identities, class_name: 'ExternalIdentity', as: :owner, dependent: :destroy,
                                  inverse_of: :owner
 

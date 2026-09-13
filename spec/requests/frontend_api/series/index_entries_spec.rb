@@ -21,7 +21,7 @@ RSpec.describe '/api/series/index_entries' do
         id: series.id,
         name: series.name,
         wiki_url: series.wiki_url,
-        external_links: external_links.map { |link| { name: link.name, url: link.url } }
+        external_links: external_links.map { |link| { external_resource: link.external_resource, url: link.url } }
       )
     end
   end
