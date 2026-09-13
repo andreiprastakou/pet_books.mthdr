@@ -1,0 +1,26 @@
+.b-open-library-updates-table {
+  border: var(--bs-border-width) solid var(--bs-border-color);
+  table-layout: fixed;
+  width: 100%;
+
+  > :not(caption) > * > * {
+    border-bottom-width: 0;
+    width: 25%;
+  }
+
+  thead th {
+    border-bottom: var(--bs-border-width) solid var(--bs-border-color);
+  }
+
+  th + th,
+  td + td {
+    border-left: var(--bs-border-width) solid var(--bs-border-color);
+  }
+
+  tbody td {
+    font-size: 0.875rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

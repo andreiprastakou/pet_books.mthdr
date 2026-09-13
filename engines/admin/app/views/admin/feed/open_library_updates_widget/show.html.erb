@@ -1,0 +1,51 @@
+<%= turbo_frame_tag "open_library_updates_widget", target: "_top" do %>
+  <div class="container mt-4">
+    <h3>Open Library updates for review</h3>
+    <table class="table b-open-library-updates-table">
+      <thead>
+        <tr>
+          <th>Book searches</th>
+          <th>Book fetches</th>
+          <th>Author searches</th>
+          <th>Author fetches</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% row_count = [@book_searches, @book_fetches, @author_searches, @author_fetches].map(&:size).max %>
+        <% if row_count.zero? %>
+          <tr>
+            <td colspan="4">No Open Library updates to review</td>
+          </tr>
+        <% else %>
+          <% row_count.times do |i| %>
+            <tr>
+              <td>
+                <% if (task = @book_searches[i]) %>
+                  <% title = "#{task.book.title} (#{task.book.year_published}) by #{task.book.author_names_label}" %>
+                  <%= admin_link_to title, admin_data_fetch_task_path(task), title: title %>
+                <% end %>
+              </td>
+              <td>
+                <% if (task = @book_fetches[i]) %>
+                  <% book = task.book %>
+                  <% title = "#{book.title} (#{book.year_published}) by #{book.author_names_label}" %>
+                  <%= admin_link_to title, admin_data_fetch_task_path(task), title: title %>
+                <% end %>
+              </td>
+              <td>
+                <% if (task = @author_searches[i]) %>
+                  <%= admin_link_to task.author.fullname, admin_data_fetch_task_path(task) %>
+                <% end %>
+              </td>
+              <td>
+                <% if (task = @author_fetches[i]) %>
+                  <%= admin_link_to task.author.fullname, admin_data_fetch_task_path(task) %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>
