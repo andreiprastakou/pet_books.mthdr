@@ -60,6 +60,21 @@ RSpec.describe Admin::DataFetchTasksController do
       end
     end
 
+    context 'when the type-specific partial is missing' do
+      let(:author) { create(:author) }
+      let(:external_identity) do
+        create(:external_identity, owner: author, identificator: 'OL1394865A')
+      end
+      let(:task) { create(:open_library_author_fetch_task, target: external_identity) }
+
+      it 'falls back to the shared task info card' do
+        send_request
+        expect(response).to be_successful
+        expect(response).to render_template('admin/data_fetch_tasks/_task_info_card')
+        expect(response).not_to render_template('admin/data_fetch_tasks/types/_open_library_author_fetch_task')
+      end
+    end
+
     context 'when the task is fetched' do
       let(:task) { create(:open_library_search_task, status: :fetched, fetched_data: []) }
 

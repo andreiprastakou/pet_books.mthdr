@@ -30,7 +30,13 @@ RSpec.describe ExternalIdentity do
       is_expected.to have_many(:open_library_fetch_tasks).class_name(Admin::OpenLibraryFetchTask.name)
                                                         .dependent(:destroy)
     }
+    it {
+      is_expected.to have_many(:open_library_author_fetch_tasks)
+        .class_name(Admin::OpenLibraryAuthorFetchTask.name)
+        .dependent(:destroy)
+    }
   end
+
 
   describe '#external_resource enum' do
     it do
@@ -68,11 +74,20 @@ RSpec.describe ExternalIdentity do
                                                         .and have_enqueued_job(Admin::DataFetchJob)
     end
 
-    it 'does not enqueue when the owner is not a book' do
+    it 'spawns and enqueues an Open Library author fetch task for author open_library identities' do
       author = create(:author)
 
       expect do
-        create(:external_identity, owner: author, external_resource: :open_library)
+        create(:external_identity, owner: author, external_resource: :open_library, identificator: 'OL1394865A')
+      end.to change(Admin::OpenLibraryAuthorFetchTask, :count).by(1)
+                                                             .and have_enqueued_job(Admin::DataFetchJob)
+    end
+
+    it 'does not enqueue a book fetch task when the owner is an author' do
+      author = create(:author)
+
+      expect do
+        create(:external_identity, owner: author, external_resource: :open_library, identificator: 'OL1394865A')
       end.not_to change(Admin::OpenLibraryFetchTask, :count)
     end
 
