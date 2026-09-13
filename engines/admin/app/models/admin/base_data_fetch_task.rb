@@ -28,6 +28,18 @@ module Admin
   class BaseDataFetchTask < ApplicationRecord
     self.table_name = 'admin_data_fetch_tasks'
 
+    TASK_TYPES = [
+      'Admin::AuthorBooksListParsingTask',
+      'Admin::AuthorBooksListTask',
+      'Admin::BookSummaryTask',
+      'Admin::LibraryThingSearchTask',
+      'Admin::OpenLibraryAuthorFetchTask',
+      'Admin::OpenLibraryAuthorSearchTask',
+      'Admin::OpenLibraryFetchTask',
+      'Admin::OpenLibrarySearchTask',
+      'Admin::WikidataFetchTask'
+    ].freeze
+
     belongs_to :chat, class_name: 'Ai::Chat', optional: true
     belongs_to :target, polymorphic: true
 

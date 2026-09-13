@@ -11,8 +11,44 @@ RSpec.describe Admin::DataFetchTasksController do
       send_request
       expect(response).to be_successful
       expect(assigns(:tasks)).to match_array(tasks)
+      expect(assigns(:pagy)).to be_present
+    end
+
+    context 'when filtering by type' do
+      let!(:summary_task) { create(:book_summary_task) }
+      let!(:search_task) { create(:open_library_search_task) }
+      let(:send_request) do
+        get admin_data_fetch_tasks_path,
+            params: { type: 'Admin::BookSummaryTask' },
+            headers: authorization_header
+      end
+
+      it 'returns only matching task types' do
+        send_request
+        expect(response).to be_successful
+        expect(assigns(:tasks)).to include(summary_task)
+        expect(assigns(:tasks)).not_to include(search_task)
+      end
+    end
+
+    context 'when filtering by status' do
+      let!(:fetched_task) { create(:book_summary_task, status: :fetched) }
+      let!(:failed_task) { create(:book_summary_task, status: :failed) }
+      let(:send_request) do
+        get admin_data_fetch_tasks_path,
+            params: { status: 'fetched' },
+            headers: authorization_header
+      end
+
+      it 'returns only matching statuses' do
+        send_request
+        expect(response).to be_successful
+        expect(assigns(:tasks)).to include(fetched_task)
+        expect(assigns(:tasks)).not_to include(failed_task)
+      end
     end
   end
+
 
   describe 'GET /admin/data_fetch_tasks/:id' do
     let(:send_request) { get admin_data_fetch_task_path(task), headers: authorization_header }

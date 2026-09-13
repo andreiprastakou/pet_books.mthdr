@@ -1,6 +1,11 @@
 <% admin_nav_crumbs "Data Fetch Tasks" %>
 
+<%= render "admin/data_fetch_tasks/filter_form" %>
+
 <div class="container mt-4">
+  <div>
+    <%== @pagy.series_nav(:bootstrap) %>
+  </div>
   <table class="table">
     <thead>
       <th>ID</th>
@@ -33,4 +38,7 @@
       </tr>
     <% end %>
   </table>
+  <div>
+    <%== @pagy.series_nav(:bootstrap) %>
+  </div>
 </div>
