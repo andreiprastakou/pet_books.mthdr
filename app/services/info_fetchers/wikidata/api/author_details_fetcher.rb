@@ -1,10 +1,10 @@
 module InfoFetchers
   module Wikidata
     module Api
-      # Fetches a Wikidata item by Q-ID.
+      # Fetches a Wikidata author (person) item by Q-ID.
       # Docs: https://www.wikidata.org/wiki/Wikidata:REST_API
       # Endpoint: GET /entities/items/{QID}
-      class BookDetailsFetcher < BaseCaller
+      class AuthorDetailsFetcher < BaseCaller
         def initialize(entity_id)
           @entity_id = entity_id
         end

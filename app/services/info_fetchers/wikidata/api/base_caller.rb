@@ -28,6 +28,19 @@ module InfoFetchers
           end
         end
 
+        # Accepts "Q42", "/wiki/Q42", or full URL-ish paths.
+        def self.normalize_entity_id(key)
+          value = key.to_s.strip
+          return if value.blank?
+
+          value = value.delete_prefix(BASE_URL)
+          value = value.delete_prefix('https://www.wikidata.org')
+          value = value.delete_prefix('http://www.wikidata.org')
+          value = value.split('?', 2).first
+          value = value.split('#', 2).first
+          value[%r{(?:/wiki/|/entities/items/)?(Q\d+)\z}i, 1]&.upcase
+        end
+
         private
 
         def request_data(path, params = {})
@@ -71,6 +84,17 @@ module InfoFetchers
         def build_url(path, params = {})
           query = params.compact.to_query
           query.present? ? "#{BASE_URL}#{path}?#{query}" : "#{BASE_URL}#{path}"
+        end
+
+        # Downcase and strip punctuation/diacritics while keeping letters (any script) and numbers.
+        def simplify_query(text)
+          text.to_s
+              .unicode_normalize(:nfkd)
+              .gsub(/\p{M}/, '')
+              .downcase
+              .gsub(/[^\p{L}\p{N}\s]/, ' ')
+              .squeeze(' ')
+              .strip
         end
       end
     end

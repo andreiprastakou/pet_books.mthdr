@@ -1,0 +1,16 @@
+require 'rails_helper'
+
+RSpec.describe Admin::Books::WikidataSearchesController do
+  describe 'POST /admin/books/:book_id/wikidata_searches' do
+    let(:send_request) { post admin_book_wikidata_searches_path(book), headers: authorization_header }
+    let(:book) { create(:book) }
+
+    it 'creates a search task, enqueues it, and redirects with a notice' do
+      expect { send_request }.to change(Admin::WikidataSearchTask, :count).by(1)
+        .and have_enqueued_job(Admin::DataFetchJob)
+      expect(Admin::WikidataSearchTask.last.target).to eq(book)
+      expect(response).to redirect_to(admin_book_path(book))
+      expect(flash[:notice]).to eq('Wikidata search has been queued.')
+    end
+  end
+end
