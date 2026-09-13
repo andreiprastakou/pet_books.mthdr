@@ -5,19 +5,27 @@ module ExternalLinks
   class LibraryThing < Base
     BASE_URL = 'https://www.librarything.com'
 
+    # Accepts "33363109", "/work/33363109", or full URL-ish paths.
+    def self.normalize_id(identificator)
+      value = identificator.to_s.strip
+      return if value.blank?
+
+      value = value.delete_prefix('https://').delete_prefix('http://')
+      value = value.split('?', 2).first.to_s.split('#', 2).first.presence
+      return if value.blank?
+
+      value = value.delete_prefix('www.librarything.com').delete_prefix('librarything.com')
+      value[%r{(?:/work/)?(\d+)\z}i, 1]
+    end
+
     private
 
     def build_url(id)
       "#{BASE_URL}/work/#{id}"
     end
 
-    # Accepts "33363109", "/work/33363109", or full URL-ish paths.
     def normalized_id
-      value = strip_url_noise(identificator)
-      return if value.blank?
-
-      value = value.delete_prefix('www.librarything.com').delete_prefix('librarything.com')
-      value[%r{(?:/work/)?(\d+)\z}i, 1]
+      self.class.normalize_id(identificator)
     end
   end
 end

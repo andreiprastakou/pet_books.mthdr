@@ -58,4 +58,31 @@ RSpec.describe ExternalIdentity do
       expect(identity).to be_valid
     end
   end
+
+  describe 'after create' do
+    it 'spawns and enqueues an Open Library fetch task for book open_library identities' do
+      book = create(:book)
+
+      expect do
+        create(:external_identity, owner: book, external_resource: :open_library)
+      end.to change(Admin::OpenLibraryFetchTask, :count).by(1)
+                                                        .and have_enqueued_job(Admin::DataFetchJob)
+    end
+
+    it 'does not enqueue when the owner is not a book' do
+      author = create(:author)
+
+      expect do
+        create(:external_identity, owner: author, external_resource: :open_library)
+      end.not_to change(Admin::OpenLibraryFetchTask, :count)
+    end
+
+    it 'does not enqueue for non-open_library identities' do
+      book = create(:book)
+
+      expect do
+        create(:external_identity, owner: book, external_resource: :wikidata, identificator: 'Q1')
+      end.not_to change(Admin::OpenLibraryFetchTask, :count)
+    end
+  end
 end

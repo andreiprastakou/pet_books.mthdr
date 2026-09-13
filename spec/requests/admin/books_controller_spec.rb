@@ -55,6 +55,15 @@ RSpec.describe Admin::BooksController do
       expect(response.body).not_to include('search in OpenLibrary')
     end
 
+    it 'renders a fetch data link for Wikidata identities' do
+      identity = create(:external_identity, owner: book, external_resource: :wikidata, identificator: 'Q74287')
+      send_request
+      expect(response.body).to include('Wikidata:')
+      expect(response.body).to include('Q74287')
+      expect(response.body).to include('https://www.wikidata.org/wiki/Q74287')
+      expect(response.body).to include(admin_book_external_identity_wikidata_fetches_path(book, identity))
+    end
+
     it 'renders the OpenLibrary search button when the book has no Open Library identity' do
       send_request
       expect(response.body).to include('search in OpenLibrary')

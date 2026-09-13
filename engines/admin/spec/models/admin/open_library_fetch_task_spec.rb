@@ -34,7 +34,7 @@ RSpec.describe Admin::OpenLibraryFetchTask do
   end
 
   describe '.setup' do
-    let(:external_identity) { create(:external_identity) }
+    let!(:external_identity) { create(:external_identity) }
 
     it 'creates a new open library fetch task' do
       expect { described_class.setup(external_identity) }.to change(described_class, :count).by(1)
@@ -137,14 +137,24 @@ RSpec.describe Admin::OpenLibraryFetchTask do
         expect(task.fetched_description).to eq('Plain description')
       end
     end
+
+    context 'when description contains HTML' do
+      let(:fetched_data) do
+        { 'description' => '<p>A tale of <b>adventure</b> and <i>mystery</i>.</p>' }
+      end
+
+      it 'strips tags and returns plain text' do
+        expect(task.fetched_description).to eq('A tale of adventure and mystery.')
+      end
+    end
   end
 
   describe '#add_identity!' do
     subject(:call) { task.add_identity!('wikidata', 'Q137179018') }
 
     let(:book) { create(:book) }
-    let(:external_identity) { create(:external_identity, owner: book) }
-    let(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let!(:external_identity) { create(:external_identity, owner: book) }
+    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
 
     it 'creates an external identity on the book' do
       expect { call }.to change(book.external_identities, :count).by(1)
@@ -155,15 +165,17 @@ RSpec.describe Admin::OpenLibraryFetchTask do
   end
 
   describe '#apply_summary!' do
-    subject(:call) { task.apply_summary!('Updated summary from Open Library') }
+    subject(:call) { task.apply_summary!('Updated summary from Open Library', 'Open Library') }
 
     let(:book) { create(:book, summary: 'Old summary') }
     let(:external_identity) { create(:external_identity, owner: book) }
     let(:task) { create(:open_library_fetch_task, target: external_identity) }
 
-    it 'updates the book summary' do
+    it 'updates the book summary and summary_src' do
       call
-      expect(book.reload.summary).to eq('Updated summary from Open Library')
+      book.reload
+      expect(book.summary).to eq('Updated summary from Open Library')
+      expect(book.summary_src).to eq('Open Library')
     end
   end
 end

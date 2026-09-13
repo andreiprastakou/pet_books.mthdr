@@ -17,7 +17,7 @@ module Admin
     end
 
     def apply_summary
-      @task.apply_summary!(params.require(:summary))
+      @task.apply_summary!(params.require(:summary), params[:summary_src])
       redirect_to admin_data_fetch_task_path(@task),
                   notice: t('notices.admin.open_library_fetch_tasks.apply_summary.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e

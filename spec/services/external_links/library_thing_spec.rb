@@ -3,6 +3,23 @@
 require 'rails_helper'
 
 RSpec.describe ExternalLinks::LibraryThing do
+  describe '.normalize_id' do
+    {
+      '33363109' => '33363109',
+      '/work/33363109' => '33363109',
+      'https://www.librarything.com/work/33363109' => '33363109'
+    }.each do |input, expected|
+      it "normalizes #{input.inspect} to #{expected.inspect}" do
+        expect(described_class.normalize_id(input)).to eq(expected)
+      end
+    end
+
+    it 'returns nil for blank values' do
+      expect(described_class.normalize_id(nil)).to be_nil
+      expect(described_class.normalize_id('')).to be_nil
+    end
+  end
+
   describe '.call' do
     subject(:result) { described_class.call(identificator) }
 
