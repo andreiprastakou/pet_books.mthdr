@@ -47,13 +47,14 @@ module Admin
     end
 
     def perform
-      result = InfoFetchers::OpenLibrary::BookExternalDataFetcher.new(external_identity).fetch!
+      result = InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.new(external_identity.identificator).fetch
       if result
-        save_results!(result.data)
+        save_results!(result)
       else
         save_results!(nil, errors: [StandardError.new('Failed to fetch Open Library work data')])
       end
     end
+
 
     def fetched_identifiers
       data = fetched_data

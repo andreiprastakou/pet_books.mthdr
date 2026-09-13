@@ -10,9 +10,8 @@ module Admin
         url
       ].freeze
 
-      def show
-        @external_data_fetches = @external_identity.external_data_fetches.order(created_at: :desc)
-      end
+      def show; end
+
 
       def new
         @external_identity = @book.external_identities.new

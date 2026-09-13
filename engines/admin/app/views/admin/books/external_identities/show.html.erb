@@ -37,25 +37,4 @@
     <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
     <div class="col-md-9"><%= admin_timestamp(@external_identity.updated_at) %></div>
   </div>
-
-  <h4 class="mt-4">External Data Fetches</h4>
-
-  <% if @external_data_fetches.blank? %>
-    <p class="text-muted">No data fetches yet.</p>
-  <% else %>
-    <% @external_data_fetches.each do |data_fetch| %>
-      <div class="row mb-3 border-bottom pb-3">
-        <div class="col-md-3 font-weight-bold text-end">
-          <%= admin_timestamp(data_fetch.created_at) %>
-        </div>
-        <div class="col-md-9">
-          <% if data_fetch.data.present? %>
-            <pre class="mb-0"><%= JSON.pretty_generate(data_fetch.data) %></pre>
-          <% else %>
-            <span class="text-muted">—</span>
-          <% end %>
-        </div>
-      </div>
-    <% end %>
-  <% end %>
 </div>

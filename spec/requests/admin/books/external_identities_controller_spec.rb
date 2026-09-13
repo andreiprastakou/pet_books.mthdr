@@ -23,20 +23,16 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
   end
 
   describe 'GET /admin/books/:book_id/external_identities/:id' do
-    let!(:data_fetch) do
-      create(:external_data_fetch, external_identity: external_identity, data: { 'title' => 'Example' })
-    end
     let(:send_request) do
       get admin_book_external_identity_path(book, external_identity), headers: authorization_header
     end
 
-    it 'renders a successful response with identity and data fetches' do
+    it 'renders a successful response with identity details' do
       send_request
       expect(response).to be_successful
       expect(response).to render_template 'admin/books/external_identities/show'
       expect(response.body).to include('Open Library')
       expect(response.body).to include('OL1W')
-      expect(CGI.unescapeHTML(response.body)).to include('"title": "Example"')
     end
   end
 

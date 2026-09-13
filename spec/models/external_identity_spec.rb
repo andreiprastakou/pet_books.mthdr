@@ -26,7 +26,6 @@ RSpec.describe ExternalIdentity do
 
   describe 'associations' do
     it { is_expected.to belong_to(:owner) }
-    it { is_expected.to have_many(:external_data_fetches).class_name(ExternalDataFetch.name).dependent(:destroy) }
     it {
       is_expected.to have_many(:open_library_fetch_tasks).class_name(Admin::OpenLibraryFetchTask.name)
                                                         .dependent(:destroy)
