@@ -181,7 +181,7 @@ const BookDetailsLinks = ({ links }) => (
         <ExternalTextLink
           href={link.url}
           key={link.url}
-          resource={link.name}
+          resource={link.external_resource}
         />
       )) }
     </ButtonGroup>
@@ -209,7 +209,7 @@ BookDetailsTags.propTypes = {
 }
 
 const bookDetailsLinks = book => [
-  ...(book.wikiUrl ? [{ name: 'wikipedia', url: book.wikiUrl }] : []),
+  ...(book.wikiUrl ? [{ external_resource: 'wikipedia', url: book.wikiUrl }] : []),
   ...(book.externalLinks || []),
 ]
 

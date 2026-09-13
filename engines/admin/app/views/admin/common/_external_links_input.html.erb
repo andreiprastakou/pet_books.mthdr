@@ -1,7 +1,7 @@
 <div class="col-md-12">
-  <datalist id="external-link-name-suggestions">
-    <% ExternalResources::ALL.sort.each do |name| %>
-      <option value="<%= name %>"></option>
+  <datalist id="external-link-resource-suggestions">
+    <% ExternalResources::ALL.sort.each do |resource| %>
+      <option value="<%= resource %>"></option>
     <% end %>
   </datalist>
   <table class="table">
@@ -13,9 +13,9 @@
               data: { name: "idInput" } %>
             <%= hidden_field_tag "#{form_scope}[external_links_attributes][ENTRY_ID][_destroy]", nil,
               data: { name: "destroyInput" } %>
-            <%= text_field_tag "#{form_scope}[external_links_attributes][ENTRY_ID][name]", nil, class: 'form-control',
-              list: "external-link-name-suggestions", autocomplete: "off",
-              data: { name: "name" } %>
+            <%= text_field_tag "#{form_scope}[external_links_attributes][ENTRY_ID][external_resource]", nil, class: 'form-control',
+              list: "external-link-resource-suggestions", autocomplete: "off",
+              data: { name: "externalResource" } %>
           </td>
           <td>
             <%= text_field_tag "#{form_scope}[external_links_attributes][ENTRY_ID][url]", nil, class: 'form-control',

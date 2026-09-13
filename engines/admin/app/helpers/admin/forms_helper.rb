@@ -79,7 +79,7 @@ module Admin
       external_links.map do |external_link|
         {
           id: external_link.id,
-          name: external_link.name,
+          external_resource: external_link.external_resource,
           url: external_link.url
         }
       end

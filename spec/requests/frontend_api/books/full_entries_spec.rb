@@ -74,7 +74,7 @@ RSpec.describe '/api/books/full_entries' do
         form_label: 'a fantasy novel',
         summary: book.summary,
         wiki_url: book.wiki_url,
-        external_links: external_links.map { |link| { name: link.name, url: link.url } },
+        external_links: external_links.map { |link| { external_resource: link.external_resource, url: link.url } },
         public_lists: expected_public_lists
       )
     end

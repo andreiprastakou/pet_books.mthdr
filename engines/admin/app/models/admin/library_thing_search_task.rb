@@ -49,7 +49,7 @@ module Admin
       raise ArgumentError, 'Invalid LibraryThing work id' if id.blank?
 
       url = ExternalLinks::LibraryThing.call(id)
-      external_link = book.external_links.where(name: ExternalResources::LIBRARYTHING, url: url).first_or_create!
+      external_link = book.external_links.where(external_resource: ExternalResources::LIBRARYTHING, url: url).first_or_create!
       book.external_identities.create!(
         external_resource: ExternalResources::LIBRARYTHING,
         external_id: id,

@@ -42,7 +42,7 @@
           <div class="col-md-3 font-weight-bold text-end">Links:</div>
           <div class="col-md-9">
             <% @author.external_links.each do |external_link| %>
-              <%= external_link_to external_link.name, external_link.url %>
+              <%= external_link_to external_link.external_resource, external_link.url %>
             <% end %>
           </div>
         </div>

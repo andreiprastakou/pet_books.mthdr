@@ -12,7 +12,7 @@ const SeriesIntro = ({ series }) => {
   if (!series || !routesReady) return null
 
   const links = [
-    ...(series.wikiUrl ? [{ name: 'wikipedia', url: series.wikiUrl }] : []),
+    ...(series.wikiUrl ? [{ external_resource: 'wikipedia', url: series.wikiUrl }] : []),
     ...(series.externalLinks || []),
   ]
 
@@ -40,7 +40,7 @@ const SeriesIntro = ({ series }) => {
               <ExternalTextLink
                 href={link.url}
                 key={link.url}
-                resource={link.name}
+                resource={link.external_resource}
               />
             )) }
           </ButtonGroup>
