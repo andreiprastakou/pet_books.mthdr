@@ -22,7 +22,7 @@ RSpec.describe '/api/public_lists' do
         public_list_type_id: public_list.public_list_type_id,
         year: 2021,
         wiki_url: nil,
-        generic_links: [],
+        external_links: [],
         books: [{ id: book.id, role: 'winner' }]
       )
     end

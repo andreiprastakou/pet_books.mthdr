@@ -26,7 +26,7 @@ module Admin
       genre_names: [],
       author_ids: [],
       series_ids: [],
-      generic_links_attributes: {}
+      external_links_attributes: {}
     }]).freeze
 
     DEFAULT_BOOKS_INDEX_VIEW = 'table'.freeze

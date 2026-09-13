@@ -210,7 +210,7 @@ BookDetailsTags.propTypes = {
 
 const bookDetailsLinks = book => [
   ...(book.wikiUrl ? [{ name: 'wikipedia', url: book.wikiUrl }] : []),
-  ...(book.genericLinks || []),
+  ...(book.externalLinks || []),
 ]
 
 const BookDetailsCard = ({

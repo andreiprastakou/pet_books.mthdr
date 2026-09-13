@@ -14,7 +14,7 @@ module FrontendApi
 
     def fetch_public_list_type
       @public_list_type = PublicListType.preload(
-        :generic_links,
+        :external_links,
         :public_lists
       ).find(params[:id])
     end

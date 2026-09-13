@@ -13,7 +13,7 @@ const SeriesIntro = ({ series }) => {
 
   const links = [
     ...(series.wikiUrl ? [{ name: 'wikipedia', url: series.wikiUrl }] : []),
-    ...(series.genericLinks || []),
+    ...(series.externalLinks || []),
   ]
 
   return (

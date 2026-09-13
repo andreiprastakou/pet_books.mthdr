@@ -10,12 +10,12 @@ describe('series API models', () => {
       id: 1,
       name: 'Earthsea',
       wiki_url: 'https://wiki',
-      generic_links: [{ name: 'official', url: 'https://x' }],
+      external_links: [{ name: 'official', url: 'https://x' }],
     })).toEqual({
       id: 1,
       name: 'Earthsea',
       wikiUrl: 'https://wiki',
-      genericLinks: [{ name: 'official', url: 'https://x' }],
+      externalLinks: [{ name: 'official', url: 'https://x' }],
     })
 
     expect(SeriesRef.parse({ id: 2, name: 'Foundation' })).toEqual({

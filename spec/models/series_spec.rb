@@ -55,5 +55,5 @@ RSpec.describe Series do
     let(:record) { build(:series) }
   end
 
-  it_behaves_like 'has generic links'
+  it_behaves_like 'has external links'
 end

@@ -4,7 +4,7 @@ class SeriesIndexEntry {
       id: data['id'],
       name: data['name'],
       wikiUrl: data['wiki_url'],
-      genericLinks: data['generic_links'],
+      externalLinks: data['external_links'],
     }
   }
 }

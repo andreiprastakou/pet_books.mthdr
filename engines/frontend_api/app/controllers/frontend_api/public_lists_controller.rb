@@ -9,7 +9,7 @@ module FrontendApi
     private
 
     def fetch_public_list
-      @public_list = PublicList.preload(:generic_links, :book_public_lists).find(params[:id])
+      @public_list = PublicList.preload(:external_links, :book_public_lists).find(params[:id])
     end
   end
 end

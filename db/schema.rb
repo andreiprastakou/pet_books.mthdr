@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_120000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_161700) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -179,7 +179,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_120000) do
     t.index ["owner_type", "owner_id"], name: "index_external_identities_on_owner_type_and_owner_id"
   end
 
-  create_table "generic_links", force: :cascade do |t|
+  create_table "external_links", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.integer "entity_id", null: false
     t.string "entity_type", null: false
@@ -187,7 +187,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_120000) do
     t.string "name", null: false
     t.datetime "updated_at", null: false
     t.string "url", null: false
-    t.index ["entity_type", "entity_id"], name: "index_generic_links_on_entity_type_and_entity_id"
+    t.index ["entity_type", "entity_id"], name: "index_external_links_on_entity_type_and_entity_id"
   end
 
   create_table "genres", force: :cascade do |t|

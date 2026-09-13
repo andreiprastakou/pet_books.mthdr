@@ -3,4 +3,4 @@
 json.id @series.id
 json.name @series.name
 json.wiki_url @series.wiki_url
-json.generic_links(@series.generic_links.map { |link| { name: link.name, url: link.url } })
+json.external_links(@series.external_links.map { |link| { name: link.name, url: link.url } })

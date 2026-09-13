@@ -75,12 +75,12 @@ module Admin
       end
     end
 
-    def generic_links_to_input_entries(generic_links)
-      generic_links.map do |generic_link|
+    def external_links_to_input_entries(external_links)
+      external_links.map do |external_link|
         {
-          id: generic_link.id,
-          name: generic_link.name,
-          url: generic_link.url
+          id: external_link.id,
+          name: external_link.name,
+          url: external_link.url
         }
       end
     end

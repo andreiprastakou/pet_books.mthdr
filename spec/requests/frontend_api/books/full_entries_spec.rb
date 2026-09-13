@@ -7,7 +7,7 @@ RSpec.describe '/api/books/full_entries' do
     let(:book) do
       create(
         :book,
-        generic_links: generic_links,
+        external_links: external_links,
         genres: book_genres,
         literary_form: 'novel',
         series: series,
@@ -18,7 +18,7 @@ RSpec.describe '/api/books/full_entries' do
     end
     let(:tags) { create_list(:tag, 2) }
     let(:series) { create_list(:series, 2) }
-    let(:generic_links) { build_list(:generic_link, 2) }
+    let(:external_links) { build_list(:external_link, 2) }
     let(:book_genres) { [build(:book_genre, genre: create(:genre, name: 'fantasy'))] }
     let(:list_type_a) { create(:public_list_type, name: 'Alpha Prize') }
     let(:list_type_b) { create(:public_list_type, name: 'Beta Prize') }
@@ -74,7 +74,7 @@ RSpec.describe '/api/books/full_entries' do
         form_label: 'a fantasy novel',
         summary: book.summary,
         wiki_url: book.wiki_url,
-        generic_links: generic_links.map { |link| { name: link.name, url: link.url } },
+        external_links: external_links.map { |link| { name: link.name, url: link.url } },
         public_lists: expected_public_lists
       )
     end

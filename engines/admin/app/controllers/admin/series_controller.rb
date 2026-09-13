@@ -21,7 +21,7 @@ module Admin
       name
       wiki_url
     ] + [{
-      generic_links_attributes: {}
+      external_links_attributes: {}
     }]).freeze
 
     def index
