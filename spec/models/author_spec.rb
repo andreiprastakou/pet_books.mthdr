@@ -31,6 +31,10 @@ RSpec.describe Author do
     it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
     it { is_expected.to have_many(:books_list_tasks).class_name(Admin::AuthorBooksListTask.name) }
     it { is_expected.to have_many(:list_parsing_tasks).class_name(Admin::AuthorBooksListParsingTask.name) }
+    it do
+      is_expected.to have_many(:open_library_author_search_tasks)
+        .class_name(Admin::OpenLibraryAuthorSearchTask.name)
+    end
     it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
   end
 
