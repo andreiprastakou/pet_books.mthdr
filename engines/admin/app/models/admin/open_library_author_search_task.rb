@@ -49,7 +49,7 @@ module Admin
       raise ArgumentError, 'Invalid Open Library author key' if olid.blank?
 
       author.external_identities.create!(
-        external_resource: :open_library,
+        external_resource: ExternalResources::OPEN_LIBRARY,
         identificator: olid,
         url: "#{ExternalLinks::OpenLibrary::Author::BASE_URL}/authors/#{olid}"
       )

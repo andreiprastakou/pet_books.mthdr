@@ -49,7 +49,7 @@ module Admin
       raise ArgumentError, 'Invalid LibraryThing work id' if id.blank?
 
       book.external_identities.create!(
-        external_resource: :librarything,
+        external_resource: ExternalResources::LIBRARYTHING,
         identificator: id,
         url: ExternalLinks::LibraryThing.call(id)
       )

@@ -1,4 +1,9 @@
 <div class="col-md-12">
+  <datalist id="external-link-name-suggestions">
+    <% ExternalResources::ALL.sort.each do |name| %>
+      <option value="<%= name %>"></option>
+    <% end %>
+  </datalist>
   <table class="table">
     <tbody data-external-links-input-target="linksList" data-values="<%= values.to_json %>">
       <template data-external-links-input-target="linkTemplate">
@@ -8,7 +13,8 @@
               data: { name: "idInput" } %>
             <%= hidden_field_tag "#{form_scope}[external_links_attributes][ENTRY_ID][_destroy]", nil,
               data: { name: "destroyInput" } %>
-            <%= select_tag "#{form_scope}[external_links_attributes][ENTRY_ID][name]", options_for_select(ExternalLink::NAMES, nil), class: 'form-control',
+            <%= text_field_tag "#{form_scope}[external_links_attributes][ENTRY_ID][name]", nil, class: 'form-control',
+              list: "external-link-name-suggestions", autocomplete: "off",
               data: { name: "name" } %>
           </td>
           <td>
