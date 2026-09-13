@@ -2,8 +2,10 @@ module Admin
   class DataFetchTasksController < AdminController
     before_action :fetch_task, only: %i[show verify reject]
 
+    INDEX_PAGE_SIZE = 100
+
     def index
-      @tasks = Admin::BaseDataFetchTask.order(id: :desc)
+      @pagy, @tasks = pagy(filtered_tasks.order(id: :desc), limit: INDEX_PAGE_SIZE)
     end
 
     def show; end
@@ -19,6 +21,23 @@ module Admin
     end
 
     private
+
+    def filtered_tasks
+      scope = Admin::BaseDataFetchTask.all
+      scope = scope.where(type: params[:type]) if task_type_filter.present?
+      scope = scope.where(status: params[:status]) if task_status_filter.present?
+      scope
+    end
+
+    def task_type_filter
+      type = params[:type].presence
+      type if Admin::BaseDataFetchTask::TASK_TYPES.include?(type)
+    end
+
+    def task_status_filter
+      status = params[:status].presence
+      status if Admin::BaseDataFetchTask.statuses.key?(status)
+    end
 
     def fetch_task
       @task = Admin::BaseDataFetchTask.find(params[:id])
