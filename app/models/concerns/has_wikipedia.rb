@@ -1,4 +1,7 @@
-module HasWikiLinks
+# frozen_string_literal: true
+
+# Wikipedia URL stored as an ExternalLink, plus derived WikiLink rows for stats.
+module HasWikipedia
   extend ActiveSupport::Concern
 
   included do
@@ -9,6 +12,32 @@ module HasWikiLinks
     accepts_nested_attributes_for :wiki_links, allow_destroy: true
 
     validate :validate_wiki_url_format
+  end
+
+  def wikipedia_external_link
+    external_links.find do |link|
+      !link.marked_for_destruction? && link.external_resource == ExternalResources::WIKIPEDIA
+    end
+  end
+
+  def wiki_url
+    wikipedia_external_link&.url
+  end
+
+  def wiki_url=(value)
+    normalized = value.to_s.strip.presence
+    link = wikipedia_external_link
+
+    if normalized.blank?
+      link&.mark_for_destruction
+      return
+    end
+
+    if link
+      link.url = normalized
+    else
+      external_links.build(external_resource: ExternalResources::WIKIPEDIA, url: normalized)
+    end
   end
 
   def wiki_links_sum_views

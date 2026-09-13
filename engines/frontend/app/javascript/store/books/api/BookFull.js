@@ -16,7 +16,6 @@ class BookFull {
       tagIds: data['tag_ids'],
       seriesIds: data['series_ids'],
       formLabel: data['form_label'],
-      wikiUrl: data['wiki_url'],
       externalLinks: data['external_links'],
       publicLists: (data.public_lists || []).map(parsePublicList),
     }

@@ -18,6 +18,8 @@ export default class extends Controller {
   }
 
   updateWikiQuery(fullname) {
+    if (!this.hasWikiQueryLinkTarget) return
+
     if (fullname) {
       const href = this.wikiQueryLinkTarget.getAttribute('data-href-scaffold')
       const queryUrl = href.replace('NAME', encodeURI(fullname))

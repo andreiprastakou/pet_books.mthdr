@@ -3,7 +3,6 @@ class SeriesIndexEntry {
     return {
       id: data['id'],
       name: data['name'],
-      wikiUrl: data['wiki_url'],
       externalLinks: data['external_links'],
     }
   }

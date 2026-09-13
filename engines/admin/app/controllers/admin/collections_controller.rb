@@ -21,7 +21,6 @@ module Admin
     PARAMS = (%i[
       name
       year_published
-      wiki_url
     ] + [{
       book_ids: [],
       external_links_attributes: {}
@@ -29,7 +28,7 @@ module Admin
 
     def index
       @collections = apply_sort(
-        Collection.preload(:book_collections),
+        Collection.preload(:book_collections, :external_links),
         SORTING_MAP,
         defaults: { sort_by: 'id', sort_order: 'desc' }
       )
@@ -37,7 +36,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        @collection.books.preload(:authors, :generative_summary_tasks),
+        @collection.books.preload(:authors, :generative_summary_tasks, :external_links),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       )

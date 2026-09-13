@@ -20,7 +20,6 @@ module Admin
       summary_src
       title
       year_published
-      wiki_url
     ] + [{
       tag_names: [],
       genre_names: [],
@@ -36,7 +35,7 @@ module Admin
     def index
       @pagy, @books = pagy(
         apply_sort(
-          Book.preload(:authors, :generative_summary_tasks),
+          Book.preload(:authors, :generative_summary_tasks, :external_links),
           SORTING_MAP,
           defaults: { sort_by: 'id', sort_order: 'desc' }
         ),

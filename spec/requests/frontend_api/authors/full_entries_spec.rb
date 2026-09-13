@@ -8,14 +8,25 @@ RSpec.describe '/api/authors/full_entries' do
   describe 'GET /:id' do
     subject(:send_request) { get "/api/authors/full_entries/#{author.id}.json", headers: authorization_header }
 
-    let(:author) { create(:author, wiki_url: 'https://en.wikipedia.org/wiki/foobar', birth_year: 1900, death_year: 2000, tags: [tag]) }
+    let(:author) do
+      create(
+        :author,
+        wiki_url: 'https://en.wikipedia.org/wiki/foobar',
+        birth_year: 1900,
+        death_year: 2000,
+        tags: [tag]
+      )
+    end
     let(:expected_response) do
       {
         id: author.id,
         fullname: author.fullname,
         photo_thumb_url: nil,
         photo_full_url: nil,
-        reference: 'https://en.wikipedia.org/wiki/foobar',
+        external_links: [{
+          external_resource: ExternalResources::WIKIPEDIA,
+          url: 'https://en.wikipedia.org/wiki/foobar'
+        }],
         birth_year: 1900,
         death_year: 2000,
         tag_ids: [tag.id],

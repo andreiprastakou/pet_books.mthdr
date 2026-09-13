@@ -11,10 +11,7 @@ const SeriesIntro = ({ series }) => {
 
   if (!series || !routesReady) return null
 
-  const links = [
-    ...(series.wikiUrl ? [{ external_resource: 'wikipedia', url: series.wikiUrl }] : []),
-    ...(series.externalLinks || []),
-  ]
+  const links = series.externalLinks || []
 
   return (
     <Card className='panel--series-intro panel--widget'>

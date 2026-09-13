@@ -1,4 +1,4 @@
-shared_examples 'has wiki links' do
+shared_examples 'has wikipedia' do
   describe 'associations' do
     it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name).dependent(:destroy) }
   end

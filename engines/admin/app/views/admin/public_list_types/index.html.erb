@@ -10,7 +10,7 @@
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("NAME", "name") %></th>
       <th>LINKS</th>
-      <th>WIKI</th>
+      <th>EXTERNAL</th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
       <th>ACTIONS</th>
@@ -28,7 +28,7 @@
           <%= admin_link_to "edit", edit_admin_public_list_type_path(public_list_type) %>
         </td>
         <td>
-          <%= external_link_to "wiki", public_list_type.wiki_url if public_list_type.wiki_url.present? %>
+          <%= admin_external_links_list(public_list_type) %>
         </td>
         <td>
           <%= admin_timestamp(public_list_type.created_at) %>

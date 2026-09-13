@@ -12,7 +12,6 @@
 #  summary_src     :string
 #  title           :string           not null
 #  wiki_popularity :integer          default(0)
-#  wiki_url        :string
 #  year_published  :integer          not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

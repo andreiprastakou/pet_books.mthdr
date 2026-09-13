@@ -9,12 +9,10 @@ describe('series API models', () => {
     expect(SeriesIndexEntry.parse({
       id: 1,
       name: 'Earthsea',
-      wiki_url: 'https://wiki',
       external_links: [{ external_resource: 'official', url: 'https://x' }],
     })).toEqual({
       id: 1,
       name: 'Earthsea',
-      wikiUrl: 'https://wiki',
       externalLinks: [{ external_resource: 'official', url: 'https://x' }],
     })
 

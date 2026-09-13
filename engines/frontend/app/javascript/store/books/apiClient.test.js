@@ -52,7 +52,6 @@ describe('books apiClient', () => {
         author_ids: [1],
         year_published: 1910,
         tag_ids: [],
-        wiki_url: null,
         external_links: [],
       })
       .mockResolvedValueOnce([{

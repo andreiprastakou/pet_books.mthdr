@@ -7,7 +7,6 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string           not null
-#  wiki_url   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -35,7 +34,7 @@ RSpec.describe PublicListType do
     end
   end
 
-  it_behaves_like 'has wiki links' do
+  it_behaves_like 'has wikipedia' do
     let(:record) { build(:public_list_type) }
   end
 

@@ -28,12 +28,13 @@ const Toolbar = props => {
 
   return (
     <div className='author-toolbar'>
-      { authorFull.reference ? (
+      { (authorFull.externalLinks || []).map(link => (
         <ExternalTextLink
-          href={authorFull.reference}
-          resource='wikipedia'
+          href={link.url}
+          key={link.url}
+          resource={link.external_resource}
         />
-      ) : null}
+      )) }
 
       { linkToAuthorPage && authorFull.booksCount > 0 ? (
         <Button

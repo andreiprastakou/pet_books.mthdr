@@ -16,16 +16,14 @@ module Admin
       updated_at
     ].index_by(&:to_s).freeze
 
-    PARAMS = (%i[
-      name
-      wiki_url
-    ] + [{
-      external_links_attributes: {}
-    }]).freeze
+    PARAMS = ([
+      :name,
+      { external_links_attributes: {} }
+    ]).freeze
 
     def index
       @public_list_types = apply_sort(
-        PublicListType.all,
+        PublicListType.preload(:external_links),
         SORTING_MAP,
         defaults: { sort_by: 'name', sort_order: 'asc' }
       )
@@ -33,7 +31,7 @@ module Admin
 
     def show
       @public_lists = apply_sort(
-        @public_list_type.public_lists.preload(:book_public_lists).includes(:book_public_lists),
+        @public_list_type.public_lists.preload(:book_public_lists, :external_links).includes(:book_public_lists),
         PUBLIC_LISTS_SORTING_MAP,
         defaults: { sort_by: 'year', sort_order: 'desc' }
       )

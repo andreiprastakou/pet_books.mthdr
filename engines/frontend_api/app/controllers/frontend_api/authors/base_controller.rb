@@ -4,7 +4,7 @@ module FrontendApi
       private
 
       def fetch_author
-        @author = Author.find(params[:id])
+        @author = Author.preload(:external_links).find(params[:id])
       end
     end
   end

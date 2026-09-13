@@ -10,17 +10,14 @@ module Admin
       'wiki_popularity' => 'books.wiki_popularity'
     }.freeze
 
-    PARAMS = (%i[
-      year
-      wiki_url
-    ] + [{
-      book_public_lists_attributes: {},
-      external_links_attributes: {}
-    }]).freeze
+    PARAMS = ([
+      :year,
+      { book_public_lists_attributes: {}, external_links_attributes: {} }
+    ]).freeze
 
     def show
       @book_public_lists = apply_sort(
-        @public_list.book_public_lists.preload(book: %i[authors generative_summary_tasks]).includes(:book),
+        @public_list.book_public_lists.preload(book: %i[authors generative_summary_tasks external_links]).includes(:book),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'role', sort_order: 'desc' }
       )

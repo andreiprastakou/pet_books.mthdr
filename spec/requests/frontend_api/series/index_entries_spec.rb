@@ -5,11 +5,14 @@ RSpec.describe '/api/series/index_entries' do
     create(
       :series,
       external_links: external_links,
-      name: 'Earthsea',
-      wiki_url: 'https://en.wikipedia.org/wiki/Earthsea'
+      name: 'Earthsea'
     )
   end
-  let(:external_links) { build_list(:external_link, 1) }
+  let(:wikipedia_link) do
+    build(:external_link, external_resource: ExternalResources::WIKIPEDIA,
+                          url: 'https://en.wikipedia.org/wiki/Earthsea')
+  end
+  let(:external_links) { [wikipedia_link] + build_list(:external_link, 1) }
 
   describe 'GET /:id' do
     subject(:send_request) { get "/api/series/index_entries/#{series.id}.json", headers: authorization_header }
@@ -20,7 +23,6 @@ RSpec.describe '/api/series/index_entries' do
       expect(json_response).to eq(
         id: series.id,
         name: series.name,
-        wiki_url: series.wiki_url,
         external_links: external_links.map { |link| { external_resource: link.external_resource, url: link.url } }
       )
     end

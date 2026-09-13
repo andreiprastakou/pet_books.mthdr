@@ -14,7 +14,6 @@
 #  summary_src     :string
 #  title           :string           not null
 #  wiki_popularity :integer          default(0)
-#  wiki_url        :string
 #  year_published  :integer          not null
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -39,7 +38,8 @@ class Book < ApplicationRecord
 
   include CarrierwaveUrlAssign
   include HasExternalLinks
-  include HasWikiLinks
+  include HasWikipedia
+
 
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
