@@ -47,7 +47,7 @@ module Admin
     end
 
     def perform
-      result = InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.new(external_identity.identificator).fetch
+      result = InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.new(external_identity.external_id).fetch
       if result
         save_results!(result)
       else
@@ -66,7 +66,7 @@ module Admin
       identifiers.flat_map do |resource, values|
         next [] unless ExternalIdentity.external_resources.key?(resource.to_s)
 
-        Array(values).compact_blank.map { |identificator| [resource.to_s, identificator.to_s] }
+        Array(values).compact_blank.map { |external_id| [resource.to_s, external_id.to_s] }
       end
     end
 
@@ -86,15 +86,15 @@ module Admin
       Rails::Html::FullSanitizer.new.sanitize(text.to_s).presence
     end
 
-    def add_identity!(external_resource, identificator)
+    def add_identity!(external_resource, external_id)
       resource = external_resource.to_s
       raise ArgumentError, 'Invalid external resource' unless ExternalIdentity.external_resources.key?(resource)
 
-      id = identificator.to_s.strip
-      raise ArgumentError, 'Identificator is required' if id.blank?
+      id = external_id.to_s.strip
+      raise ArgumentError, 'External ID is required' if id.blank?
 
       url = EXTERNAL_LINK_BUILDERS[resource]&.call(id)
-      attrs = { external_resource: resource, identificator: id }
+      attrs = { external_resource: resource, external_id: id }
       if url.present?
         attrs[:external_link] = book.external_links.where(name: resource, url: url).first_or_create!
       end

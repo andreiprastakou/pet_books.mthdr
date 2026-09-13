@@ -31,7 +31,7 @@ FactoryBot.define do
       association :external_identity,
                   strategy: :create,
                   external_resource: :wikidata,
-                  identificator: "Q#{SecureRandom.random_number(1_000_000_000)}"
+                  external_id: "Q#{SecureRandom.random_number(1_000_000_000)}"
     end
   end
 end

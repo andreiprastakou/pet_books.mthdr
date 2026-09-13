@@ -51,21 +51,21 @@
                 <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(@fetched_data) %></pre>
               </td>
               <td class="text-center">
-                <% @identifiers.each do |external_resource, identificator| %>
+                <% @identifiers.each do |external_resource, external_id| %>
                   <% link_builder = Admin::OpenLibraryFetchTask::EXTERNAL_LINK_BUILDERS[external_resource] %>
-                  <% identity_url = link_builder&.call(identificator) %>
-                  <% already_added = @book_identity_keys.include?([external_resource, identificator]) %>
+                  <% identity_url = link_builder&.call(external_id) %>
+                  <% already_added = @book_identity_keys.include?([external_resource, external_id]) %>
                   <%= form_with url: add_identity_admin_open_library_fetch_task_path(@task),
                     method: :post,
                     class: "d-flex align-items-center justify-content-center gap-2 mb-2 flex-wrap",
                     data: { turbo: false } do %>
                     <%= hidden_field_tag :external_resource, external_resource %>
-                    <%= hidden_field_tag :identificator, identificator %>
+                    <%= hidden_field_tag :external_id, external_id %>
                     <span><%= external_resource %></span>
                     <% if identity_url.present? %>
-                      <%= external_link_to identificator, identity_url %>
+                      <%= external_link_to external_id, identity_url %>
                     <% else %>
-                      <%= identificator %>
+                      <%= external_id %>
                     <% end %>
                     <%= submit_tag "add to the book", class: "btn btn-sm btn-outline-primary",
                       disabled: already_added %>

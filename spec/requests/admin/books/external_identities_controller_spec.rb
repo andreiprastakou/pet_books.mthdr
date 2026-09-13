@@ -3,20 +3,20 @@ require 'rails_helper'
 RSpec.describe Admin::Books::ExternalIdentitiesController do
   let(:book) { create(:book) }
   let(:external_identity) do
-    create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL1W')
+    create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1W')
   end
 
   let(:valid_attributes) do
     {
       external_resource: 'wikidata',
-      identificator: 'Q123'
+      external_id: 'Q123'
     }
   end
 
   let(:invalid_attributes) do
     {
       external_resource: 'open_library',
-      identificator: external_identity.identificator
+      external_id: external_identity.external_id
     }
   end
 
@@ -68,7 +68,7 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
         expect { send_request }.to change(book.external_identities, :count).by(1)
         identity = book.external_identities.order(:id).last
         expect(identity.external_resource).to eq('wikidata')
-        expect(identity.identificator).to eq('Q123')
+        expect(identity.external_id).to eq('Q123')
       end
 
       it 'redirects to the created external identity' do
@@ -105,7 +105,7 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
       let(:new_attributes) do
         {
           external_resource: 'goodreads',
-          identificator: 'gr-99'
+          external_id: 'gr-99'
         }
       end
       let(:send_request) do
@@ -118,7 +118,7 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
         send_request
         external_identity.reload
         expect(external_identity.external_resource).to eq('goodreads')
-        expect(external_identity.identificator).to eq('gr-99')
+        expect(external_identity.external_id).to eq('gr-99')
       end
 
       it 'redirects to the external identity' do
@@ -130,14 +130,14 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
 
     context 'with invalid parameters' do
       let!(:other_identity) do
-        create(:external_identity, owner: book, external_resource: :wikidata, identificator: 'Q999')
+        create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q999')
       end
       let(:send_request) do
         patch admin_book_external_identity_path(book, external_identity),
               params: {
                 external_identity: {
                   external_resource: 'wikidata',
-                  identificator: other_identity.identificator
+                  external_id: other_identity.external_id
                 }
               },
               headers: authorization_header

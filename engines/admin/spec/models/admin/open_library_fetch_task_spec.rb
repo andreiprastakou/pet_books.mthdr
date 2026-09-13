@@ -49,13 +49,13 @@ RSpec.describe Admin::OpenLibraryFetchTask do
     subject(:call) { task.perform }
 
     let(:task) { create(:open_library_fetch_task, target: external_identity) }
-    let(:external_identity) { create(:external_identity, identificator: 'OL27448W') }
+    let(:external_identity) { create(:external_identity, external_id: 'OL27448W') }
     let(:fetcher) { instance_double(InfoFetchers::OpenLibrary::Api::BookDetailsFetcher) }
     let(:api_data) { { 'key' => '/works/OL27448W', 'title' => 'The Lord of the Rings' } }
 
     before do
       allow(InfoFetchers::OpenLibrary::Api::BookDetailsFetcher)
-        .to receive(:new).with(external_identity.identificator).and_return(fetcher)
+        .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
     end
 
@@ -158,7 +158,7 @@ RSpec.describe Admin::OpenLibraryFetchTask do
     it 'creates an external identity on the book' do
       expect { call }.to change(book.external_identities, :count).by(1)
       identity = book.external_identities.find_by!(external_resource: :wikidata)
-      expect(identity.identificator).to eq('Q137179018')
+      expect(identity.external_id).to eq('Q137179018')
       expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q137179018')
     end
   end

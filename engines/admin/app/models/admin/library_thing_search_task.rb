@@ -52,7 +52,7 @@ module Admin
       external_link = book.external_links.where(name: ExternalResources::LIBRARYTHING, url: url).first_or_create!
       book.external_identities.create!(
         external_resource: ExternalResources::LIBRARYTHING,
-        identificator: id,
+        external_id: id,
         external_link: external_link
       )
     end

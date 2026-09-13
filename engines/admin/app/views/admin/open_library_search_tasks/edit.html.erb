@@ -1,6 +1,6 @@
 <% book_ol_links = @book.external_identities.open_library.filter_map { |identity|
-  url = ExternalLinks::OpenLibrary::Work.call(identity.identificator)
-  url && external_link_to(identity.identificator, url)
+  url = ExternalLinks::OpenLibrary::Work.call(identity.external_id)
+  url && external_link_to(identity.external_id, url)
 } %>
 <%= turbo_frame_tag "task_apply_form", target: "_top" do %>
   <div class="card mt-2">
@@ -28,8 +28,8 @@
             <% else %>
               <%= safe_join(@book.authors.map { |author|
                 links = author.external_identities.open_library.filter_map { |identity|
-                  url = ExternalLinks::OpenLibrary::Author.call(identity.identificator)
-                  url && external_link_to(identity.identificator, url)
+                  url = ExternalLinks::OpenLibrary::Author.call(identity.external_id)
+                  url && external_link_to(identity.external_id, url)
                 }
                 if links.any?
                   safe_join([author.fullname, ' (', safe_join(links, ', '), ')'])

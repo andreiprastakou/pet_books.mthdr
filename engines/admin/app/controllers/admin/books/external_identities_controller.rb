@@ -6,7 +6,7 @@ module Admin
 
       PARAMS = %i[
         external_resource
-        identificator
+        external_id
       ].freeze
 
       def show; end

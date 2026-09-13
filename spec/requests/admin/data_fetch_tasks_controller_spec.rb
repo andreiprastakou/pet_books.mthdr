@@ -63,7 +63,7 @@ RSpec.describe Admin::DataFetchTasksController do
     context 'when the type-specific partial is missing' do
       let(:author) { create(:author) }
       let(:external_identity) do
-        create(:external_identity, owner: author, identificator: 'OL1394865A')
+        create(:external_identity, owner: author, external_id: 'OL1394865A')
       end
       let(:task) { create(:open_library_author_fetch_task, target: external_identity) }
 

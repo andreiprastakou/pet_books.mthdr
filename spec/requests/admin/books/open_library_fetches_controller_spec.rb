@@ -4,7 +4,7 @@ RSpec.describe Admin::Books::OpenLibraryFetchesController do
   describe 'POST /admin/books/:book_id/external_identities/:external_identity_id/open_library_fetches' do
     let(:book) { create(:book) }
     let!(:external_identity) do
-      create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL99W')
+      create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL99W')
     end
     let(:send_request) do
       post admin_book_external_identity_open_library_fetches_path(book, external_identity),

@@ -34,7 +34,7 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTask do
   end
 
   describe '.setup' do
-    let!(:external_identity) { create(:external_identity, owner: create(:author), identificator: 'OL1394865A') }
+    let!(:external_identity) { create(:external_identity, owner: create(:author), external_id: 'OL1394865A') }
 
     it 'creates a new open library author fetch task' do
       expect { described_class.setup(external_identity) }.to change(described_class, :count).by(1)
@@ -50,7 +50,7 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTask do
 
     let(:author) { create(:author) }
     let(:external_identity) do
-      create(:external_identity, owner: author, identificator: 'OL1394865A')
+      create(:external_identity, owner: author, external_id: 'OL1394865A')
     end
     let(:task) { create(:open_library_author_fetch_task, target: external_identity) }
     let(:fetcher) { instance_double(InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher) }
@@ -58,7 +58,7 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTask do
 
     before do
       allow(InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher)
-        .to receive(:new).with(external_identity.identificator).and_return(fetcher)
+        .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
     end
 
@@ -81,7 +81,7 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTask do
 
   describe '#author' do
     let(:author) { create(:author) }
-    let(:external_identity) { create(:external_identity, owner: author, identificator: 'OL1394865A') }
+    let(:external_identity) { create(:external_identity, owner: author, external_id: 'OL1394865A') }
     let(:task) { create(:open_library_author_fetch_task, target: external_identity) }
 
     it 'returns the external identity owner author' do

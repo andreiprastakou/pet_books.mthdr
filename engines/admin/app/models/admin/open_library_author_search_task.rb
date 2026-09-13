@@ -52,7 +52,7 @@ module Admin
       external_link = author.external_links.where(name: ExternalResources::OPEN_LIBRARY, url: url).first_or_create!
       author.external_identities.create!(
         external_resource: ExternalResources::OPEN_LIBRARY,
-        identificator: olid,
+        external_id: olid,
         external_link: external_link
       )
     end
