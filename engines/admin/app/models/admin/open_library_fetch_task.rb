@@ -74,12 +74,15 @@ module Admin
       return if data.blank? || !data.is_a?(Hash)
 
       description = data['description'] || data[:description]
-      case description
-      when Hash
-        (description['value'] || description[:value]).presence
-      else
-        description.presence
-      end
+      text = case description
+             when Hash
+               (description['value'] || description[:value]).presence
+             else
+               description.presence
+             end
+      return if text.blank?
+
+      Rails::Html::FullSanitizer.new.sanitize(text.to_s).presence
     end
 
     def add_identity!(external_resource, identificator)
@@ -97,11 +100,13 @@ module Admin
       )
     end
 
-    def apply_summary!(summary)
+    def apply_summary!(summary, summary_src = nil)
       text = summary.to_s.strip
       raise ArgumentError, 'Summary is required' if text.blank?
 
-      book.update!(summary: text)
+      attrs = { summary: text }
+      attrs[:summary_src] = summary_src.to_s.strip if summary_src.present?
+      book.update!(attrs)
     end
   end
 end

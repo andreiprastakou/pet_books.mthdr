@@ -34,6 +34,7 @@ Admin::Engine.routes.draw do
         resources :open_library_searches, only: %i[create]
         resources :external_identities do
           resources :open_library_fetches, only: %i[create]
+          resources :wikidata_fetches, only: %i[create]
         end
       end
     end

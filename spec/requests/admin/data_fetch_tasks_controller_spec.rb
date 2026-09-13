@@ -44,6 +44,22 @@ RSpec.describe Admin::DataFetchTasksController do
       end
     end
 
+    context 'with a WikidataFetchTask' do
+      let(:task) do
+        create(
+          :wikidata_fetch_task,
+          status: :fetched,
+          fetched_data: { 'id' => 'Q74287', 'labels' => { 'en' => 'The Hobbit' } }
+        )
+      end
+
+      it 'returns a successful response' do
+        send_request
+        expect(response).to be_successful
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_fetch_task')
+      end
+    end
+
     context 'when the task is fetched' do
       let(:task) { create(:open_library_search_task, status: :fetched, fetched_data: []) }
 

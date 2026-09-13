@@ -46,6 +46,7 @@ class Book < ApplicationRecord
   has_many :genres, class_name: 'BookGenre', dependent: :destroy
   has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
   has_many :open_library_search_tasks, class_name: 'Admin::OpenLibrarySearchTask', as: :target, dependent: :destroy
+  has_many :library_thing_search_tasks, class_name: 'Admin::LibraryThingSearchTask', as: :target, dependent: :destroy
   has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
   has_many :book_series, class_name: 'BookSeries', dependent: :destroy, inverse_of: :book
@@ -115,7 +116,8 @@ class Book < ApplicationRecord
       target_type: ExternalIdentity.name,
       target_id: external_identities.select(:id)
     )
-    (generative_summary_tasks.to_a + open_library_search_tasks.to_a + fetch_tasks.to_a)
+    (generative_summary_tasks.to_a + open_library_search_tasks.to_a + library_thing_search_tasks.to_a +
+      fetch_tasks.to_a)
       .sort_by(&:updated_at)
       .reverse
   end

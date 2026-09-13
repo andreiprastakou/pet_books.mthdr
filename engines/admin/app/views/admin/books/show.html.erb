@@ -171,7 +171,7 @@
           <div class="row mt-3 mb-0">
             <div class="col-md-3 font-weight-bold text-end">Summary:</div>
             <div class="col-md-9 b-book-summary">
-              <%= @book.summary %>
+              <%= simple_format(@book.summary) %>
               <% if @book.summary_src.present? %>
                 <span class="b-book-summary-src">
                   (SRC: <%= @book.summary_src %>)
@@ -217,6 +217,8 @@
               <% identity_label = external_identity.identificator.presence || '—' %>
               <% identity_url = if external_identity.open_library?
                                   ExternalLinks::OpenLibrary::Work.call(external_identity.identificator)
+                                elsif external_identity.wikidata?
+                                  ExternalLinks::Wikidata.call(external_identity.identificator)
                                 end
                  identity_url ||= external_identity.url %>
               <div>
@@ -232,6 +234,10 @@
                 <% if external_identity.open_library? %>
                   <%= admin_link_to "fetch data",
                     admin_book_external_identity_open_library_fetches_path(@book, external_identity),
+                    data: { turbo_method: :post } %>
+                <% elsif external_identity.wikidata? %>
+                  <%= admin_link_to "fetch data",
+                    admin_book_external_identity_wikidata_fetches_path(@book, external_identity),
                     data: { turbo_method: :post } %>
                 <% end %>
               </div>

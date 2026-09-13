@@ -1,0 +1,28 @@
+<%= render 'admin/data_fetch_tasks/task_info_card', task: task %>
+
+<div class="card mt-2">
+  <div class="card-header">Wikidata fetch results</div>
+  <div class="card-body">
+    <% if task.fetched_data.blank? %>
+      <p class="text-muted mb-0">No fetch results returned.</p>
+    <% else %>
+      <% if task.fetched_label.present? || task.fetched_description.present? %>
+        <div class="mb-3">
+          <% if task.fetched_label.present? %>
+            <div class="row mb-2">
+              <div class="col-md-3 font-weight-bold text-end">Label:</div>
+              <div class="col-md-9"><%= task.fetched_label %></div>
+            </div>
+          <% end %>
+          <% if task.fetched_description.present? %>
+            <div class="row mb-2">
+              <div class="col-md-3 font-weight-bold text-end">Description:</div>
+              <div class="col-md-9"><%= task.fetched_description %></div>
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+      <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(task.fetched_data) %></pre>
+    <% end %>
+  </div>
+</div>

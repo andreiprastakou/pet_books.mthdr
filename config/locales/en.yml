@@ -99,6 +99,9 @@ en:
       open_library_fetches:
         create:
           success: "Open Library data fetch has been queued."
+      wikidata_fetches:
+        create:
+          success: "Wikidata data fetch has been queued."
       genres:
         create:
           success: "Genre was successfully created."

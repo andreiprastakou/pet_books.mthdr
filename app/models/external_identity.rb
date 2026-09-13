@@ -24,6 +24,7 @@ class ExternalIdentity < ApplicationRecord
   has_many :external_data_fetches, class_name: 'ExternalDataFetch', dependent: :destroy,
                                    inverse_of: :external_identity
   has_many :open_library_fetch_tasks, class_name: 'Admin::OpenLibraryFetchTask', as: :target, dependent: :destroy
+  has_many :wikidata_fetch_tasks, class_name: 'Admin::WikidataFetchTask', as: :target, dependent: :destroy
 
   enum :external_resource, {
     open_library: 1,
@@ -35,4 +36,15 @@ class ExternalIdentity < ApplicationRecord
   validates :owner_type, presence: true
   validates :external_resource, presence: true
   validates :identificator, uniqueness: { scope: :external_resource }, allow_nil: true
+
+  after_commit :enqueue_open_library_fetch_task, on: :create
+
+  private
+
+  def enqueue_open_library_fetch_task
+    return unless open_library?
+    return unless owner.is_a?(Book)
+
+    Admin::OpenLibraryFetchTask.setup(self).enqueue_for_processing!
+  end
 end
