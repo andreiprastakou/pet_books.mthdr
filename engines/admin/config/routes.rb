@@ -53,8 +53,7 @@ Admin::Engine.routes.draw do
         post :request_books_list
         post :fill_books_list
       end
-      resource :open_library_book_searches_widget, only: %i[show], controller: 'open_library_book_searches_widget'
-      resource :open_library_book_fetches_widget, only: %i[show], controller: 'open_library_book_fetches_widget'
+      resource :open_library_updates_widget, only: %i[show], controller: 'open_library_updates_widget'
     end
 
     resources :data_fetch_tasks, only: %i[index show] do
