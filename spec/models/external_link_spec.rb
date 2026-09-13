@@ -21,6 +21,11 @@ require 'rails_helper'
 RSpec.describe ExternalLink do
   subject(:link) { build(:external_link) }
 
+  describe 'associations' do
+    it { is_expected.to belong_to(:entity).optional }
+    it { is_expected.to have_many(:external_identities).dependent(:nullify) }
+  end
+
   describe 'validations' do
     it { is_expected.to validate_presence_of(:entity_type) }
     it { is_expected.to validate_presence_of(:name) }

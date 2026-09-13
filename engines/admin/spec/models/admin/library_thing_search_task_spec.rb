@@ -87,7 +87,7 @@ RSpec.describe Admin::LibraryThingSearchTask do
       identity = call
       expect(identity.external_resource).to eq('librarything')
       expect(identity.identificator).to eq('14184045')
-      expect(identity.url).to eq('https://www.librarything.com/work/14184045')
+      expect(identity.external_link.url).to eq('https://www.librarything.com/work/14184045')
       expect(task.reload.status).to eq('fetched')
     end
 

@@ -18,6 +18,7 @@
 #
 class ExternalLink < ApplicationRecord
   belongs_to :entity, polymorphic: true, optional: true, inverse_of: :external_links
+  has_many :external_identities, dependent: :nullify, inverse_of: :external_link
 
   validates :entity_type, presence: true
   validates :name, presence: true

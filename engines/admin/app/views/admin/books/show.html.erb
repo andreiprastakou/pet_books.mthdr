@@ -173,7 +173,7 @@
                                 elsif external_identity.wikidata?
                                   ExternalLinks::Wikidata.call(external_identity.identificator)
                                 end
-                 identity_url ||= external_identity.url %>
+                 identity_url ||= external_identity.external_link&.url %>
               <div>
                 <%= external_identity.external_resource.to_s.titleize %>:
                 <% if identity_url.present? %>
