@@ -20,10 +20,10 @@
     <% end %>
   </div>
 
-  <div class="mb-3" data-controller="generic-links-input">
-    <%= form.label nil, "Generic Links", class: "form-label" %>
-    <%= render "admin/common/generic_links_input",
-      form_scope: "series", values: generic_links_to_input_entries(@series.generic_links) %>
+  <div class="mb-3" data-controller="external-links-input">
+    <%= form.label nil, "External Links", class: "form-label" %>
+    <%= render "admin/common/external_links_input",
+      form_scope: "series", values: external_links_to_input_entries(@series.external_links) %>
   </div>
 
   <div class="mb-3">

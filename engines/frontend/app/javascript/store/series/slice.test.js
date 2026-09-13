@@ -32,7 +32,7 @@ describe('series slice', () => {
       id: 1,
       name: 'Earthsea',
       wikiUrl: 'https://wiki',
-      genericLinks: [],
+      externalLinks: [],
     }))
     state = reducer(state, assignSeriesRefs([
       { id: 1, name: 'Earthsea' },
@@ -50,7 +50,7 @@ describe('series selectors', () => {
     axis: { currentSeriesId: 1 },
     storeSeries: {
       seriesIndex: {
-        1: { id: 1, name: 'Earthsea', wikiUrl: null, genericLinks: [] },
+        1: { id: 1, name: 'Earthsea', wikiUrl: null, externalLinks: [] },
         2: { id: 2, name: 'Dune' },
       },
       seriesRefs: {

@@ -15,7 +15,7 @@ module Admin
       wiki_url
     ] + [{
       book_public_lists_attributes: {},
-      generic_links_attributes: {}
+      external_links_attributes: {}
     }]).freeze
 
     def show

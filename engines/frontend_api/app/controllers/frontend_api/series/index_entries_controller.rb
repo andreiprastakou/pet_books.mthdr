@@ -8,7 +8,7 @@ module FrontendApi
       end
 
       def show
-        @series = ::Series.preload(:generic_links).find(params[:id])
+        @series = ::Series.preload(:external_links).find(params[:id])
       end
     end
   end

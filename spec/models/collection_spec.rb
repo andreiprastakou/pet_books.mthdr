@@ -41,5 +41,5 @@ RSpec.describe Collection do
     let(:record) { build(:collection) }
   end
 
-  it_behaves_like 'has generic links'
+  it_behaves_like 'has external links'
 end

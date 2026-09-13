@@ -81,7 +81,7 @@ RSpec.describe Author do
     let(:record) { build(:author) }
   end
 
-  it_behaves_like 'has generic links'
+  it_behaves_like 'has external links'
 
   describe '#photo_thumb_url' do
     subject(:result) { author.photo_thumb_url }

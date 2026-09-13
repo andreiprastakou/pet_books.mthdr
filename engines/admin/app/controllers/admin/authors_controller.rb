@@ -29,7 +29,7 @@ module Admin
       death_year
       photo_url
     ] + [{
-      generic_links_attributes: {}
+      external_links_attributes: {}
     }]).freeze
 
     def index

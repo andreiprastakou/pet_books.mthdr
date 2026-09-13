@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: generic_links
+# Table name: external_links
 # Database name: primary
 #
 #  id          :integer          not null, primary key
@@ -14,10 +14,10 @@
 #
 # Indexes
 #
-#  index_generic_links_on_entity_type_and_entity_id  (entity_type,entity_id)
+#  index_external_links_on_entity_type_and_entity_id  (entity_type,entity_id)
 #
 FactoryBot.define do
-  factory :generic_link, class: 'GenericLink' do
+  factory :external_link, class: 'ExternalLink' do
     sequence(:name) { |i| "LINK_#{i}" }
     sequence(:url) { |i| "https://example.com/link_#{i}" }
   end

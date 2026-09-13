@@ -55,5 +55,5 @@ RSpec.describe PublicList do
     let(:record) { build(:public_list) }
   end
 
-  it_behaves_like 'has generic links'
+  it_behaves_like 'has external links'
 end

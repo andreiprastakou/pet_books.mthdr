@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: generic_links
+# Table name: external_links
 # Database name: primary
 #
 #  id          :integer          not null, primary key
@@ -14,12 +14,12 @@
 #
 # Indexes
 #
-#  index_generic_links_on_entity_type_and_entity_id  (entity_type,entity_id)
+#  index_external_links_on_entity_type_and_entity_id  (entity_type,entity_id)
 #
 require 'rails_helper'
 
-RSpec.describe GenericLink do
-  subject(:link) { build(:generic_link) }
+RSpec.describe ExternalLink do
+  subject(:link) { build(:external_link) }
 
   describe 'validations' do
     it { is_expected.to validate_presence_of(:entity_type) }
@@ -27,7 +27,7 @@ RSpec.describe GenericLink do
     it { is_expected.to validate_presence_of(:url) }
 
     it 'has a valid factory' do
-      expect(build(:generic_link, entity: build_stubbed(:book))).to be_valid
+      expect(build(:external_link, entity: build_stubbed(:book))).to be_valid
     end
   end
 end

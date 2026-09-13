@@ -22,7 +22,7 @@ describe('series apiClient', () => {
         id: 1,
         name: 'Earthsea',
         wiki_url: 'https://wiki',
-        generic_links: [],
+        external_links: [],
       })
       .mockResolvedValueOnce([{ id: 1, name: 'Earthsea' }])
       .mockResolvedValueOnce([{ series_id: 1, label: 'Earthsea' }])

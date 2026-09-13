@@ -10,9 +10,9 @@ const PublicListIntro = ({
   const publicLists = listType.public_lists || []
   const typeLinks = [
     ...(listType.wiki_url ? [{ name: 'wikipedia', url: listType.wiki_url }] : []),
-    ...(listType.generic_links || []),
+    ...(listType.external_links || []),
   ]
-  const listLinks = selectedList?.generic_links || []
+  const listLinks = selectedList?.external_links || []
   const handleListChange = useCallback(event => {
     setSelectedListId(parseInt(event.target.value))
   }, [setSelectedListId])

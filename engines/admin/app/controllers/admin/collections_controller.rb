@@ -24,7 +24,7 @@ module Admin
       wiki_url
     ] + [{
       book_ids: [],
-      generic_links_attributes: {}
+      external_links_attributes: {}
     }]).freeze
 
     def index

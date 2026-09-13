@@ -4,12 +4,12 @@ RSpec.describe '/api/series/index_entries' do
   let(:series) do
     create(
       :series,
-      generic_links: generic_links,
+      external_links: external_links,
       name: 'Earthsea',
       wiki_url: 'https://en.wikipedia.org/wiki/Earthsea'
     )
   end
-  let(:generic_links) { build_list(:generic_link, 1) }
+  let(:external_links) { build_list(:external_link, 1) }
 
   describe 'GET /:id' do
     subject(:send_request) { get "/api/series/index_entries/#{series.id}.json", headers: authorization_header }
@@ -21,7 +21,7 @@ RSpec.describe '/api/series/index_entries' do
         id: series.id,
         name: series.name,
         wiki_url: series.wiki_url,
-        generic_links: generic_links.map { |link| { name: link.name, url: link.url } }
+        external_links: external_links.map { |link| { name: link.name, url: link.url } }
       )
     end
   end
