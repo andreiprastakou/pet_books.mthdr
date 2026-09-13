@@ -1,3 +1,8 @@
 <% admin_nav_crumbs admin_nav_data_fetch_tasks_link, admin_nav_data_fetch_task_link(@task) %>
 
-<%= render "admin/data_fetch_tasks/types/#{@task.model_name.element}", task: @task %>
+<% type_partial = @task.model_name.element %>
+<% if lookup_context.exists?(type_partial, 'admin/data_fetch_tasks/types', true) %>
+  <%= render "admin/data_fetch_tasks/types/#{type_partial}", task: @task %>
+<% else %>
+  <%= render 'admin/data_fetch_tasks/task_info_card', task: @task %>
+<% end %>

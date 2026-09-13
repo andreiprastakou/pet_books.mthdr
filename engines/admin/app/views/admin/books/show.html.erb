@@ -143,59 +143,12 @@
       </div>
 
       <div class="bg-light border p-3 mt-3">
-        <h5 class="mb-3">HISTORY</h5>
-        <% if @history_tasks.present? %>
-          <ul class="list-unstyled mb-0">
-            <% @history_tasks.each do |task| %>
-              <li class="mb-2">
-                <%= link_to admin_data_fetch_task_path(task) do %>
-                  <%= task.type %>
-                  updated <%= admin_timestamp(task.updated_at) %>
-                  (<%= task.status.humanize %>)
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="text-muted mb-0">No tasks yet.</p>
-        <% end %>
-      </div>
-    </div>
-
-    <div class="container col-md-6">
-      <div class="bg-light border p-3">
-        <h5 class="mb-3">COVER</h5>
-        <%= render "admin/books/standard_cover", book: @book %>
-
-        <% if @book.summary.present? %>
-          <div class="row mt-3 mb-0">
-            <div class="col-md-3 font-weight-bold text-end">Summary:</div>
-            <div class="col-md-9 b-book-summary">
-              <%= simple_format(@book.summary) %>
-              <% if @book.summary_src.present? %>
-                <span class="b-book-summary-src">
-                  (SRC: <%= @book.summary_src %>)
-                </span>
-              <% end %>
-            </div>
-          </div>
-        <% end %>
-      </div>
-
-      <div class="bg-light border p-3 mt-3">
         <h5 class="mb-3">LINKS</h5>
 
         <% if @book.wiki_url.present? %>
           <div class="row mb-3">
             <div class="col-md-3 font-weight-bold text-end">Wiki:</div>
             <div class="col-md-9"><%= admin_link_to_wiki_with_stats(@book) %></div>
-          </div>
-        <% end %>
-
-        <% if @book.wiki_popularity.positive? %>
-          <div class="row mb-3">
-            <div class="col-md-3 font-weight-bold text-end">Popularity (wiki views):</div>
-            <div class="col-md-9"><%= @book.wiki_popularity %></div>
           </div>
         <% end %>
 
@@ -246,6 +199,49 @@
           </div>
         </div>
       </div>
+
+      <div class="bg-light border p-3 mt-3">
+        <h5 class="mb-3">HISTORY</h5>
+        <% if @history_tasks.present? %>
+          <ul class="list-unstyled mb-0">
+            <% @history_tasks.each do |task| %>
+              <li class="mb-2">
+                <%= link_to admin_data_fetch_task_path(task) do %>
+                  <%= task.type %>
+                  updated <%= admin_timestamp(task.updated_at) %>
+                  (<%= task.status.humanize %>)
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No tasks yet.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="container col-md-6">
+      <div class="bg-light border p-3">
+        <h5 class="mb-3">COVER</h5>
+        <%= render "admin/books/standard_cover", book: @book %>
+      </div>
+
+      <% if @book.summary.present? %>
+        <div class="bg-light border p-3 mt-3">
+          <h5 class="mb-3">SUMMARY</h5>
+          <div class="row mt-3 mb-0">
+            <div class="col-md-3 font-weight-bold text-end">Summary:</div>
+            <div class="col-md-9 b-book-summary">
+              <%= simple_format(@book.summary) %>
+              <% if @book.summary_src.present? %>
+                <span class="b-book-summary-src">
+                  (SRC: <%= @book.summary_src %>)
+                </span>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>

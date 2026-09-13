@@ -22,6 +22,8 @@
 class ExternalIdentity < ApplicationRecord
   belongs_to :owner, polymorphic: true, inverse_of: :external_identities
   has_many :open_library_fetch_tasks, class_name: 'Admin::OpenLibraryFetchTask', as: :target, dependent: :destroy
+  has_many :open_library_author_fetch_tasks, class_name: 'Admin::OpenLibraryAuthorFetchTask', as: :target,
+                                             dependent: :destroy
   has_many :wikidata_fetch_tasks, class_name: 'Admin::WikidataFetchTask', as: :target, dependent: :destroy
 
 
@@ -42,8 +44,13 @@ class ExternalIdentity < ApplicationRecord
 
   def enqueue_open_library_fetch_task
     return unless open_library?
-    return unless owner.is_a?(Book)
 
-    Admin::OpenLibraryFetchTask.setup(self).enqueue_for_processing!
+    case owner
+    when Book
+      Admin::OpenLibraryFetchTask.setup(self).enqueue_for_processing!
+    when Author
+      Admin::OpenLibraryAuthorFetchTask.setup(self).enqueue_for_processing!
+    end
   end
 end
+
