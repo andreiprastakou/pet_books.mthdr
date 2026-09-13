@@ -7,10 +7,10 @@
     <div class="card-body">
       <% author = @task.author %>
       <div class="container mt-4">
-        <% if author.wiki_url.present? %>
+        <% if author.external_links.present? %>
           <div class="row mb-3">
-            <div class="col-md-3 font-weight-bold text-end">Wiki:</div>
-            <div class="col-md-9"><%= external_link_to author.wiki_url, author.wiki_url %></div>
+            <div class="col-md-3 font-weight-bold text-end">Links:</div>
+            <div class="col-md-9"><%= admin_external_links_list(author) %></div>
           </div>
         <% end %>
       </div>

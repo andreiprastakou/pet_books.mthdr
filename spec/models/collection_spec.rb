@@ -5,7 +5,6 @@
 #
 #  id             :integer          not null, primary key
 #  name           :string           not null
-#  wiki_url       :string
 #  year_published :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
@@ -37,7 +36,7 @@ RSpec.describe Collection do
     end
   end
 
-  it_behaves_like 'has wiki links' do
+  it_behaves_like 'has wikipedia' do
     let(:record) { build(:collection) }
   end
 

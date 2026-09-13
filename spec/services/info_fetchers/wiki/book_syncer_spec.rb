@@ -33,7 +33,7 @@ RSpec.describe InfoFetchers::Wiki::BookSyncer do
       before { book.wiki_url = nil }
 
       it 'raises an error' do
-        expect { call }.to raise_error(RuntimeError, "No wiki_url for book #{book.id}")
+        expect { call }.to raise_error(RuntimeError, "No wikipedia link for book #{book.id}")
       end
     end
 

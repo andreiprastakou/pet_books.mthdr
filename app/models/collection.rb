@@ -5,7 +5,6 @@
 #
 #  id             :integer          not null, primary key
 #  name           :string           not null
-#  wiki_url       :string
 #  year_published :integer          not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
@@ -16,7 +15,8 @@
 #
 class Collection < ApplicationRecord
   include HasExternalLinks
-  include HasWikiLinks
+  include HasWikipedia
+
 
   has_many :book_collections, dependent: :destroy
   has_many :books, through: :book_collections

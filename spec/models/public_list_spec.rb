@@ -6,7 +6,6 @@
 # Database name: primary
 #
 #  id                  :integer          not null, primary key
-#  wiki_url            :string
 #  year                :integer          not null
 #  created_at          :datetime         not null
 #  updated_at          :datetime         not null
@@ -51,7 +50,7 @@ RSpec.describe PublicList do
     end
   end
 
-  it_behaves_like 'has wiki links' do
+  it_behaves_like 'has wikipedia' do
     let(:record) { build(:public_list) }
   end
 

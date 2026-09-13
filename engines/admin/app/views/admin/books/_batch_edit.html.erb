@@ -73,7 +73,7 @@
           <!-- Wiki input -->
           <div class="col-1">
             <div class="b-external-link-input" data-controller="external-link-preview">
-              <%= admin_reversible_link_input(old_value: book.wiki_url_was) do %>
+              <%= admin_reversible_link_input(old_value: book.wiki_url) do %>
                 <%= text_field_tag "batch[#{index}][wiki_url]", book.wiki_url,
                   class: 'form-control form-control-sm',
                   data: { external_link_preview_target: "input",

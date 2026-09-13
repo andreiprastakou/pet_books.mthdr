@@ -31,15 +31,14 @@ describe('series slice', () => {
     state = reducer(state, addSeriesIndexEntry({
       id: 1,
       name: 'Earthsea',
-      wikiUrl: 'https://wiki',
-      externalLinks: [],
+      externalLinks: [{ external_resource: 'wikipedia', url: 'https://wiki' }],
     }))
     state = reducer(state, assignSeriesRefs([
       { id: 1, name: 'Earthsea' },
       { id: 2, name: 'Dune' },
     ]))
 
-    expect(state.seriesIndex[1].wikiUrl).toBe('https://wiki')
+    expect(state.seriesIndex[1].externalLinks[0].url).toBe('https://wiki')
     expect(state.seriesRefs[2].name).toBe('Dune')
     expect(state.refsLoaded).toBe(true)
   })
@@ -50,7 +49,7 @@ describe('series selectors', () => {
     axis: { currentSeriesId: 1 },
     storeSeries: {
       seriesIndex: {
-        1: { id: 1, name: 'Earthsea', wikiUrl: null, externalLinks: [] },
+        1: { id: 1, name: 'Earthsea', externalLinks: [] },
         2: { id: 2, name: 'Dune' },
       },
       seriesRefs: {

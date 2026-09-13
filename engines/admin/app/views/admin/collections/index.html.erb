@@ -11,7 +11,7 @@
       <th><%= sortable_table_column("NAME", "name") %></th>
       <th><%= sortable_table_column("YEAR", "year_published") %></th>
       <th>LINKS</th>
-      <th>WIKI</th>
+      <th>EXTERNAL</th>
       <th><%= sortable_table_column("SIZE", "books_count") %></th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
@@ -33,7 +33,7 @@
           <%= admin_link_to "edit", edit_admin_collection_path(collection) %>
         </td>
         <td>
-          <%= external_link_to "wiki", collection.wiki_url if collection.wiki_url.present? %>
+          <%= admin_external_links_list(collection) %>
         </td>
         <td>
           <%= collection.book_collections.size %>

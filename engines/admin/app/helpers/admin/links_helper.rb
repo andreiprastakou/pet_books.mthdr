@@ -154,19 +154,33 @@ module Admin
       public_list.year
     end
 
-    def admin_link_to_wiki_with_stats(entity)
-      return if entity.wiki_url.blank?
+    def admin_external_link_to(entity, external_link)
+      label = external_link_to(external_link.external_resource, external_link.url)
+      return label unless wikipedia_external_link?(external_link)
 
       content_tag(:span, class: 'text-muted') do
         safe_join([
-                    external_link_to('wiki', entity.wiki_url),
+                    label,
                     " (#{pluralize(entity.wiki_links.count, 'page')}, " \
                     "#{pluralize(entity.wiki_links_sum_views, 'view')})"
                   ])
       end
     end
 
+    def admin_external_links_list(entity)
+      return if entity.external_links.blank?
+
+      safe_join(
+        entity.external_links.map { |external_link| admin_external_link_to(entity, external_link) },
+        ' '
+      )
+    end
+
     private
+
+    def wikipedia_external_link?(external_link)
+      external_link.external_resource == ExternalResources::WIKIPEDIA
+    end
 
     def admin_nav_crumbs_for_header(crumbs)
       crumbs_for_header = crumbs.map do |crumb|

@@ -17,23 +17,10 @@
         <div class="col-md-9"><%= @public_list_type.name %></div>
       </div>
 
-      <% if @public_list_type.wiki_url.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Wiki URL:</div>
-          <div class="col-md-9">
-            <%= admin_link_to_wiki_with_stats(@public_list_type) %>
-          </div>
-        </div>
-      <% end %>
-
       <% if @public_list_type.external_links.present? %>
         <div class="row mb-3">
           <div class="col-md-3 font-weight-bold text-end">Links:</div>
-          <div class="col-md-9">
-            <% @public_list_type.external_links.each do |external_link| %>
-              <%= external_link_to external_link.external_resource, external_link.url %>
-            <% end %>
-          </div>
+          <div class="col-md-9"><%= admin_external_links_list(@public_list_type) %></div>
         </div>
       <% end %>
 
@@ -54,7 +41,7 @@
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("YEAR", "year") %></th>
       <th>LINKS</th>
-      <th>WIKI</th>
+      <th>EXTERNAL</th>
       <th>ENTRIES</th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
@@ -73,7 +60,7 @@
           <%= admin_link_to "edit", edit_admin_public_list_type_public_list_path(@public_list_type, public_list) %>
         </td>
         <td>
-          <%= external_link_to "wiki", public_list.wiki_url if public_list.wiki_url.present? %>
+          <%= admin_external_links_list(public_list) %>
         </td>
         <td>
           <%= public_list.book_public_lists.size %>

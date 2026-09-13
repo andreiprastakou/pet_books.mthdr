@@ -208,10 +208,7 @@ BookDetailsTags.propTypes = {
   tags: PropTypes.arrayOf(PropTypes.object).isRequired,
 }
 
-const bookDetailsLinks = book => [
-  ...(book.wikiUrl ? [{ external_resource: 'wikipedia', url: book.wikiUrl }] : []),
-  ...(book.externalLinks || []),
-]
+const bookDetailsLinks = book => book.externalLinks || []
 
 const BookDetailsCard = ({
   authorPagePath,

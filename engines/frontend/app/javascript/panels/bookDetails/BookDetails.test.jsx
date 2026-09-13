@@ -36,8 +36,10 @@ const bookDetails = {
   yearPublished: 1965,
   formLabel: 'a science fiction novel',
   summary: 'Sandworms.',
-  wikiUrl: 'https://en.wikipedia.org/wiki/Dune',
-  externalLinks: [{ external_resource: 'goodreads', url: 'https://goodreads.com/dune' }],
+  externalLinks: [
+    { external_resource: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Dune' },
+    { external_resource: 'goodreads', url: 'https://goodreads.com/dune' },
+  ],
   tagIds: [11],
   publicLists: [
     {

@@ -24,7 +24,14 @@ RSpec.describe '/api/public_list_types' do
     end
 
     let(:list_type) do
-      create(:public_list_type, name: 'Awards', wiki_url: 'https://en.wikipedia.org/wiki/Awards')
+      create(
+        :public_list_type,
+        name: 'Awards',
+        external_links: [
+          build(:external_link, external_resource: ExternalResources::WIKIPEDIA,
+                                url: 'https://en.wikipedia.org/wiki/Awards')
+        ]
+      )
     end
     let!(:older_list) { create(:public_list, public_list_type: list_type, year: 2020) }
     let!(:newer_list) { create(:public_list, public_list_type: list_type, year: 2021) }
@@ -39,7 +46,10 @@ RSpec.describe '/api/public_list_types' do
       expect(json_response).to include(
         id: list_type.id,
         name: 'Awards',
-        wiki_url: 'https://en.wikipedia.org/wiki/Awards',
+        external_links: [{
+          external_resource: ExternalResources::WIKIPEDIA,
+          url: 'https://en.wikipedia.org/wiki/Awards'
+        }],
         public_lists: [
           { id: newer_list.id, year: 2021 },
           { id: older_list.id, year: 2020 }

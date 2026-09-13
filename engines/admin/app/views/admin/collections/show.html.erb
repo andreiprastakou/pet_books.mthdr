@@ -22,21 +22,10 @@
         <div class="col-md-9"><%= @collection.year_published %></div>
       </div>
 
-      <% if @collection.wiki_url.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Wiki URL:</div>
-          <div class="col-md-9"><%= admin_link_to_wiki_with_stats(@collection) %></div>
-        </div>
-      <% end %>
-
       <% if @collection.external_links.present? %>
         <div class="row mb-3">
           <div class="col-md-3 font-weight-bold text-end">Links:</div>
-          <div class="col-md-9">
-            <% @collection.external_links.each do |external_link| %>
-              <%= external_link_to external_link.external_resource, external_link.url %>
-            <% end %>
-          </div>
+          <div class="col-md-9"><%= admin_external_links_list(@collection) %></div>
         </div>
       <% end %>
 

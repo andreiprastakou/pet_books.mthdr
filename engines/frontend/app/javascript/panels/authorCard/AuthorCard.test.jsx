@@ -27,7 +27,7 @@ const authorFull = {
   imageUrl: '/authors/7-full.jpg',
   tagIds: [11],
   booksCount: 2,
-  reference: null,
+  externalLinks: [],
 }
 
 const baseState = {

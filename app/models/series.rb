@@ -7,7 +7,6 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string           not null
-#  wiki_url   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -17,7 +16,8 @@
 #
 class Series < ApplicationRecord
   include HasExternalLinks
-  include HasWikiLinks
+  include HasWikipedia
+
 
   has_many :book_series, class_name: 'BookSeries', dependent: :destroy
   has_many :books, class_name: 'Book', through: :book_series

@@ -24,7 +24,6 @@ module Admin
     PARAMS = (%i[
       fullname
       original_fullname
-      wiki_url
       birth_year
       death_year
       photo_url
@@ -35,7 +34,7 @@ module Admin
     def index
       @pagy, @admin_authors = pagy(
         apply_sort(
-          Author.preload(:books),
+          Author.preload(:books, :external_links),
           SORTING_MAP,
           defaults: { sort_by: 'id', sort_order: 'desc' }
         )
@@ -44,7 +43,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        Book.preload(:genres, :generative_summary_tasks).by_author(@author),
+        Book.preload(:genres, :generative_summary_tasks, :external_links).by_author(@author),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       ).order(id: :desc)

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_183000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_190000) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -66,7 +66,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_183000) do
     t.string "original_fullname"
     t.datetime "synced_at"
     t.datetime "updated_at", null: false
-    t.string "wiki_url"
     t.index ["fullname"], name: "index_authors_on_fullname", unique: true
   end
 
@@ -132,7 +131,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_183000) do
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.integer "wiki_popularity", default: 0
-    t.string "wiki_url"
     t.integer "year_published", null: false
     t.index ["data_filled"], name: "index_books_on_data_filled"
     t.index ["year_published"], name: "index_books_on_year_published"
@@ -142,7 +140,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_183000) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
-    t.string "wiki_url"
     t.integer "year_published", null: false
     t.index ["name"], name: "index_collections_on_name", unique: true
   end
@@ -204,7 +201,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_183000) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
-    t.string "wiki_url"
     t.index ["name"], name: "index_public_list_types_on_name", unique: true
   end
 
@@ -212,7 +208,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_183000) do
     t.datetime "created_at", null: false
     t.integer "public_list_type_id", null: false
     t.datetime "updated_at", null: false
-    t.string "wiki_url"
     t.integer "year", null: false
     t.index ["public_list_type_id", "year"], name: "index_public_lists_on_public_list_type_id_and_year", unique: true
     t.index ["public_list_type_id"], name: "index_public_lists_on_public_list_type_id"
@@ -222,7 +217,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_183000) do
     t.datetime "created_at", null: false
     t.string "name", null: false
     t.datetime "updated_at", null: false
-    t.string "wiki_url"
     t.index ["name"], name: "index_series_on_name"
   end
 

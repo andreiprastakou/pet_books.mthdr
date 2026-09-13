@@ -10,7 +10,7 @@
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("NAME", "name") %></th>
       <th>LINKS</th>
-      <th>WIKI</th>
+      <th>EXTERNAL</th>
       <th><%= sortable_table_column("SIZE", "books_count") %></th>
       <th><%= sortable_table_column("CREATED", "created_at") %></th>
       <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
@@ -29,7 +29,7 @@
           <%= admin_link_to "edit", edit_admin_series_path(series) %>
         </td>
         <td>
-          <%= external_link_to "wiki", series.wiki_url if series.wiki_url.present? %>
+          <%= admin_external_links_list(series) %>
         </td>
         <td>
           <%= series.book_series.size %>

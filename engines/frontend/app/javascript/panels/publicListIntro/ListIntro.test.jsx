@@ -9,8 +9,10 @@ afterEach(cleanup)
 
 const listType = {
   name: 'Awards',
-  wiki_url: 'https://en.wikipedia.org/wiki/Awards',
-  external_links: [{ external_resource: 'official', url: 'https://example.com/awards' }],
+  external_links: [
+    { external_resource: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Awards' },
+    { external_resource: 'official', url: 'https://example.com/awards' },
+  ],
   public_lists: [
     { id: 1, year: 2020 },
     { id: 2, year: 2021 },

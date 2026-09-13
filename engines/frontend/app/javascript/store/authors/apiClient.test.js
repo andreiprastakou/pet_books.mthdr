@@ -69,7 +69,7 @@ describe('authors apiClient', () => {
         tag_ids: [],
         popularity: 1,
         rank: 1,
-        reference: null,
+        external_links: [],
       })
       .mockResolvedValueOnce([{ author_id: 3, label: 'Cara' }])
 

@@ -17,16 +17,14 @@ module Admin
       literary_form
     ].index_by(&:to_s).freeze
 
-    PARAMS = (%i[
-      name
-      wiki_url
-    ] + [{
-      external_links_attributes: {}
-    }]).freeze
+    PARAMS = ([
+      :name,
+      { external_links_attributes: {} }
+    ]).freeze
 
     def index
       @series = apply_sort(
-        Series.preload(:book_series),
+        Series.preload(:book_series, :external_links),
         SORTING_MAP,
         defaults: { sort_by: 'id', sort_order: 'desc' }
       )
@@ -34,7 +32,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        @series.books.preload(:authors, :generative_summary_tasks),
+        @series.books.preload(:authors, :generative_summary_tasks, :external_links),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       )

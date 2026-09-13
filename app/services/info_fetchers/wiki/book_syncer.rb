@@ -18,7 +18,7 @@ module InfoFetchers
       attr_reader :book
 
       def ensure_valid_context
-        raise "No wiki_url for book #{book.id}" if book.wiki_url.blank?
+        raise "No wikipedia link for book #{book.id}" if book.wiki_url.blank?
       end
 
       def initialize_links

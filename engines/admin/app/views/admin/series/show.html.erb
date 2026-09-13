@@ -16,21 +16,10 @@
         <div class="col-md-9"><%= @series.name %></div>
       </div>
 
-      <% if @series.wiki_url.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Wiki URL:</div>
-          <div class="col-md-9"><%= admin_link_to_wiki_with_stats(@series) %></div>
-        </div>
-      <% end %>
-
       <% if @series.external_links.present? %>
         <div class="row mb-3">
           <div class="col-md-3 font-weight-bold text-end">Links:</div>
-          <div class="col-md-9">
-            <% @series.external_links.each do |external_link| %>
-              <%= external_link_to external_link.external_resource, external_link.url %>
-            <% end %>
-          </div>
+          <div class="col-md-9"><%= admin_external_links_list(@series) %></div>
         </div>
       <% end %>
 
@@ -80,7 +69,6 @@
         <td>
           <%= admin_link_to "show", admin_book_path(book) %>
           <%= admin_link_to "edit", edit_admin_book_path(book) %>
-          <%= external_link_to "wiki", book.wiki_url if book.wiki_url.present? %>
         </td>
         <td>
           <%= book.year_published %>

@@ -5,7 +5,6 @@
 #
 #  id         :integer          not null, primary key
 #  name       :string           not null
-#  wiki_url   :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -15,7 +14,8 @@
 #
 class PublicListType < ApplicationRecord
   include HasExternalLinks
-  include HasWikiLinks
+  include HasWikipedia
+
 
   has_many :public_lists, class_name: 'PublicList', dependent: :restrict_with_error
 
