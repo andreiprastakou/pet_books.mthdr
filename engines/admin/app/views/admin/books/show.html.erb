@@ -155,12 +155,35 @@
         <div class="row mb-3">
           <div class="col-md-3 font-weight-bold text-end">External identities:</div>
           <div class="col-md-9">
+            <% unless @book.external_identities.open_library.exists? %>
+              <div>
+                Open Library:
+                <%= admin_link_to "search", admin_book_open_library_searches_path(@book),
+                  data: { turbo_method: :post } %>
+              </div>
+            <% end %>
+            <% unless @book.external_identities.wikidata.exists? %>
+              <div>
+                Wikidata:
+                <%= admin_link_to "search", admin_book_wikidata_searches_path(@book),
+                  data: { turbo_method: :post } %>
+              </div>
+            <% end %>
+            <% unless @book.external_identities.librarything.exists? %>
+              <div>
+                Librarything:
+                <%= admin_link_to "search", admin_book_library_thing_searches_path(@book),
+                  data: { turbo_method: :post } %>
+              </div>
+            <% end %>
             <% @book.external_identities.each do |external_identity| %>
               <% identity_label = external_identity.external_id.presence || '—' %>
               <% identity_url = if external_identity.open_library?
                                   ExternalLinks::OpenLibrary::Work.call(external_identity.external_id)
                                 elsif external_identity.wikidata?
                                   ExternalLinks::Wikidata.call(external_identity.external_id)
+                                elsif external_identity.librarything?
+                                  ExternalLinks::LibraryThing.call(external_identity.external_id)
                                 end
                  identity_url ||= external_identity.external_link&.url %>
               <div>

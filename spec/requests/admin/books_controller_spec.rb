@@ -53,6 +53,8 @@ RSpec.describe Admin::BooksController do
       expect(response.body).to include(admin_book_external_identity_open_library_fetches_path(book, identity))
       expect(response.body).to include(new_admin_book_external_identity_path(book))
       expect(response.body).not_to include('search in OpenLibrary')
+      expect(response.body).to include(admin_book_wikidata_searches_path(book))
+      expect(response.body).to include(admin_book_library_thing_searches_path(book))
     end
 
     it 'renders a fetch data link for Wikidata identities' do
@@ -62,12 +64,27 @@ RSpec.describe Admin::BooksController do
       expect(response.body).to include('Q74287')
       expect(response.body).to include('https://www.wikidata.org/wiki/Q74287')
       expect(response.body).to include(admin_book_external_identity_wikidata_fetches_path(book, identity))
+      expect(response.body).to include(admin_book_open_library_searches_path(book))
+      expect(response.body).not_to include(admin_book_wikidata_searches_path(book))
+      expect(response.body).to include(admin_book_library_thing_searches_path(book))
     end
 
-    it 'renders the OpenLibrary search button when the book has no Open Library identity' do
+    it 'renders search links when Open Library, Wikidata, and LibraryThing identities are missing' do
       send_request
       expect(response.body).to include('search in OpenLibrary')
       expect(response.body).to include(admin_book_open_library_searches_path(book))
+      expect(response.body).to include(admin_book_wikidata_searches_path(book))
+      expect(response.body).to include(admin_book_library_thing_searches_path(book))
+      expect(response.body).to include('>search</a>')
+    end
+
+    it 'hides the LibraryThing search link when a LibraryThing identity exists' do
+      create(:external_identity, owner: book, external_resource: :librarything, external_id: '33363109')
+      send_request
+      expect(response.body).to include('Librarything:')
+      expect(response.body).to include('33363109')
+      expect(response.body).to include('https://www.librarything.com/work/33363109')
+      expect(response.body).not_to include(admin_book_library_thing_searches_path(book))
     end
   end
 

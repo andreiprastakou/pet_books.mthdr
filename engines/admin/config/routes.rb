@@ -32,6 +32,8 @@ Admin::Engine.routes.draw do
           post :apply, on: :member
         end
         resources :open_library_searches, only: %i[create]
+        resources :wikidata_searches, only: %i[create]
+        resources :library_thing_searches, only: %i[create]
         resources :external_identities do
           resources :open_library_fetches, only: %i[create]
           resources :wikidata_fetches, only: %i[create]

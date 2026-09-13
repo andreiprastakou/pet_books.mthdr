@@ -13,7 +13,8 @@ module Admin
     }.freeze
 
     AUTHOR_LINK_BUILDERS = {
-      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Author
+      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Author,
+      ExternalResources::WIKIDATA => ExternalLinks::Wikidata
     }.freeze
 
     FETCH_TASKS = {

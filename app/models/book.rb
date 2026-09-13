@@ -107,12 +107,15 @@ class Book < ApplicationRecord
   end
 
   def history_data_fetch_tasks
-    fetch_tasks = Admin::OpenLibraryFetchTask.where(
+    book_fetch_tasks = Admin::BaseDataFetchTask.where(
+      target_type: Book.name,
+      target_id: id
+    )
+    identities_fetch_tasks = Admin::BaseDataFetchTask.where(
       target_type: ExternalIdentity.name,
       target_id: external_identities.select(:id)
     )
-    (generative_summary_tasks.to_a + open_library_search_tasks.to_a + library_thing_search_tasks.to_a +
-      fetch_tasks.to_a)
+    (book_fetch_tasks.to_a + identities_fetch_tasks.to_a)
       .sort_by(&:updated_at)
       .reverse
   end
