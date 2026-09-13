@@ -52,7 +52,7 @@
               </td>
               <td class="text-center">
                 <% @identifiers.each do |external_resource, external_id| %>
-                  <% link_builder = Admin::OpenLibraryFetchTask::EXTERNAL_LINK_BUILDERS[external_resource] %>
+                  <% link_builder = Admin::ExternalIdentityIntroductor.link_builder_for(external_resource, Book) %>
                   <% identity_url = link_builder&.call(external_id) %>
                   <% already_added = @book_identity_keys.include?([external_resource, external_id]) %>
                   <%= form_with url: add_identity_admin_open_library_fetch_task_path(@task),

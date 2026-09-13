@@ -1,0 +1,88 @@
+# frozen_string_literal: true
+
+module Admin
+  # Attaches an ExternalLink (when a URL builder exists) and enqueues a fetch task
+  # (when one is defined for the resource + owner) after an ExternalIdentity is
+  # created or its external_id changes.
+  class ExternalIdentityIntroductor
+    BOOK_LINK_BUILDERS = {
+      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Work,
+      ExternalResources::WIKIDATA => ExternalLinks::Wikidata,
+      ExternalResources::LIBRARYTHING => ExternalLinks::LibraryThing,
+      ExternalResources::GOODREADS => ExternalLinks::Goodreads
+    }.freeze
+
+    AUTHOR_LINK_BUILDERS = {
+      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Author
+    }.freeze
+
+    FETCH_TASKS = {
+      [ExternalResources::OPEN_LIBRARY, Book] => Admin::OpenLibraryFetchTask,
+      [ExternalResources::OPEN_LIBRARY, Author] => Admin::OpenLibraryAuthorFetchTask
+    }.freeze
+
+    def self.call(external_identity)
+      new(external_identity).call
+    end
+
+    def self.link_builder_for(external_resource, owner)
+      builders_for(owner)[external_resource.to_s]
+    end
+
+    def self.builders_for(owner)
+      case owner_class_name(owner)
+      when Book.name then BOOK_LINK_BUILDERS
+      when Author.name then AUTHOR_LINK_BUILDERS
+      else
+        {}
+      end
+    end
+
+    def self.owner_class_name(owner)
+      owner.is_a?(Module) ? owner.name : owner.class.name
+    end
+    private_class_method :owner_class_name
+
+    def initialize(external_identity)
+      @external_identity = external_identity
+      @external_id_changed = external_identity.saved_change_to_external_id?
+    end
+
+    def call
+      return external_identity unless @external_id_changed
+
+      attach_external_link!
+      enqueue_fetch_task!
+      external_identity
+    end
+
+    private
+
+    attr_reader :external_identity
+
+    def attach_external_link!
+      builder = self.class.link_builder_for(external_identity.external_resource, owner)
+      return unless builder
+
+      url = builder.call(external_identity.external_id)
+      return if url.blank?
+
+      link = owner.external_links.where(external_resource: external_identity.external_resource, url: url)
+                  .first_or_create!
+      return if external_identity.external_link_id == link.id
+
+      external_identity.update!(external_link: link)
+    end
+
+    def enqueue_fetch_task!
+      task_class = FETCH_TASKS[[external_identity.external_resource, owner.class]]
+      return unless task_class
+
+      task_class.setup(external_identity).enqueue_for_processing!
+    end
+
+    def owner
+      external_identity.owner
+    end
+  end
+end

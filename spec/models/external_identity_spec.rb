@@ -32,15 +32,6 @@ RSpec.describe ExternalIdentity do
   describe 'associations' do
     it { is_expected.to belong_to(:owner) }
     it { is_expected.to belong_to(:external_link).optional }
-    it {
-      is_expected.to have_many(:open_library_fetch_tasks).class_name(Admin::OpenLibraryFetchTask.name)
-                                                        .dependent(:destroy)
-    }
-    it {
-      is_expected.to have_many(:open_library_author_fetch_tasks)
-        .class_name(Admin::OpenLibraryAuthorFetchTask.name)
-        .dependent(:destroy)
-    }
   end
 
 
@@ -68,42 +59,6 @@ RSpec.describe ExternalIdentity do
     it 'allows blank external_link' do
       identity = build(:external_identity, external_link: nil)
       expect(identity).to be_valid
-    end
-  end
-
-  describe 'after create' do
-    it 'spawns and enqueues an Open Library fetch task for book open_library identities' do
-      book = create(:book)
-
-      expect do
-        create(:external_identity, owner: book, external_resource: :open_library)
-      end.to change(Admin::OpenLibraryFetchTask, :count).by(1)
-                                                        .and have_enqueued_job(Admin::DataFetchJob)
-    end
-
-    it 'spawns and enqueues an Open Library author fetch task for author open_library identities' do
-      author = create(:author)
-
-      expect do
-        create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL1394865A')
-      end.to change(Admin::OpenLibraryAuthorFetchTask, :count).by(1)
-                                                             .and have_enqueued_job(Admin::DataFetchJob)
-    end
-
-    it 'does not enqueue a book fetch task when the owner is an author' do
-      author = create(:author)
-
-      expect do
-        create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL1394865A')
-      end.not_to change(Admin::OpenLibraryFetchTask, :count)
-    end
-
-    it 'does not enqueue for non-open_library identities' do
-      book = create(:book)
-
-      expect do
-        create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
-      end.not_to change(Admin::OpenLibraryFetchTask, :count)
     end
   end
 end

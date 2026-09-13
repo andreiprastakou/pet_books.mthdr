@@ -48,13 +48,11 @@ module Admin
       olid = InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.normalize_work_key(work_key)
       raise ArgumentError, 'Invalid Open Library work key' if olid.blank?
 
-      url = "#{InfoFetchers::OpenLibrary::Api::BaseCaller::BASE_URL}/works/#{olid}"
-      external_link = book.external_links.where(external_resource: ExternalResources::OPEN_LIBRARY, url: url).first_or_create!
-      book.external_identities.create!(
+      identity = book.external_identities.create!(
         external_resource: ExternalResources::OPEN_LIBRARY,
-        external_id: olid,
-        external_link: external_link
+        external_id: olid
       )
+      Admin::ExternalIdentityIntroductor.call(identity)
     end
 
     def add_author_identity!(author_key, author:)
@@ -63,13 +61,12 @@ module Admin
       raise ArgumentError, 'Author is required' if author.blank?
       raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
 
-      url = "#{ExternalLinks::OpenLibrary::Author::BASE_URL}/authors/#{olid}"
-      external_link = author.external_links.where(external_resource: ExternalResources::OPEN_LIBRARY, url: url).first_or_create!
-      author.external_identities.create!(
+      identity = author.external_identities.create!(
         external_resource: ExternalResources::OPEN_LIBRARY,
-        external_id: olid,
-        external_link: external_link
+        external_id: olid
       )
+      Admin::ExternalIdentityIntroductor.call(identity)
     end
+
   end
 end
