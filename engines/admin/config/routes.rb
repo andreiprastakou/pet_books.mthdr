@@ -55,6 +55,7 @@ Admin::Engine.routes.draw do
         post :request_books_list
         post :fill_books_list
       end
+      resource :wikidata_updates_widget, only: %i[show], controller: 'wikidata_updates_widget'
       resource :open_library_updates_widget, only: %i[show], controller: 'open_library_updates_widget'
     end
 

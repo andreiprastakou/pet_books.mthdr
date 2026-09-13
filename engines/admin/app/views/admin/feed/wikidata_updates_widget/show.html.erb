@@ -1,6 +1,6 @@
-<%= turbo_frame_tag "open_library_updates_widget", target: "_top" do %>
+<%= turbo_frame_tag "wikidata_updates_widget", target: "_top" do %>
   <div class="container mt-4">
-    <h3>Open Library updates for review</h3>
+    <h3>Wikidata updates for review</h3>
     <table class="table b-external-updates-table">
       <thead>
         <tr>
@@ -14,7 +14,7 @@
         <% row_count = [@book_searches, @book_fetches, @author_searches, @author_fetches].map(&:size).max %>
         <% if row_count.zero? %>
           <tr>
-            <td colspan="4">No Open Library updates to review</td>
+            <td colspan="4">No Wikidata updates to review</td>
           </tr>
         <% else %>
           <% row_count.times do |i| %>
