@@ -20,9 +20,11 @@ module Admin
 
       def create
         @external_identity = @book.external_identities.new(record_params)
+        success = @external_identity.save
+        Admin::ExternalIdentityIntroductor.call(@external_identity) if success
 
         respond_to do |format|
-          if @external_identity.save
+          if success
             format.html do
               redirect_to admin_book_external_identity_path(@book, @external_identity),
                           notice: t('notices.admin.external_identities.create.success')
@@ -34,8 +36,11 @@ module Admin
       end
 
       def update
+        success = @external_identity.update(record_params)
+        Admin::ExternalIdentityIntroductor.call(@external_identity) if success
+
         respond_to do |format|
-          if @external_identity.update(record_params)
+          if success
             format.html do
               redirect_to admin_book_external_identity_path(@book, @external_identity),
                           notice: t('notices.admin.external_identities.update.success')
@@ -45,6 +50,7 @@ module Admin
           end
         end
       end
+
 
       def destroy
         @external_identity.destroy!

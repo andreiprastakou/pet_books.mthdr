@@ -26,13 +26,6 @@
 #
 module Admin
   class OpenLibraryFetchTask < BaseDataFetchTask
-    EXTERNAL_LINK_BUILDERS = {
-      ExternalResources::WIKIDATA => ExternalLinks::Wikidata,
-      ExternalResources::GOODREADS => ExternalLinks::Goodreads,
-      ExternalResources::LIBRARYTHING => ExternalLinks::LibraryThing,
-      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Work
-    }.freeze
-
     def self.setup(external_identity)
       create!(target: external_identity)
     end
@@ -93,13 +86,10 @@ module Admin
       id = external_id.to_s.strip
       raise ArgumentError, 'External ID is required' if id.blank?
 
-      url = EXTERNAL_LINK_BUILDERS[resource]&.call(id)
-      attrs = { external_resource: resource, external_id: id }
-      if url.present?
-        attrs[:external_link] = book.external_links.where(external_resource: resource, url: url).first_or_create!
-      end
-      book.external_identities.create!(attrs)
+      identity = book.external_identities.create!(external_resource: resource, external_id: id)
+      Admin::ExternalIdentityIntroductor.call(identity)
     end
+
 
     def apply_summary!(summary, summary_src = nil)
       text = summary.to_s.strip
