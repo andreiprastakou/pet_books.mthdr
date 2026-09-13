@@ -9,18 +9,18 @@ require 'rails_helper'
 #
 #  id                :integer          not null, primary key
 #  external_resource :integer          not null
-#  identificator     :string
 #  owner_type        :string           not null
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  external_id       :string           not null
 #  external_link_id  :integer
 #  owner_id          :integer          not null
 #
 # Indexes
 #
-#  idx_on_external_resource_identificator_ab3aeda95b     (external_resource,identificator) UNIQUE
-#  index_external_identities_on_external_link_id         (external_link_id)
-#  index_external_identities_on_owner_type_and_owner_id  (owner_type,owner_id)
+#  index_external_identities_on_external_link_id                   (external_link_id)
+#  index_external_identities_on_external_resource_and_external_id  (external_resource,external_id) UNIQUE
+#  index_external_identities_on_owner_type_and_owner_id            (owner_type,owner_id)
 #
 # Foreign Keys
 #
@@ -58,14 +58,15 @@ RSpec.describe ExternalIdentity do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:owner_type) }
     it { is_expected.to validate_presence_of(:external_resource) }
-    it { is_expected.to validate_uniqueness_of(:identificator).scoped_to(:external_resource).allow_nil }
+    it { is_expected.to validate_presence_of(:external_id) }
+    it { is_expected.to validate_uniqueness_of(:external_id).scoped_to(:external_resource) }
 
     it 'has a valid factory' do
       expect(build(:external_identity, owner: build_stubbed(:book))).to be_valid
     end
 
-    it 'allows blank identificator and external_link' do
-      identity = build(:external_identity, identificator: nil, external_link: nil)
+    it 'allows blank external_link' do
+      identity = build(:external_identity, external_link: nil)
       expect(identity).to be_valid
     end
   end
@@ -84,7 +85,7 @@ RSpec.describe ExternalIdentity do
       author = create(:author)
 
       expect do
-        create(:external_identity, owner: author, external_resource: :open_library, identificator: 'OL1394865A')
+        create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL1394865A')
       end.to change(Admin::OpenLibraryAuthorFetchTask, :count).by(1)
                                                              .and have_enqueued_job(Admin::DataFetchJob)
     end
@@ -93,7 +94,7 @@ RSpec.describe ExternalIdentity do
       author = create(:author)
 
       expect do
-        create(:external_identity, owner: author, external_resource: :open_library, identificator: 'OL1394865A')
+        create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL1394865A')
       end.not_to change(Admin::OpenLibraryFetchTask, :count)
     end
 
@@ -101,7 +102,7 @@ RSpec.describe ExternalIdentity do
       book = create(:book)
 
       expect do
-        create(:external_identity, owner: book, external_resource: :wikidata, identificator: 'Q1')
+        create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
       end.not_to change(Admin::OpenLibraryFetchTask, :count)
     end
   end

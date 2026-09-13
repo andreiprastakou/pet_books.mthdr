@@ -37,7 +37,7 @@ module Admin
     def prepare_form_data
       @book = Book.includes(:external_identities, authors: :external_identities).find(@task.target_id)
       @search_results = sorted_search_results
-      @book_open_library_ids = @book.external_identities.open_library.filter_map(&:identificator).to_set
+      @book_open_library_ids = @book.external_identities.open_library.filter_map(&:external_id).to_set
       @author_identities_by_olid = author_identities_by_olid
     end
 
@@ -56,9 +56,9 @@ module Admin
       return {} if author_olids.empty?
 
       ExternalIdentity.open_library
-                      .where(owner_type: Author.name, identificator: author_olids)
+                      .where(owner_type: Author.name, external_id: author_olids)
                       .includes(:owner)
-                      .index_by(&:identificator)
+                      .index_by(&:external_id)
     end
 
     def result_author_keys(result)

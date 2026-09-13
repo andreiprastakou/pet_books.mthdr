@@ -59,8 +59,8 @@ RSpec.describe Admin::OpenLibrarySearchTasksController do
 
     context 'when Open Library identities exist' do
       before do
-        create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL1099866W')
-        create(:external_identity, owner: author, external_resource: :open_library, identificator: 'OL113611A')
+        create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1099866W')
+        create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL113611A')
       end
 
       it 'renders linked identities and disables matching add buttons' do
@@ -75,7 +75,7 @@ RSpec.describe Admin::OpenLibrarySearchTasksController do
       let(:other_author) { create(:author, fullname: 'Other Author') }
 
       before do
-        create(:external_identity, owner: other_author, external_resource: :open_library, identificator: 'OL113611A')
+        create(:external_identity, owner: other_author, external_resource: :open_library, external_id: 'OL113611A')
       end
 
       it 'shows a hint that the author is not linked to the book' do

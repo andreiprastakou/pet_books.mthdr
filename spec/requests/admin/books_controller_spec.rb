@@ -42,7 +42,7 @@ RSpec.describe Admin::BooksController do
     end
 
     it 'renders external identities with links and an Add button' do
-      identity = create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL99W')
+      identity = create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL99W')
       send_request
       expect(response.body).to include('External identities:')
       expect(response.body).to include('Open Library:')
@@ -56,7 +56,7 @@ RSpec.describe Admin::BooksController do
     end
 
     it 'renders a fetch data link for Wikidata identities' do
-      identity = create(:external_identity, owner: book, external_resource: :wikidata, identificator: 'Q74287')
+      identity = create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q74287')
       send_request
       expect(response.body).to include('Wikidata:')
       expect(response.body).to include('Q74287')

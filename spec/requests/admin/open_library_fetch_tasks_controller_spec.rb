@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe Admin::OpenLibraryFetchTasksController do
   let(:book) { create(:book, title: 'The Sea Serpent', summary: 'Existing summary') }
   let!(:external_identity) do
-    create(:external_identity, owner: book, external_resource: :open_library, identificator: 'OL1099866W')
+    create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1099866W')
   end
   let(:fetched_data) do
     {
@@ -50,7 +50,7 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
 
     context 'when an identifier is already present on the book' do
       before do
-        create(:external_identity, owner: book, external_resource: :wikidata, identificator: 'Q137179018')
+        create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q137179018')
       end
 
       it 'disables the matching add button' do
@@ -63,7 +63,7 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
   describe 'POST /admin/open_library_fetch_tasks/:id/add_identity' do
     let(:send_request) do
       post add_identity_admin_open_library_fetch_task_path(task),
-           params: { external_resource: 'wikidata', identificator: 'Q137179018' },
+           params: { external_resource: 'wikidata', external_id: 'Q137179018' },
            headers: authorization_header
     end
 

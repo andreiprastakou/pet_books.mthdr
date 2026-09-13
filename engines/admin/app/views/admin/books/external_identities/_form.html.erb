@@ -13,8 +13,11 @@
   </div>
 
   <div class="mb-3">
-    <%= form.label :identificator, class: "form-label" %>
-    <%= form.text_field :identificator, class: "form-control" %>
+    <%= form.label :external_id, "External ID", class: "form-label" %>
+    <%= form.text_field :external_id, class: "form-control", required: true %>
+    <div class="invalid-feedback">
+      Please provide an external ID.
+    </div>
   </div>
 
   <div class="mb-3">

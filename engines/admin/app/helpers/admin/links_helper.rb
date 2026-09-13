@@ -40,7 +40,7 @@ module Admin
     def admin_nav_external_identity_link(book, external_identity)
       label = [
         external_identity.external_resource.to_s.titleize,
-        external_identity.identificator.presence
+        external_identity.external_id.presence
       ].compact.join(': ')
       [truncate_crumb(label.presence || 'External Identity'),
        admin_book_external_identity_path(book, external_identity)]
@@ -110,10 +110,10 @@ module Admin
         identity = task.external_identity
         owner = identity.owner
         if owner.is_a?(Book)
-          admin_link_to "Open Library #{identity.identificator} (#{owner.title})",
+          admin_link_to "Open Library #{identity.external_id} (#{owner.title})",
                         admin_book_external_identity_path(owner, identity)
         else
-          "Open Library #{identity.identificator}"
+          "Open Library #{identity.external_id}"
         end
       when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask, Admin::OpenLibraryAuthorSearchTask
         admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)

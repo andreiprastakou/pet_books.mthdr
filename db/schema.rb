@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_180000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_13_181000) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -169,14 +169,14 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_180000) do
 
   create_table "external_identities", force: :cascade do |t|
     t.datetime "created_at", null: false
+    t.string "external_id", null: false
     t.integer "external_link_id"
     t.integer "external_resource", null: false
-    t.string "identificator"
     t.integer "owner_id", null: false
     t.string "owner_type", null: false
     t.datetime "updated_at", null: false
     t.index ["external_link_id"], name: "index_external_identities_on_external_link_id"
-    t.index ["external_resource", "identificator"], name: "idx_on_external_resource_identificator_ab3aeda95b", unique: true
+    t.index ["external_resource", "external_id"], name: "index_external_identities_on_external_resource_and_external_id", unique: true
     t.index ["owner_type", "owner_id"], name: "index_external_identities_on_owner_type_and_owner_id"
   end
 

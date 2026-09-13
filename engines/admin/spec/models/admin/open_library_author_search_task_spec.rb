@@ -82,7 +82,7 @@ RSpec.describe Admin::OpenLibraryAuthorSearchTask do
       expect { call }.to change(author.external_identities, :count).by(1)
       identity = call
       expect(identity.external_resource).to eq('open_library')
-      expect(identity.identificator).to eq('OL113611A')
+      expect(identity.external_id).to eq('OL113611A')
       expect(identity.external_link.url).to eq('https://openlibrary.org/authors/OL113611A')
       expect(task.reload.status).to eq('fetched')
     end

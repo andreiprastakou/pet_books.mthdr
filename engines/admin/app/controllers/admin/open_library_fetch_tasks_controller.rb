@@ -7,7 +7,7 @@ module Admin
     end
 
     def add_identity
-      @task.add_identity!(params.require(:external_resource), params.require(:identificator))
+      @task.add_identity!(params.require(:external_resource), params.require(:external_id))
       redirect_to admin_data_fetch_task_path(@task),
                   notice: t('notices.admin.open_library_fetch_tasks.add_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
@@ -38,9 +38,9 @@ module Admin
       @identifiers = @task.fetched_identifiers
       @description = @task.fetched_description
       @book_identity_keys = @book.external_identities.filter_map do |identity|
-        next if identity.identificator.blank?
+        next if identity.external_id.blank?
 
-        [identity.external_resource.to_s, identity.identificator]
+        [identity.external_resource.to_s, identity.external_id]
       end.to_set
     end
   end

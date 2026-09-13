@@ -10,11 +10,11 @@
         <% owner = identity.owner %>
         <li class="list-group-item">
           <% if owner.is_a?(Book) %>
-            <%= admin_link_to "#{owner.title} (#{owner.year_published}) — #{identity.identificator}", admin_data_fetch_task_path(task) %>
+            <%= admin_link_to "#{owner.title} (#{owner.year_published}) — #{identity.external_id}", admin_data_fetch_task_path(task) %>
           <% elsif owner.is_a?(Author) %>
-            <%= admin_link_to "#{owner.name} — #{identity.identificator}", admin_data_fetch_task_path(task) %>
+            <%= admin_link_to "#{owner.name} — #{identity.external_id}", admin_data_fetch_task_path(task) %>
           <% else %>
-            <%= admin_link_to identity.identificator.to_s, admin_data_fetch_task_path(task) %>
+            <%= admin_link_to identity.external_id.to_s, admin_data_fetch_task_path(task) %>
           <% end %>
         </li>
       <% end %>

@@ -35,7 +35,7 @@ RSpec.describe Admin::WikidataFetchTask do
 
   describe '.setup' do
     let(:external_identity) do
-      create(:external_identity, external_resource: :wikidata, identificator: "Q#{SecureRandom.random_number(1_000_000_000)}")
+      create(:external_identity, external_resource: :wikidata, external_id: "Q#{SecureRandom.random_number(1_000_000_000)}")
     end
 
     it 'creates a new wikidata fetch task' do
@@ -52,12 +52,12 @@ RSpec.describe Admin::WikidataFetchTask do
 
     let(:task) { create(:wikidata_fetch_task, target: external_identity) }
     let(:external_identity) do
-      create(:external_identity, external_resource: :wikidata, identificator: "Q#{SecureRandom.random_number(1_000_000_000)}")
+      create(:external_identity, external_resource: :wikidata, external_id: "Q#{SecureRandom.random_number(1_000_000_000)}")
     end
     let(:fetcher) { instance_double(InfoFetchers::Wikidata::Api::BookDetailsFetcher) }
     let(:api_data) do
       {
-        'id' => external_identity.identificator,
+        'id' => external_identity.external_id,
         'labels' => { 'en' => 'The Hobbit' },
         'descriptions' => { 'en' => '1937 novel by J. R. R. Tolkien' }
       }
@@ -65,7 +65,7 @@ RSpec.describe Admin::WikidataFetchTask do
 
     before do
       allow(InfoFetchers::Wikidata::Api::BookDetailsFetcher)
-        .to receive(:new).with(external_identity.identificator).and_return(fetcher)
+        .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
     end
 
@@ -93,7 +93,7 @@ RSpec.describe Admin::WikidataFetchTask do
         :external_identity,
         owner: book,
         external_resource: :wikidata,
-        identificator: "Q#{SecureRandom.random_number(1_000_000_000)}"
+        external_id: "Q#{SecureRandom.random_number(1_000_000_000)}"
       )
     end
     let(:task) { create(:wikidata_fetch_task, target: external_identity) }
@@ -108,7 +108,7 @@ RSpec.describe Admin::WikidataFetchTask do
           :external_identity,
           owner: create(:author),
           external_resource: :wikidata,
-          identificator: "Q#{SecureRandom.random_number(1_000_000_000)}"
+          external_id: "Q#{SecureRandom.random_number(1_000_000_000)}"
         )
       end
 
