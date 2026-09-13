@@ -49,7 +49,7 @@ module Admin
       raise ArgumentError, 'Invalid Open Library work key' if olid.blank?
 
       book.external_identities.create!(
-        external_resource: :open_library,
+        external_resource: ExternalResources::OPEN_LIBRARY,
         identificator: olid,
         url: "#{InfoFetchers::OpenLibrary::Api::BaseCaller::BASE_URL}/works/#{olid}"
       )
@@ -62,7 +62,7 @@ module Admin
       raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
 
       author.external_identities.create!(
-        external_resource: :open_library,
+        external_resource: ExternalResources::OPEN_LIBRARY,
         identificator: olid,
         url: "#{ExternalLinks::OpenLibrary::Author::BASE_URL}/authors/#{olid}"
       )

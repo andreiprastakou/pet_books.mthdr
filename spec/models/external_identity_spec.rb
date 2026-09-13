@@ -41,10 +41,10 @@ RSpec.describe ExternalIdentity do
   describe '#external_resource enum' do
     it do
       expect(identity).to define_enum_for(:external_resource).with_values(
-        open_library: 1,
-        wikidata: 2,
-        librarything: 3,
-        goodreads: 4
+        ExternalResources::OPEN_LIBRARY => 1,
+        ExternalResources::WIKIDATA => 2,
+        ExternalResources::LIBRARYTHING => 3,
+        ExternalResources::GOODREADS => 4
       )
     end
   end

@@ -27,10 +27,10 @@
 module Admin
   class OpenLibraryFetchTask < BaseDataFetchTask
     EXTERNAL_LINK_BUILDERS = {
-      'wikidata' => ExternalLinks::Wikidata,
-      'goodreads' => ExternalLinks::Goodreads,
-      'librarything' => ExternalLinks::LibraryThing,
-      'open_library' => ExternalLinks::OpenLibrary::Work
+      ExternalResources::WIKIDATA => ExternalLinks::Wikidata,
+      ExternalResources::GOODREADS => ExternalLinks::Goodreads,
+      ExternalResources::LIBRARYTHING => ExternalLinks::LibraryThing,
+      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Work
     }.freeze
 
     def self.setup(external_identity)
