@@ -113,4 +113,19 @@ RSpec.describe Author do
       expect(result).to eq('https://example.com/card.jpg')
     end
   end
+
+  describe '#history_data_fetch_tasks' do
+    subject(:result) { author.history_data_fetch_tasks }
+
+    let(:author) { create(:author) }
+    let!(:author_task) { create(:open_library_author_search_task, target: author, updated_at: 1.day.ago) }
+    let!(:identity_task) do
+      identity = create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL1A')
+      create(:open_library_author_fetch_task, target: identity, updated_at: Time.current)
+    end
+
+    it 'returns author and identity tasks newest first' do
+      expect(result).to eq([identity_task, author_task])
+    end
+  end
 end

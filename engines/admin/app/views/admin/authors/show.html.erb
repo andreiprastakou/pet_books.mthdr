@@ -15,84 +15,160 @@
   </div>
 </div>
 
-<div class="b-author-page container mt-4">
+<div id="<%= dom_id @author %>" class="b-author-page container mt-4">
   <div class="row">
+
     <div class="container col-md-6">
-      <div class="row mb-3">
-        <div class="col-md-3 font-weight-bold text-end">Full Name:</div>
-        <div class="col-md-9"><%= @author.fullname %></div>
-      </div>
+      <div class="bg-light border p-3">
+        <h5 class="mb-3">GENERAL</h5>
 
-      <% if @author.original_fullname.present? %>
         <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Original Full Name:</div>
-          <div class="col-md-9"><%= @author.original_fullname %></div>
+          <div class="col-md-3 font-weight-bold text-end">Full Name:</div>
+          <div class="col-md-9"><%= @author.fullname %></div>
         </div>
-      <% end %>
 
-      <% if @author.external_links.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Links:</div>
-          <div class="col-md-9"><%= admin_external_links_list(@author) %></div>
-        </div>
-      <% end %>
-
-      <% if @author.birth_year.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Birth Year:</div>
-          <div class="col-md-9"><%= @author.birth_year %></div>
-        </div>
-      <% end %>
-
-      <% if @author.death_year.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Death Year:</div>
-          <div class="col-md-9"><%= @author.death_year %></div>
-        </div>
-      <% end %>
-
-      <div class="row mb-3">
-        <div class="col-md-3 font-weight-bold text-end">Created At:</div>
-        <div class="col-md-9"><%= admin_timestamp(@author.created_at) %></div>
-      </div>
-
-      <div class="row mb-3">
-        <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
-        <div class="col-md-9"><%= admin_timestamp(@author.updated_at) %></div>
-      </div>
-
-      <% if @author.synced_at.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Synced At:</div>
-          <div class="col-md-9"><%= admin_timestamp(@author.synced_at) %></div>
-        </div>
-      <% end %>
-
-      <% if @author.tags.present? %>
-        <div class="row mb-3">
-          <div class="col-md-3 font-weight-bold text-end">Tags:</div>
-          <div class="col-md-9">
-            <% @author.tags.each do |tag| %>
-              <span class="badge bg-secondary mr-1"><%= tag.name %></span>
-            <% end %>
+        <% if @author.original_fullname.present? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Original Full Name:</div>
+            <div class="col-md-9"><%= @author.original_fullname %></div>
           </div>
-        </div>
-      <% end %>
-    </div>
+        <% end %>
 
-    <div class="container col-md-6">
-      <div class="row mb-3">
-        <% if @author.photo_thumb_url.present? %>
-          <div class="col-md-3 font-weight-bold text-end">Photo:</div>
-          <div class="col-md-9">
-            <%= image_tag @author.photo_thumb_url, class: "img-fluid b-author-photo" %>
+        <% if @author.birth_year.present? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Birth Year:</div>
+            <div class="col-md-9"><%= @author.birth_year %></div>
+          </div>
+        <% end %>
+
+        <% if @author.death_year.present? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Death Year:</div>
+            <div class="col-md-9"><%= @author.death_year %></div>
+          </div>
+        <% end %>
+
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Created At:</div>
+          <div class="col-md-9"><%= admin_timestamp(@author.created_at) %></div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
+          <div class="col-md-9"><%= admin_timestamp(@author.updated_at) %></div>
+        </div>
+
+        <% if @author.synced_at.present? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Synced At:</div>
+            <div class="col-md-9"><%= admin_timestamp(@author.synced_at) %></div>
+          </div>
+        <% end %>
+
+        <% if @author.tags.present? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Tags:</div>
+            <div class="col-md-9">
+              <% @author.tags.each do |tag| %>
+                <span class="badge bg-secondary mr-1"><%= tag.name %></span>
+              <% end %>
+            </div>
           </div>
         <% end %>
       </div>
+
+      <div class="bg-light border p-3 mt-3">
+        <h5 class="mb-3">LINKS</h5>
+
+        <% if @author.external_links.present? %>
+          <div class="row mb-3">
+            <div class="col-md-3 font-weight-bold text-end">Links:</div>
+            <div class="col-md-9"><%= admin_external_links_list(@author) %></div>
+          </div>
+        <% end %>
+
+        <div class="row mb-3">
+          <div class="col-md-3 font-weight-bold text-end">External identities:</div>
+          <div class="col-md-9">
+            <% unless @author.external_identities.open_library.exists? %>
+              <div>
+                Open Library:
+                <%= admin_link_to "search", admin_author_open_library_searches_path(@author),
+                  data: { turbo_method: :post } %>
+              </div>
+            <% end %>
+            <% unless @author.external_identities.wikidata.exists? %>
+              <div>
+                Wikidata:
+                <%= admin_link_to "search", admin_author_wikidata_searches_path(@author),
+                  data: { turbo_method: :post } %>
+              </div>
+            <% end %>
+            <% @author.external_identities.each do |external_identity| %>
+              <% identity_label = external_identity.external_id.presence || '—' %>
+              <% identity_url = if external_identity.open_library?
+                                  ExternalLinks::OpenLibrary::Author.call(external_identity.external_id)
+                                elsif external_identity.wikidata?
+                                  ExternalLinks::Wikidata.call(external_identity.external_id)
+                                end
+                 identity_url ||= external_identity.external_link&.url %>
+              <div>
+                <%= external_identity.external_resource.to_s.titleize %>:
+                <% if identity_url.present? %>
+                  <%= external_link_to identity_label, identity_url %>
+                <% else %>
+                  <%= identity_label %>
+                <% end %>
+                <%= admin_link_to "edit", edit_admin_author_external_identity_path(@author, external_identity) %>
+                <%= admin_link_to "delete", admin_author_external_identity_path(@author, external_identity),
+                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+                <% if external_identity.open_library? %>
+                  <%= admin_link_to "fetch data",
+                    admin_author_external_identity_open_library_fetches_path(@author, external_identity),
+                    data: { turbo_method: :post } %>
+                <% elsif external_identity.wikidata? %>
+                  <%= admin_link_to "fetch data",
+                    admin_author_external_identity_wikidata_fetches_path(@author, external_identity),
+                    data: { turbo_method: :post } %>
+                <% end %>
+              </div>
+            <% end %>
+            <%= admin_buttonly_link_to "Add", new_admin_author_external_identity_path(@author) %>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-light border p-3 mt-3">
+        <h5 class="mb-3">HISTORY</h5>
+        <% if @history_tasks.present? %>
+          <ul class="list-unstyled mb-0">
+            <% @history_tasks.each do |task| %>
+              <li class="mb-2">
+                <%= link_to admin_data_fetch_task_path(task) do %>
+                  <%= task.type %>
+                  updated <%= admin_timestamp(task.updated_at) %>
+                  (<%= task.status.humanize %>)
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No tasks yet.</p>
+        <% end %>
+      </div>
     </div>
+
+    <% if @author.photo_thumb_url.present? %>
+      <div class="container col-md-6">
+        <div class="bg-light border p-3">
+          <h5 class="mb-3">PHOTO</h5>
+          <%= image_tag @author.photo_thumb_url, class: "b-author-photo" %>
+        </div>
+      </div>
+    <% end %>
   </div>
 
-  <table class="table border">
+  <table class="table border mt-4">
     <thead>
       <th><%= sortable_table_column("ID", "id") %></th>
       <th><%= sortable_table_column("TITLE", "title") %></th>

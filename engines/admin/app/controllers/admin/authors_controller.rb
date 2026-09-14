@@ -47,6 +47,7 @@ module Admin
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       ).order(id: :desc)
+      @history_tasks = @author.history_data_fetch_tasks
     end
 
     def new
