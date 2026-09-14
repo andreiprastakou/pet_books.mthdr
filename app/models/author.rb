@@ -74,6 +74,20 @@ class Author < ApplicationRecord
     assign_remote_url_or_data(:aws_photos, value)
   end
 
+  def history_data_fetch_tasks
+    author_fetch_tasks = Admin::BaseDataFetchTask.where(
+      target_type: Author.name,
+      target_id: id
+    )
+    identities_fetch_tasks = Admin::BaseDataFetchTask.where(
+      target_type: ExternalIdentity.name,
+      target_id: external_identities.select(:id)
+    )
+    (author_fetch_tasks.to_a + identities_fetch_tasks.to_a)
+      .sort_by(&:updated_at)
+      .reverse
+  end
+
   protected
 
   def strip_name

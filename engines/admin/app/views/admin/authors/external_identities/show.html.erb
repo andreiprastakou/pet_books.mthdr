@@ -1,0 +1,41 @@
+<% admin_nav_crumbs admin_nav_authors_link, admin_nav_author_link(@author),
+  admin_nav_external_identity_link(@author, @external_identity) %>
+
+<div class="container mt-4">
+  <div class="btn-group" role="group">
+    <%= admin_buttonly_link_to "edit", edit_admin_author_external_identity_path(@author, @external_identity) %>
+    <%= button_to "delete", admin_author_external_identity_path(@author, @external_identity), method: :delete,
+      class: "btn btn-danger", data: { confirm: "Are you sure?" } %>
+  </div>
+</div>
+
+<div id="<%= dom_id @external_identity %>" class="container mt-4">
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">External Resource:</div>
+    <div class="col-md-9"><%= @external_identity.external_resource.to_s.titleize %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">External ID:</div>
+    <div class="col-md-9"><%= @external_identity.external_id %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">URL:</div>
+    <div class="col-md-9">
+      <% if @external_identity.external_link&.url.present? %>
+        <%= external_link_to @external_identity.external_link.url, @external_identity.external_link.url %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">Created At:</div>
+    <div class="col-md-9"><%= admin_timestamp(@external_identity.created_at) %></div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-3 font-weight-bold text-end">Updated At:</div>
+    <div class="col-md-9"><%= admin_timestamp(@external_identity.updated_at) %></div>
+  </div>
+</div>

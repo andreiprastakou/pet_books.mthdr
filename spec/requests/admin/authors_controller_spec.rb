@@ -33,6 +33,42 @@ RSpec.describe Admin::AuthorsController do
       expect(response).to be_successful
       expect(response).to render_template 'admin/authors/show'
     end
+
+    it 'renders search links when Open Library and Wikidata identities are missing' do
+      send_request
+      expect(response.body).to include(admin_author_open_library_searches_path(author))
+      expect(response.body).to include(admin_author_wikidata_searches_path(author))
+      expect(response.body).to include('>search</a>')
+    end
+
+    it 'hides the Open Library search link when an Open Library identity exists' do
+      identity = create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL1A')
+      send_request
+      expect(response.body).to include('Open Library:')
+      expect(response.body).to include('OL1A')
+      expect(response.body).to include(edit_admin_author_external_identity_path(author, identity))
+      expect(response.body).to include(admin_author_external_identity_path(author, identity))
+      expect(response.body).to include(admin_author_external_identity_open_library_fetches_path(author, identity))
+      expect(response.body).to include(new_admin_author_external_identity_path(author))
+      expect(response.body).not_to include(admin_author_open_library_searches_path(author))
+      expect(response.body).to include(admin_author_wikidata_searches_path(author))
+    end
+
+    it 'hides the Wikidata search link when a Wikidata identity exists' do
+      identity = create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+      send_request
+      expect(response.body).to include('Wikidata:')
+      expect(response.body).to include('Q892')
+      expect(response.body).to include(edit_admin_author_external_identity_path(author, identity))
+      expect(response.body).to include(admin_author_external_identity_wikidata_fetches_path(author, identity))
+      expect(response.body).to include(admin_author_open_library_searches_path(author))
+      expect(response.body).not_to include(admin_author_wikidata_searches_path(author))
+    end
+
+    it 'renders an Add link for external identities' do
+      send_request
+      expect(response.body).to include(new_admin_author_external_identity_path(author))
+    end
   end
 
   describe 'GET /admin/authors/new' do

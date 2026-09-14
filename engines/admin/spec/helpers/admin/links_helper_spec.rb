@@ -26,15 +26,30 @@ RSpec.describe Admin::LinksHelper do
   end
 
   describe '#admin_nav_external_identity_link' do
-    let(:book) { build_stubbed(:book) }
-    let(:external_identity) do
-      build_stubbed(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1W')
+    context 'with a book owner' do
+      let(:book) { build_stubbed(:book) }
+      let(:external_identity) do
+        build_stubbed(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1W')
+      end
+
+      it 'returns a crumb with resource and external_id' do
+        expect(helper.admin_nav_external_identity_link(book, external_identity)).to eq(
+          ['Open Library: OL1W', admin_book_external_identity_path(book, external_identity)]
+        )
+      end
     end
 
-    it 'returns a crumb with resource and external_id' do
-      expect(helper.admin_nav_external_identity_link(book, external_identity)).to eq(
-        ['Open Library: OL1W', admin_book_external_identity_path(book, external_identity)]
-      )
+    context 'with an author owner' do
+      let(:author) { build_stubbed(:author) }
+      let(:external_identity) do
+        build_stubbed(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+      end
+
+      it 'returns a crumb linking to the author identity' do
+        expect(helper.admin_nav_external_identity_link(author, external_identity)).to eq(
+          ['Wikidata: Q892', admin_author_external_identity_path(author, external_identity)]
+        )
+      end
     end
   end
 end

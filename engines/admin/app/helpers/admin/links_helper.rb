@@ -37,13 +37,17 @@ module Admin
       ["\"#{truncate_crumb(book.title, length: 40)}\"", admin_book_path(book)]
     end
 
-    def admin_nav_external_identity_link(book, external_identity)
+    def admin_nav_external_identity_link(owner, external_identity)
       label = [
         external_identity.external_resource.to_s.titleize,
         external_identity.external_id.presence
       ].compact.join(': ')
-      [truncate_crumb(label.presence || 'External Identity'),
-       admin_book_external_identity_path(book, external_identity)]
+      path = if owner.is_a?(Author)
+               admin_author_external_identity_path(owner, external_identity)
+             else
+               admin_book_external_identity_path(owner, external_identity)
+             end
+      [truncate_crumb(label.presence || 'External Identity'), path]
     end
 
     def admin_nav_ai_chats_link
@@ -106,16 +110,32 @@ module Admin
       case task
       when Admin::BookSummaryTask, Admin::OpenLibrarySearchTask
         admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
-      when Admin::OpenLibraryFetchTask
+      when Admin::OpenLibraryFetchTask, Admin::OpenLibraryAuthorFetchTask
         identity = task.external_identity
         owner = identity.owner
         if owner.is_a?(Book)
           admin_link_to "Open Library #{identity.external_id} (#{owner.title})",
                         admin_book_external_identity_path(owner, identity)
+        elsif owner.is_a?(Author)
+          admin_link_to "Open Library #{identity.external_id} (#{owner.fullname})",
+                        admin_author_external_identity_path(owner, identity)
         else
           "Open Library #{identity.external_id}"
         end
-      when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask, Admin::OpenLibraryAuthorSearchTask
+      when Admin::WikidataFetchTask, Admin::WikidataAuthorFetchTask
+        identity = task.external_identity
+        owner = identity.owner
+        if owner.is_a?(Book)
+          admin_link_to "Wikidata #{identity.external_id} (#{owner.title})",
+                        admin_book_external_identity_path(owner, identity)
+        elsif owner.is_a?(Author)
+          admin_link_to "Wikidata #{identity.external_id} (#{owner.fullname})",
+                        admin_author_external_identity_path(owner, identity)
+        else
+          "Wikidata #{identity.external_id}"
+        end
+      when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask, Admin::OpenLibraryAuthorSearchTask,
+           Admin::WikidataAuthorSearchTask
         admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)
       else
         "Entity #{task.target_type} with ID=#{task.target_id}"

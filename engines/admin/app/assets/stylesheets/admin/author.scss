@@ -1,6 +1,10 @@
 .b-author-page {
   .b-author-photo {
-    border-radius: 100px;
+    border-radius: 70px;
+    display: block;
+    height: 130px;
+    object-fit: cover;
+    width: 130px;
   }
 }
 

@@ -10,6 +10,12 @@ Admin::Engine.routes.draw do
         resources :books, only: %i[new]
         resource :sync_status, only: %i[update], controller: 'sync_status'
         resource :wiki_stats, only: %i[update]
+        resources :open_library_searches, only: %i[create]
+        resources :wikidata_searches, only: %i[create]
+        resources :external_identities do
+          resources :open_library_fetches, only: %i[create]
+          resources :wikidata_fetches, only: %i[create]
+        end
 
         resources :books_list, only: %i[create edit] do
           post :apply, on: :member
