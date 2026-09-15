@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ai_messages
@@ -24,10 +26,8 @@
 #  chat_id       (chat_id => ai_chats.id)
 #  tool_call_id  (tool_call_id => ai_tool_calls.id)
 #
-module Ai
-  class Message < AiRecord
-    acts_as_message chat_class: 'Ai::Chat',
-                    tool_call_class: 'Ai::ToolCall'
-    belongs_to :chat, class_name: 'Ai::Chat'
-  end
+require 'rails_helper'
+
+RSpec.describe Admin::Ai::Message do
+  it { is_expected.to belong_to(:chat).class_name(Admin::Ai::Chat.name) }
 end

@@ -13,7 +13,7 @@ RSpec.describe Admin::InfoFetchers::Chats::AuthorsExpert do
 
   describe '#ask_books_list' do
     let(:author_name) { 'Fyodor Dostoevsky' }
-    let(:mock_chat) { instance_double(Ai::Chat) }
+    let(:mock_chat) { instance_double(Admin::Ai::Chat) }
     let(:mock_response) { instance_double(RubyLLM::Message, content: expected_response.to_json) }
     let(:expected_response) do
       {
@@ -40,7 +40,7 @@ RSpec.describe Admin::InfoFetchers::Chats::AuthorsExpert do
     end
 
     before do
-      allow(Ai::Chat).to receive(:start).and_return(mock_chat)
+      allow(Admin::Ai::Chat).to receive(:start).and_return(mock_chat)
       allow(mock_chat).to receive(:with_instructions).and_return(mock_chat)
       allow(mock_chat).to receive(:ask).with(author_name).and_return(mock_response)
     end

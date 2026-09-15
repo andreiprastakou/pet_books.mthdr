@@ -12,7 +12,7 @@ module Admin
         private
 
         def setup_chat
-          ::Ai::Chat.start.tap do |chat|
+          Ai::Chat.start.tap do |chat|
             chat.with_instructions(instructions)
           end
         end

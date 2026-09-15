@@ -29,7 +29,7 @@ RSpec.describe Admin::InfoFetchers::Chats::BookSummaryWriter do
     let(:book) do
       build_stubbed(:book, title: 'The Great Gatsby', year_published: 1925, authors: [author], literary_form: 'novel')
     end
-    let(:chat) { instance_double(Ai::Chat) }
+    let(:chat) { instance_double(Admin::Ai::Chat) }
     let(:chat_response) { instance_double(RubyLLM::Message, content: response_text) }
     let(:response_text) do
       [
@@ -84,10 +84,10 @@ RSpec.describe Admin::InfoFetchers::Chats::BookSummaryWriter do
   describe '#chat' do
     subject(:result) { writer.chat }
 
-    let(:chat) { instance_double(Ai::Chat) }
+    let(:chat) { instance_double(Admin::Ai::Chat) }
 
     before do
-      allow(Ai::Chat).to receive(:start).and_return(chat)
+      allow(Admin::Ai::Chat).to receive(:start).and_return(chat)
       allow(chat).to receive(:with_instructions)
     end
 

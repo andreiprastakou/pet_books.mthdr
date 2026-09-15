@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ai_chats
@@ -10,8 +12,8 @@
 #
 require 'rails_helper'
 
-RSpec.describe Ai::Chat do
-  it { is_expected.to have_many(:messages).class_name(Ai::Message.name) }
+RSpec.describe Admin::Ai::Chat do
+  it { is_expected.to have_many(:messages).class_name(Admin::Ai::Message.name) }
 
   it { is_expected.to validate_presence_of(:model_id) }
 

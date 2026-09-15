@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ai_tool_calls
@@ -20,8 +22,10 @@
 #
 #  message_id  (message_id => ai_messages.id)
 #
-module Ai
-  class ToolCall < AiRecord
-    acts_as_tool_call message_class: 'Ai::Message'
+module Admin
+  module Ai
+    class ToolCall < AiRecord
+      acts_as_tool_call message_class: 'Admin::Ai::Message'
+    end
   end
 end

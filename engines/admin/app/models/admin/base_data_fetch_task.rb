@@ -43,7 +43,7 @@ module Admin
       'Admin::WikidataSearchTask'
     ].freeze
 
-    belongs_to :chat, class_name: 'Ai::Chat', optional: true
+    belongs_to :chat, class_name: 'Admin::Ai::Chat', optional: true
     belongs_to :target, polymorphic: true
 
     enum :status, {

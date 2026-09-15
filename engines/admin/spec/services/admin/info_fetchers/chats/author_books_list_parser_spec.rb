@@ -15,12 +15,12 @@ RSpec.describe Admin::InfoFetchers::Chats::AuthorBooksListParser do
     subject(:result) { parser.parse_books_list(text) }
 
     let(:text) { 'David Copperfield, 1850, novel' }
-    let(:chat) { instance_double(Ai::Chat) }
+    let(:chat) { instance_double(Admin::Ai::Chat) }
     let(:chat_response) { instance_double(RubyLLM::Message, content: chat_output) }
     let(:chat_output) { '[["David Copperfield", "David Copperfield", 1850, "SERIES_A", "novel"]]' }
 
     before do
-      allow(Ai::Chat).to receive(:start).and_return(chat)
+      allow(Admin::Ai::Chat).to receive(:start).and_return(chat)
       allow(chat).to receive(:with_instructions)
       allow(chat).to receive(:ask).with(text).and_return(chat_response)
     end
