@@ -19,7 +19,7 @@ RSpec.describe Collection do
   subject { build(:collection) }
 
   describe 'associations' do
-    it { is_expected.to have_many(:book_collections).class_name(BookCollection.name) }
+    it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollection.name) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_collections) }
   end
 

@@ -24,9 +24,9 @@ require 'rails_helper'
 
 RSpec.describe Author do
   describe 'associations' do
-    it { is_expected.to have_many(:book_authors).class_name(BookAuthor.name) }
+    it { is_expected.to have_many(:book_authors).class_name(Joins::BookAuthor.name) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_authors) }
-    it { is_expected.to have_many(:tag_connections).class_name(TagConnection.name) }
+    it { is_expected.to have_many(:tag_connections).class_name(Joins::TagConnection.name) }
     it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
     it { is_expected.to have_many(:books_list_tasks).class_name(Admin::AuthorBooksListTask.name) }
     it { is_expected.to have_many(:list_parsing_tasks).class_name(Admin::AuthorBooksListParsingTask.name) }

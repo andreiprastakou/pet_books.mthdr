@@ -23,6 +23,13 @@
 #  book_id         (book_id => books.id)
 #  public_list_id  (public_list_id => public_lists.id)
 #
-FactoryBot.define do
-  factory :book_public_list, class: 'BookPublicList'
+module Joins
+  class BookPublicList < ApplicationRecord
+    self.table_name = 'book_public_lists'
+
+    belongs_to :book, class_name: 'Book', inverse_of: :book_public_lists
+    belongs_to :public_list, class_name: 'PublicList', inverse_of: :book_public_lists
+
+    validates :book_id, uniqueness: { scope: :public_list_id }
+  end
 end

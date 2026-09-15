@@ -25,7 +25,7 @@ RSpec.describe Genre do
 
   describe 'associations' do
     it { is_expected.to belong_to(:cover_design).class_name(CoverDesign.name).optional }
-    it { is_expected.to have_many(:book_genres).class_name(BookGenre.name) }
+    it { is_expected.to have_many(:book_genres).class_name(Joins::BookGenre.name) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_genres) }
   end
 

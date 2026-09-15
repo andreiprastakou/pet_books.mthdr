@@ -231,7 +231,7 @@ RSpec.describe Admin::Book do
 
     it 'assigns the authors by given ids' do
       book
-      expect { call }.not_to change(BookAuthor, :count)
+      expect { call }.not_to change(Joins::BookAuthor, :count)
       expect(book.book_authors.map(&:author_id)).to eq(authors[0..2].map(&:id))
       expect(book.book_authors.map(&:marked_for_destruction?)).to eq([true, false, false])
       expect(book.book_authors.map(&:new_record?)).to eq([false, false, true])
@@ -248,7 +248,7 @@ RSpec.describe Admin::Book do
 
     it 'assigns the series by given ids' do
       book
-      expect { call }.not_to change(BookSeries, :count)
+      expect { call }.not_to change(Joins::BookSeries, :count)
       expect(book.book_series.map(&:series_id)).to eq(series[0..2].map(&:id))
       expect(book.book_series.map(&:marked_for_destruction?)).to eq([true, false, false])
       expect(book.book_series.map(&:new_record?)).to eq([false, false, true])

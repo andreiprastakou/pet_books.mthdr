@@ -22,19 +22,9 @@
 #  author_id  (author_id => authors.id)
 #  book_id    (book_id => books.id)
 #
-require 'rails_helper'
-
-RSpec.describe BookAuthor do
-  subject { build(:book_author) }
-
-  describe 'associations' do
-    it { is_expected.to belong_to(:book).required }
-    it { is_expected.to belong_to(:author).required }
-  end
-
-  describe 'validation' do
-    it 'has a valid factory' do
-      expect(build(:book_author)).to be_valid
-    end
+FactoryBot.define do
+  factory :book_author, class: 'Joins::BookAuthor' do
+    book factory: %i[book], strategy: :create
+    author factory: %i[author], strategy: :create
   end
 end

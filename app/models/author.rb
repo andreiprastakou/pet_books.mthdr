@@ -26,9 +26,9 @@ class Author < ApplicationRecord
   include HasWikipedia
 
 
-  has_many :book_authors, class_name: 'BookAuthor', dependent: :restrict_with_error
+  has_many :book_authors, class_name: 'Joins::BookAuthor', dependent: :restrict_with_error
   has_many :books, class_name: 'Book', through: :book_authors
-  has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
+  has_many :tag_connections, class_name: 'Joins::TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
   has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy
   has_many :list_parsing_tasks, class_name: 'Admin::AuthorBooksListParsingTask', as: :target, dependent: :destroy

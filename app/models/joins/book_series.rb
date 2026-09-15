@@ -22,6 +22,11 @@
 #  book_id    (book_id => books.id)
 #  series_id  (series_id => series.id)
 #
-FactoryBot.define do
-  factory :book_series, class: 'BookSeries'
+module Joins
+  class BookSeries < ApplicationRecord
+    self.table_name = 'book_series'
+
+    belongs_to :series, class_name: 'Series', inverse_of: :book_series
+    belongs_to :book, class_name: 'Book', inverse_of: :book_series
+  end
 end

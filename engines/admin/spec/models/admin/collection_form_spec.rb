@@ -28,7 +28,7 @@ RSpec.describe Admin::CollectionForm do
 
     it 'assigns the books by given ids' do
       form
-      expect { call }.not_to change(BookCollection, :count)
+      expect { call }.not_to change(Joins::BookCollection, :count)
       expect(form.book_collections.map(&:book_id)).to eq(books[0..2].map(&:id))
       expect(form.book_collections.map(&:marked_for_destruction?)).to eq([true, false, false])
       expect(form.book_collections.map(&:new_record?)).to eq([false, false, true])

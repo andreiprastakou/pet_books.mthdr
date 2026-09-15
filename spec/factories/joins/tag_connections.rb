@@ -18,5 +18,5 @@
 #  index_tag_connections_on_tag_id                                (tag_id)
 #
 FactoryBot.define do
-  factory :tag_connection, class: 'TagConnection'
+  factory :tag_connection, class: 'Joins::TagConnection'
 end
