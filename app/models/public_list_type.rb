@@ -15,6 +15,7 @@
 #  index_public_list_types_on_name  (name) UNIQUE
 #
 class PublicListType < ApplicationRecord
+  include EqualByPersistedId
   include HasExternalLinks
 
   has_many :public_lists, class_name: 'PublicList', dependent: :restrict_with_error
@@ -24,15 +25,5 @@ class PublicListType < ApplicationRecord
   def readonly?
     true
   end
-
-  # Admin::PublicListType shares this table without STI; treat same-id rows as equal.
-  def ==(other)
-    if other.equal?(self)
-      true
-    elsif other.is_a?(::PublicListType)
-      !new_record? && !other.new_record? && id == other.id
-    else
-      false
-    end
-  end
 end
+

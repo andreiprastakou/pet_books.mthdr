@@ -22,6 +22,7 @@
 
 class Author < ApplicationRecord
   include CarrierwaveUrlAssign
+  include EqualByPersistedId
   include HasExternalLinks
 
   has_many :book_authors, class_name: 'Joins::BookAuthor', dependent: :restrict_with_error
@@ -44,18 +45,8 @@ class Author < ApplicationRecord
     true
   end
 
-  # Admin::Author shares this table without STI; treat same-id rows as equal.
-  def ==(other)
-    if other.equal?(self)
-      true
-    elsif other.is_a?(::Author)
-      !new_record? && !other.new_record? && id == other.id
-    else
-      false
-    end
-  end
-
   def tag_ids
+
     tag_connections.map(&:tag_id)
   end
 

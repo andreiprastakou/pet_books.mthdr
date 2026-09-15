@@ -21,6 +21,7 @@
 #  public_list_type_id  (public_list_type_id => public_list_types.id)
 #
 class PublicList < ApplicationRecord
+  include EqualByPersistedId
   include HasExternalLinks
 
   belongs_to :public_list_type, class_name: 'PublicListType', inverse_of: :public_lists
@@ -33,15 +34,5 @@ class PublicList < ApplicationRecord
   def readonly?
     true
   end
-
-  # Admin::PublicList shares this table without STI; treat same-id rows as equal.
-  def ==(other)
-    if other.equal?(self)
-      true
-    elsif other.is_a?(::PublicList)
-      !new_record? && !other.new_record? && id == other.id
-    else
-      false
-    end
-  end
 end
+

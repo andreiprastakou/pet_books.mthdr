@@ -16,6 +16,7 @@
 #  index_collections_on_name  (name) UNIQUE
 #
 class Collection < ApplicationRecord
+  include EqualByPersistedId
   include HasExternalLinks
 
   has_many :book_collections, class_name: 'Joins::BookCollection', dependent: :destroy
@@ -27,15 +28,5 @@ class Collection < ApplicationRecord
   def readonly?
     true
   end
-
-  # Admin::Collection shares this table without STI; treat same-id rows as equal.
-  def ==(other)
-    if other.equal?(self)
-      true
-    elsif other.is_a?(::Collection)
-      !new_record? && !other.new_record? && id == other.id
-    else
-      false
-    end
-  end
 end
+
