@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_13_190000) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_14_085100) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -251,6 +251,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_13_190000) do
     t.integer "views_last_month"
     t.datetime "views_synced_at"
     t.index ["entity_type", "entity_id"], name: "index_wiki_page_stats_on_entity"
+  end
+
+  create_table "wikidata_lookup_entities", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "description"
+    t.datetime "fetched_at"
+    t.string "label"
+    t.string "qid", null: false
+    t.datetime "updated_at", null: false
+    t.index ["qid"], name: "index_wikidata_lookup_entities_on_qid", unique: true
   end
 
   add_foreign_key "admin_data_fetch_tasks", "ai_chats", column: "chat_id"

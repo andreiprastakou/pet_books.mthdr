@@ -71,6 +71,40 @@ RSpec.describe Admin::WikidataSearchTask do
     end
   end
 
+  describe '#fetched_usable_values' do
+    let(:task) { build(:wikidata_search_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      [
+        {
+          'id' => 'Q320423',
+          'display-label' => { 'language' => 'en', 'value' => 'The Spy Who Loved Me' },
+          'description' => { 'language' => 'en', 'value' => '1977 film by Lewis Gilbert' },
+          'match' => { 'type' => 'label', 'language' => 'en', 'text' => 'The Spy Who Loved Me' }
+        }
+      ]
+    end
+
+    it 'returns id, label, and description for each result' do
+      expect(task.fetched_usable_values).to eq(
+        [
+          {
+            'id' => 'Q320423',
+            'label' => 'The Spy Who Loved Me',
+            'description' => '1977 film by Lewis Gilbert'
+          }
+        ]
+      )
+    end
+
+    context 'when fetched_data is blank' do
+      let(:fetched_data) { nil }
+
+      it 'returns an empty array' do
+        expect(task.fetched_usable_values).to eq([])
+      end
+    end
+  end
+
   describe '#add_work_identity!' do
     subject(:call) { task.add_work_identity!(entity_id) }
 

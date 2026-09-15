@@ -71,6 +71,40 @@ RSpec.describe Admin::WikidataAuthorSearchTask do
     end
   end
 
+  describe '#fetched_usable_values' do
+    let(:task) { build(:wikidata_author_search_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      [
+        {
+          'id' => 'Q892',
+          'display-label' => { 'language' => 'en', 'value' => 'J. R. R. Tolkien' },
+          'description' => { 'language' => 'en', 'value' => 'British philologist and author' },
+          'match' => { 'type' => 'label', 'language' => 'en', 'text' => 'J. R. R. Tolkien' }
+        }
+      ]
+    end
+
+    it 'returns id, label, and description for each result' do
+      expect(task.fetched_usable_values).to eq(
+        [
+          {
+            'id' => 'Q892',
+            'label' => 'J. R. R. Tolkien',
+            'description' => 'British philologist and author'
+          }
+        ]
+      )
+    end
+
+    context 'when fetched_data is blank' do
+      let(:fetched_data) { nil }
+
+      it 'returns an empty array' do
+        expect(task.fetched_usable_values).to eq([])
+      end
+    end
+  end
+
   describe '#add_author_identity!' do
     subject(:call) { task.add_author_identity!(entity_id) }
 

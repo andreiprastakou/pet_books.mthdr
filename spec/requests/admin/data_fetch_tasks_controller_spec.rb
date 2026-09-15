@@ -85,14 +85,109 @@ RSpec.describe Admin::DataFetchTasksController do
         create(
           :wikidata_fetch_task,
           status: :fetched,
-          fetched_data: { 'id' => 'Q74287', 'labels' => { 'en' => 'The Hobbit' } }
+          fetched_data: {
+            'id' => 'Q74287',
+            'labels' => { 'en' => 'The Hobbit' },
+            'statements' => {
+              'P648' => [
+                { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'OL27482W' } }
+              ]
+            },
+            'sitelinks' => {
+              'enwiki' => {
+                'title' => 'The Hobbit',
+                'url' => 'https://en.wikipedia.org/wiki/The_Hobbit'
+              }
+            }
+          }
         )
       end
 
-      it 'returns a successful response' do
+      it 'returns a successful response with usable values' do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_fetch_task')
+        expect(response.body).to include('open_library_id')
+        expect(response.body).to include('OL27482W')
+        expect(response.body).to include('en.wikipedia.org')
+      end
+    end
+
+    context 'with a WikidataAuthorFetchTask' do
+      let(:author) { create(:author) }
+      let(:external_identity) do
+        create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+      end
+      let(:task) do
+        create(
+          :wikidata_author_fetch_task,
+          target: external_identity,
+          status: :fetched,
+          fetched_data: {
+            'labels' => { 'en' => 'J. R. R. Tolkien' },
+            'statements' => {
+              'P2963' => [
+                { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => '2740668' } }
+              ]
+            }
+          }
+        )
+      end
+
+      it 'returns a successful response with usable values' do
+        send_request
+        expect(response).to be_successful
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_fetch_task')
+        expect(response.body).to include('goodreads_id')
+        expect(response.body).to include('2740668')
+      end
+    end
+
+    context 'with a WikidataSearchTask' do
+      let(:task) do
+        create(
+          :wikidata_search_task,
+          status: :fetched,
+          fetched_data: [
+            {
+              'id' => 'Q320423',
+              'display-label' => { 'language' => 'en', 'value' => 'The Spy Who Loved Me' },
+              'description' => { 'language' => 'en', 'value' => '1977 film' }
+            }
+          ]
+        )
+      end
+
+      it 'returns a successful response with usable values' do
+        send_request
+        expect(response).to be_successful
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_search_task')
+        expect(response.body).to include('Q320423')
+        expect(response.body).to include('The Spy Who Loved Me')
+      end
+    end
+
+    context 'with a WikidataAuthorSearchTask' do
+      let(:task) do
+        create(
+          :wikidata_author_search_task,
+          status: :fetched,
+          fetched_data: [
+            {
+              'id' => 'Q892',
+              'display-label' => { 'language' => 'en', 'value' => 'J. R. R. Tolkien' },
+              'description' => { 'language' => 'en', 'value' => 'English writer' }
+            }
+          ]
+        )
+      end
+
+      it 'returns a successful response with usable values' do
+        send_request
+        expect(response).to be_successful
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_search_task')
+        expect(response.body).to include('Q892')
+        expect(response.body).to include('J. R. R. Tolkien')
       end
     end
 
