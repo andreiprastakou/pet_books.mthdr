@@ -29,7 +29,7 @@ module Admin
     include Admin::HasExternalIdentities
 
     has_many :authors, through: :book_authors, class_name: 'Admin::Author', inverse_of: :books
-    has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
+    has_many :generative_summary_tasks, class_name: 'Admin::Tasks::AiBookFetch', as: :target, dependent: :destroy
 
     accepts_nested_attributes_for :tag_connections, allow_destroy: true
     accepts_nested_attributes_for :genres, allow_destroy: true
@@ -86,11 +86,11 @@ module Admin
     end
 
     def history_data_fetch_tasks
-      book_fetch_tasks = Admin::BaseDataFetchTask.where(
+      book_fetch_tasks = Admin::Tasks::BaseTask.where(
         target_type: ::Book.name,
         target_id: id
       )
-      identities_fetch_tasks = Admin::BaseDataFetchTask.where(
+      identities_fetch_tasks = Admin::Tasks::BaseTask.where(
         target_type: Admin::ExternalIdentity.name,
         target_id: external_identities.select(:id)
       )

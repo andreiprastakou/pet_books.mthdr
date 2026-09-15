@@ -9,7 +9,7 @@ module Admin
       end
 
       def create
-        task = Admin::BookSummaryTask.setup(@book)
+        task = Admin::Tasks::AiBookFetch.setup(@book)
         Admin::DataFetchJob.perform_later(task.id)
         redirect_to admin_book_path(@book), notice: t('notices.admin.generative_summaries.create.success')
       end
@@ -31,7 +31,7 @@ module Admin
       end
 
       def fetch_task
-        @task = Admin::BookSummaryTask.find(params[:id])
+        @task = Admin::Tasks::AiBookFetch.find(params[:id])
       end
 
       def prepare_form_data

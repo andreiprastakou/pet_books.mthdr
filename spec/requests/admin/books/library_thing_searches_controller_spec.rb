@@ -6,9 +6,9 @@ RSpec.describe Admin::Books::LibraryThingSearchesController do
     let(:book) { create(:book) }
 
     it 'creates a search task, enqueues it, and redirects with a notice' do
-      expect { send_request }.to change(Admin::LibraryThingSearchTask, :count).by(1)
+      expect { send_request }.to change(Admin::Tasks::LibraryThingBookSearch, :count).by(1)
         .and have_enqueued_job(Admin::DataFetchJob)
-      expect(Admin::LibraryThingSearchTask.last.target).to eq(book)
+      expect(Admin::Tasks::LibraryThingBookSearch.last.target).to eq(book)
       expect(response).to redirect_to(admin_book_path(book))
       expect(flash[:notice]).to eq('LibraryThing search has been queued.')
     end

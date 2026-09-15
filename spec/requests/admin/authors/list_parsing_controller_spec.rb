@@ -21,7 +21,7 @@ RSpec.describe Admin::Authors::ListParsingController do
     let(:task) { build_stubbed(:author_books_list_parsing_task, target: author) }
 
     before do
-      allow(Admin::AuthorBooksListParsingTask).to receive(:setup).with(author, text: params[:text]).and_return(task)
+      allow(Admin::Tasks::AiAuthorWorksParse).to receive(:setup).with(author, text: params[:text]).and_return(task)
     end
 
     it 'creates a task and enqueues a job' do

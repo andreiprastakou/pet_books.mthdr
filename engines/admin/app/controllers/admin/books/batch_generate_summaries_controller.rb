@@ -6,7 +6,7 @@ module Admin
 
       def create
         @books.each do |book|
-          task = Admin::BookSummaryTask.setup(book)
+          task = Admin::Tasks::AiBookFetch.setup(book)
           Admin::DataFetchJob.perform_later(task.id)
         end
 

@@ -28,16 +28,16 @@ RSpec.describe Admin::Author do
 
   describe 'associations' do
     it {
-      is_expected.to have_many(:books_list_tasks).class_name(Admin::AuthorBooksListTask.name)
+      is_expected.to have_many(:books_list_tasks).class_name(Admin::Tasks::AiAuthorWorksFetch.name)
                                                  .dependent(:destroy)
     }
     it {
-      is_expected.to have_many(:list_parsing_tasks).class_name(Admin::AuthorBooksListParsingTask.name)
+      is_expected.to have_many(:list_parsing_tasks).class_name(Admin::Tasks::AiAuthorWorksParse.name)
                                                    .dependent(:destroy)
     }
     it do
       is_expected.to have_many(:open_library_author_search_tasks)
-        .class_name(Admin::OpenLibraryAuthorSearchTask.name)
+        .class_name(Admin::Tasks::OpenLibraryAuthorSearch.name)
         .dependent(:destroy)
     end
     it { is_expected.to have_many(:external_identities).class_name(Admin::ExternalIdentity.name).dependent(:destroy) }

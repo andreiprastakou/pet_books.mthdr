@@ -8,7 +8,7 @@ RSpec.describe Admin::Authors::BooksListController do
     let(:task) { build_stubbed(:author_books_list_task, target: author) }
 
     before do
-      allow(Admin::AuthorBooksListTask).to receive(:setup).with(author).and_return(task)
+      allow(Admin::Tasks::AiAuthorWorksFetch).to receive(:setup).with(author).and_return(task)
     end
 
     it 'creates a task and enqueues a job' do

@@ -40,7 +40,7 @@ RSpec.describe Admin::Feed::BooksReviewWidgetController do
     let(:book) { create(:book) }
     let(:task) { build_stubbed(:book_summary_task, target: book) }
 
-    before { allow(Admin::BookSummaryTask).to receive(:setup).with(book).and_return(task) }
+    before { allow(Admin::Tasks::AiBookFetch).to receive(:setup).with(book).and_return(task) }
 
     it 'creates a task and redirects to the show page' do
       expect { send_request }.to have_enqueued_job(Admin::DataFetchJob).with(task.id)

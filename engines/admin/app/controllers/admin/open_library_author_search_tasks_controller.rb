@@ -13,7 +13,7 @@ module Admin
     private
 
     def fetch_task
-      @task = Admin::OpenLibraryAuthorSearchTask.find(params[:id])
+      @task = Admin::Tasks::OpenLibraryAuthorSearch.find(params[:id])
     end
   end
 end

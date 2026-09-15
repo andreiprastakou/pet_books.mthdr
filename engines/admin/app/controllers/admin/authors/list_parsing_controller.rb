@@ -11,7 +11,7 @@ module Admin
       end
 
       def create
-        task = Admin::AuthorBooksListParsingTask.setup(@author, text: params[:text])
+        task = Admin::Tasks::AiAuthorWorksParse.setup(@author, text: params[:text])
         Admin::DataFetchJob.perform_later(task.id)
         redirect_to admin_author_path(@author), notice: t('notices.admin.author_books_list_parsing.create.success')
       end
@@ -35,7 +35,7 @@ module Admin
       end
 
       def fetch_task
-        @task = Admin::AuthorBooksListParsingTask.find(params[:id])
+        @task = Admin::Tasks::AiAuthorWorksParse.find(params[:id])
       end
 
       def apply_via_updater(updater)

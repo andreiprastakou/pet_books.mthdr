@@ -4,7 +4,7 @@ module Admin
       before_action :fetch_author
 
       def create
-        task = Admin::OpenLibraryAuthorSearchTask.setup(@author)
+        task = Admin::Tasks::OpenLibraryAuthorSearch.setup(@author)
         task.enqueue_for_processing!
         redirect_to admin_author_path(@author), notice: t('notices.admin.open_library_searches.create.success')
       end

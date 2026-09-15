@@ -45,7 +45,7 @@ module Admin
 
     def show
       @next_book = @book.next_author_book
-      @next_summary_task = Admin::BookSummaryTask.where(status: :fetched).order(created_at: :asc).first
+      @next_summary_task = Admin::Tasks::AiBookFetch.where(status: :fetched).order(created_at: :asc).first
       @history_tasks = @book.history_data_fetch_tasks
     end
 
@@ -102,7 +102,7 @@ module Admin
     end
 
     def schedule_open_library_search!
-      Admin::OpenLibrarySearchTask.setup(@book).enqueue_for_processing!
+      Admin::Tasks::OpenLibraryBookSearch.setup(@book).enqueue_for_processing!
     end
   end
 end

@@ -19,7 +19,7 @@ RSpec.describe Admin::DataFetchTasksController do
       let!(:search_task) { create(:open_library_search_task) }
       let(:send_request) do
         get admin_data_fetch_tasks_path,
-            params: { type: 'Admin::BookSummaryTask' },
+            params: { type: 'Admin::Tasks::AiBookFetch' },
             headers: authorization_header
       end
 
@@ -60,27 +60,27 @@ RSpec.describe Admin::DataFetchTasksController do
       expect(assigns(:task)).to eq(task)
     end
 
-    context 'with an OpenLibrarySearchTask' do
+    context 'with an OpenLibraryBookSearch' do
       let(:task) { create(:open_library_search_task, status: :fetched, fetched_data: []) }
 
       it 'returns a successful response' do
         send_request
         expect(response).to be_successful
-        expect(response).to render_template('admin/data_fetch_tasks/types/_open_library_search_task')
+        expect(response).to render_template('admin/data_fetch_tasks/types/_open_library_book_search')
       end
     end
 
-    context 'with an OpenLibraryFetchTask' do
+    context 'with an OpenLibraryBookFetch' do
       let(:task) { create(:open_library_fetch_task, status: :fetched, fetched_data: { 'title' => 'X' }) }
 
       it 'returns a successful response' do
         send_request
         expect(response).to be_successful
-        expect(response).to render_template('admin/data_fetch_tasks/types/_open_library_fetch_task')
+        expect(response).to render_template('admin/data_fetch_tasks/types/_open_library_book_fetch')
       end
     end
 
-    context 'with a WikidataFetchTask' do
+    context 'with a WikidataBookFetch' do
       let(:task) do
         create(
           :wikidata_fetch_task,
@@ -106,14 +106,14 @@ RSpec.describe Admin::DataFetchTasksController do
       it 'returns a successful response with usable values' do
         send_request
         expect(response).to be_successful
-        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_fetch_task')
-        expect(response.body).to include('open_library_id')
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_book_fetch')
+        expect(response.body).to include('open_library')
         expect(response.body).to include('OL27482W')
         expect(response.body).to include('en.wikipedia.org')
       end
     end
 
-    context 'with a WikidataAuthorFetchTask' do
+    context 'with a WikidataAuthorFetch' do
       let(:author) { create(:author) }
       let(:external_identity) do
         create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
@@ -137,13 +137,13 @@ RSpec.describe Admin::DataFetchTasksController do
       it 'returns a successful response with usable values' do
         send_request
         expect(response).to be_successful
-        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_fetch_task')
-        expect(response.body).to include('goodreads_id')
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_fetch')
+        expect(response.body).to include('goodreads')
         expect(response.body).to include('2740668')
       end
     end
 
-    context 'with a WikidataSearchTask' do
+    context 'with a WikidataBookSearch' do
       let(:task) do
         create(
           :wikidata_search_task,
@@ -161,13 +161,13 @@ RSpec.describe Admin::DataFetchTasksController do
       it 'returns a successful response with usable values' do
         send_request
         expect(response).to be_successful
-        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_search_task')
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_book_search')
         expect(response.body).to include('Q320423')
         expect(response.body).to include('The Spy Who Loved Me')
       end
     end
 
-    context 'with a WikidataAuthorSearchTask' do
+    context 'with a WikidataAuthorSearch' do
       let(:task) do
         create(
           :wikidata_author_search_task,
@@ -185,24 +185,20 @@ RSpec.describe Admin::DataFetchTasksController do
       it 'returns a successful response with usable values' do
         send_request
         expect(response).to be_successful
-        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_search_task')
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_search')
         expect(response.body).to include('Q892')
         expect(response.body).to include('J. R. R. Tolkien')
       end
     end
 
     context 'when the type-specific partial is missing' do
-      let(:author) { create(:author) }
-      let(:external_identity) do
-        create(:external_identity, owner: author, external_id: 'OL1394865A')
-      end
-      let(:task) { create(:open_library_author_fetch_task, target: external_identity) }
+      let(:task) { create(:library_thing_search_task, status: :fetched, fetched_data: {}) }
 
       it 'falls back to the shared task info card' do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/_task_info_card')
-        expect(response).not_to render_template('admin/data_fetch_tasks/types/_open_library_author_fetch_task')
+        expect(response).not_to render_template('admin/data_fetch_tasks/types/_library_thing_book_search')
       end
     end
 

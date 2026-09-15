@@ -34,7 +34,7 @@ RSpec.describe Admin::Book do
 
   describe 'associations' do
     it {
-      is_expected.to have_many(:generative_summary_tasks).class_name(Admin::BookSummaryTask.name)
+      is_expected.to have_many(:generative_summary_tasks).class_name(Admin::Tasks::AiBookFetch.name)
                                                          .dependent(:destroy)
     }
     it { is_expected.to have_many(:external_identities).class_name(Admin::ExternalIdentity.name).dependent(:destroy) }

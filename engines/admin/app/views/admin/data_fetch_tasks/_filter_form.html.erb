@@ -4,7 +4,7 @@
       <div class="col-3">
         <%= select_tag :type,
                        options_for_select(
-                         Admin::BaseDataFetchTask::TASK_TYPES.map { |type| [type.demodulize.underscore.humanize, type] },
+                         Admin::Tasks::BaseTask::TASK_TYPES.map { |type| [type.demodulize.underscore.humanize, type] },
                          params[:type]
                        ),
                        include_blank: 'All types',
@@ -13,7 +13,7 @@
       <div class="col-2">
         <%= select_tag :status,
                        options_for_select(
-                         Admin::BaseDataFetchTask.statuses.keys.map { |status| [status.humanize, status] },
+                         Admin::Tasks::BaseTask.statuses.keys.map { |status| [status.humanize, status] },
                          params[:status]
                        ),
                        include_blank: 'All statuses',

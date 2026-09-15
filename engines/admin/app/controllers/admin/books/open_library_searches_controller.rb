@@ -4,7 +4,7 @@ module Admin
       before_action :fetch_book
 
       def create
-        task = Admin::OpenLibrarySearchTask.setup(@book)
+        task = Admin::Tasks::OpenLibraryBookSearch.setup(@book)
         task.enqueue_for_processing!
         redirect_to admin_book_path(@book), notice: t('notices.admin.open_library_searches.create.success')
       end

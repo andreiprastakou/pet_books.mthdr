@@ -5,19 +5,19 @@ module Admin
 
       def show
         @book_searches = sample_tasks(
-          Admin::WikidataSearchTask,
+          Admin::Tasks::WikidataBookSearch,
           preload: { target: :authors }
         )
         @book_fetches = sample_tasks(
-          Admin::WikidataFetchTask,
+          Admin::Tasks::WikidataBookFetch,
           preload: { target: { owner: :authors } }
         )
         @author_searches = sample_tasks(
-          Admin::WikidataAuthorSearchTask,
+          Admin::Tasks::WikidataAuthorSearch,
           preload: :target
         )
         @author_fetches = sample_tasks(
-          Admin::WikidataAuthorFetchTask,
+          Admin::Tasks::WikidataAuthorFetch,
           preload: { target: :owner }
         )
       end

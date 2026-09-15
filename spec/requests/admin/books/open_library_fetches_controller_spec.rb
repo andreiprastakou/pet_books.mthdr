@@ -12,9 +12,9 @@ RSpec.describe Admin::Books::OpenLibraryFetchesController do
     end
 
     it 'creates a fetch task, enqueues it, and redirects with a notice' do
-      expect { send_request }.to change(Admin::OpenLibraryFetchTask, :count).by(1)
+      expect { send_request }.to change(Admin::Tasks::OpenLibraryBookFetch, :count).by(1)
         .and have_enqueued_job(Admin::DataFetchJob)
-      expect(Admin::OpenLibraryFetchTask.last.target).to eq(external_identity)
+      expect(Admin::Tasks::OpenLibraryBookFetch.last.target).to eq(external_identity)
       expect(response).to redirect_to(admin_book_path(book))
       expect(flash[:notice]).to eq('Open Library data fetch has been queued.')
     end

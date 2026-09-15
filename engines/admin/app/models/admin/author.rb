@@ -25,9 +25,9 @@ module Admin
     include Admin::HasExternalIdentities
 
     has_many :books, class_name: 'Admin::Book', through: :book_authors
-    has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy
-    has_many :list_parsing_tasks, class_name: 'Admin::AuthorBooksListParsingTask', as: :target, dependent: :destroy
-    has_many :open_library_author_search_tasks, class_name: 'Admin::OpenLibraryAuthorSearchTask', as: :target,
+    has_many :books_list_tasks, class_name: 'Admin::Tasks::AiAuthorWorksFetch', as: :target, dependent: :destroy
+    has_many :list_parsing_tasks, class_name: 'Admin::Tasks::AiAuthorWorksParse', as: :target, dependent: :destroy
+    has_many :open_library_author_search_tasks, class_name: 'Admin::Tasks::OpenLibraryAuthorSearch', as: :target,
                                                 dependent: :destroy
 
     scope :not_synced, -> { where(synced_at: nil) }
@@ -45,11 +45,11 @@ module Admin
     end
 
     def history_data_fetch_tasks
-      author_fetch_tasks = Admin::BaseDataFetchTask.where(
+      author_fetch_tasks = Admin::Tasks::BaseTask.where(
         target_type: ::Author.name,
         target_id: id
       )
-      identities_fetch_tasks = Admin::BaseDataFetchTask.where(
+      identities_fetch_tasks = Admin::Tasks::BaseTask.where(
         target_type: Admin::ExternalIdentity.name,
         target_id: external_identities.select(:id)
       )

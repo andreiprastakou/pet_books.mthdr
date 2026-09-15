@@ -26,8 +26,8 @@ RSpec.describe Admin::Books::BatchGenerateSummariesController do
     end
 
     it 'creates tasks only for books that need data fetch' do
-      expect { send_request }.to change(Admin::BookSummaryTask, :count).by(1)
-      new_task = Admin::BookSummaryTask.last
+      expect { send_request }.to change(Admin::Tasks::AiBookFetch, :count).by(1)
+      new_task = Admin::Tasks::AiBookFetch.last
       expect(new_task.target).to eq(book_needs_fetch)
       expect(Admin::DataFetchJob).to have_received(:perform_later).with(new_task.id)
     end

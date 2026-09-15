@@ -7,7 +7,7 @@ RSpec.describe Admin::DataFetchJob do
     let(:task) { build_stubbed(:book_summary_task) }
 
     before do
-      allow(Admin::BaseDataFetchTask).to receive(:find).and_return(task)
+      allow(Admin::Tasks::BaseTask).to receive(:find).and_return(task)
       allow(task).to receive(:perform)
     end
 
