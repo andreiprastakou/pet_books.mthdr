@@ -24,7 +24,7 @@
 #  index_books_on_year_published  (year_published)
 #
 FactoryBot.define do
-  factory :book, class: 'Book' do
+  factory :book, class: 'Admin::Book' do
     sequence(:title) { |i| "Book #{i}" }
     year_published { rand(1992..2021) }
     authors { create_list(:author, 1) }

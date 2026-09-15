@@ -27,7 +27,7 @@ module Admin
       private
 
       def fetch_book
-        @book = Admin::BookForm.preload(:genres, tag_connections: :tag).find(params[:book_id])
+        @book = Admin::Book.preload(:genres, tag_connections: :tag).find(params[:book_id])
       end
 
       def fetch_task

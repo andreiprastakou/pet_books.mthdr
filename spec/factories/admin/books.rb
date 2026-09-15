@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: books
@@ -22,5 +24,5 @@
 #  index_books_on_year_published  (year_published)
 #
 FactoryBot.define do
-  factory :admin_book_form, class: 'Admin::BookForm', parent: :book
+  factory :admin_book, class: 'Admin::Book', parent: :book
 end

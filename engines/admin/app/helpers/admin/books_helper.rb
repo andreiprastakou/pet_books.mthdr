@@ -5,6 +5,7 @@ module Admin
     end
 
     def book_title_marked_for_data_fetch(book)
+      book = Admin::Book.cast(book)
       return book.title unless book.needs_data_fetch?
 
       content_tag(:span, book.title, class: 'text-danger')
@@ -25,7 +26,7 @@ module Admin
     end
 
     def button_to_generate_books_summaries(books)
-      books = books.select(&:needs_data_fetch?)
+      books = Admin::Book.cast_collection(books).select(&:needs_data_fetch?)
       return if books.empty?
 
       button_to "AI generate #{pluralize(books.count, 'summary')}",

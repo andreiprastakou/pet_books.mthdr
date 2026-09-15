@@ -36,7 +36,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        @collection.books.preload(:authors, :generative_summary_tasks, :external_links),
+        Admin::Book.for_scope(@collection.books, :authors, :generative_summary_tasks, :external_links),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       )

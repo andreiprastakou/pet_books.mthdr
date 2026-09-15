@@ -18,8 +18,8 @@ module Admin
     }.freeze
 
     FETCH_TASKS = {
-      [ExternalResources::OPEN_LIBRARY, Book] => Admin::OpenLibraryFetchTask,
-      [ExternalResources::OPEN_LIBRARY, Author] => Admin::OpenLibraryAuthorFetchTask
+      [ExternalResources::OPEN_LIBRARY, :book] => Admin::OpenLibraryFetchTask,
+      [ExternalResources::OPEN_LIBRARY, :author] => Admin::OpenLibraryAuthorFetchTask
     }.freeze
 
     def self.call(external_identity)
@@ -31,18 +31,21 @@ module Admin
     end
 
     def self.builders_for(owner)
-      case owner_class_name(owner)
-      when Book.name then BOOK_LINK_BUILDERS
-      when Author.name then AUTHOR_LINK_BUILDERS
+      case owner_kind(owner)
+      when :book then BOOK_LINK_BUILDERS
+      when :author then AUTHOR_LINK_BUILDERS
       else
         {}
       end
     end
 
-    def self.owner_class_name(owner)
-      owner.is_a?(Module) ? owner.name : owner.class.name
+    def self.owner_kind(owner)
+      klass = owner.is_a?(Module) ? owner : owner.class
+      return :book if klass <= ::Book
+      return :author if klass <= Author
+
+      nil
     end
-    private_class_method :owner_class_name
 
     def initialize(external_identity)
       @external_identity = external_identity
@@ -76,14 +79,15 @@ module Admin
     end
 
     def enqueue_fetch_task!
-      task_class = FETCH_TASKS[[external_identity.external_resource, owner.class]]
+      task_class = FETCH_TASKS[[external_identity.external_resource, self.class.owner_kind(owner)]]
       return unless task_class
 
       task_class.setup(external_identity).enqueue_for_processing!
     end
 
     def owner
-      external_identity.owner
+      raw = external_identity.owner
+      raw.is_a?(::Book) ? Admin::Book.cast(raw) : raw
     end
   end
 end

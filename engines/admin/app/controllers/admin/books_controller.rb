@@ -50,13 +50,13 @@ module Admin
     end
 
     def new
-      @book = Admin::BookForm.new
+      @book = Admin::Book.new
     end
 
     def edit; end
 
     def create
-      @book = Admin::BookForm.new
+      @book = Admin::Book.new
       respond_to do |format|
         if @book.update(record_params)
           schedule_open_library_search!
@@ -90,7 +90,7 @@ module Admin
     private
 
     def fetch_record
-      @book = Admin::BookForm.find(params[:id])
+      @book = Admin::Book.find(params[:id])
     end
 
     def record_params

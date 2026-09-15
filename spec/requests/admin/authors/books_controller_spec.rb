@@ -10,7 +10,7 @@ RSpec.describe Admin::Authors::BooksController do
       send_request
       expect(response).to be_successful
       expect(response).to render_template 'admin/authors/books/new'
-      expect(assigns(:book)).to be_a(Admin::BookForm)
+      expect(assigns(:book)).to be_a(Admin::Book)
     end
   end
 end

@@ -17,7 +17,9 @@ module Admin
       private
 
       def books_to_sync(author)
-        author.books.preload(:external_links).select { |book| book.wiki_url.present? && book.wiki_popularity.zero? }
+        Admin::Book.for_scope(author.books, :external_links, :wiki_links).select do |book|
+          book.wiki_url.present? && book.wiki_popularity.zero?
+        end
       end
     end
   end

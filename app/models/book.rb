@@ -36,14 +36,11 @@ class Book < ApplicationRecord
   FORMS_REQUIRE_SUMMARY = (%w[novel novella non_fiction play] + [nil]).freeze
   FORMS_SMALL = %w[short short_story poem comics].freeze
 
-  include CarrierwaveUrlAssign
   include HasExternalLinks
-  include HasWikipedia
 
   has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
   has_many :genres, class_name: 'BookGenre', dependent: :destroy
-  has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
   has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
   has_many :book_series, class_name: 'BookSeries', dependent: :destroy, inverse_of: :book
@@ -53,8 +50,6 @@ class Book < ApplicationRecord
   has_many :book_public_lists, class_name: 'BookPublicList', dependent: :destroy, inverse_of: :book
   has_many :public_lists, through: :book_public_lists, class_name: 'PublicList'
   has_many :external_links, class_name: 'ExternalLink', as: :owner, dependent: :destroy, inverse_of: :owner
-  has_many :external_identities, class_name: 'ExternalIdentity', as: :owner, dependent: :destroy,
-                                 inverse_of: :owner
 
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true }
@@ -68,10 +63,22 @@ class Book < ApplicationRecord
   }
   scope :by_author, ->(author) { joins(:book_authors).where(book_authors: { author_id: author }) }
   scope :by_series, ->(series) { joins(:book_series).where(book_series: { series_id: series }) }
-  scope :not_filled, -> { where(data_filled: false) }
-  scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
-  scope :form_requires_summary, -> { where(literary_form: FORMS_REQUIRE_SUMMARY) }
   scope :search_by_title, ->(key) { where('title LIKE ?', "%#{key}%") }
+
+  def readonly?
+    true
+  end
+
+  # Admin::Book shares this table without STI; treat same-id rows as equal.
+  def ==(other)
+    if other.equal?(self)
+      true
+    elsif other.is_a?(::Book)
+      !new_record? && !other.new_record? && id == other.id
+    else
+      false
+    end
+  end
 
   def tag_ids
     tag_connections.map(&:tag_id)
@@ -81,43 +88,14 @@ class Book < ApplicationRecord
     original_title.present? && original_title != title
   end
 
-  def next_author_book
-    author_ids = book_authors.map(&:author_id)
-    self.class.by_author(author_ids)
-        .where('(year_published > ?) OR (year_published = ? AND books.id > ?)', year_published, year_published, id)
-        .order(:year_published, 'books.id')
-        .limit(1)
-        .first
-  end
-
   def small?
     literary_form.in?(FORMS_SMALL)
-  end
-
-  def needs_data_fetch?
-    generative_summary_tasks.none?(&:fetched?) &&
-      !data_filled? &&
-      literary_form.in?(FORMS_REQUIRE_SUMMARY)
   end
 
   def author_names_label
     return 'Unknown Author' if authors.empty?
 
     authors.map(&:fullname).join(', ')
-  end
-
-  def history_data_fetch_tasks
-    book_fetch_tasks = Admin::BaseDataFetchTask.where(
-      target_type: Book.name,
-      target_id: id
-    )
-    identities_fetch_tasks = Admin::BaseDataFetchTask.where(
-      target_type: ExternalIdentity.name,
-      target_id: external_identities.select(:id)
-    )
-    (book_fetch_tasks.to_a + identities_fetch_tasks.to_a)
-      .sort_by(&:updated_at)
-      .reverse
   end
 
   protected
