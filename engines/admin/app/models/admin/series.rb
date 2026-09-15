@@ -17,6 +17,7 @@
 module Admin
   class Series < ::Series
     include HasWikipedia
+    include HasExternalIdentities
 
     def readonly?
       false

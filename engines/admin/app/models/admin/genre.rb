@@ -22,6 +22,8 @@
 #
 module Admin
   class Genre < ::Genre
+    include HasExternalIdentities
+
     def readonly?
       false
     end

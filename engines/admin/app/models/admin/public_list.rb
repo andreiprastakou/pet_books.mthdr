@@ -23,6 +23,7 @@
 module Admin
   class PublicList < ::PublicList
     include HasWikipedia
+    include HasExternalIdentities
 
     belongs_to :public_list_type, class_name: 'Admin::PublicListType', inverse_of: :public_lists
 

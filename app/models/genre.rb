@@ -23,6 +23,7 @@
 class Genre < ApplicationRecord
   include EqualByPersistedId
   include HasCodifiedName
+  include HasExternalLinks
 
   belongs_to :cover_design, class_name: 'CoverDesign', optional: true
   has_many :book_genres, class_name: 'Joins::BookGenre', dependent: :restrict_with_error

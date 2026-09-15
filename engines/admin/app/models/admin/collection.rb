@@ -18,6 +18,7 @@
 module Admin
   class Collection < ::Collection
     include HasWikipedia
+    include HasExternalIdentities
 
     accepts_nested_attributes_for :book_collections, allow_destroy: true
 

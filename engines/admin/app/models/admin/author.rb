@@ -22,14 +22,13 @@
 module Admin
   class Author < ::Author
     include HasWikipedia
+    include HasExternalIdentities
 
     has_many :books, class_name: 'Admin::Book', through: :book_authors
     has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy
     has_many :list_parsing_tasks, class_name: 'Admin::AuthorBooksListParsingTask', as: :target, dependent: :destroy
     has_many :open_library_author_search_tasks, class_name: 'Admin::OpenLibraryAuthorSearchTask', as: :target,
                                                 dependent: :destroy
-    has_many :external_identities, class_name: 'Admin::ExternalIdentity', as: :owner, dependent: :destroy,
-                                   inverse_of: :owner
 
     scope :not_synced, -> { where(synced_at: nil) }
     scope :without_tasks, -> { where.missing(:books_list_tasks).where.missing(:list_parsing_tasks) }
