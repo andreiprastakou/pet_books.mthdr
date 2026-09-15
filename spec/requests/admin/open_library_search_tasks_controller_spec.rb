@@ -51,7 +51,7 @@ RSpec.describe Admin::OpenLibrarySearchTasksController do
 
       it 'sorts results by increasing year difference from the book' do
         send_request
-        expect(assigns(:search_results).map { |result| result['key'] }).to eq(
+        expect(assigns(:search_results).map { |result| result['external_id'] }).to eq(
           ['/works/OL2W', '/works/OL3W', '/works/OL1W']
         )
       end

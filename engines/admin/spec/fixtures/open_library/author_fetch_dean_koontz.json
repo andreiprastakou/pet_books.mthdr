@@ -1,0 +1,110 @@
+{
+  "personal_name": "Dean R. Koontz",
+  "type": {
+    "key": "/type/author"
+  },
+  "remote_ids": {
+    "viaf": "110880758",
+    "goodreads": "9355",
+    "isni": "0000000120327893",
+    "amazon": "B000APG4T6",
+    "librarything": "koontzdean",
+    "wikidata": "Q272076"
+  },
+  "birth_date": "9 July 1945",
+  "name": "Dean Koontz",
+  "key": "/authors/OL33088A",
+  "photos": [
+    6425004
+  ],
+  "source_records": [
+    "amazon:9752468535",
+    "bwb:9781472212078",
+    "amazon:0553840215",
+    "ia:levisagedelanger0000koon_d1i1",
+    "ia:saintoddtargetsi0000koon",
+    "amazon:0425135969",
+    "ia:infondoallanotte0000koon",
+    "amazon:1415669015",
+    "amazon:2277225371",
+    "amazon:0553841327",
+    "bwb:9780722131480",
+    "bwb:9780755347469",
+    "bwb:9780008101480",
+    "amazon:9605070235",
+    "ia:brandzeichenroma0000koon",
+    "amazon:226608254X",
+    "amazon:0345384318",
+    "amazon:2265077151",
+    "promise:bwb_daily_pallets_2022-10-24",
+    "amazon:0553840878",
+    "amazon:081299910X",
+    "amazon:4167136139",
+    "ia:twilighteyes0000koon_s7o8",
+    "promise:bwb_daily_pallets_2022-08-24",
+    "amazon:0008291292",
+    "ia:lamaisoninterdit0000koon",
+    "bwb:9798885784245",
+    "promise:bwb_daily_pallets_2022-03-17",
+    "promise:bwb_daily_pallets_2022-04-19",
+    "promise:bwb_daily_pallets_2020-09-09",
+    "promise:bwb_daily_pallets_2021-01-20",
+    "promise:bwb_daily_pallets_2021-04-07",
+    "promise:bwb_daily_pallets_2023-01-05",
+    "promise:bwb_daily_pallets_2022-09-13",
+    "promise:bwb_daily_pallets_2022-05-23",
+    "promise:bwb_daily_pallets_2021-08-19",
+    "promise:bwb_daily_pallets_2021-03-30",
+    "amazon:2277219630",
+    "amazon:2265078751",
+    "promise:bwb_daily_pallets_2023-01-16:KS-063-890",
+    "amazon:9024539064",
+    "promise:bwb_daily_pallets_2023-05-17:KN-583-120",
+    "promise:bwb_daily_pallets_2023-05-22:O7-DJJ-185",
+    "promise:bwb_daily_pallets_2023-05-24:KM-618-101",
+    "marc:harvard_bibliographic_metadata/ab.bib.09.20150123.full.mrc:313204947:840",
+    "bwb:9781505586756"
+  ],
+  "alternate_names": [
+    "Aaron Wolfe (pseud.)",
+    "Brian Coffey (pseud.)",
+    "David Axton (pseud.)",
+    "Deanna Dwyer (pseud.)",
+    "John Hill (pseud.)",
+    "K. R. Dwyer (pseud.)",
+    "Leigh Nichols (pseud.)",
+    "Anthony North (pseud.)",
+    "Owen West (pseud.)",
+    "Richard Paige (pseud.)",
+    "Dean R. Koontz",
+    "Dean Ray Koontz",
+    "Aaron Wolfe"
+  ],
+  "links": [
+    {
+      "title": "Official Web Site",
+      "url": "http://www.deankoontz.com/",
+      "type": {
+        "key": "/type/link"
+      }
+    },
+    {
+      "title": "Dean Koontz Books in Order",
+      "url": "https://www.littlestack.com/author/dean-koontz",
+      "type": {
+        "key": "/type/link"
+      }
+    }
+  ],
+  "bio": "**Dean Ray Koontz** is an American author best known for his novels which could be described broadly as suspense thrillers. He also frequently incorporates elements of horror, science fiction, mystery, and satire. A number of his books have appeared on the New York Times Bestseller List, with ten hardcovers and fourteen paperbacks reaching the number one slot. Early in his career, Koontz wrote under an array of pen names.<sup>[1][1]</sup>\r\n\r\n\r\n  [1]: http://en.wikipedia.org/wiki/Dean_Koontz",
+  "latest_revision": 37,
+  "revision": 37,
+  "created": {
+    "type": "/type/datetime",
+    "value": "2008-04-01T03:28:50.625462"
+  },
+  "last_modified": {
+    "type": "/type/datetime",
+    "value": "2026-01-28T22:00:16.246168"
+  }
+}

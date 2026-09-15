@@ -16,8 +16,8 @@
 #
 module Admin
   class PublicListType < ::PublicListType
-    include HasWikipedia
-    include HasExternalIdentities
+    include Admin::HasWikipedia
+    include Admin::HasExternalIdentities
 
     has_many :public_lists, class_name: 'Admin::PublicList', dependent: :restrict_with_error,
                             inverse_of: :public_list_type

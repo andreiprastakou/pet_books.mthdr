@@ -101,16 +101,79 @@ module Admin
     end
 
     def fetched_usable_values
-      fetched_data&.slice(
-        'key',
-        'title',
-        'description',
-        'covers',
-        'series',
-        'genres',
-        'authors',
-        'identifiers'
-      )
+      data = fetched_data
+      return {} unless data.is_a?(Hash)
+
+      {
+        'title' => data['title'],
+        'description' => data['description'],
+        'authors' => fetched_author_entries(data['authors']),
+        'genres' => fetched_id_entries(data['genres']),
+        'series' => fetched_series_entries(data['series']),
+        'identifiers' => data['identifiers'],
+        'links' => fetched_link_urls(data['links']),
+        'first_sentence' => fetched_text_value(data['first_sentence']),
+        'subject_people' => fetched_string_list(data['subject_people']),
+        'covers' => data['covers']
+      }.compact_blank
+    end
+
+    private
+
+    def fetched_author_entries(authors)
+      return [] unless authors.is_a?(Array)
+
+      authors.filter_map do |author_entry|
+        next unless author_entry.is_a?(Hash)
+
+        external_id = author_entry.dig('author', 'key').presence
+        { 'external_id' => external_id } if external_id
+      end
+    end
+
+    def fetched_series_entries(series)
+      return [] unless series.is_a?(Array)
+
+      series.filter_map do |series_entry|
+        next unless series_entry.is_a?(Hash)
+
+        external_id = series_entry.dig('series', 'key').presence
+        { 'external_id' => external_id } if external_id
+      end
+    end
+
+    def fetched_id_entries(values)
+      return [] unless values.is_a?(Array)
+
+      values.filter_map do |external_id|
+        id = external_id.presence
+        { 'external_id' => id } if id
+      end
+    end
+
+    def fetched_link_urls(links)
+      return [] unless links.is_a?(Array)
+
+      links.filter_map do |link|
+        next unless link.is_a?(Hash)
+
+        link['url'].presence
+      end
+    end
+
+    def fetched_text_value(value)
+      case value
+      when Hash
+        value['value'].presence
+      else
+        value.presence
+      end
+    end
+
+    def fetched_string_list(values)
+      return [] unless values.is_a?(Array)
+
+      values.filter_map { |value| value.presence&.to_s }
     end
   end
 end

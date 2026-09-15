@@ -2,6 +2,7 @@
   url = Admin::ExternalLinkBuilders::OpenLibrary::Work.call(identity.external_id)
   url && external_link_to(identity.external_id, url)
 } %>
+
 <%= turbo_frame_tag "task_apply_form", target: "_top" do %>
   <div class="card mt-2">
     <div class="card-header">
@@ -49,14 +50,13 @@
           <tbody>
             <% @search_results.each_with_index do |result, index| %>
               <% result_data = result.is_a?(Hash) ? result : {} %>
-              <% work_key = result_data['key'] || result_data[:key] %>
+              <% work_key = result_data['external_id'] %>
               <% work_olid = Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.normalize_work_key(work_key) %>
               <% work_url = work_olid && Admin::ExternalLinkBuilders::OpenLibrary::Work.call(work_olid) %>
               <% work_already_added = work_olid.present? && @book_open_library_ids.include?(work_olid) %>
-              <% author_keys = Array(result_data['author_key'] || result_data[:author_key]) %>
-              <% if author_keys.empty? && result_data['authors'].is_a?(Hash) %>
-                <% author_keys = result_data['authors'].keys %>
-              <% end %>
+              <% author_keys = Array(result_data['authors']).filter_map { |author|
+                author.is_a?(Hash) && author['external_id']
+              } %>
               <tr>
                 <td class="w-50">
                   <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(result) %></pre>

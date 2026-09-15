@@ -88,6 +88,9 @@ en:
           success: "Open Library work identity added."
         add_author_identity:
           success: "Open Library author identity added."
+      open_library_author_search_tasks:
+        add_author_identity:
+          success: "Open Library author identity added."
       open_library_fetch_tasks:
         add_identity:
           success: "External identity added."

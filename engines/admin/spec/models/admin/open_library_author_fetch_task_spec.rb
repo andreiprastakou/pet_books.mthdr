@@ -99,4 +99,124 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTask do
       end
     end
   end
+
+  describe '#fetched_usable_values' do
+    let(:task) { build(:open_library_author_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      {
+        'name' => 'J. R. R. Tolkien',
+        'personal_name' => 'John Ronald Reuel Tolkien',
+        'birth_date' => '3 January 1892',
+        'death_date' => '2 September 1973',
+        'bio' => { 'type' => '/type/text', 'value' => 'English writer and philologist.' },
+        'remote_ids' => {
+          'viaf' => '95218067',
+          'wikidata' => 'Q892',
+          'goodreads' => ''
+        },
+        'links' => [
+          { 'title' => 'Wikipedia', 'url' => 'https://en.wikipedia.org/wiki/J._R._R._Tolkien' },
+          { 'title' => 'Missing url' },
+          'not-a-hash'
+        ],
+        'photos' => [6425004, 'not-an-int', nil],
+        'revision' => 12,
+        'key' => '/authors/OL26320A',
+        'alternate_names' => ['JRR Tolkien']
+      }
+    end
+
+    it 'returns usable fields with mapped remote ids and links' do
+      expect(task.fetched_usable_values).to eq(
+        {
+          'name' => 'J. R. R. Tolkien',
+          'personal_name' => 'John Ronald Reuel Tolkien',
+          'birth_date' => '3 January 1892',
+          'death_date' => '2 September 1973',
+          'bio' => 'English writer and philologist.',
+          'remote_ids' => [
+            { 'external_resource' => 'viaf', 'external_id' => '95218067' },
+            { 'external_resource' => 'wikidata', 'external_id' => 'Q892' }
+          ],
+          'links' => [
+            { 'label' => 'Wikipedia', 'url' => 'https://en.wikipedia.org/wiki/J._R._R._Tolkien' }
+          ],
+          'photos' => [6_425_004],
+          'revision' => 12
+        }
+      )
+    end
+
+    context 'when fetched_data is nil' do
+      let(:fetched_data) { nil }
+
+      it 'returns an empty hash' do
+        expect(task.fetched_usable_values).to eq({})
+      end
+    end
+
+    context 'when fetched_data is not a hash' do
+      let(:fetched_data) { ['not', 'a', 'hash'] }
+
+      it 'returns an empty hash' do
+        expect(task.fetched_usable_values).to eq({})
+      end
+    end
+
+    context 'when nested collections are malformed' do
+      let(:fetched_data) do
+        {
+          'name' => 'Broken Author',
+          'remote_ids' => ['not-a-hash'],
+          'links' => { 'url' => 'https://example.com' },
+          'photos' => '6425004'
+        }
+      end
+
+      it 'treats invalid collections as empty and drops them' do
+        expect(task.fetched_usable_values).to eq(
+          {
+            'name' => 'Broken Author'
+          }
+        )
+      end
+    end
+
+    context 'with a lifelike Open Library author fetch fixture' do
+      let(:fetched_data) do
+        JSON.parse(
+          File.read(
+            Rails.root.join(
+              'engines/admin/spec/fixtures/open_library/author_fetch_dean_koontz.json'
+            )
+          )
+        )
+      end
+
+      it 'extracts usable values from the real-shaped payload' do
+        expect(task.fetched_usable_values).to eq(
+          {
+            'name' => 'Dean Koontz',
+            'personal_name' => 'Dean R. Koontz',
+            'birth_date' => '9 July 1945',
+            'bio' => fetched_data['bio'],
+            'remote_ids' => [
+              { 'external_resource' => 'viaf', 'external_id' => '110880758' },
+              { 'external_resource' => 'goodreads', 'external_id' => '9355' },
+              { 'external_resource' => 'isni', 'external_id' => '0000000120327893' },
+              { 'external_resource' => 'amazon', 'external_id' => 'B000APG4T6' },
+              { 'external_resource' => 'librarything', 'external_id' => 'koontzdean' },
+              { 'external_resource' => 'wikidata', 'external_id' => 'Q272076' }
+            ],
+            'links' => [
+              { 'label' => 'Official Web Site', 'url' => 'http://www.deankoontz.com/' },
+              { 'label' => 'Dean Koontz Books in Order', 'url' => 'https://www.littlestack.com/author/dean-koontz' }
+            ],
+            'photos' => [6_425_004],
+            'revision' => 37
+          }
+        )
+      end
+    end
+  end
 end

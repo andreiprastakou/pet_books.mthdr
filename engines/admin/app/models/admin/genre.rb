@@ -22,7 +22,7 @@
 #
 module Admin
   class Genre < ::Genre
-    include HasExternalIdentities
+    include Admin::HasExternalIdentities
 
     def readonly?
       false

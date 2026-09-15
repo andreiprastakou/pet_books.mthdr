@@ -25,8 +25,8 @@
 #
 module Admin
   class Book < ::Book
-    include HasWikipedia
-    include HasExternalIdentities
+    include Admin::HasWikipedia
+    include Admin::HasExternalIdentities
 
     has_many :authors, through: :book_authors, class_name: 'Admin::Author', inverse_of: :books
     has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy

@@ -71,11 +71,34 @@ module Admin
     end
 
     def fetched_usable_values
-      (fetched_data || []).map do |entry|
-        author_keys = Array(entry['author_key'] || entry[:author_key])
-        author_names = Array(entry['author_name'] || entry[:author_name])
-        authors = author_keys.zip(author_names).to_h
-        entry.slice('key', 'title', 'first_publish_year').merge('authors' => authors)
+      data = fetched_data
+      return [] unless data.is_a?(Array)
+
+      data.filter_map do |entry|
+        next unless entry.is_a?(Hash)
+
+        {
+          'external_id' => entry['key'],
+          'title' => entry['title'],
+          'first_publish_year' => entry['first_publish_year'],
+          'authors' => fetched_author_entries(entry)
+        }.compact_blank.presence
+      end
+    end
+
+    private
+
+    def fetched_author_entries(entry)
+      author_ids = entry['author_key']
+      author_names = entry['author_name']
+      return [] unless author_ids.is_a?(Array)
+
+      names = author_names.is_a?(Array) ? author_names : []
+      author_ids.filter_map.with_index do |external_id, index|
+        id = external_id.presence
+        next unless id
+
+        { 'external_id' => id, 'name' => names[index] }.compact
       end
     end
   end

@@ -1,3 +1,8 @@
+<% book_ol_links = @book.external_identities.open_library.filter_map { |identity|
+  url = Admin::ExternalLinkBuilders::OpenLibrary::Work.call(identity.external_id)
+  url && external_link_to(identity.external_id, url)
+} %>
+
 <%= turbo_frame_tag "task_apply_form", target: "_top" do %>
   <div class="card mt-2">
     <div class="card-header">
@@ -9,7 +14,7 @@
         <div class="row mb-2">
           <div class="col-md-3 font-weight-bold text-end">Title:</div>
           <div class="col-md-9">
-            <%= @book.title %>
+            <%= @book.title %><% if book_ol_links.any? %> (<%= safe_join(book_ol_links, ', ') %>)<% end %>
           </div>
         </div>
 
@@ -24,7 +29,17 @@
             <% if @book.authors.empty? %>
               Unknown Author
             <% else %>
-              <%= safe_join(@book.authors.map { |author| author.fullname }, ', ') %>
+              <%= safe_join(@book.authors.map { |author|
+                links = author.external_identities.open_library.filter_map { |identity|
+                  url = Admin::ExternalLinkBuilders::OpenLibrary::Author.call(identity.external_id)
+                  url && external_link_to(identity.external_id, url)
+                }
+                if links.any?
+                  safe_join([author.fullname, ' (', safe_join(links, ', '), ')'])
+                else
+                  author.fullname
+                end
+              }, ', ') %>
             <% end %>
           </div>
         </div>

@@ -111,4 +111,111 @@ RSpec.describe Admin::OpenLibraryAuthorSearchTask do
       expect(described_class.next_unresolved(excluding: first_task)).to eq(second_task)
     end
   end
+
+  describe '#fetched_usable_values' do
+    let(:task) { build(:open_library_author_search_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      [
+        {
+          'key' => 'OL26320A',
+          'name' => 'J. R. R. Tolkien',
+          'birth_date' => '3 January 1892',
+          'death_date' => '2 September 1973',
+          'type' => 'author',
+          'ratings_count' => 1200,
+          'work_count' => 50,
+          'top_work' => 'The Hobbit'
+        }
+      ]
+    end
+
+    it 'returns usable fields for each result' do
+      expect(task.fetched_usable_values).to eq(
+        [
+          {
+            'external_id' => 'OL26320A',
+            'name' => 'J. R. R. Tolkien',
+            'birth_date' => '3 January 1892',
+            'death_date' => '2 September 1973',
+            'type' => 'author',
+            'ratings_count' => 1200
+          }
+        ]
+      )
+    end
+
+    context 'when fetched_data is blank' do
+      let(:fetched_data) { nil }
+
+      it 'returns an empty array' do
+        expect(task.fetched_usable_values).to eq([])
+      end
+    end
+
+    context 'when fetched_data is not an array' do
+      let(:fetched_data) { { 'key' => 'OL26320A' } }
+
+      it 'returns an empty array' do
+        expect(task.fetched_usable_values).to eq([])
+      end
+    end
+
+    context 'when entries are malformed' do
+      let(:fetched_data) do
+        [
+          'not-a-hash',
+          {
+            'key' => nil,
+            'name' => nil,
+            'birth_date' => nil,
+            'death_date' => nil,
+            'type' => nil,
+            'ratings_count' => nil
+          },
+          {
+            'key' => 'OL1A',
+            'name' => 'Partial Author'
+          }
+        ]
+      end
+
+      it 'skips invalid entries and drops blank fields' do
+        expect(task.fetched_usable_values).to eq(
+          [
+            {
+              'external_id' => 'OL1A',
+              'name' => 'Partial Author'
+            }
+          ]
+        )
+      end
+    end
+
+    context 'with a lifelike Open Library author search fixture' do
+      let(:fetched_data) do
+        JSON.parse(
+          File.read(
+            Rails.root.join(
+              'engines/admin/spec/fixtures/open_library/author_search_robert_jordan.json'
+            )
+          )
+        )
+      end
+
+      it 'extracts usable values from the real-shaped payload' do
+        expect(task.fetched_usable_values).to eq(
+          [
+            {
+              'external_id' => 'OL233594A',
+              'name' => 'Robert Jordan',
+              'birth_date' => '17 October 1948',
+              'death_date' => '16 September 2007',
+              'type' => 'author',
+              'ratings_count' => 845
+            }
+          ]
+        )
+      end
+    end
+  end
 end
