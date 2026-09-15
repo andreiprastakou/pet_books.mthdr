@@ -21,7 +21,5 @@
 #  cover_design_id  (cover_design_id => cover_designs.id)
 #
 FactoryBot.define do
-  factory :genre, class: 'Admin::Genre' do
-    name { 'literary' }
-  end
+  factory :admin_genre, class: 'Admin::Genre', parent: :genre
 end

@@ -1,4 +1,4 @@
-<%= form_with(model: [:admin, @genre], class: "needs-validation", novalidate: true) do |form| %>
+<%= form_with(model: [:admin, @genre], scope: "genre", class: "needs-validation", novalidate: true) do |form| %>
   <%= render "admin/common/form_errors", form_record: @genre %>
 
   <div class="mb-3">

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: genres
@@ -28,4 +30,19 @@ class Genre < ApplicationRecord
   validates :name, presence: true, uniqueness: true
 
   define_codified_attribute :name
+
+  def readonly?
+    true
+  end
+
+  # Admin::Genre shares this table without STI; treat same-id rows as equal.
+  def ==(other)
+    if other.equal?(self)
+      true
+    elsif other.is_a?(::Genre)
+      !new_record? && !other.new_record? && id == other.id
+    else
+      false
+    end
+  end
 end

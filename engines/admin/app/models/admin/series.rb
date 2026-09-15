@@ -14,8 +14,19 @@
 #
 #  index_series_on_name  (name)
 #
-FactoryBot.define do
-  factory :series, class: 'Admin::Series' do
-    sequence(:name) { |i| "Series #{i}" }
+module Admin
+  class Series < ::Series
+    include HasWikipedia
+
+    def readonly?
+      false
+    end
+
+    def self.cast(series)
+      return series if series.is_a?(self)
+      return new(series.attributes) if series.new_record?
+
+      series.becomes(self)
+    end
   end
 end

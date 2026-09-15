@@ -20,8 +20,17 @@
 #
 #  cover_design_id  (cover_design_id => cover_designs.id)
 #
-FactoryBot.define do
-  factory :genre, class: 'Admin::Genre' do
-    name { 'literary' }
+module Admin
+  class Genre < ::Genre
+    def readonly?
+      false
+    end
+
+    def self.cast(genre)
+      return genre if genre.is_a?(self)
+      return new(genre.attributes) if genre.new_record?
+
+      genre.becomes(self)
+    end
   end
 end

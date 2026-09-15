@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: series
+# Table name: public_list_types
 # Database name: primary
 #
 #  id         :integer          not null, primary key
@@ -12,10 +12,8 @@
 #
 # Indexes
 #
-#  index_series_on_name  (name)
+#  index_public_list_types_on_name  (name) UNIQUE
 #
 FactoryBot.define do
-  factory :series, class: 'Admin::Series' do
-    sequence(:name) { |i| "Series #{i}" }
-  end
+  factory :admin_public_list_type, class: 'Admin::PublicListType', parent: :public_list_type
 end

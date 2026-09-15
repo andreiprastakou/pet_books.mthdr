@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: public_lists
@@ -20,8 +22,6 @@
 #
 class PublicList < ApplicationRecord
   include HasExternalLinks
-  include HasWikipedia
-
 
   belongs_to :public_list_type, class_name: 'PublicListType', inverse_of: :public_lists
   has_many :book_public_lists, class_name: 'Joins::BookPublicList', dependent: :destroy
@@ -29,4 +29,19 @@ class PublicList < ApplicationRecord
 
   validates :year, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :public_list_type_id, uniqueness: { scope: :year }
+
+  def readonly?
+    true
+  end
+
+  # Admin::PublicList shares this table without STI; treat same-id rows as equal.
+  def ==(other)
+    if other.equal?(self)
+      true
+    elsif other.is_a?(::PublicList)
+      !new_record? && !other.new_record? && id == other.id
+    else
+      false
+    end
+  end
 end

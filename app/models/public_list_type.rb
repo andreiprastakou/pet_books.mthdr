@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: public_list_types
@@ -14,10 +16,23 @@
 #
 class PublicListType < ApplicationRecord
   include HasExternalLinks
-  include HasWikipedia
-
 
   has_many :public_lists, class_name: 'PublicList', dependent: :restrict_with_error
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }
+
+  def readonly?
+    true
+  end
+
+  # Admin::PublicListType shares this table without STI; treat same-id rows as equal.
+  def ==(other)
+    if other.equal?(self)
+      true
+    elsif other.is_a?(::PublicListType)
+      !new_record? && !other.new_record? && id == other.id
+    else
+      false
+    end
+  end
 end

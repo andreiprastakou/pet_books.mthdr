@@ -21,8 +21,5 @@
 #  public_list_type_id  (public_list_type_id => public_list_types.id)
 #
 FactoryBot.define do
-  factory :public_list, class: 'Admin::PublicList' do
-    public_list_type factory: %i[public_list_type]
-    year { rand(1990..2025) }
-  end
+  factory :admin_public_list, class: 'Admin::PublicList', parent: :public_list
 end

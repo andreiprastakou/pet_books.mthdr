@@ -15,7 +15,5 @@
 #  index_series_on_name  (name)
 #
 FactoryBot.define do
-  factory :series, class: 'Admin::Series' do
-    sequence(:name) { |i| "Series #{i}" }
-  end
+  factory :admin_series, class: 'Admin::Series', parent: :series
 end

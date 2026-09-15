@@ -27,13 +27,13 @@ module Admin
     end
 
     def new
-      @public_list = Admin::PublicListForm.new(public_list_type: @public_list_type)
+      @public_list = PublicList.new(public_list_type: @public_list_type)
     end
 
     def edit; end
 
     def create
-      @public_list = Admin::PublicListForm.new(record_params.merge(public_list_type: @public_list_type))
+      @public_list = PublicList.new(record_params.merge(public_list_type: @public_list_type))
       if @public_list.save
         redirect_to admin_public_list_type_public_list_path(@public_list_type, @public_list),
                     notice: t('notices.admin.public_lists.create.success')
@@ -64,7 +64,7 @@ module Admin
     end
 
     def fetch_record
-      @public_list = Admin::PublicListForm.find(params[:id])
+      @public_list = PublicList.find(params[:id])
     end
 
     def record_params

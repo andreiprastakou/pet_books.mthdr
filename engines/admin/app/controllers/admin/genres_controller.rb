@@ -79,7 +79,7 @@ module Admin
     private
 
     def fetch_record
-      @genre = ::Genre.find(params[:id])
+      @genre = Genre.find(params[:id])
     end
 
     def record_params
