@@ -20,7 +20,19 @@
 #  book_id        (book_id => books.id)
 #  collection_id  (collection_id => collections.id)
 #
-class BookCollection < ApplicationRecord
-  belongs_to :book
-  belongs_to :collection
+require 'rails_helper'
+
+RSpec.describe Joins::BookCollection do
+  subject { build(:book_collection) }
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:collection).required }
+    it { is_expected.to belong_to(:book).required }
+  end
+
+  describe 'validation' do
+    it 'has a valid factory' do
+      expect(build(:book_collection, collection: create(:collection), book: create(:book))).to be_valid
+    end
+  end
 end

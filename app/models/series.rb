@@ -19,7 +19,7 @@ class Series < ApplicationRecord
   include HasWikipedia
 
 
-  has_many :book_series, class_name: 'BookSeries', dependent: :destroy
+  has_many :book_series, class_name: 'Joins::BookSeries', dependent: :destroy
   has_many :books, class_name: 'Book', through: :book_series
 
   validates :name, presence: true

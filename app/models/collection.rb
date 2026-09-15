@@ -18,7 +18,7 @@ class Collection < ApplicationRecord
   include HasWikipedia
 
 
-  has_many :book_collections, dependent: :destroy
+  has_many :book_collections, class_name: 'Joins::BookCollection', dependent: :destroy
   has_many :books, through: :book_collections
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }

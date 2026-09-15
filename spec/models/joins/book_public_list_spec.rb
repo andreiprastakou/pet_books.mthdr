@@ -25,7 +25,7 @@
 #
 require 'rails_helper'
 
-RSpec.describe BookPublicList do
+RSpec.describe Joins::BookPublicList do
   subject { build(:book_public_list) }
 
   describe 'associations' do

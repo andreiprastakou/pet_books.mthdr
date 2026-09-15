@@ -27,15 +27,15 @@ require 'rails_helper'
 
 RSpec.describe Book do
   describe 'associations' do
-    it { is_expected.to have_many(:tag_connections).class_name(TagConnection.name) }
+    it { is_expected.to have_many(:tag_connections).class_name(Joins::TagConnection.name) }
     it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
-    it { is_expected.to have_many(:book_authors).class_name(BookAuthor.name) }
+    it { is_expected.to have_many(:book_authors).class_name(Joins::BookAuthor.name) }
     it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
-    it { is_expected.to have_many(:book_series).class_name(BookSeries.name) }
+    it { is_expected.to have_many(:book_series).class_name(Joins::BookSeries.name) }
     it { is_expected.to have_many(:series).class_name(Series.name).through(:book_series) }
-    it { is_expected.to have_many(:book_collections).class_name(BookCollection.name) }
+    it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollection.name) }
     it { is_expected.to have_many(:collections).class_name(Collection.name).through(:book_collections) }
-    it { is_expected.to have_many(:book_public_lists).class_name(BookPublicList.name) }
+    it { is_expected.to have_many(:book_public_lists).class_name(Joins::BookPublicList.name) }
     it { is_expected.to have_many(:public_lists).class_name(PublicList.name).through(:book_public_lists) }
   end
 

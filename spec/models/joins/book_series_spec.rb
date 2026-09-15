@@ -22,7 +22,19 @@
 #  book_id    (book_id => books.id)
 #  series_id  (series_id => series.id)
 #
-class BookSeries < ApplicationRecord
-  belongs_to :series, class_name: 'Series', inverse_of: :book_series
-  belongs_to :book, class_name: 'Book', inverse_of: :book_series
+require 'rails_helper'
+
+RSpec.describe Joins::BookSeries do
+  subject { build(:book_series) }
+
+  describe 'associations' do
+    it { is_expected.to belong_to(:series).required }
+    it { is_expected.to belong_to(:book).required }
+  end
+
+  describe 'validation' do
+    it 'has a valid factory' do
+      expect(build(:book_series, series: create(:series), book: create(:book))).to be_valid
+    end
+  end
 end

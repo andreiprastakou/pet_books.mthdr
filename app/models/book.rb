@@ -38,16 +38,16 @@ class Book < ApplicationRecord
 
   include HasExternalLinks
 
-  has_many :tag_connections, class_name: 'TagConnection', as: :entity, dependent: :destroy
+  has_many :tag_connections, class_name: 'Joins::TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
-  has_many :genres, class_name: 'BookGenre', dependent: :destroy
-  has_many :book_authors, class_name: 'BookAuthor', dependent: :destroy, inverse_of: :book
+  has_many :genres, class_name: 'Joins::BookGenre', dependent: :destroy
+  has_many :book_authors, class_name: 'Joins::BookAuthor', dependent: :destroy, inverse_of: :book
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
-  has_many :book_series, class_name: 'BookSeries', dependent: :destroy, inverse_of: :book
+  has_many :book_series, class_name: 'Joins::BookSeries', dependent: :destroy, inverse_of: :book
   has_many :series, through: :book_series, class_name: 'Series'
-  has_many :book_collections, class_name: 'BookCollection', dependent: :destroy, inverse_of: :book
+  has_many :book_collections, class_name: 'Joins::BookCollection', dependent: :destroy, inverse_of: :book
   has_many :collections, through: :book_collections, class_name: 'Collection'
-  has_many :book_public_lists, class_name: 'BookPublicList', dependent: :destroy, inverse_of: :book
+  has_many :book_public_lists, class_name: 'Joins::BookPublicList', dependent: :destroy, inverse_of: :book
   has_many :public_lists, through: :book_public_lists, class_name: 'PublicList'
   has_many :external_links, class_name: 'ExternalLink', as: :owner, dependent: :destroy, inverse_of: :owner
 

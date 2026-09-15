@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: tag_connections
@@ -15,13 +17,11 @@
 #  index_tag_connections_on_entity_type_and_entity_id_and_tag_id  (entity_type,entity_id,tag_id) UNIQUE
 #  index_tag_connections_on_tag_id                                (tag_id)
 #
-require 'rails_helper'
+module Joins
+  class TagConnection < ApplicationRecord
+    self.table_name = 'tag_connections'
 
-RSpec.describe TagConnection do
-  subject(:tag_connection) { build(:tag_connection) }
-
-  describe 'associations' do
-    it { is_expected.to belong_to(:tag).class_name(Tag.name).required }
-    it { is_expected.to belong_to(:entity) }
+    belongs_to :tag, class_name: 'Tag', inverse_of: :tag_connections
+    belongs_to :entity, polymorphic: true
   end
 end

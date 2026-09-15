@@ -22,7 +22,7 @@ class Genre < ApplicationRecord
   include HasCodifiedName
 
   belongs_to :cover_design, class_name: 'CoverDesign', optional: true
-  has_many :book_genres, class_name: 'BookGenre', dependent: :restrict_with_error
+  has_many :book_genres, class_name: 'Joins::BookGenre', dependent: :restrict_with_error
   has_many :books, through: :book_genres
 
   validates :name, presence: true, uniqueness: true

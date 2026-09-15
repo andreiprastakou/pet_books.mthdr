@@ -21,7 +21,7 @@
 #  genre_id  (genre_id => genres.id)
 #
 FactoryBot.define do
-  factory :book_genre, class: 'BookGenre' do
+  factory :book_genre, class: 'Joins::BookGenre' do
     genre { Genre.first || create(:genre) }
   end
 end

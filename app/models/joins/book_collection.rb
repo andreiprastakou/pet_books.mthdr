@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: book_collections
@@ -20,6 +22,11 @@
 #  book_id        (book_id => books.id)
 #  collection_id  (collection_id => collections.id)
 #
-FactoryBot.define do
-  factory :book_collection, class: 'BookCollection'
+module Joins
+  class BookCollection < ApplicationRecord
+    self.table_name = 'book_collections'
+
+    belongs_to :book
+    belongs_to :collection
+  end
 end

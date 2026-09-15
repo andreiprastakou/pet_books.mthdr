@@ -27,7 +27,7 @@ RSpec.describe PublicList do
 
   describe 'associations' do
     it { is_expected.to belong_to(:public_list_type).class_name(PublicListType.name).required }
-    it { is_expected.to have_many(:book_public_lists).class_name(BookPublicList.name).dependent(:destroy) }
+    it { is_expected.to have_many(:book_public_lists).class_name(Joins::BookPublicList.name).dependent(:destroy) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_public_lists) }
   end
 
