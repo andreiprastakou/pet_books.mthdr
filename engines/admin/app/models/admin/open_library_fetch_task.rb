@@ -99,5 +99,18 @@ module Admin
       attrs[:summary_src] = summary_src.to_s.strip if summary_src.present?
       book.update!(attrs)
     end
+
+    def fetched_usable_values
+      fetched_data&.slice(
+        'key',
+        'title',
+        'description',
+        'covers',
+        'series',
+        'genres',
+        'authors',
+        'identifiers'
+      )
+    end
   end
 end

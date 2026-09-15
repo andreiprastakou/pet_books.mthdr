@@ -55,5 +55,10 @@ module Admin
       Admin::ExternalIdentityIntroductor.call(identity)
     end
 
+    def fetched_usable_values
+      (fetched_data || []).map do |entry|
+        entry.slice('key', 'name', 'birth_date', 'death_date')
+      end
+    end
   end
 end
