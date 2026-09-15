@@ -73,7 +73,8 @@ module Admin
         when Array
           node.flat_map { |value| extract_qids(value) }
         when Hash
-          node.except('sitelinks', :sitelinks).values.flat_map { |value| extract_qids(value) }
+          node.except('sitelinks', :sitelinks, 'external_identities', :external_identities)
+              .values.flat_map { |value| extract_qids(value) }
         when String
           node.match?(QID_PATTERN) ? [node.upcase] : []
         else
@@ -116,34 +117,35 @@ module Admin
         end
       end
 
-      def enrich_node(node, labels)
+      def enrich_node(node, labels, field: nil)
         case node
         when Array
-          node.map { |value| enrich_node(value, labels) }
+          node.map { |value| enrich_node(value, labels, field: field) }
         when Hash
           node.each_with_object({}) do |(key, value), result|
-            result[key] = if key.to_s == 'sitelinks'
+            result[key] = if %w[sitelinks external_identities].include?(key.to_s)
                             value
                           else
-                            enrich_node(value, labels)
+                            enrich_node(value, labels, field: key)
                           end
           end
         when String
-          enrich_qid_string(node, labels)
+          enrich_qid_string(node, labels, field: field)
         else
           node
         end
       end
 
-      def enrich_qid_string(value, labels)
+      def enrich_qid_string(value, labels, field: nil)
         return value unless value.match?(QID_PATTERN)
 
         qid = value.upcase
         label = labels[qid]
+        label_key = field.to_s == 'authors' ? 'name' : 'label'
         if label.present?
-          { 'id' => qid, 'label' => label }
+          { 'external_id' => qid, label_key => label }
         else
-          { 'id' => qid }
+          { 'external_id' => qid }
         end
       end
     end
