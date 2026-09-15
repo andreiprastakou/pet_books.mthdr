@@ -34,9 +34,9 @@ module Admin
 
     def author
       owner = external_identity.owner
-      raise ArgumentError, 'Wikidata author fetch target must belong to an author' unless owner.is_a?(Author)
+      raise ArgumentError, 'Wikidata author fetch target must belong to an author' unless owner.is_a?(::Author)
 
-      owner
+      Admin::Author.cast(owner)
     end
 
     def perform

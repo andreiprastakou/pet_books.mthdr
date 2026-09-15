@@ -2,7 +2,7 @@ module Admin
   module Authors
     class WikiStatsController < AdminController
       def update
-        author = Author.find(params[:author_id])
+        author = Admin::Author.find(params[:author_id])
         books = books_to_sync(author)
         if books.any?
           books.each do |book|

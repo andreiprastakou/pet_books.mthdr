@@ -30,7 +30,9 @@ module Admin
       create!(target: author)
     end
 
-    alias author target
+    def author
+      Admin::Author.cast(target)
+    end
 
     def perform
       expert = InfoFetchers::Chats::AuthorBooksListExpert.new

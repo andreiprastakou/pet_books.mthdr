@@ -34,7 +34,7 @@ module Admin
     def index
       @pagy, @admin_authors = pagy(
         apply_sort(
-          Author.preload(:books, :external_links),
+          Admin::Author.preload(:books, :external_links),
           SORTING_MAP,
           defaults: { sort_by: 'id', sort_order: 'desc' }
         )
@@ -43,7 +43,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        Book.preload(:genres, :generative_summary_tasks, :external_links).by_author(@author),
+        Admin::Book.preload(:genres, :generative_summary_tasks, :external_links).by_author(@author),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       ).order(id: :desc)
@@ -51,13 +51,13 @@ module Admin
     end
 
     def new
-      @author = Author.new
+      @author = Admin::Author.new
     end
 
     def edit; end
 
     def create
-      @author = Author.new(record_params)
+      @author = Admin::Author.new(record_params)
 
       respond_to do |format|
         if @author.save
@@ -91,7 +91,7 @@ module Admin
     private
 
     def fetch_record
-      @author = Author.find(params.expect(:id))
+      @author = Admin::Author.find(params.expect(:id))
     end
 
     def record_params

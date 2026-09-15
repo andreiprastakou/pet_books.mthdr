@@ -36,7 +36,9 @@ module Admin
       scope.first
     end
 
-    alias book target
+    def book
+      Admin::Book.cast(target)
+    end
 
     def perform
       results = InfoFetchers::Wikidata::Api::BookSearcher.new(book).search
@@ -71,7 +73,7 @@ module Admin
       raise ArgumentError, 'Author is required' if author.blank?
       raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
 
-      identity = author.external_identities.create!(
+      identity = Admin::Author.cast(author).external_identities.create!(
         external_resource: ExternalResources::WIKIDATA,
         external_id: qid
       )

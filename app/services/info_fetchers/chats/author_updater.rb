@@ -12,6 +12,7 @@ module InfoFetchers
       private
 
       def update_author(author, author_info)
+        author = Admin::Author.cast(author)
         country_tags = extract_tags(author_info, 'countries', :location)
         author.update!(
           original_fullname: author_info.fetch('original_name'),
@@ -23,6 +24,7 @@ module InfoFetchers
       end
 
       def update_books(author, books_info)
+        author = Admin::Author.cast(author)
         books_info.each do |book_info|
           book = Admin::Book.where(title: book_info.fetch('title')).by_author(author)
                            .first_or_initialize(authors: [author])

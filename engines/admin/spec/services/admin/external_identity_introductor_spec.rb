@@ -103,15 +103,15 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
     end
 
     it 'returns the author Open Library author builder' do
-      expect(described_class.link_builder_for(:open_library, Author)).to eq(ExternalLinks::OpenLibrary::Author)
+      expect(described_class.link_builder_for(:open_library, ::Author)).to eq(ExternalLinks::OpenLibrary::Author)
     end
 
     it 'returns the author Wikidata builder' do
-      expect(described_class.link_builder_for('wikidata', Author)).to eq(ExternalLinks::Wikidata)
+      expect(described_class.link_builder_for('wikidata', ::Author)).to eq(ExternalLinks::Wikidata)
     end
 
     it 'returns nil when no builder is defined' do
-      expect(described_class.link_builder_for('goodreads', Author)).to be_nil
+      expect(described_class.link_builder_for('goodreads', ::Author)).to be_nil
     end
   end
 end

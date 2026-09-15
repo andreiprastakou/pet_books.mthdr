@@ -21,7 +21,5 @@
 #
 
 FactoryBot.define do
-  factory :author, class: 'Admin::Author' do
-    sequence(:fullname) { |i| "King Henry #{i}" }
-  end
+  factory :admin_author, class: 'Admin::Author', parent: :author
 end

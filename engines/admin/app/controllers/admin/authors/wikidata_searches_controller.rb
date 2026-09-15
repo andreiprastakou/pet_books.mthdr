@@ -12,7 +12,7 @@ module Admin
       private
 
       def fetch_author
-        @author = Author.find(params[:author_id])
+        @author = Admin::Author.find(params[:author_id])
       end
     end
   end

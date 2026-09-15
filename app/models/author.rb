@@ -23,19 +23,11 @@
 class Author < ApplicationRecord
   include CarrierwaveUrlAssign
   include HasExternalLinks
-  include HasWikipedia
-
 
   has_many :book_authors, class_name: 'Joins::BookAuthor', dependent: :restrict_with_error
   has_many :books, class_name: 'Book', through: :book_authors
   has_many :tag_connections, class_name: 'Joins::TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
-  has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy
-  has_many :list_parsing_tasks, class_name: 'Admin::AuthorBooksListParsingTask', as: :target, dependent: :destroy
-  has_many :open_library_author_search_tasks, class_name: 'Admin::OpenLibraryAuthorSearchTask', as: :target,
-                                              dependent: :destroy
-  has_many :external_identities, class_name: 'ExternalIdentity', as: :owner, dependent: :destroy,
-                                 inverse_of: :owner
 
   mount_base64_uploader :aws_photos, Uploaders::AwsAuthorPhotoUploader
 
@@ -46,9 +38,22 @@ class Author < ApplicationRecord
   validates :death_year, numericality: { only_integer: true, allow_nil: true }
 
   scope :order_by_fullname, -> { order(:fullname) }
-  scope :not_synced, -> { where(synced_at: nil) }
-  scope :without_tasks, -> { where.missing(:books_list_tasks).where.missing(:list_parsing_tasks) }
   scope :search_by_name, ->(key) { where('fullname LIKE ?', "%#{key}%") }
+
+  def readonly?
+    true
+  end
+
+  # Admin::Author shares this table without STI; treat same-id rows as equal.
+  def ==(other)
+    if other.equal?(self)
+      true
+    elsif other.is_a?(::Author)
+      !new_record? && !other.new_record? && id == other.id
+    else
+      false
+    end
+  end
 
   def tag_ids
     tag_connections.map(&:tag_id)
@@ -72,20 +77,6 @@ class Author < ApplicationRecord
 
   def photo_url=(value)
     assign_remote_url_or_data(:aws_photos, value)
-  end
-
-  def history_data_fetch_tasks
-    author_fetch_tasks = Admin::BaseDataFetchTask.where(
-      target_type: Author.name,
-      target_id: id
-    )
-    identities_fetch_tasks = Admin::BaseDataFetchTask.where(
-      target_type: ExternalIdentity.name,
-      target_id: external_identities.select(:id)
-    )
-    (author_fetch_tasks.to_a + identities_fetch_tasks.to_a)
-      .sort_by(&:updated_at)
-      .reverse
   end
 
   protected
