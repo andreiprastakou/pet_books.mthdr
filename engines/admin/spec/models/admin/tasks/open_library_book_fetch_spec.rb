@@ -178,7 +178,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     end
   end
 
-  describe '#fetched_usable_values' do
+  describe '#fetched_data_normalized' do
     let(:task) { build(:open_library_fetch_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       {
@@ -207,7 +207,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     end
 
     it 'returns usable fields and mapped related entities' do
-      expect(task.fetched_usable_values).to eq(
+      expect(task.fetched_data_normalized).to eq(
         {
           'title' => 'The Lord of the Rings',
           'description' => { 'type' => '/type/text', 'value' => 'An epic fantasy novel.' },
@@ -235,7 +235,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
       let(:fetched_data) { nil }
 
       it 'returns an empty hash' do
-        expect(task.fetched_usable_values).to eq({})
+        expect(task.fetched_data_normalized).to eq({})
       end
     end
 
@@ -243,7 +243,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
       let(:fetched_data) { ['not', 'a', 'hash'] }
 
       it 'returns an empty hash' do
-        expect(task.fetched_usable_values).to eq({})
+        expect(task.fetched_data_normalized).to eq({})
       end
     end
 
@@ -263,7 +263,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
       end
 
       it 'skips invalid entries and keeps valid ones' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           {
             'title' => 'Broken Work',
             'series' => [{ 'external_id' => '/series/OL1S' }]
@@ -284,7 +284,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
       end
 
       it 'omits blank author ids' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           {
             'authors' => [{ 'external_id' => '/authors/OL1A' }]
           }
@@ -304,7 +304,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
       end
 
       it 'extracts usable values from the real-shaped payload' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           {
             'title' => 'The Pillars of the Earth',
             'description' => fetched_data['description'],

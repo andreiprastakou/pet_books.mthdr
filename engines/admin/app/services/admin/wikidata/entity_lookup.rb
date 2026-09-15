@@ -7,8 +7,8 @@ module Admin
     class EntityLookup
       QID_PATTERN = /\AQ\d+\z/i
 
-      def self.cache_from_item!(item, usable_values: nil)
-        new.cache_from_item!(item, usable_values: usable_values)
+      def self.cache_from_item!(item, data: nil)
+        new.cache_from_item!(item, data: data)
       end
 
       def self.ensure!(qids)
@@ -19,11 +19,11 @@ module Admin
         new.enrich(values, fetch_missing: fetch_missing)
       end
 
-      def cache_from_item!(item, usable_values: nil)
+      def cache_from_item!(item, data: nil)
         return if item.blank? || !item.is_a?(Hash)
 
         upsert_from_item_payload!(item)
-        values = usable_values.presence || {}
+        values = data.presence || {}
         ensure!(extract_qids(values))
       end
 

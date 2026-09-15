@@ -100,7 +100,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
     end
   end
 
-  describe '#fetched_usable_values' do
+  describe '#fetched_data_normalized' do
     let(:task) { build(:open_library_author_fetch_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       {
@@ -127,7 +127,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
     end
 
     it 'returns usable fields with mapped remote ids and links' do
-      expect(task.fetched_usable_values).to eq(
+      expect(task.fetched_data_normalized).to eq(
         {
           'name' => 'J. R. R. Tolkien',
           'personal_name' => 'John Ronald Reuel Tolkien',
@@ -151,7 +151,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
       let(:fetched_data) { nil }
 
       it 'returns an empty hash' do
-        expect(task.fetched_usable_values).to eq({})
+        expect(task.fetched_data_normalized).to eq({})
       end
     end
 
@@ -159,7 +159,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
       let(:fetched_data) { ['not', 'a', 'hash'] }
 
       it 'returns an empty hash' do
-        expect(task.fetched_usable_values).to eq({})
+        expect(task.fetched_data_normalized).to eq({})
       end
     end
 
@@ -174,7 +174,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
       end
 
       it 'treats invalid collections as empty and drops them' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           {
             'name' => 'Broken Author'
           }
@@ -194,7 +194,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
       end
 
       it 'extracts usable values from the real-shaped payload' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           {
             'name' => 'Dean Koontz',
             'personal_name' => 'Dean R. Koontz',

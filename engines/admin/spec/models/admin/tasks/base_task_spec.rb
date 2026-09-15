@@ -45,9 +45,9 @@ RSpec.describe Admin::Tasks::BaseTask do
     end
   end
 
-  describe '#fetched_usable_values' do
+  describe '#fetched_data_normalized' do
     it 'returns an empty hash by default' do
-      expect(described_class.new.fetched_usable_values).to eq({})
+      expect(described_class.new.fetched_data_normalized).to eq({})
     end
   end
 end

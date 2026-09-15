@@ -112,7 +112,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorSearch do
     end
   end
 
-  describe '#fetched_usable_values' do
+  describe '#fetched_data_normalized' do
     let(:task) { build(:open_library_author_search_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       [
@@ -130,7 +130,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorSearch do
     end
 
     it 'returns usable fields for each result' do
-      expect(task.fetched_usable_values).to eq(
+      expect(task.fetched_data_normalized).to eq(
         [
           {
             'external_id' => 'OL26320A',
@@ -148,7 +148,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorSearch do
       let(:fetched_data) { nil }
 
       it 'returns an empty array' do
-        expect(task.fetched_usable_values).to eq([])
+        expect(task.fetched_data_normalized).to eq([])
       end
     end
 
@@ -156,7 +156,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorSearch do
       let(:fetched_data) { { 'key' => 'OL26320A' } }
 
       it 'returns an empty array' do
-        expect(task.fetched_usable_values).to eq([])
+        expect(task.fetched_data_normalized).to eq([])
       end
     end
 
@@ -180,7 +180,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorSearch do
       end
 
       it 'skips invalid entries and drops blank fields' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           [
             {
               'external_id' => 'OL1A',
@@ -203,7 +203,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorSearch do
       end
 
       it 'extracts usable values from the real-shaped payload' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           [
             {
               'external_id' => 'OL233594A',

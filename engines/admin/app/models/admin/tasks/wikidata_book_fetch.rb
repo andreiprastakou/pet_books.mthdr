@@ -50,7 +50,7 @@ module Admin
         end
       end
 
-      def fetched_usable_values
+      def fetched_data_normalized
         values = Admin::Wikidata::BookUsableValues.call(fetched_data)
         Admin::Wikidata::EntityLookup.enrich(values, fetch_missing: true)
       end
@@ -78,8 +78,8 @@ module Admin
       private
 
       def cache_lookup_entities!(result)
-        usable = Admin::Wikidata::BookUsableValues.call(result)
-        Admin::Wikidata::EntityLookup.cache_from_item!(result, usable_values: usable)
+        data = Admin::Wikidata::BookUsableValues.call(result)
+        Admin::Wikidata::EntityLookup.cache_from_item!(result, data: data)
       end
 
       def extract_localized_text(localized)

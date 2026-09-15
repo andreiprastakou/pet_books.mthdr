@@ -101,7 +101,7 @@ module Admin
         book.update!(attrs)
       end
 
-      def fetched_usable_values
+      def fetched_data_normalized
         data = fetched_data
         return {} unless data.is_a?(Hash)
 

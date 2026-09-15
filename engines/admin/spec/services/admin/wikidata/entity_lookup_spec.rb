@@ -11,7 +11,7 @@ RSpec.describe Admin::Wikidata::EntityLookup do
         'descriptions' => { 'en' => 'James Bond novel' }
       }
     end
-    let(:usable_values) do
+    let(:data) do
       {
         'authors' => ['Q82104'],
         'external_identities' => [
@@ -29,7 +29,7 @@ RSpec.describe Admin::Wikidata::EntityLookup do
     end
 
     it 'upserts the main item and referenced Q-IDs' do
-      expect { described_class.cache_from_item!(item, usable_values: usable_values) }
+      expect { described_class.cache_from_item!(item, data: data) }
         .to change(Admin::WikidataLookupEntity, :count).by(2)
 
       main = Admin::WikidataLookupEntity.find_by!(qid: 'Q545151')
@@ -45,7 +45,7 @@ RSpec.describe Admin::Wikidata::EntityLookup do
       before { create(:wikidata_lookup_entity, qid: 'Q82104', label: 'Cached') }
 
       it 'does not refetch them' do
-        described_class.cache_from_item!(item, usable_values: usable_values)
+        described_class.cache_from_item!(item, data: data)
         expect(labels_fetcher).not_to have_received(:fetch)
         expect(Admin::WikidataLookupEntity.find_by!(qid: 'Q82104').label).to eq('Cached')
       end

@@ -49,9 +49,9 @@ module Admin
         return [] if claims.blank?
 
         preferred = claims.select { |claim| claim.is_a?(Hash) && claim['rank'] == 'preferred' }
-        usable = preferred.presence || claims.reject { |claim| claim.is_a?(Hash) && claim['rank'] == 'deprecated' }
+        entries = preferred.presence || claims.reject { |claim| claim.is_a?(Hash) && claim['rank'] == 'deprecated' }
 
-        usable.filter_map { |claim| extract_statement_content(claim) }
+        entries.filter_map { |claim| extract_statement_content(claim) }
       end
 
       def extract_statement_content(claim)

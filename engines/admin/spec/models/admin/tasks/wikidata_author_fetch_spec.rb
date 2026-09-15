@@ -85,7 +85,7 @@ RSpec.describe Admin::Tasks::WikidataAuthorFetch do
     it 'caches lookup entities from the payload' do
       call
       expect(Admin::Wikidata::EntityLookup).to have_received(:cache_from_item!)
-        .with(api_data, usable_values: kind_of(Hash))
+        .with(api_data, data: kind_of(Hash))
     end
 
     context 'when the fetch fails' do
@@ -125,7 +125,7 @@ RSpec.describe Admin::Tasks::WikidataAuthorFetch do
     end
   end
 
-  describe '#fetched_usable_values' do
+  describe '#fetched_data_normalized' do
     let(:task) { build(:wikidata_author_fetch_task, fetched_data: fetched_data) }
     let(:fetched_data) { { 'statements' => {}, 'sitelinks' => {} } }
     let(:usable) { { 'countries' => ['Q30'] } }
@@ -138,7 +138,7 @@ RSpec.describe Admin::Tasks::WikidataAuthorFetch do
     end
 
     it 'enriches usable values via EntityLookup' do
-      expect(task.fetched_usable_values).to eq(enriched)
+      expect(task.fetched_data_normalized).to eq(enriched)
       expect(Admin::Wikidata::EntityLookup).to have_received(:enrich).with(usable, fetch_missing: true)
     end
   end

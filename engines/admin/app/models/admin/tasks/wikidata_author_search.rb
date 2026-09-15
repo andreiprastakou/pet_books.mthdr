@@ -47,7 +47,7 @@ module Admin
         results
       end
 
-      def fetched_usable_values
+      def fetched_data_normalized
         Array(fetched_data).filter_map do |item|
           {
             'external_id' => item['id'],
