@@ -3,12 +3,12 @@
 <div class="card mt-2">
   <div class="card-header">Wikidata author search results</div>
   <div class="card-body">
-    <% usable_values = task.fetched_usable_values %>
-    <% if usable_values.blank? %>
+    <% data = task.fetched_data_normalized %>
+    <% if data.blank? %>
       <p class="text-muted mb-0">No search results returned.</p>
     <% else %>
-      <%= render 'admin/data_fetch_tasks/types/wikidata_usable_values_table',
-        rows: usable_values %>
+      <%= render 'admin/data_fetch_tasks/types/wikidata_data_table',
+        rows: data %>
     <% end %>
   </div>
 </div>

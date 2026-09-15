@@ -3,14 +3,14 @@
 <div class="card mt-2">
   <div class="card-header">Open Library author search results</div>
   <div class="card-body">
-    <% usable_values = task.fetched_usable_values %>
-    <% if usable_values.blank? %>
+    <% data = task.fetched_data_normalized %>
+    <% if data.blank? %>
       <p class="text-muted mb-0">No search results returned.</p>
     <% else %>
       <% author_open_library_ids = task.author.external_identities.open_library.filter_map(&:external_id).to_set %>
       <table class="table table-bordered align-top mb-0 b-task-fetch-results">
         <tbody>
-          <% usable_values.each do |result| %>
+          <% data.each do |result| %>
             <% result_data = result.is_a?(Hash) ? result : {} %>
             <% author_key = result_data['external_id'] %>
             <% author_olid = Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(author_key) %>

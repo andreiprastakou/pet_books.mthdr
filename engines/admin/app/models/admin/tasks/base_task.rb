@@ -72,7 +72,7 @@ module Admin
         fetched?
       end
 
-      def fetched_usable_values
+      def fetched_data_normalized
         fetched_data || {}
       end
     end

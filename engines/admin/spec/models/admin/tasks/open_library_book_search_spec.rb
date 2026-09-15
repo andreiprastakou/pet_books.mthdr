@@ -148,7 +148,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
     end
   end
 
-  describe '#fetched_usable_values' do
+  describe '#fetched_data_normalized' do
     let(:task) { build(:open_library_search_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       [
@@ -165,7 +165,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
     end
 
     it 'returns usable fields with paired authors' do
-      expect(task.fetched_usable_values).to eq(
+      expect(task.fetched_data_normalized).to eq(
         [
           {
             'external_id' => '/works/OL1W',
@@ -184,7 +184,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
       let(:fetched_data) { nil }
 
       it 'returns an empty array' do
-        expect(task.fetched_usable_values).to eq([])
+        expect(task.fetched_data_normalized).to eq([])
       end
     end
 
@@ -192,7 +192,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
       let(:fetched_data) { { 'key' => '/works/OL1W' } }
 
       it 'returns an empty array' do
-        expect(task.fetched_usable_values).to eq([])
+        expect(task.fetched_data_normalized).to eq([])
       end
     end
 
@@ -222,7 +222,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
       end
 
       it 'skips invalid entries and tolerates bad author collections' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           [
             {
               'external_id' => '/works/OL2W',
@@ -253,7 +253,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
       end
 
       it 'keeps authors without paired names' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           [
             {
               'external_id' => '/works/OL4W',
@@ -280,7 +280,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
       end
 
       it 'extracts usable values from the real-shaped payload' do
-        expect(task.fetched_usable_values).to eq(
+        expect(task.fetched_data_normalized).to eq(
           [
             {
               'external_id' => '/works/OL85742W',

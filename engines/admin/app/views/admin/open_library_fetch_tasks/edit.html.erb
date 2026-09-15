@@ -63,7 +63,7 @@
           <tbody>
             <tr>
               <td class="w-50">
-                <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(@task.fetched_usable_values) %></pre>
+                <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(@task.fetched_data_normalized) %></pre>
               </td>
               <td class="text-center">
                 <% @identifiers.each do |external_resource, external_id| %>

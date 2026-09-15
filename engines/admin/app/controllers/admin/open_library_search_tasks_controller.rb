@@ -50,7 +50,7 @@ module Admin
 
     def sorted_search_results
       book_year = @book.year_published.to_i
-      Array(@task.fetched_usable_values).sort_by do |result|
+      Array(@task.fetched_data_normalized).sort_by do |result|
         year = result.is_a?(Hash) ? result['first_publish_year'].to_i : 0
         (year - book_year).abs
       end
