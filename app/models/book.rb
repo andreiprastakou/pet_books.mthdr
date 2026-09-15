@@ -36,6 +36,7 @@ class Book < ApplicationRecord
   FORMS_REQUIRE_SUMMARY = (%w[novel novella non_fiction play] + [nil]).freeze
   FORMS_SMALL = %w[short short_story poem comics].freeze
 
+  include EqualByPersistedId
   include HasExternalLinks
 
   has_many :tag_connections, class_name: 'Joins::TagConnection', as: :entity, dependent: :destroy
@@ -69,18 +70,8 @@ class Book < ApplicationRecord
     true
   end
 
-  # Admin::Book shares this table without STI; treat same-id rows as equal.
-  def ==(other)
-    if other.equal?(self)
-      true
-    elsif other.is_a?(::Book)
-      !new_record? && !other.new_record? && id == other.id
-    else
-      false
-    end
-  end
-
   def tag_ids
+
     tag_connections.map(&:tag_id)
   end
 
