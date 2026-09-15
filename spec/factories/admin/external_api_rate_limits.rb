@@ -17,7 +17,7 @@
 #  index_external_api_rate_limits_on_name  (name) UNIQUE
 #
 FactoryBot.define do
-  factory :external_api_rate_limit, class: 'ExternalApiRateLimit' do
+  factory :external_api_rate_limit, class: 'Admin::ExternalApiRateLimit' do
     sequence(:name) { |i| "api_#{i}" }
     min_interval_seconds { 1.0 / 3 }
     last_requested_at { nil }

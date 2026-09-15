@@ -62,7 +62,7 @@ module Admin
                                     .uniq
       return {} if author_olids.empty?
 
-      ExternalIdentity.open_library
+      Admin::ExternalIdentity.open_library
                       .where(owner_type: ::Author.name, external_id: author_olids)
                       .includes(:owner)
                       .index_by(&:external_id)

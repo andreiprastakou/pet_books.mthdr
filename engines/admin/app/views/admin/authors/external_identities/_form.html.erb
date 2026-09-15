@@ -4,7 +4,7 @@
   <div class="mb-3">
     <%= form.label :external_resource, class: "form-label" %>
     <%= form.select :external_resource,
-      ExternalIdentity.external_resources.keys.map { |r| [r.titleize, r] },
+      Admin::ExternalIdentity.external_resources.keys.map { |r| [r.titleize, r] },
       { include_blank: true },
       class: "form-select", required: true %>
     <div class="invalid-feedback">

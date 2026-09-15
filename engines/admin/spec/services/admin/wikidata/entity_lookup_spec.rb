@@ -23,13 +23,13 @@ RSpec.describe Admin::Wikidata::EntityLookup do
 
     it 'upserts the main item and referenced Q-IDs' do
       expect { described_class.cache_from_item!(item, usable_values: usable_values) }
-        .to change(WikidataLookupEntity, :count).by(2)
+        .to change(Admin::WikidataLookupEntity, :count).by(2)
 
-      main = WikidataLookupEntity.find_by!(qid: 'Q545151')
+      main = Admin::WikidataLookupEntity.find_by!(qid: 'Q545151')
       expect(main.label).to eq('The Spy Who Loved Me')
       expect(main.description).to eq('James Bond novel')
 
-      author = WikidataLookupEntity.find_by!(qid: 'Q82104')
+      author = Admin::WikidataLookupEntity.find_by!(qid: 'Q82104')
       expect(author.label).to eq('Ian Fleming')
       expect(labels_fetcher).to have_received(:fetch).with(['Q82104'])
     end
@@ -40,7 +40,7 @@ RSpec.describe Admin::Wikidata::EntityLookup do
       it 'does not refetch them' do
         described_class.cache_from_item!(item, usable_values: usable_values)
         expect(labels_fetcher).not_to have_received(:fetch)
-        expect(WikidataLookupEntity.find_by!(qid: 'Q82104').label).to eq('Cached')
+        expect(Admin::WikidataLookupEntity.find_by!(qid: 'Q82104').label).to eq('Cached')
       end
     end
   end
@@ -79,7 +79,7 @@ RSpec.describe Admin::Wikidata::EntityLookup do
         expect(described_class.enrich(values, fetch_missing: true)).to eq(
           'genres' => [{ 'id' => 'Q20664331', 'label' => 'spy fiction' }]
         )
-        expect(WikidataLookupEntity.find_by!(qid: 'Q20664331').label).to eq('spy fiction')
+        expect(Admin::WikidataLookupEntity.find_by!(qid: 'Q20664331').label).to eq('spy fiction')
       end
     end
   end

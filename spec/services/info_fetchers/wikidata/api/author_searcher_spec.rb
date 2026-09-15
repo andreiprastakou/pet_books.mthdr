@@ -33,7 +33,7 @@ RSpec.describe InfoFetchers::Wikidata::Api::AuthorSearcher do
     end
 
     before do
-      allow(ExternalApiRateLimit).to receive(:throttle!)
+      allow(Admin::ExternalApiRateLimit).to receive(:throttle!)
       stub_request(:get, 'https://www.wikidata.org/w/rest.php/wikibase/v1/search/items')
         .with(
           query: expected_params,

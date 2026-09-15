@@ -57,7 +57,7 @@ module Admin
       return [] unless identifiers.is_a?(Hash)
 
       identifiers.flat_map do |resource, values|
-        next [] unless ExternalIdentity.external_resources.key?(resource.to_s)
+        next [] unless Admin::ExternalIdentity.external_resources.key?(resource.to_s)
 
         Array(values).compact_blank.map { |external_id| [resource.to_s, external_id.to_s] }
       end
@@ -81,7 +81,7 @@ module Admin
 
     def add_identity!(external_resource, external_id)
       resource = external_resource.to_s
-      raise ArgumentError, 'Invalid external resource' unless ExternalIdentity.external_resources.key?(resource)
+      raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
 
       id = external_id.to_s.strip
       raise ArgumentError, 'External ID is required' if id.blank?

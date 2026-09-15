@@ -41,7 +41,7 @@ RSpec.describe InfoFetchers::OpenLibrary::Api::BookSearcher do
     end
 
     before do
-      allow(ExternalApiRateLimit).to receive(:throttle!)
+      allow(Admin::ExternalApiRateLimit).to receive(:throttle!)
       stub_request(:get, 'https://openlibrary.org/search.json')
         .with(
           query: expected_params,

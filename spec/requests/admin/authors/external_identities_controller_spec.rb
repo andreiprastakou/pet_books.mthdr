@@ -64,7 +64,7 @@ RSpec.describe Admin::Authors::ExternalIdentitiesController do
              headers: authorization_header
       end
 
-      it 'creates a new ExternalIdentity for the author' do
+      it 'creates a new Admin::ExternalIdentity for the author' do
         expect { send_request }.to change(author.external_identities, :count).by(1)
         identity = author.external_identities.order(:id).last
         expect(identity.external_resource).to eq('wikidata')
@@ -73,7 +73,7 @@ RSpec.describe Admin::Authors::ExternalIdentitiesController do
 
       it 'redirects to the created external identity' do
         send_request
-        identity = ExternalIdentity.order(:id).last
+        identity = Admin::ExternalIdentity.order(:id).last
         expect(response).to redirect_to(admin_author_external_identity_path(author, identity))
         expect(flash[:notice]).to eq('External identity was successfully created.')
       end
@@ -88,8 +88,8 @@ RSpec.describe Admin::Authors::ExternalIdentitiesController do
 
       before { external_identity }
 
-      it 'does not create a new ExternalIdentity' do
-        expect { send_request }.not_to change(ExternalIdentity, :count)
+      it 'does not create a new Admin::ExternalIdentity' do
+        expect { send_request }.not_to change(Admin::ExternalIdentity, :count)
       end
 
       it 'renders the form again' do
@@ -158,7 +158,7 @@ RSpec.describe Admin::Authors::ExternalIdentitiesController do
 
     it 'destroys the requested external identity' do
       external_identity
-      expect { send_request }.to change(ExternalIdentity, :count).by(-1)
+      expect { send_request }.to change(Admin::ExternalIdentity, :count).by(-1)
     end
 
     it 'redirects to the author' do

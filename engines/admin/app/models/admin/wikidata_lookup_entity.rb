@@ -17,11 +17,16 @@
 #
 #  index_wikidata_lookup_entities_on_qid  (qid) UNIQUE
 #
-FactoryBot.define do
-  factory :wikidata_lookup_entity, class: 'WikidataLookupEntity' do
-    sequence(:qid) { |i| "Q#{i}" }
-    label { "Entity #{qid}" }
-    description { "Description for #{qid}" }
-    fetched_at { Time.current }
+module Admin
+  class WikidataLookupEntity < ApplicationRecord
+    self.table_name = 'wikidata_lookup_entities'
+
+    QID_FORMAT = /\AQ\d+\z/
+
+    validates :qid, presence: true, uniqueness: true, format: { with: QID_FORMAT }
+
+    def self.normalize_qid(value)
+      InfoFetchers::Wikidata::Api::BaseCaller.normalize_entity_id(value)
+    end
   end
 end

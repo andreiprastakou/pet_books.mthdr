@@ -18,7 +18,7 @@ require 'rails_helper'
 #
 #  index_external_api_rate_limits_on_name  (name) UNIQUE
 #
-RSpec.describe ExternalApiRateLimit do
+RSpec.describe Admin::ExternalApiRateLimit do
   include ActiveSupport::Testing::TimeHelpers
 
   subject(:rate_limit) { build(:external_api_rate_limit) }

@@ -24,10 +24,22 @@
 #
 #  external_link_id  (external_link_id => external_links.id) ON DELETE => nullify
 #
-FactoryBot.define do
-  factory :external_identity, class: 'ExternalIdentity' do
-    owner { association :book }
-    external_resource { :open_library }
-    sequence(:external_id) { |i| "OL#{i}W" }
+module Admin
+  class ExternalIdentity < ApplicationRecord
+    self.table_name = 'external_identities'
+
+    belongs_to :owner, polymorphic: true
+    belongs_to :external_link, optional: true
+
+    enum :external_resource, {
+      ExternalResources::OPEN_LIBRARY => 1,
+      ExternalResources::WIKIDATA => 2,
+      ExternalResources::LIBRARYTHING => 3,
+      ExternalResources::GOODREADS => 4
+    }
+
+    validates :owner_type, presence: true
+    validates :external_resource, presence: true
+    validates :external_id, presence: true, uniqueness: { scope: :external_resource }
   end
 end

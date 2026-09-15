@@ -64,7 +64,7 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
              headers: authorization_header
       end
 
-      it 'creates a new ExternalIdentity for the book' do
+      it 'creates a new Admin::ExternalIdentity for the book' do
         expect { send_request }.to change(book.external_identities, :count).by(1)
         identity = book.external_identities.order(:id).last
         expect(identity.external_resource).to eq('wikidata')
@@ -73,7 +73,7 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
 
       it 'redirects to the created external identity' do
         send_request
-        identity = ExternalIdentity.order(:id).last
+        identity = Admin::ExternalIdentity.order(:id).last
         expect(response).to redirect_to(admin_book_external_identity_path(book, identity))
         expect(flash[:notice]).to eq('External identity was successfully created.')
       end
@@ -88,8 +88,8 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
 
       before { external_identity }
 
-      it 'does not create a new ExternalIdentity' do
-        expect { send_request }.not_to change(ExternalIdentity, :count)
+      it 'does not create a new Admin::ExternalIdentity' do
+        expect { send_request }.not_to change(Admin::ExternalIdentity, :count)
       end
 
       it 'renders the form again' do
@@ -158,7 +158,7 @@ RSpec.describe Admin::Books::ExternalIdentitiesController do
 
     it 'destroys the requested external identity' do
       external_identity
-      expect { send_request }.to change(ExternalIdentity, :count).by(-1)
+      expect { send_request }.to change(Admin::ExternalIdentity, :count).by(-1)
     end
 
     it 'redirects to the book' do
