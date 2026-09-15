@@ -40,7 +40,7 @@ RSpec.describe Admin::Author do
         .class_name(Admin::OpenLibraryAuthorSearchTask.name)
         .dependent(:destroy)
     end
-    it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
+    it { is_expected.to have_many(:external_identities).class_name(Admin::ExternalIdentity.name).dependent(:destroy) }
     it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name).dependent(:destroy) }
   end
 

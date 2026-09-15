@@ -37,7 +37,7 @@ RSpec.describe Admin::Book do
       is_expected.to have_many(:generative_summary_tasks).class_name(Admin::BookSummaryTask.name)
                                                          .dependent(:destroy)
     }
-    it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
+    it { is_expected.to have_many(:external_identities).class_name(Admin::ExternalIdentity.name).dependent(:destroy) }
     it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name).dependent(:destroy) }
   end
 

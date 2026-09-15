@@ -21,7 +21,7 @@ module InfoFetchers
         # Runs inside Faraday's retry stack so each attempt (including retries) is spaced.
         class RateLimitMiddleware < Faraday::Middleware
           def on_request(_env)
-            ExternalApiRateLimit.throttle!(
+            Admin::ExternalApiRateLimit.throttle!(
               RATE_LIMIT_NAME,
               min_interval_seconds: RATE_LIMIT_INTERVAL_SECONDS
             )

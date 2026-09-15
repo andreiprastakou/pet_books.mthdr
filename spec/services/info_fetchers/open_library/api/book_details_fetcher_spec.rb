@@ -22,7 +22,7 @@ RSpec.describe InfoFetchers::OpenLibrary::Api::BookDetailsFetcher do
     end
 
     before do
-      allow(ExternalApiRateLimit).to receive(:throttle!)
+      allow(Admin::ExternalApiRateLimit).to receive(:throttle!)
       stub_request(:get, expected_url)
         .with(headers: { 'User-Agent' => InfoFetchers::OpenLibrary::Api::BaseCaller::USER_AGENT })
         .to_return(status: 200, body: service_api_response.to_json)

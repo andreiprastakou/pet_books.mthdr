@@ -28,10 +28,10 @@ module Admin
       end
 
       def ensure!(qids)
-        normalized = Array(qids).filter_map { |qid| WikidataLookupEntity.normalize_qid(qid) }.uniq
+        normalized = Array(qids).filter_map { |qid| Admin::WikidataLookupEntity.normalize_qid(qid) }.uniq
         return [] if normalized.empty?
 
-        existing = WikidataLookupEntity.where(qid: normalized).pluck(:qid)
+        existing = Admin::WikidataLookupEntity.where(qid: normalized).pluck(:qid)
         missing = normalized - existing
         return [] if missing.empty?
 
@@ -48,7 +48,7 @@ module Admin
             updated_at: now
           }
         end
-        WikidataLookupEntity.upsert_all(rows, unique_by: :qid)
+        Admin::WikidataLookupEntity.upsert_all(rows, unique_by: :qid)
         missing
       end
 
@@ -62,10 +62,10 @@ module Admin
       end
 
       def labels_by_qid(qids)
-        normalized = Array(qids).filter_map { |qid| WikidataLookupEntity.normalize_qid(qid) }.uniq
+        normalized = Array(qids).filter_map { |qid| Admin::WikidataLookupEntity.normalize_qid(qid) }.uniq
         return {} if normalized.empty?
 
-        WikidataLookupEntity.where(qid: normalized).pluck(:qid, :label).to_h
+        Admin::WikidataLookupEntity.where(qid: normalized).pluck(:qid, :label).to_h
       end
 
       def extract_qids(node)
@@ -84,14 +84,14 @@ module Admin
       private
 
       def upsert_from_item_payload!(item)
-        qid = WikidataLookupEntity.normalize_qid(item['id'] || item[:id])
+        qid = Admin::WikidataLookupEntity.normalize_qid(item['id'] || item[:id])
         return if qid.blank?
 
         label = localized_text(item['labels'] || item[:labels])
         description = localized_text(item['descriptions'] || item[:descriptions])
         now = Time.current
 
-        WikidataLookupEntity.upsert(
+        Admin::WikidataLookupEntity.upsert(
           {
             qid: qid,
             label: label,

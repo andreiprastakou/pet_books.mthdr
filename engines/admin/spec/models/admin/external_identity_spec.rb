@@ -26,7 +26,7 @@ require 'rails_helper'
 #
 #  external_link_id  (external_link_id => external_links.id) ON DELETE => nullify
 #
-RSpec.describe ExternalIdentity do
+RSpec.describe Admin::ExternalIdentity do
   subject(:identity) { build(:external_identity) }
 
   describe 'associations' do

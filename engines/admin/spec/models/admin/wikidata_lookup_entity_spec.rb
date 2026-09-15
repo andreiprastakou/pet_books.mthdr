@@ -19,7 +19,7 @@ require 'rails_helper'
 #
 #  index_wikidata_lookup_entities_on_qid  (qid) UNIQUE
 #
-RSpec.describe WikidataLookupEntity do
+RSpec.describe Admin::WikidataLookupEntity do
   describe 'validation' do
     subject { build(:wikidata_lookup_entity) }
 

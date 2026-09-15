@@ -18,7 +18,8 @@
 #
 class ExternalLink < ApplicationRecord
   belongs_to :owner, polymorphic: true, optional: true, inverse_of: :external_links
-  has_many :external_identities, dependent: :nullify, inverse_of: :external_link
+  has_many :external_identities, class_name: 'Admin::ExternalIdentity', dependent: :nullify,
+                                 inverse_of: :external_link
 
   validates :owner_type, presence: true
   validates :external_resource, presence: true

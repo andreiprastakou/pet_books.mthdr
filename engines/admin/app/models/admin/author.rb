@@ -28,7 +28,7 @@ module Admin
     has_many :list_parsing_tasks, class_name: 'Admin::AuthorBooksListParsingTask', as: :target, dependent: :destroy
     has_many :open_library_author_search_tasks, class_name: 'Admin::OpenLibraryAuthorSearchTask', as: :target,
                                                 dependent: :destroy
-    has_many :external_identities, class_name: 'ExternalIdentity', as: :owner, dependent: :destroy,
+    has_many :external_identities, class_name: 'Admin::ExternalIdentity', as: :owner, dependent: :destroy,
                                    inverse_of: :owner
 
     scope :not_synced, -> { where(synced_at: nil) }
@@ -51,7 +51,7 @@ module Admin
         target_id: id
       )
       identities_fetch_tasks = Admin::BaseDataFetchTask.where(
-        target_type: ExternalIdentity.name,
+        target_type: Admin::ExternalIdentity.name,
         target_id: external_identities.select(:id)
       )
       (author_fetch_tasks.to_a + identities_fetch_tasks.to_a)
