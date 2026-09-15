@@ -1,0 +1,80 @@
+# == Schema Information
+#
+# Table name: admin_data_fetch_tasks
+# Database name: primary
+#
+#  id                  :integer          not null, primary key
+#  fetch_error_details :string
+#  fetched_data        :json
+#  input_data          :json
+#  status              :string           not null
+#  target_type         :string           not null
+#  type                :string           not null
+#  created_at          :datetime         not null
+#  updated_at          :datetime         not null
+#  chat_id             :integer
+#  target_id           :integer          not null
+#
+# Indexes
+#
+#  index_admin_data_fetch_tasks_on_chat_id  (chat_id)
+#  index_admin_data_fetch_tasks_on_target   (target_type,target_id)
+#
+# Foreign Keys
+#
+#  chat_id  (chat_id => ai_chats.id)
+#
+module Admin
+  module Tasks
+    class BaseTask < ApplicationRecord
+      self.table_name = 'admin_data_fetch_tasks'
+
+      TASK_TYPES = [
+        'Admin::Tasks::AiAuthorWorksFetch',
+        'Admin::Tasks::AiAuthorWorksParse',
+        'Admin::Tasks::AiBookFetch',
+        'Admin::Tasks::LibraryThingBookSearch',
+        'Admin::Tasks::OpenLibraryAuthorFetch',
+        'Admin::Tasks::OpenLibraryAuthorSearch',
+        'Admin::Tasks::OpenLibraryBookFetch',
+        'Admin::Tasks::OpenLibraryBookSearch',
+        'Admin::Tasks::WikidataAuthorFetch',
+        'Admin::Tasks::WikidataAuthorSearch',
+        'Admin::Tasks::WikidataBookFetch',
+        'Admin::Tasks::WikidataBookSearch'
+      ].freeze
+
+      belongs_to :chat, class_name: 'Admin::Ai::Chat', optional: true
+      belongs_to :target, polymorphic: true
+
+      enum :status, {
+        requested: 'requested',
+        fetched: 'fetched',
+        failed: 'failed',
+        rejected: 'rejected',
+        verified: 'verified'
+      }, default: :requested
+
+      def enqueue_for_processing!
+        Admin::DataFetchJob.perform_later(id)
+      end
+
+      def save_results!(data, chat: nil, errors: [])
+        if errors.present?
+          update!(status: :failed, chat: chat, fetched_data: data,
+                  fetch_error_details: errors.map(&:message).join(', '))
+        else
+          update!(status: :fetched, chat: chat, fetched_data: data)
+        end
+      end
+
+      def review_stage?
+        fetched?
+      end
+
+      def fetched_usable_values
+        fetched_data || {}
+      end
+    end
+  end
+end

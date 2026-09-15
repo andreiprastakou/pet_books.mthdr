@@ -14,12 +14,12 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'attaches an external link and enqueues an Open Library fetch task' do
         expect { call }.to change(book.external_links, :count).by(1)
-                         .and change(Admin::OpenLibraryFetchTask, :count).by(1)
+                         .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(1)
                          .and have_enqueued_job(Admin::DataFetchJob)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://openlibrary.org/works/OL27448W')
-        expect(Admin::OpenLibraryFetchTask.last.target).to eq(identity)
+        expect(Admin::Tasks::OpenLibraryBookFetch.last.target).to eq(identity)
       end
     end
 
@@ -31,9 +31,9 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'attaches an author link and enqueues an Open Library author fetch task' do
         expect { call }.to change(author.external_links, :count).by(1)
-                         .and change(Admin::OpenLibraryAuthorFetchTask, :count).by(1)
+                         .and change(Admin::Tasks::OpenLibraryAuthorFetch, :count).by(1)
                          .and have_enqueued_job(Admin::DataFetchJob)
-                         .and change(Admin::OpenLibraryFetchTask, :count).by(0)
+                         .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://openlibrary.org/authors/OL1394865A')
@@ -48,8 +48,8 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'attaches a link but does not enqueue a fetch task' do
         expect { call }.to change(book.external_links, :count).by(1)
-                         .and change(Admin::OpenLibraryFetchTask, :count).by(0)
-                         .and change(Admin::WikidataFetchTask, :count).by(0)
+                         .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
+                         .and change(Admin::Tasks::WikidataBookFetch, :count).by(0)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q137179018')
@@ -70,7 +70,7 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
         expect do
           described_class.call(identity)
         end.to change(book.external_links, :count).by(0)
-           .and change(Admin::OpenLibraryFetchTask, :count).by(0)
+           .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
 
         expect(identity.reload.external_link).to be_nil
       end
@@ -88,7 +88,7 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
       end
 
       it 'reattaches the link for the new id and enqueues another fetch task' do
-        expect { call }.to change(Admin::OpenLibraryFetchTask, :count).by(1)
+        expect { call }.to change(Admin::Tasks::OpenLibraryBookFetch, :count).by(1)
                          .and have_enqueued_job(Admin::DataFetchJob)
 
         identity.reload

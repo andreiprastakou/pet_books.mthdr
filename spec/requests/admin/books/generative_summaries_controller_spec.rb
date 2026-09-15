@@ -7,7 +7,7 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
     let(:task) { build_stubbed(:book_summary_task, target: book) }
 
     before do
-      allow(Admin::BookSummaryTask).to receive(:setup).with(kind_of(Admin::Book)).and_return(task)
+      allow(Admin::Tasks::AiBookFetch).to receive(:setup).with(kind_of(Admin::Book)).and_return(task)
       allow(task).to receive(:perform)
     end
 

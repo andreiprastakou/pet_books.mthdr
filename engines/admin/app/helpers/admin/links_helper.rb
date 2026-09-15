@@ -108,9 +108,10 @@ module Admin
 
     def admin_link_to_data_fetch_task_target(task)
       case task
-      when Admin::BookSummaryTask, Admin::OpenLibrarySearchTask, Admin::WikidataSearchTask
+      when Admin::Tasks::AiBookFetch, Admin::Tasks::LibraryThingBookSearch, Admin::Tasks::OpenLibraryBookSearch,
+           Admin::Tasks::WikidataBookSearch
         admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
-      when Admin::OpenLibraryFetchTask, Admin::OpenLibraryAuthorFetchTask
+      when Admin::Tasks::OpenLibraryBookFetch, Admin::Tasks::OpenLibraryAuthorFetch
         identity = task.external_identity
         owner = identity.owner
         if owner.is_a?(::Book)
@@ -122,7 +123,7 @@ module Admin
         else
           "Open Library #{identity.external_id}"
         end
-      when Admin::WikidataFetchTask, Admin::WikidataAuthorFetchTask
+      when Admin::Tasks::WikidataBookFetch, Admin::Tasks::WikidataAuthorFetch
         identity = task.external_identity
         owner = identity.owner
         if owner.is_a?(::Book)
@@ -134,8 +135,8 @@ module Admin
         else
           "Wikidata #{identity.external_id}"
         end
-      when Admin::AuthorBooksListParsingTask, Admin::AuthorBooksListTask, Admin::OpenLibraryAuthorSearchTask,
-           Admin::WikidataAuthorSearchTask
+      when Admin::Tasks::AiAuthorWorksParse, Admin::Tasks::AiAuthorWorksFetch, Admin::Tasks::OpenLibraryAuthorSearch,
+           Admin::Tasks::WikidataAuthorSearch
         admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)
       else
         "Entity #{task.target_type} with ID=#{task.target_id}"

@@ -4,7 +4,7 @@ module Admin
       before_action :fetch_book
 
       def create
-        task = Admin::WikidataSearchTask.setup(@book)
+        task = Admin::Tasks::WikidataBookSearch.setup(@book)
         task.enqueue_for_processing!
         redirect_to admin_book_path(@book), notice: t('notices.admin.wikidata_searches.create.success')
       end

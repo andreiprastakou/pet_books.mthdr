@@ -29,7 +29,7 @@ module Admin
     private
 
     def fetch_task
-      @task = Admin::OpenLibraryFetchTask.find(params[:id])
+      @task = Admin::Tasks::OpenLibraryBookFetch.find(params[:id])
     end
 
     def prepare_form_data

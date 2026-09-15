@@ -121,9 +121,9 @@ RSpec.describe Admin::BooksController do
       end
 
       it 'schedules an Open Library search task' do
-        expect { send_request }.to change(Admin::OpenLibrarySearchTask, :count).by(1)
+        expect { send_request }.to change(Admin::Tasks::OpenLibraryBookSearch, :count).by(1)
           .and have_enqueued_job(Admin::DataFetchJob)
-        expect(Admin::OpenLibrarySearchTask.last.target).to eq(Book.last)
+        expect(Admin::Tasks::OpenLibraryBookSearch.last.target).to eq(Book.last)
       end
 
       it 'redirects to the created book' do

@@ -18,8 +18,8 @@ module Admin
     }.freeze
 
     FETCH_TASKS = {
-      [ExternalResources::OPEN_LIBRARY, :book] => Admin::OpenLibraryFetchTask,
-      [ExternalResources::OPEN_LIBRARY, :author] => Admin::OpenLibraryAuthorFetchTask
+      [ExternalResources::OPEN_LIBRARY, :book] => Admin::Tasks::OpenLibraryBookFetch,
+      [ExternalResources::OPEN_LIBRARY, :author] => Admin::Tasks::OpenLibraryAuthorFetch
     }.freeze
 
     def self.call(external_identity)

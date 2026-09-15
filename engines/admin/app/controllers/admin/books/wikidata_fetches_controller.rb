@@ -5,7 +5,7 @@ module Admin
       before_action :fetch_external_identity
 
       def create
-        task = Admin::WikidataFetchTask.setup(@external_identity)
+        task = Admin::Tasks::WikidataBookFetch.setup(@external_identity)
         task.enqueue_for_processing!
         redirect_to admin_book_path(@book), notice: t('notices.admin.wikidata_fetches.create.success')
       end

@@ -23,7 +23,7 @@ module Admin
     private
 
     def filtered_tasks
-      scope = Admin::BaseDataFetchTask.all
+      scope = Admin::Tasks::BaseTask.all
       scope = scope.where(type: params[:type]) if task_type_filter.present?
       scope = scope.where(status: params[:status]) if task_status_filter.present?
       scope
@@ -31,16 +31,16 @@ module Admin
 
     def task_type_filter
       type = params[:type].presence
-      type if Admin::BaseDataFetchTask::TASK_TYPES.include?(type)
+      type if Admin::Tasks::BaseTask::TASK_TYPES.include?(type)
     end
 
     def task_status_filter
       status = params[:status].presence
-      status if Admin::BaseDataFetchTask.statuses.key?(status)
+      status if Admin::Tasks::BaseTask.statuses.key?(status)
     end
 
     def fetch_task
-      @task = Admin::BaseDataFetchTask.find(params[:id])
+      @task = Admin::Tasks::BaseTask.find(params[:id])
     end
 
     def status_change_notice

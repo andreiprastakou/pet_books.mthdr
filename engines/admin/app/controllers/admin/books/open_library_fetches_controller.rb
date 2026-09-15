@@ -5,7 +5,7 @@ module Admin
       before_action :fetch_external_identity
 
       def create
-        task = Admin::OpenLibraryFetchTask.setup(@external_identity)
+        task = Admin::Tasks::OpenLibraryBookFetch.setup(@external_identity)
         task.enqueue_for_processing!
         redirect_to admin_book_path(@book), notice: t('notices.admin.open_library_fetches.create.success')
       end

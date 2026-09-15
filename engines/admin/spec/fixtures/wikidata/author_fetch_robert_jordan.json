@@ -1,0 +1,5926 @@
+{
+  "type": "item",
+  "labels": {
+    "af": "Robert Jordan",
+    "ar": "جيمس أوليفر ريجني",
+    "arz": "جيمس اوليفر ريجنى",
+    "ast": "Robert Jordan",
+    "azb": "رابرت جوردن",
+    "bg": "Робърт Джордан",
+    "bn": "রবার্ট জর্ডান",
+    "br": "Robert Jordan",
+    "bs": "Robert Jordan",
+    "ca": "Robert Jordan",
+    "cs": "Robert Jordan",
+    "cy": "Robert Jordan",
+    "da": "Robert Jordan",
+    "de": "Robert Jordan",
+    "en": "Robert Jordan",
+    "eo": "Robert Jordan",
+    "es": "Robert Jordan",
+    "et": "Robert Jordan",
+    "eu": "Robert Jordan",
+    "fa": "رابرت جوردن",
+    "fi": "Robert Jordan",
+    "fr": "Robert Jordan",
+    "ga": "Robert Jordan",
+    "gl": "Robert Jordan",
+    "he": "רוברט ג'ורדן",
+    "hu": "Robert Jordan",
+    "id": "Robert Jordan",
+    "is": "Robert Jordan",
+    "it": "Robert Jordan",
+    "ja": "ロバート・ジョーダン",
+    "kl": "Robert Jordan",
+    "ko": "로버트 조던",
+    "la": "Robertus Jordan",
+    "lb": "Robert Jordan",
+    "lt": "Robert Jordan",
+    "mk": "Роберт Џордан",
+    "nb": "Robert Jordan",
+    "nl": "Robert Jordan",
+    "nn": "Robert Jordan",
+    "pap": "Robert Jordan",
+    "pl": "Robert Jordan",
+    "pt": "Robert Jordan",
+    "pt-br": "Robert Jordan",
+    "ro": "Robert Jordan",
+    "ru": "Роберт Джордан",
+    "sh": "Robert Jordan",
+    "sl": "Robert Jordan",
+    "sq": "Robert Jordan",
+    "sr": "Роберт Џордан",
+    "sv": "Robert Jordan",
+    "ta": "ராபர்ட் ஜோர்டான்",
+    "tr": "Robert Jordan",
+    "uk": "Роберт Джордан",
+    "xmf": "რობერტ ჯორდანი",
+    "zh": "羅伯特·喬丹",
+    "zh-hant": "小詹姆士・奧立佛・瑞格尼",
+    "zu": "Robert Jordan",
+    "mul": "Robert Jordan"
+  },
+  "descriptions": {
+    "ar": "كاتب أمريكي",
+    "bg": "американски писател",
+    "bn": "মার্কিন লেখক",
+    "ca": "escriptor estatunidenc",
+    "cs": "americký spisovatel",
+    "de": "amerikanischer Fantasy-Schriftsteller",
+    "dv": "ލިޔުންތެރިއެއް",
+    "eo": "usona verkisto",
+    "es": "escritor estadounidense",
+    "et": "Ameerika Ühendriikide kirjanik",
+    "fa": "افسر و نویسنده آمریکایی",
+    "fi": "yhdysvaltalainen kirjailija",
+    "fr": "écrivain américain",
+    "ga": "scríbhneoir Meiriceánach",
+    "gl": "escritor estadounidense",
+    "he": "סופר אמריקאי",
+    "hu": "Író",
+    "it": "scrittore statunitense",
+    "lfn": "scrivor american",
+    "mk": "американски писател",
+    "ml": "അമേരിക്കന്‍ എഴുത്തുകാരന്‍",
+    "nb": "Forfatter",
+    "nl": "Amerikaans schrijver",
+    "pl": "amerykański pisarz fantasy",
+    "ro": "scriitor american",
+    "ru": "американский писатель-фантаст (1948—2007)",
+    "sq": "shkrimtar amerikan",
+    "sv": "amerikansk författare",
+    "tr": "Amerikalı yazar (1948 – 2007)",
+    "uk": "американський письменник",
+    "en": "American fantasy writer (1948–2007)",
+    "as": "আমেৰিকান ফেণ্টাচীৰ লেখক (১৯৪৮-২০০৭)",
+    "ary": "كاتب أمريكي"
+  },
+  "aliases": {
+    "fr": [
+      "James Oliver Rigney, Jr.",
+      "Reagan O'Neal",
+      "Jackson O'Reilly"
+    ],
+    "en": [
+      "James Oliver Rigney, Jr.",
+      "James O. Rigney",
+      "Regan O'Neal"
+    ],
+    "zh": [
+      "罗伯特·乔丹"
+    ],
+    "zh-hant": [
+      "羅伯特・喬丹"
+    ],
+    "cs": [
+      "James Oliver Rigney"
+    ],
+    "tr": [
+      "Robert Jorda"
+    ]
+  },
+  "statements": {
+    "P800": [
+      {
+        "id": "Q166351$04807184-479b-c1f6-6c5f-4fb634ca5d42",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P800",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q4470"
+        }
+      }
+    ],
+    "P21": [
+      {
+        "id": "q166351$7A844056-E747-4CF7-837C-D85C7788CCA3",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "0b6c2354e284a9a912e3b6d0a722cbb1f6e6fc7f",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q19938912"
+                }
+              },
+              {
+                "property": {
+                  "id": "P268",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "12356814b"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2015-10-10T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "8b9563899c8034cc9ff9262a53b4f7828eb78f73",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q6912637"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5469",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "robert-jordan"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P21",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q6581097"
+        }
+      }
+    ],
+    "P373": [
+      {
+        "id": "q166351$B54F3059-1FF3-43A6-853C-6C43600AD61F",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P373",
+          "data_type": "string"
+        },
+        "value": {
+          "type": "value",
+          "content": "Robert Jordan"
+        }
+      }
+    ],
+    "P244": [
+      {
+        "id": "q166351$FAB8190A-3205-4BB3-A5F1-B8D2C1DAED4C",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "9a24f7c0208b05d6be97077d855671d1dfdbc0dd",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q48183"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P244",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "n95103132"
+        }
+      }
+    ],
+    "P214": [
+      {
+        "id": "q166351$9BFEDC70-9748-4707-9E3C-BB1376CCDBBC",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "9a24f7c0208b05d6be97077d855671d1dfdbc0dd",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q48183"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P214",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "79096089"
+        }
+      },
+      {
+        "id": "Q166351$24ebe44e-427f-e75a-4b8e-6e5b003a1f52",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P214",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "315943530"
+        }
+      }
+    ],
+    "P227": [
+      {
+        "id": "q166351$2BE871B3-B627-4A82-9B44-83AD2623F2F7",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "9a24f7c0208b05d6be97077d855671d1dfdbc0dd",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q48183"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P227",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "123684129"
+        }
+      }
+    ],
+    "P213": [
+      {
+        "id": "q166351$CA5B8DAE-025D-4A03-ADAD-F97A98A523CB",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Jordan, Robert"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "fbc824608bf047fcbfb803c1b0f98e66f4372207",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q423048"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P213",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "0000000122822548"
+        }
+      },
+      {
+        "id": "q166351$48257E41-BC5C-4F81-9AB3-FAF6B62F6626",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Rigney, James O."
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "fbc824608bf047fcbfb803c1b0f98e66f4372207",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q423048"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P213",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "0000000368651996"
+        }
+      }
+    ],
+    "P434": [
+      {
+        "id": "q166351$8FCDFC48-2344-4AF1-9DD2-32554547D394",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "706208b3024200fd0a39ad499808dd0d98d74065",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q14005"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P434",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "0096b09f-b79f-4a1e-aeb0-c5fbb7a2a2dd"
+        }
+      }
+    ],
+    "P349": [
+      {
+        "id": "q166351$F8F7B262-343C-4F23-93C2-8A4CFC50001A",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P349",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "00663319"
+        }
+      }
+    ],
+    "P570": [
+      {
+        "id": "q166351$9478AB9A-1198-4C4C-AF78-0366287F09BC",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "9c050d4c4f9663b865bf1fcbc7c604920ba0f40c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.charleston.net/news/2007/sep/17/robert_jordan_dies_at_age16247/"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1065",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://web.archive.org/web/20071019033453/http://www.charleston.net:80/news/2007/sep/17/robert_jordan_dies_at_age16247/"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "274565d7568c32a4ecb6b04d940e94ee9bcb90b8",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q36578"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2014-04-26T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "714266d864565f9c8483ec145d44f964c4b67cab",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.amazon.com/In-Order-Wheel-of-Time/lm/AOYOKJQE2B2M"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "7587395d992870ac39d08942feb469fcaeff2645",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q124609769"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5749",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "0765337800"
+                }
+              },
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.amazon.com/Winters-Heart-Book-Nine-Wheel/dp/0765337800"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "da23420ffb9a96b75d1b8068795ff572d2cc5ea2",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.brainyquote.com/quotes/authors/r/robert_jordan.html"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "0b6c2354e284a9a912e3b6d0a722cbb1f6e6fc7f",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q19938912"
+                }
+              },
+              {
+                "property": {
+                  "id": "P268",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "12356814b"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2015-10-10T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "7ea543e50fd41c19e08cf8cd7518f25c8e40e5e4",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q29861311"
+                }
+              },
+              {
+                "property": {
+                  "id": "P3430",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "w6xw5m1z"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "1cf2acca87cbf0b2cf2ef5305a9bd5d86d633b6a",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2629164"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1233",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "845"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "82cddcebd0f4475263fcd8e0fb2e18dca1068a42",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q63056"
+                }
+              },
+              {
+                "property": {
+                  "id": "P535",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "21632571"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "fc1cf576adb53345040e29909e9e28f88b58c82c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q3343389"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5570",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "115"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert JORDAN"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "15344f7046e1e401660fb174d063f32ea4a1949c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q6912637"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5469",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "robert-jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "09753dd9a364813f5d854391bf297811519f5067",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2876969"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5491",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "29608"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "3be98268dc27bdacf9e5f24ac429b3a282834c94",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2877812"
+                }
+              },
+              {
+                "property": {
+                  "id": "P3630",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "6423"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P570",
+          "data_type": "time"
+        },
+        "value": {
+          "type": "value",
+          "content": {
+            "time": "+2007-09-16T00:00:00Z",
+            "precision": 11,
+            "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+          }
+        }
+      }
+    ],
+    "P27": [
+      {
+        "id": "q166351$D2E751C0-3F1A-41AF-818C-93469C434ED7",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "9a24f7c0208b05d6be97077d855671d1dfdbc0dd",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q48183"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P27",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q30"
+        }
+      }
+    ],
+    "P569": [
+      {
+        "id": "q166351$30921E5E-0308-4495-BDAA-A1D5C04BAE14",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "274565d7568c32a4ecb6b04d940e94ee9bcb90b8",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q36578"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2014-04-26T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "7ea543e50fd41c19e08cf8cd7518f25c8e40e5e4",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q29861311"
+                }
+              },
+              {
+                "property": {
+                  "id": "P3430",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "w6xw5m1z"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "1cf2acca87cbf0b2cf2ef5305a9bd5d86d633b6a",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2629164"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1233",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "845"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "82cddcebd0f4475263fcd8e0fb2e18dca1068a42",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q63056"
+                }
+              },
+              {
+                "property": {
+                  "id": "P535",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "21632571"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "fc1cf576adb53345040e29909e9e28f88b58c82c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q3343389"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5570",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "115"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert JORDAN"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "15344f7046e1e401660fb174d063f32ea4a1949c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q6912637"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5469",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "robert-jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "09753dd9a364813f5d854391bf297811519f5067",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2876969"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5491",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "29608"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2017-10-09T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "3be98268dc27bdacf9e5f24ac429b3a282834c94",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2877812"
+                }
+              },
+              {
+                "property": {
+                  "id": "P3630",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "6423"
+                }
+              },
+              {
+                "property": {
+                  "id": "P1810",
+                  "data_type": "string"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Robert Jordan"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P569",
+          "data_type": "time"
+        },
+        "value": {
+          "type": "value",
+          "content": {
+            "time": "+1948-10-17T00:00:00Z",
+            "precision": 11,
+            "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+          }
+        }
+      }
+    ],
+    "P691": [
+      {
+        "id": "q166351$C7D576C3-B1A7-4787-ABAF-A2BDC50B2A49",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Jordan, Robert"
+            }
+          }
+        ],
+        "references": [],
+        "property": {
+          "id": "P691",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "jn20020422021"
+        }
+      },
+      {
+        "id": "Q166351$67829A0A-8A1D-41B6-8666-4B9D5313BB69",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "O'Neal, Reagan"
+            }
+          },
+          {
+            "property": {
+              "id": "P2868",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q61002"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "9c65494c64bcf53351ff96beee63706ebf5b5eab",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q13550863"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2019-11-24T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P691",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "jo2007409290"
+        }
+      },
+      {
+        "id": "Q166351$ABBF5C5D-9DAE-4B28-8558-7D05CBFFEA0C",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "O'Reilly, Jackson"
+            }
+          },
+          {
+            "property": {
+              "id": "P2868",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q61002"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "9c65494c64bcf53351ff96beee63706ebf5b5eab",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q13550863"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2019-11-24T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P691",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "jo2007409291"
+        }
+      }
+    ],
+    "P241": [
+      {
+        "id": "q166351$3730B9D9-E8B5-4FF4-911E-3FE33270725A",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P241",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q11220"
+        }
+      }
+    ],
+    "P106": [
+      {
+        "id": "q166351$473F396D-718F-4D26-B434-DD075CD9C680",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P106",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q189290"
+        }
+      },
+      {
+        "id": "Q166351$e3e75886-4ba7-4969-05bb-94c602446867",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "2549c2838e3a2fb99a88d15e5609214fb731dc58",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q121016671"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "e736337637b357ee2915599986890620ccc69308",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q36578"
+                }
+              },
+              {
+                "property": {
+                  "id": "P227",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "123684129"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2026-04-20T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P106",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q36180"
+        }
+      },
+      {
+        "id": "Q166351$85D85BA5-D9CC-4D5F-B61F-17D1089A7270",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P106",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q6625963"
+        }
+      },
+      {
+        "id": "Q166351$E50F10FA-BA10-4147-ABD6-4654E9858BDC",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P106",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q18844224"
+        }
+      }
+    ],
+    "P18": [
+      {
+        "id": "Q166351$C5D87E12-B89A-461A-8BF8-24A7AEAAC100",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P2096",
+              "data_type": "monolingualtext"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "text": "Robert Jordan (2005)",
+                "language": "cs"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+2005-11-02T00:00:00Z",
+                "precision": 11,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          }
+        ],
+        "references": [],
+        "property": {
+          "id": "P18",
+          "data_type": "commonsMedia"
+        },
+        "value": {
+          "type": "value",
+          "content": "Robert Jordan.jpg"
+        }
+      }
+    ],
+    "P31": [
+      {
+        "id": "Q166351$9E5138BD-12AF-4C0F-9998-E6704C562719",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "0b6c2354e284a9a912e3b6d0a722cbb1f6e6fc7f",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q19938912"
+                }
+              },
+              {
+                "property": {
+                  "id": "P268",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "12356814b"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2015-10-10T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P31",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q5"
+        }
+      }
+    ],
+    "P509": [
+      {
+        "id": "Q166351$192128e7-4ce9-ff5b-fbfd-237489e3f78d",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P509",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q816798"
+        }
+      }
+    ],
+    "P646": [
+      {
+        "id": "Q166351$DAD52A19-5A05-4A5C-97F5-CC2DEFA82820",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "2b00cb481cddcac7623114367489b5c194901c4a",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q15241312"
+                }
+              },
+              {
+                "property": {
+                  "id": "P577",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2013-10-28T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P646",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "/m/06krv"
+        }
+      }
+    ],
+    "P19": [
+      {
+        "id": "Q166351$56F81DF8-F3AF-4303-8296-9B1E4B8B5AA0",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "8b9563899c8034cc9ff9262a53b4f7828eb78f73",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q6912637"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5469",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "robert-jordan"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P19",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q47716"
+        }
+      }
+    ],
+    "P166": [
+      {
+        "id": "Q166351$58562C1B-E3BC-4112-901F-2BDD2F87CE98",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P166",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q1754110"
+        }
+      },
+      {
+        "id": "Q166351$36CC0877-75CD-4A31-9431-D8F2919E75DB",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P166",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q928314"
+        }
+      },
+      {
+        "id": "Q166351$cf1b1bb9-4006-6030-e694-fe2df8d34e70",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+2005-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "9f6ea6d62689198cfd37e9731266d3e18032af8f",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://www.comic-con.org/awards/inkpot"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2021-12-01T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P166",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q2687578"
+        }
+      }
+    ],
+    "P20": [
+      {
+        "id": "Q166351$78792726-CBB5-472D-B8AB-DF9D4BDE4FDA",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "d5847b9b6032aa8b13dae3c2dfd9ed5d114d21b3",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q11920"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P20",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q47716"
+        }
+      }
+    ],
+    "P1015": [
+      {
+        "id": "Q166351$E46F1F0F-5147-4DC1-87D1-DD41FE4BA2EA",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "4f06002d3e24004fb369697fa0c979a264750481",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q16889143"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2014-04-04T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1015",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "90931826"
+        }
+      }
+    ],
+    "P1233": [
+      {
+        "id": "Q166351$C50A89E8-270B-47E0-9A31-DFE94267F17B",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Robert Jordan"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1233",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "845"
+        }
+      }
+    ],
+    "P1006": [
+      {
+        "id": "Q166351$34577348-A3B3-4102-A8F2-E015AAA36683",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "5cec2ccf5f83d46ead4d4b16b6629b9113ffd077",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2014-12-16T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1006",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "075118297"
+        }
+      }
+    ],
+    "P396": [
+      {
+        "id": "Q166351$6f21e3e3-41c1-faba-9fa7-88bc54b4c2f6",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Jordan, Robert"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "d6c3c20899bb219acab32ca5347af1652acd3c20",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q105086090"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P396",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "RAVV079730"
+        }
+      }
+    ],
+    "P1263": [
+      {
+        "id": "Q166351$78BBB46D-2B8F-4E59-81AD-50F8CA188ADA",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1263",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "965/000043836"
+        }
+      }
+    ],
+    "P648": [
+      {
+        "id": "Q166351$bae44763-4757-7a25-f8dd-c7e11aa4f1bb",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Robert Jordan"
+            }
+          }
+        ],
+        "references": [],
+        "property": {
+          "id": "P648",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "OL233594A"
+        }
+      }
+    ],
+    "P1953": [
+      {
+        "id": "Q166351$E0E37481-1A38-4822-94AA-749BF80F8A1C",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1953",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "2181658"
+        }
+      }
+    ],
+    "P737": [
+      {
+        "id": "Q166351$173D6957-9338-4071-94F4-EB0181A3C1B0",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P737",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q892"
+        }
+      }
+    ],
+    "P1411": [
+      {
+        "id": "Q166351$506F66AF-5CE8-41F1-9760-8CB86774C551",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+1991-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q477994"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "933c3f6e347aa722c010cdbde52c2a8dd32ee4c0",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://www.sfadb.com/Locus_Awards_1991"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2025-06-25T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q607354"
+        }
+      },
+      {
+        "id": "Q166351$DF8BCC0D-D9A3-4ACD-9B39-6FCD7508E066",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+1994-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q2308541"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "755ed2878dcdd767fffbe8c2b4cbed1e8ac9a69c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.locusmag.com/SFAwards/Db/NomLit67.html#2716"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q607354"
+        }
+      },
+      {
+        "id": "Q166351$2CCC2414-34A5-42E3-9B37-34C0C0CF795E",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+1995-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q2718866"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "755ed2878dcdd767fffbe8c2b4cbed1e8ac9a69c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.locusmag.com/SFAwards/Db/NomLit67.html#2716"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q607354"
+        }
+      },
+      {
+        "id": "Q166351$6707ED5C-BFFA-4285-A06B-F59D4FBF6D60",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+1993-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q1057726"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "755ed2878dcdd767fffbe8c2b4cbed1e8ac9a69c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.locusmag.com/SFAwards/Db/NomLit67.html#2716"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q607354"
+        }
+      },
+      {
+        "id": "Q166351$7F381F2A-1B68-4ACB-B351-F7F497808556",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+1997-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q1850845"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "755ed2878dcdd767fffbe8c2b4cbed1e8ac9a69c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.locusmag.com/SFAwards/Db/NomLit67.html#2716"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q607354"
+        }
+      },
+      {
+        "id": "Q166351$8F7922D3-7677-4FC5-8D53-37C5816D24E2",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+2001-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q2264817"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "755ed2878dcdd767fffbe8c2b4cbed1e8ac9a69c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.locusmag.com/SFAwards/Db/NomLit67.html#2716"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q607354"
+        }
+      },
+      {
+        "id": "Q166351$12183482-8CD4-4AB9-9598-99749BE275E3",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+2006-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q2619164"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "755ed2878dcdd767fffbe8c2b4cbed1e8ac9a69c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "http://www.locusmag.com/SFAwards/Db/NomLit67.html#2716"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q607354"
+        }
+      },
+      {
+        "id": "Q166351$284D5195-54FD-4023-B47B-DFF96A8EABE6",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+2014-00-00T00:00:00Z",
+                "precision": 9,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1686",
+              "data_type": "wikibase-item"
+            },
+            "value": {
+              "type": "value",
+              "content": "Q4470"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "0b60c5b1491b6582d49cf35fefed4b0ef22b3256",
+            "parts": [
+              {
+                "property": {
+                  "id": "P854",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://www.thehugoawards.org/hugo-history/2014-hugo-awards/"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1411",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q255032"
+        }
+      }
+    ],
+    "P735": [
+      {
+        "id": "Q166351$891775A5-0DE3-49CF-8BB4-5F280AAB6A3C",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P735",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q4927937"
+        }
+      }
+    ],
+    "P742": [
+      {
+        "id": "Q166351$d2cb29db-4fff-c649-9867-38bc8d191fac",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P742",
+          "data_type": "string"
+        },
+        "value": {
+          "type": "value",
+          "content": "Robert Jordan"
+        }
+      }
+    ],
+    "P1005": [
+      {
+        "id": "Q166351$52848F0B-2077-4C1A-B5E5-94C1D832C70F",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1005",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1363863"
+        }
+      }
+    ],
+    "P950": [
+      {
+        "id": "Q166351$04072EBF-7C29-4295-9DC4-69F9ACA8632D",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P950",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "XX827830"
+        }
+      }
+    ],
+    "P409": [
+      {
+        "id": "Q166351$9976ED87-5384-476B-9078-8A09ADA29C15",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P409",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "40471973"
+        }
+      }
+    ],
+    "P1207": [
+      {
+        "id": "Q166351$FC798354-7DC6-4843-B305-D3E2320ED9FE",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1207",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "n94251253"
+        }
+      }
+    ],
+    "P1196": [
+      {
+        "id": "Q166351$DBBAE6EC-6C4D-4F1E-8500-729834C04A23",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "1f6c75ff612c9ae6ded8ee643e38fc4b418036d9",
+            "parts": [
+              {
+                "property": {
+                  "id": "P887",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q124335267"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1196",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q3739104"
+        }
+      }
+    ],
+    "P1315": [
+      {
+        "id": "Q166351$5BFB0AC9-DF43-45E6-ACB5-3CE03F3659B4",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1315",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1003623"
+        }
+      },
+      {
+        "id": "Q166351$A0101654-497D-4025-B69B-78A10FE8A21D",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1315",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1447194"
+        }
+      }
+    ],
+    "P69": [
+      {
+        "id": "Q166351$32C3CEF5-6D18-42CD-947B-7D3ED454568D",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P69",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q1806300"
+        }
+      }
+    ],
+    "P136": [
+      {
+        "id": "Q166351$BD3E0DA8-2E74-4CBA-BA43-CC1C608CF544",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "b3fd5e254143d8b52cd96cff43af9af5e3a82358",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q199693"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P136",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q2625243"
+        }
+      },
+      {
+        "id": "Q166351$f98779a1-43bf-e2c4-81da-db106eb56394",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "4a3e2dd8cc2a70eb48d93cb6e4cbab1d2e31b678",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q206855"
+                }
+              },
+              {
+                "property": {
+                  "id": "P4656",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://ru.wikipedia.org/?oldid=124594927"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P136",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q132311"
+        }
+      }
+    ],
+    "P2163": [
+      {
+        "id": "Q166351$69DA9DA3-312E-4688-B190-A62390FC2AAF",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P2163",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1524269"
+        }
+      }
+    ],
+    "P734": [
+      {
+        "id": "Q166351$38AB80C4-38BC-43DE-BE79-2FC4CD03DD96",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P734",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q1703599"
+        }
+      }
+    ],
+    "P949": [
+      {
+        "id": "Q166351$FAAE5676-F2FE-4240-8DBE-62E21DDED9FB",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P949",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "000228124"
+        }
+      }
+    ],
+    "P910": [
+      {
+        "id": "Q166351$7b61e516-431a-daa3-3b33-e1006fe7a6be",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P910",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q26156089"
+        }
+      }
+    ],
+    "P3430": [
+      {
+        "id": "Q166351$F289EFD7-6D97-4944-B0C4-05E469F1BD1B",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P3430",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "w6xw5m1z"
+        }
+      }
+    ],
+    "P3417": [
+      {
+        "id": "Q166351$1A9C34A8-D11D-4954-9275-46A049252A01",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "3b0a5bb3c1f955edce73740124f7d935698092ad",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q51711"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P3417",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "Robert-Jordan"
+        }
+      }
+    ],
+    "P3478": [
+      {
+        "id": "Q166351$767E9E8C-F269-4397-9DCF-B5585792CEDE",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P3478",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "182545"
+        }
+      }
+    ],
+    "P3222": [
+      {
+        "id": "Q166351$5BBFC570-67EA-4EC5-B220-58F88C795A4A",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P3222",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "robert-jordan"
+        }
+      }
+    ],
+    "P1559": [
+      {
+        "id": "Q166351$69c7d8b6-4443-ca1c-fc83-68e76cae93c7",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "288ab581e7d2d02995a26dfa8b091d96e78457fc",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q206855"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1559",
+          "data_type": "monolingualtext"
+        },
+        "value": {
+          "type": "value",
+          "content": {
+            "text": "Robert Jordan",
+            "language": "en"
+          }
+        }
+      }
+    ],
+    "P2607": [
+      {
+        "id": "Q166351$6F9EEB69-F6C5-432C-A6C0-9D6DAA52522B",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "706208b3024200fd0a39ad499808dd0d98d74065",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q14005"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P2607",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "b6688229-5039-4277-b1f3-e62f6dac34a9"
+        }
+      }
+    ],
+    "P345": [
+      {
+        "id": "Q166351$AA14A321-45D9-44BF-9AB3-605E1F349715",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "9a24f7c0208b05d6be97077d855671d1dfdbc0dd",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q48183"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P345",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "nm3104337"
+        }
+      }
+    ],
+    "P3630": [
+      {
+        "id": "Q166351$144FF018-1D26-436C-9B6A-0FB0510B4456",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P3630",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "6423"
+        }
+      }
+    ],
+    "P1280": [
+      {
+        "id": "Q166351$04A81727-F1DD-468B-B4ED-BB42B0DAF8F6",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Jordan, Robert, 1948-2007"
+            }
+          }
+        ],
+        "references": [],
+        "property": {
+          "id": "P1280",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "12607075"
+        }
+      }
+    ],
+    "P2191": [
+      {
+        "id": "Q166351$5F1BE693-1F1A-44CF-83A0-B5A3F63716A0",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "d5847b9b6032aa8b13dae3c2dfd9ed5d114d21b3",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q11920"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P2191",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "12818"
+        }
+      }
+    ],
+    "P26": [
+      {
+        "id": "Q166351$AAC4B77C-0132-4B7D-A457-41BB9A7A14CB",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "66458bfafb21cf5a5f10154dfafb7af79805117e",
+            "parts": [
+              {
+                "property": {
+                  "id": "P3452",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2043271"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P26",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q2043271"
+        }
+      }
+    ],
+    "P269": [
+      {
+        "id": "Q166351$C41008D5-3195-486A-895B-AB841C2DC3B7",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "5a858a70d6ac562123c1debf25a5aed93a5c4939",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q19938912"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2015-08-26T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P269",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "032562144"
+        }
+      }
+    ],
+    "P140": [
+      {
+        "id": "Q166351$2cb0d647-1d3c-4714-93c1-567b9edd5ce0",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P140",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q6423963"
+        }
+      }
+    ],
+    "P1412": [
+      {
+        "id": "Q166351$B3B3FCE5-D2AE-433F-98FB-2D0AC8DF2FBD",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "0b6c2354e284a9a912e3b6d0a722cbb1f6e6fc7f",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q19938912"
+                }
+              },
+              {
+                "property": {
+                  "id": "P268",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "12356814b"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2015-10-10T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "8b9563899c8034cc9ff9262a53b4f7828eb78f73",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q6912637"
+                }
+              },
+              {
+                "property": {
+                  "id": "P5469",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "robert-jordan"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "1eb4f5488b5458567e71579b649d276fc198df27",
+            "parts": [
+              {
+                "property": {
+                  "id": "P1280",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "12607075"
+                }
+              },
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q16744133"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1412",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q1860"
+        }
+      }
+    ],
+    "P5570": [
+      {
+        "id": "Q166351$03129C5B-B8AB-4793-9429-69ABC83C1AF2",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P5570",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "115"
+        }
+      }
+    ],
+    "P268": [
+      {
+        "id": "Q166351$9E2981FE-D1D3-4D54-843D-2C8794549B20",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "40b838ea42978044039a5e516003b2726d1e9f93",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2018-10-07T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P268",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "12356814b"
+        }
+      }
+    ],
+    "P5469": [
+      {
+        "id": "Q166351$30015575-81AB-4B11-8A44-9E98AA2D8E71",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P5469",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "robert-jordan"
+        }
+      }
+    ],
+    "P5491": [
+      {
+        "id": "Q166351$A81E1548-761B-4960-B85C-40B956474509",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P5491",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "29608"
+        }
+      }
+    ],
+    "P5408": [
+      {
+        "id": "Q166351$c589d881-4730-b623-2dcf-3b6926c41dd9",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P5408",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "j/robert-jordan"
+        }
+      }
+    ],
+    "P535": [
+      {
+        "id": "Q166351$210118ca-41c6-e63c-4afa-40c462271235",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P535",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "21632571"
+        }
+      }
+    ],
+    "P5714": [
+      {
+        "id": "Q166351$759D93C4-8594-4E8B-964B-0D8E93348111",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P5714",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "robert-jordan"
+        }
+      }
+    ],
+    "P1343": [
+      {
+        "id": "Q166351$2907D4E6-A607-4265-ADA0-54D6A1192260",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1343",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q121016671"
+        }
+      }
+    ],
+    "P109": [
+      {
+        "id": "Q166351$698694ce-488e-c6fd-d2c3-d0cfccbc3c51",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P109",
+          "data_type": "commonsMedia"
+        },
+        "value": {
+          "type": "value",
+          "content": "Robert Jordan signature (cropped).jpg"
+        }
+      }
+    ],
+    "P2031": [
+      {
+        "id": "Q166351$4953378A-F4F3-494F-93A2-05FFEF657F30",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "05f5741ca0e513e0fcc9e6a096e81e39cb69ba34",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q11913"
+                }
+              },
+              {
+                "property": {
+                  "id": "P4656",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://bg.wikipedia.org/w/index.php?title=Робърт_Джордан&oldid=9633224"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P2031",
+          "data_type": "time"
+        },
+        "value": {
+          "type": "value",
+          "content": {
+            "time": "+1977-00-00T00:00:00Z",
+            "precision": 9,
+            "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+          }
+        }
+      }
+    ],
+    "P7704": [
+      {
+        "id": "Q166351$8EE38A8D-CF47-48F6-8D93-3548109704C4",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "f6bd60771d70d0288fb4f534e8e556886b9d8f5a",
+            "parts": [
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2019-12-12T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P7704",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "agent/base/60238"
+        }
+      }
+    ],
+    "P2600": [
+      {
+        "id": "Q166351$fb472ccc-0348-424e-b1cc-9496efca1b57",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P2600",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "6000000031918791094"
+        }
+      }
+    ],
+    "P7433": [
+      {
+        "id": "Q166351$AFC3F431-6DE2-4962-8A10-4062F29A9164",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P7433",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "26"
+        }
+      }
+    ],
+    "P6886": [
+      {
+        "id": "Q166351$E59CA0CD-79F2-42BC-ABC0-477D4B958685",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "c5b2d098ee0c7d04cb2407e41647ef078c9c8247",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q8449"
+                }
+              },
+              {
+                "property": {
+                  "id": "P4656",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://es.wikipedia.org/w/index.php?title=Robert_Jordan&oldid=125547579"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P6886",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q1860"
+        }
+      }
+    ],
+    "P2963": [
+      {
+        "id": "Q166351$18532ebd-d7f3-434d-bed0-8e7d88af188e",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P585",
+              "data_type": "time"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "time": "+2020-09-28T00:00:00Z",
+                "precision": 11,
+                "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+              }
+            }
+          },
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Robert Jordan"
+            }
+          },
+          {
+            "property": {
+              "id": "P3744",
+              "data_type": "quantity"
+            },
+            "value": {
+              "type": "value",
+              "content": {
+                "amount": "+11289",
+                "unit": "1"
+              }
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "676b59062f8f6d2a51a4fb6a876fa17c0c01c315",
+            "parts": [
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2020-09-20T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              },
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q2359213"
+                }
+              },
+              {
+                "property": {
+                  "id": "P3452",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q60417591"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P2963",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "6252"
+        }
+      },
+      {
+        "id": "Q166351$2644fb1c-4ece-09a8-a688-a8728066aff3",
+        "rank": "deprecated",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P2963",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "6252"
+        }
+      }
+    ],
+    "P8849": [
+      {
+        "id": "Q166351$1C2E5917-B815-4005-86B9-F5EE57D45F93",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P8849",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "4118373"
+        }
+      }
+    ],
+    "P8851": [
+      {
+        "id": "Q166351$357F7703-552A-4037-8D09-4AA6AC6D4BFF",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P8851",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "2439783"
+        }
+      }
+    ],
+    "P7293": [
+      {
+        "id": "Q166351$40153D06-F51B-43AD-89CA-7D719E342D04",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P7293",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "9810573869705606"
+        }
+      }
+    ],
+    "P1695": [
+      {
+        "id": "Q166351$36633182-5aa1-46be-b703-7316feff645b",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1695",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "a0000001161340"
+        }
+      }
+    ],
+    "P3348": [
+      {
+        "id": "Q166351$3A1781D8-81B3-42CB-B6A0-9B59B0C89704",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P3348",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "196456"
+        }
+      }
+    ],
+    "P9322": [
+      {
+        "id": "Q166351$F1AD26CF-C331-4C6C-8786-784EF73CFA57",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "O'Neal, Reagan, 1948-2007"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "75433023589711216442faad858fa083cd481d1c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q105821202"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2021-03-22T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P9322",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "0252435-ONeal-Reagan-19482007"
+        }
+      },
+      {
+        "id": "Q166351$E0C5CB13-A228-4D83-A40B-E018CAB30C67",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "O'Reilly, Jackson, 1948-2007"
+            }
+          }
+        ],
+        "references": [
+          {
+            "hash": "75433023589711216442faad858fa083cd481d1c",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q105821202"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2021-03-22T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P9322",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "0252436-OReilly-Jackson-19482007"
+        }
+      },
+      {
+        "id": "Q166351$EEBCA4BB-B2AD-4158-B831-2790F1260F61",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "Jordan, Robert, 1948-2007"
+            }
+          }
+        ],
+        "references": [],
+        "property": {
+          "id": "P9322",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "p0079316-Jordan-Robert-19482007"
+        }
+      }
+    ],
+    "P607": [
+      {
+        "id": "Q166351$03559316-DD22-4198-BF0E-45D683742AE4",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P607",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q8740"
+        }
+      }
+    ],
+    "P9984": [
+      {
+        "id": "Q166351$1858BC4A-E0AB-41A2-BE67-FAC8C104FBF8",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P9984",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "981058516533006706"
+        }
+      }
+    ],
+    "P2949": [
+      {
+        "id": "Q166351$09D2D3CF-9108-4C79-B133-CC0B0F17F305",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P1810",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "James Oliver Robert Jordan Rigney Jr. (17 Oct 1948 - 16 Sep 2007)"
+            }
+          }
+        ],
+        "references": [],
+        "property": {
+          "id": "P2949",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "Rigney-416"
+        }
+      }
+    ],
+    "P8189": [
+      {
+        "id": "Q166351$843887D8-5F8E-401B-86E2-3F42C2A6965F",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P8189",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "987007306897105171"
+        }
+      }
+    ],
+    "P119": [
+      {
+        "id": "Q166351$03f42bd5-4918-ec1d-3131-759062d8ff3d",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "e5823a4f28d35706cd7a689da3822f942b5306e6",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q63056"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P119",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q111743989"
+        }
+      }
+    ],
+    "P10757": [
+      {
+        "id": "Q166351$513a94a5-4ebb-3a98-f917-fec1f759bb72",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P10757",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "133709"
+        }
+      }
+    ],
+    "P10883": [
+      {
+        "id": "Q166351$1597BC86-9614-4981-B1B6-A216E6B8B13E",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P10883",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "jordan_robert"
+        }
+      }
+    ],
+    "P9307": [
+      {
+        "id": "Q166351$430FBAD4-4F26-4F85-909C-894FFD75AFD3",
+        "rank": "normal",
+        "qualifiers": [
+          {
+            "property": {
+              "id": "P9675",
+              "data_type": "string"
+            },
+            "value": {
+              "type": "value",
+              "content": "23893"
+            }
+          }
+        ],
+        "references": [],
+        "property": {
+          "id": "P9307",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "Robert_Jordan"
+        }
+      }
+    ],
+    "P11185": [
+      {
+        "id": "Q166351$EA56B8BF-0B70-46F2-AC53-A30A325AC036",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P11185",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "59de6bd321c0c8f86d492e1d"
+        }
+      }
+    ],
+    "P10302": [
+      {
+        "id": "Q166351$c5a15a23-81d8-4838-8499-8d76d8438acf",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P10302",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "robert-dzhordan-2"
+        }
+      }
+    ],
+    "P11686": [
+      {
+        "id": "Q166351$A206EFED-74E8-429F-955C-CB69750157A9",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P11686",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "981058516533006706"
+        }
+      }
+    ],
+    "P271": [
+      {
+        "id": "Q166351$A89D4224-EA93-4A0E-A315-B5B9729532AC",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "6ee91fc1c606155e2479b7ef9b2221ead31c4321",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2023-11-11T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          },
+          {
+            "hash": "fb35bc497b52c095f92cb4424e572c541b2c46d6",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q115920372"
+                }
+              },
+              {
+                "property": {
+                  "id": "P11496",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "1140845216648888832"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2023-11-11T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P271",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "DA10062117"
+        }
+      }
+    ],
+    "P11496": [
+      {
+        "id": "Q166351$6DC1FD49-7E1D-49BE-BA3E-707564ED0495",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P11496",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1140845216648888832"
+        }
+      }
+    ],
+    "P12098": [
+      {
+        "id": "Q166351$B0096DD9-BF18-4451-B0D4-301E95824779",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P12098",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1609904"
+        }
+      }
+    ],
+    "P11386": [
+      {
+        "id": "Q166351$220A90FD-A35C-42BD-AE04-779CEA1E90A2",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P11386",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "robert-jordan_ii"
+        }
+      }
+    ],
+    "P12582": [
+      {
+        "id": "Q166351$E43F23E6-0F2B-41CC-9E2B-B2F9E47CAB0B",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P12582",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "20110803100025105"
+        }
+      }
+    ],
+    "P10832": [
+      {
+        "id": "Q166351$36E90DD2-95FF-410A-8783-027C0C8D5A1C",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "d806722415aa378053be561aff82ce27482c5631",
+            "parts": [
+              {
+                "property": {
+                  "id": "P11797",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q13219454"
+                }
+              },
+              {
+                "property": {
+                  "id": "P244",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "n95103132"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-04-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P10832",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "E39PBJrWyBY9qcMBbh9y7vJJjC"
+        }
+      }
+    ],
+    "P9707": [
+      {
+        "id": "Q166351$64150b6e-4ca1-c3eb-d511-a85023daeee6",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P9707",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "72546"
+        }
+      }
+    ],
+    "P4619": [
+      {
+        "id": "q166351$b9628fbd-41dd-ae2a-ad54-5bccf45d7283",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P4619",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "000488886"
+        }
+      }
+    ],
+    "P8179": [
+      {
+        "id": "q166351$cabf8ba0-4ab9-9e22-832f-e10f8586d381",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P8179",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "ncf11962666"
+        }
+      }
+    ],
+    "P6394": [
+      {
+        "id": "q166351$e8de5e0c-4230-6668-02d1-b14befb58902",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P6394",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "a11524704"
+        }
+      }
+    ],
+    "P5034": [
+      {
+        "id": "q166351$cc124e47-4df1-1195-56da-407c30bc1abe",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P5034",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "KAC202258527"
+        }
+      }
+    ],
+    "P7699": [
+      {
+        "id": "q166351$e80c7701-45b3-afa0-c0f0-6ab64dc8cfae",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P7699",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "LNB:j1d;=Bf"
+        }
+      }
+    ],
+    "P1368": [
+      {
+        "id": "q166351$055aeab4-4d6c-f0c0-68b9-01cdd5f4514b",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1368",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "000234561"
+        }
+      }
+    ],
+    "P7029": [
+      {
+        "id": "q166351$2c21ad67-4769-96d3-225f-fcdb062bc842",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P7029",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "7743"
+        }
+      },
+      {
+        "id": "q166351$a51f6c0c-4441-a000-717a-79121397c405",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P7029",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "774472"
+        }
+      }
+    ],
+    "P1375": [
+      {
+        "id": "q166351$fb7dc892-43ac-56b3-0e97-7c2d35aafbff",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1375",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "000770223"
+        }
+      }
+    ],
+    "P3065": [
+      {
+        "id": "q166351$e04746fd-4bbd-293b-2390-6b473a9c5402",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P3065",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "A003430811"
+        }
+      }
+    ],
+    "P7700": [
+      {
+        "id": "q166351$34927aeb-489b-fd99-9374-5c59f9499afe",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P7700",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "vtls008142805"
+        }
+      }
+    ],
+    "P7024": [
+      {
+        "id": "q166351$308023ab-4148-0cc2-72eb-e8d8c44c2016",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "7f6bebf2cb9044b73af08cba3d0d4d7834013cff",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q54919"
+                }
+              },
+              {
+                "property": {
+                  "id": "P214",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "79096089"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2024-07-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P7024",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "000001367"
+        }
+      }
+    ],
+    "P13049": [
+      {
+        "id": "Q166351$F11B335A-2200-4DBC-AA72-3B674FBA876B",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P13049",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "123684129"
+        }
+      }
+    ],
+    "P7400": [
+      {
+        "id": "Q166351$5405527d-46bc-7db6-2db3-2d7e50ec8ed1",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P7400",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "jordanrobert-1"
+        }
+      }
+    ],
+    "P4862": [
+      {
+        "id": "Q166351$e0fe916b-48f0-4775-320a-0568b47730ff",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "02061378d69be97deb5be8ec77a3d72d37067cf8",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q1201876"
+                }
+              },
+              {
+                "property": {
+                  "id": "P648",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "OL233594A"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P4862",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "B000AQ19X6"
+        }
+      }
+    ],
+    "P12430": [
+      {
+        "id": "Q166351$344d1159-45cb-6b38-d4ef-de0935158d6b",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P12430",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "813a24b4-7a4b-4c00-8fbe-a8eafc4e0b46"
+        }
+      }
+    ],
+    "P5905": [
+      {
+        "id": "Q166351$f89f7aeb-46d8-b759-e19a-e651592652ab",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P5905",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "4040-28136"
+        }
+      }
+    ],
+    "P7638": [
+      {
+        "id": "Q166351$9149a9af-4e18-cb54-7fcf-f203875c5ed9",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P7638",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "396482"
+        }
+      }
+    ],
+    "P4985": [
+      {
+        "id": "Q166351$ca335417-4403-374f-36f6-42b0a4cb102d",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P4985",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1222524"
+        }
+      }
+    ],
+    "P3913": [
+      {
+        "id": "Q166351$22572aea-46d8-6b13-a4e5-22b80c04598e",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P3913",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "408267"
+        }
+      }
+    ],
+    "P6868": [
+      {
+        "id": "Q166351$b489bfbb-4dc7-6f84-383e-7ed56852bb3b",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P6868",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "7491240"
+        }
+      }
+    ],
+    "P10387": [
+      {
+        "id": "Q166351$74E534B2-5C5B-4FB9-9E3F-DB7BE88C472F",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P10387",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "3674"
+        }
+      }
+    ],
+    "P13437": [
+      {
+        "id": "Q166351$4B66417B-55FD-448A-83CB-AFF87786495D",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P13437",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "Dzhordan_Robert"
+        }
+      }
+    ],
+    "P13591": [
+      {
+        "id": "Q166351$C104EC40-F567-4904-AEE9-9FD97B870926",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P13591",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "person/61d51f9a-97c5-4840-a018-cf846caa95ae"
+        }
+      }
+    ],
+    "P10400": [
+      {
+        "id": "Q166351$B0F1A0B3-3705-4845-93C2-21DC34D5FB3D",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P10400",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "1955"
+        }
+      }
+    ],
+    "P2605": [
+      {
+        "id": "Q166351$F0BDA764-D9A5-4727-AD3B-6E4247FBD2F7",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "36c5ad39d70e2e82b70ae19bf5728bbba0f15a0f",
+            "parts": [
+              {
+                "property": {
+                  "id": "P11797",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q37312"
+                }
+              },
+              {
+                "property": {
+                  "id": "P345",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "nm3104337"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2026-02-17T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P2605",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "660010"
+        }
+      }
+    ],
+    "P14178": [
+      {
+        "id": "Q166351$459CA70B-885E-4FCF-9753-EA7B3794E1F0",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P14178",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "jn20020422021"
+        }
+      }
+    ],
+    "P14225": [
+      {
+        "id": "Q166351$19E93CAE-B02A-4F2C-8A0A-0E9EB1F2C707",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "37efa197b6644701fcf012d6e15b16920762e19e",
+            "parts": [
+              {
+                "property": {
+                  "id": "P3452",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q138818708"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P14225",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "981005730345109366"
+        }
+      }
+    ],
+    "P14750": [
+      {
+        "id": "Q166351$F2E8D3DB-847B-4941-B3D8-2EB41316C9D7",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P14750",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "328D-A30C-1F47-CCDE-2062"
+        }
+      }
+    ]
+  },
+  "sitelinks": {
+    "bgwikiquote": {
+      "title": "Робърт Джордан",
+      "badges": [],
+      "url": "https://bg.wikiquote.org/wiki/%D0%A0%D0%BE%D0%B1%D1%8A%D1%80%D1%82_%D0%94%D0%B6%D0%BE%D1%80%D0%B4%D0%B0%D0%BD"
+    },
+    "enwikiquote": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://en.wikiquote.org/wiki/Robert_Jordan"
+    },
+    "itwikiquote": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://it.wikiquote.org/wiki/Robert_Jordan"
+    },
+    "frwikiquote": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://fr.wikiquote.org/wiki/Robert_Jordan"
+    },
+    "enwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://en.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "dewiki": {
+      "title": "Robert Jordan (Schriftsteller, 1948)",
+      "badges": [],
+      "url": "https://de.wikipedia.org/wiki/Robert_Jordan_(Schriftsteller,_1948)"
+    },
+    "frwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://fr.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "eswiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://es.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "ruwiki": {
+      "title": "Роберт Джордан",
+      "badges": [],
+      "url": "https://ru.wikipedia.org/wiki/%D0%A0%D0%BE%D0%B1%D0%B5%D1%80%D1%82_%D0%94%D0%B6%D0%BE%D1%80%D0%B4%D0%B0%D0%BD"
+    },
+    "itwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://it.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "jawiki": {
+      "title": "ロバート・ジョーダン",
+      "badges": [],
+      "url": "https://ja.wikipedia.org/wiki/%E3%83%AD%E3%83%90%E3%83%BC%E3%83%88%E3%83%BB%E3%82%B8%E3%83%A7%E3%83%BC%E3%83%80%E3%83%B3"
+    },
+    "nlwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://nl.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "plwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://pl.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "zhwiki": {
+      "title": "羅伯特·喬丹",
+      "badges": [],
+      "url": "https://zh.wikipedia.org/wiki/%E7%BE%85%E4%BC%AF%E7%89%B9%C2%B7%E5%96%AC%E4%B8%B9"
+    },
+    "svwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://sv.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "fawiki": {
+      "title": "رابرت جوردن",
+      "badges": [],
+      "url": "https://fa.wikipedia.org/wiki/%D8%B1%D8%A7%D8%A8%D8%B1%D8%AA_%D8%AC%D9%88%D8%B1%D8%AF%D9%86"
+    },
+    "hewiki": {
+      "title": "רוברט ג'ורדן",
+      "badges": [],
+      "url": "https://he.wikipedia.org/wiki/%D7%A8%D7%95%D7%91%D7%A8%D7%98_%D7%92%27%D7%95%D7%A8%D7%93%D7%9F"
+    },
+    "trwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://tr.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "huwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://hu.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "fiwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://fi.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "nowiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://no.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "ukwiki": {
+      "title": "Роберт Джордан",
+      "badges": [],
+      "url": "https://uk.wikipedia.org/wiki/%D0%A0%D0%BE%D0%B1%D0%B5%D1%80%D1%82_%D0%94%D0%B6%D0%BE%D1%80%D0%B4%D0%B0%D0%BD"
+    },
+    "cawiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://ca.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "cswiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://cs.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "srwiki": {
+      "title": "Роберт Џордан",
+      "badges": [],
+      "url": "https://sr.wikipedia.org/wiki/%D0%A0%D0%BE%D0%B1%D0%B5%D1%80%D1%82_%D0%8F%D0%BE%D1%80%D0%B4%D0%B0%D0%BD"
+    },
+    "dawiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://da.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "simplewiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://simple.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "bgwiki": {
+      "title": "Робърт Джордан",
+      "badges": [],
+      "url": "https://bg.wikipedia.org/wiki/%D0%A0%D0%BE%D0%B1%D1%8A%D1%80%D1%82_%D0%94%D0%B6%D0%BE%D1%80%D0%B4%D0%B0%D0%BD"
+    },
+    "azbwiki": {
+      "title": "رابرت جوردن",
+      "badges": [],
+      "url": "https://azb.wikipedia.org/wiki/%D8%B1%D8%A7%D8%A8%D8%B1%D8%AA_%D8%AC%D9%88%D8%B1%D8%AF%D9%86"
+    },
+    "brwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://br.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "bswiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://bs.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "etwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://et.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "euwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://eu.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "lawiki": {
+      "title": "Robertus Jordan",
+      "badges": [],
+      "url": "https://la.wikipedia.org/wiki/Robertus_Jordan"
+    },
+    "shwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://sh.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "tawiki": {
+      "title": "ராபர்ட் ஜோர்டான்",
+      "badges": [],
+      "url": "https://ta.wikipedia.org/wiki/%E0%AE%B0%E0%AE%BE%E0%AE%AA%E0%AE%B0%E0%AF%8D%E0%AE%9F%E0%AF%8D_%E0%AE%9C%E0%AF%8B%E0%AE%B0%E0%AF%8D%E0%AE%9F%E0%AE%BE%E0%AE%A9%E0%AF%8D"
+    },
+    "arwiki": {
+      "title": "روبرت جوردان",
+      "badges": [],
+      "url": "https://ar.wikipedia.org/wiki/%D8%B1%D9%88%D8%A8%D8%B1%D8%AA_%D8%AC%D9%88%D8%B1%D8%AF%D8%A7%D9%86"
+    },
+    "idwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://id.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "ptwiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://pt.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "kowiki": {
+      "title": "로버트 조던",
+      "badges": [],
+      "url": "https://ko.wikipedia.org/wiki/%EB%A1%9C%EB%B2%84%ED%8A%B8_%EC%A1%B0%EB%8D%98"
+    },
+    "rowiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://ro.wikipedia.org/wiki/Robert_Jordan"
+    },
+    "arzwiki": {
+      "title": "جيمس اوليفر ريجنى",
+      "badges": [],
+      "url": "https://arz.wikipedia.org/wiki/%D8%AC%D9%8A%D9%85%D8%B3_%D8%A7%D9%88%D9%84%D9%8A%D9%81%D8%B1_%D8%B1%D9%8A%D8%AC%D9%86%D9%89"
+    },
+    "xmfwiki": {
+      "title": "რობერტ ჯორდანი",
+      "badges": [],
+      "url": "https://xmf.wikipedia.org/wiki/%E1%83%A0%E1%83%9D%E1%83%91%E1%83%94%E1%83%A0%E1%83%A2_%E1%83%AF%E1%83%9D%E1%83%A0%E1%83%93%E1%83%90%E1%83%9C%E1%83%98"
+    },
+    "eowiki": {
+      "title": "Robert Jordan",
+      "badges": [],
+      "url": "https://eo.wikipedia.org/wiki/Robert_Jordan"
+    }
+  },
+  "id": "Q166351"
+}

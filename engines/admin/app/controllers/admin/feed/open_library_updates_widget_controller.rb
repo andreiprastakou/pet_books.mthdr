@@ -5,19 +5,19 @@ module Admin
 
       def show
         @book_searches = sample_tasks(
-          Admin::OpenLibrarySearchTask,
+          Admin::Tasks::OpenLibraryBookSearch,
           preload: { target: :authors }
         )
         @book_fetches = sample_tasks(
-          Admin::OpenLibraryFetchTask,
+          Admin::Tasks::OpenLibraryBookFetch,
           preload: { target: { owner: :authors } }
         )
         @author_searches = sample_tasks(
-          Admin::OpenLibraryAuthorSearchTask,
+          Admin::Tasks::OpenLibraryAuthorSearch,
           preload: :target
         )
         @author_fetches = sample_tasks(
-          Admin::OpenLibraryAuthorFetchTask,
+          Admin::Tasks::OpenLibraryAuthorFetch,
           preload: { target: :owner }
         )
       end
