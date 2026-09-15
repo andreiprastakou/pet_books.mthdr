@@ -74,23 +74,22 @@ RSpec.describe Admin::WikidataAuthorSearchTask do
   describe '#fetched_usable_values' do
     let(:task) { build(:wikidata_author_search_task, fetched_data: fetched_data) }
     let(:fetched_data) do
-      [
-        {
-          'id' => 'Q892',
-          'display-label' => { 'language' => 'en', 'value' => 'J. R. R. Tolkien' },
-          'description' => { 'language' => 'en', 'value' => 'British philologist and author' },
-          'match' => { 'type' => 'label', 'language' => 'en', 'text' => 'J. R. R. Tolkien' }
-        }
-      ]
+      JSON.parse(
+        File.read(
+          Rails.root.join(
+            'engines/admin/spec/fixtures/wikidata/author_search_robert_jordan.json'
+          )
+        )
+      )
     end
 
-    it 'returns id, label, and description for each result' do
+    it 'returns external_id, name, and description for each result' do
       expect(task.fetched_usable_values).to eq(
         [
           {
-            'id' => 'Q892',
-            'label' => 'J. R. R. Tolkien',
-            'description' => 'British philologist and author'
+            'external_id' => 'Q166351',
+            'name' => 'Robert Jordan',
+            'description' => 'American fantasy writer (1948–2007)'
           }
         ]
       )

@@ -108,7 +108,7 @@ module Admin
 
     def admin_link_to_data_fetch_task_target(task)
       case task
-      when Admin::BookSummaryTask, Admin::OpenLibrarySearchTask
+      when Admin::BookSummaryTask, Admin::OpenLibrarySearchTask, Admin::WikidataSearchTask
         admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
       when Admin::OpenLibraryFetchTask, Admin::OpenLibraryAuthorFetchTask
         identity = task.external_identity

@@ -49,8 +49,8 @@ module Admin
     def fetched_usable_values
       Array(fetched_data).filter_map do |item|
         {
-          'id' => item['id'],
-          'label' => item.dig('display-label', 'value'),
+          'external_id' => item['id'],
+          'name' => item.dig('display-label', 'value'),
           'description' => item.dig('description', 'value')
         }.compact.presence
       end

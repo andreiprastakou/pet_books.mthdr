@@ -74,23 +74,22 @@ RSpec.describe Admin::WikidataSearchTask do
   describe '#fetched_usable_values' do
     let(:task) { build(:wikidata_search_task, fetched_data: fetched_data) }
     let(:fetched_data) do
-      [
-        {
-          'id' => 'Q320423',
-          'display-label' => { 'language' => 'en', 'value' => 'The Spy Who Loved Me' },
-          'description' => { 'language' => 'en', 'value' => '1977 film by Lewis Gilbert' },
-          'match' => { 'type' => 'label', 'language' => 'en', 'text' => 'The Spy Who Loved Me' }
-        }
-      ]
+      JSON.parse(
+        File.read(
+          Rails.root.join(
+            'engines/admin/spec/fixtures/wikidata/book_search_in_the_slopes.json'
+          )
+        )
+      )
     end
 
-    it 'returns id, label, and description for each result' do
+    it 'returns external_id, title, and description for each result' do
       expect(task.fetched_usable_values).to eq(
         [
           {
-            'id' => 'Q320423',
-            'label' => 'The Spy Who Loved Me',
-            'description' => '1977 film by Lewis Gilbert'
+            'external_id' => 'Q80182620',
+            'title' => 'In the Slopes',
+            'description' => 'short story by China Miéville'
           }
         ]
       )

@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Q166351",
+    "display-label": {
+      "language": "en",
+      "value": "Robert Jordan"
+    },
+    "description": {
+      "language": "en",
+      "value": "American fantasy writer (1948–2007)"
+    },
+    "match": {
+      "type": "label",
+      "language": "en",
+      "text": "Robert Jordan"
+    }
+  }
+]
