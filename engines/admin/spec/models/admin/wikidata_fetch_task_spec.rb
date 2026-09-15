@@ -54,7 +54,7 @@ RSpec.describe Admin::WikidataFetchTask do
     let(:external_identity) do
       create(:external_identity, external_resource: :wikidata, external_id: "Q#{SecureRandom.random_number(1_000_000_000)}")
     end
-    let(:fetcher) { instance_double(InfoFetchers::Wikidata::Api::BookDetailsFetcher) }
+    let(:fetcher) { instance_double(Admin::InfoFetchers::Wikidata::Api::BookDetailsFetcher) }
     let(:api_data) do
       {
         'id' => external_identity.external_id,
@@ -64,7 +64,7 @@ RSpec.describe Admin::WikidataFetchTask do
     end
 
     before do
-      allow(InfoFetchers::Wikidata::Api::BookDetailsFetcher)
+      allow(Admin::InfoFetchers::Wikidata::Api::BookDetailsFetcher)
         .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
       allow(Admin::Wikidata::EntityLookup).to receive(:cache_from_item!)

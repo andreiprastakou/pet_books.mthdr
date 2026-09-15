@@ -6,15 +6,15 @@ module Admin
   # created or its external_id changes.
   class ExternalIdentityIntroductor
     BOOK_LINK_BUILDERS = {
-      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Work,
-      ExternalResources::WIKIDATA => ExternalLinks::Wikidata,
-      ExternalResources::LIBRARYTHING => ExternalLinks::LibraryThing,
-      ExternalResources::GOODREADS => ExternalLinks::Goodreads
+      ExternalResources::OPEN_LIBRARY => Admin::ExternalLinkBuilders::OpenLibrary::Work,
+      ExternalResources::WIKIDATA => Admin::ExternalLinkBuilders::Wikidata,
+      ExternalResources::LIBRARYTHING => Admin::ExternalLinkBuilders::LibraryThing,
+      ExternalResources::GOODREADS => Admin::ExternalLinkBuilders::Goodreads
     }.freeze
 
     AUTHOR_LINK_BUILDERS = {
-      ExternalResources::OPEN_LIBRARY => ExternalLinks::OpenLibrary::Author,
-      ExternalResources::WIKIDATA => ExternalLinks::Wikidata
+      ExternalResources::OPEN_LIBRARY => Admin::ExternalLinkBuilders::OpenLibrary::Author,
+      ExternalResources::WIKIDATA => Admin::ExternalLinkBuilders::Wikidata
     }.freeze
 
     FETCH_TASKS = {

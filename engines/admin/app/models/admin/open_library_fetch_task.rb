@@ -40,7 +40,7 @@ module Admin
     end
 
     def perform
-      result = InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.new(external_identity.external_id).fetch
+      result = Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.new(external_identity.external_id).fetch
       if result
         save_results!(result)
       else

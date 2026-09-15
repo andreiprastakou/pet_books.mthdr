@@ -50,11 +50,11 @@ RSpec.describe Admin::OpenLibraryFetchTask do
 
     let(:task) { create(:open_library_fetch_task, target: external_identity) }
     let(:external_identity) { create(:external_identity, external_id: 'OL27448W') }
-    let(:fetcher) { instance_double(InfoFetchers::OpenLibrary::Api::BookDetailsFetcher) }
+    let(:fetcher) { instance_double(Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher) }
     let(:api_data) { { 'key' => '/works/OL27448W', 'title' => 'The Lord of the Rings' } }
 
     before do
-      allow(InfoFetchers::OpenLibrary::Api::BookDetailsFetcher)
+      allow(Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher)
         .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
     end

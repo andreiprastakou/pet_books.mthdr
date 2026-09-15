@@ -35,7 +35,7 @@ module Admin
     end
 
     def perform
-      writer = InfoFetchers::Chats::BookSummaryWriter.new
+      writer = Admin::InfoFetchers::Chats::BookSummaryWriter.new
       writer.ask(book).tap do |summaries|
         save_results!(summaries, chat: writer.chat, errors: writer.errors)
       end

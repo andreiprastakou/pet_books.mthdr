@@ -41,13 +41,13 @@ module Admin
     end
 
     def perform
-      results = InfoFetchers::OpenLibrary::Api::AuthorSearcher.new(author).search
+      results = Admin::InfoFetchers::OpenLibrary::Api::AuthorSearcher.new(author).search
       save_results!(results)
       results
     end
 
     def add_author_identity!(author_key)
-      olid = ExternalLinks::OpenLibrary::Author.normalize_id(author_key)
+      olid = Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(author_key)
       raise ArgumentError, 'Invalid Open Library author key' if olid.blank?
 
       identity = author.external_identities.create!(

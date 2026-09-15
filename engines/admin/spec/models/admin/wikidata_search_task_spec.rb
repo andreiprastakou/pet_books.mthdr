@@ -50,7 +50,7 @@ RSpec.describe Admin::WikidataSearchTask do
 
     let(:task) { create(:wikidata_search_task, target: book) }
     let(:book) { create(:book) }
-    let(:searcher) { instance_double(InfoFetchers::Wikidata::Api::BookSearcher) }
+    let(:searcher) { instance_double(Admin::InfoFetchers::Wikidata::Api::BookSearcher) }
     let(:results) do
       [
         { 'id' => 'Q1', 'display-label' => { 'language' => 'en', 'value' => 'Title A' } },
@@ -59,7 +59,7 @@ RSpec.describe Admin::WikidataSearchTask do
     end
 
     before do
-      allow(InfoFetchers::Wikidata::Api::BookSearcher).to receive(:new).with(book).and_return(searcher)
+      allow(Admin::InfoFetchers::Wikidata::Api::BookSearcher).to receive(:new).with(book).and_return(searcher)
       allow(searcher).to receive(:search).and_return(results)
     end
 

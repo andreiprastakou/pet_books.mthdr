@@ -50,7 +50,7 @@ RSpec.describe Admin::OpenLibraryAuthorSearchTask do
 
     let(:task) { create(:open_library_author_search_task, target: author) }
     let(:author) { create(:author) }
-    let(:searcher) { instance_double(InfoFetchers::OpenLibrary::Api::AuthorSearcher) }
+    let(:searcher) { instance_double(Admin::InfoFetchers::OpenLibrary::Api::AuthorSearcher) }
     let(:results) do
       [
         { 'key' => 'OL26320A', 'name' => 'J. R. R. Tolkien' },
@@ -59,7 +59,7 @@ RSpec.describe Admin::OpenLibraryAuthorSearchTask do
     end
 
     before do
-      allow(InfoFetchers::OpenLibrary::Api::AuthorSearcher).to receive(:new).with(author).and_return(searcher)
+      allow(Admin::InfoFetchers::OpenLibrary::Api::AuthorSearcher).to receive(:new).with(author).and_return(searcher)
       allow(searcher).to receive(:search).and_return(results)
     end
 

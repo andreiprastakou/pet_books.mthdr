@@ -60,7 +60,7 @@ RSpec.describe Admin::WikidataAuthorFetchTask do
       create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
     end
     let(:task) { create(:wikidata_author_fetch_task, target: external_identity) }
-    let(:fetcher) { instance_double(InfoFetchers::Wikidata::Api::AuthorDetailsFetcher) }
+    let(:fetcher) { instance_double(Admin::InfoFetchers::Wikidata::Api::AuthorDetailsFetcher) }
     let(:api_data) do
       {
         'id' => 'Q892',
@@ -70,7 +70,7 @@ RSpec.describe Admin::WikidataAuthorFetchTask do
     end
 
     before do
-      allow(InfoFetchers::Wikidata::Api::AuthorDetailsFetcher)
+      allow(Admin::InfoFetchers::Wikidata::Api::AuthorDetailsFetcher)
         .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
       allow(Admin::Wikidata::EntityLookup).to receive(:cache_from_item!)

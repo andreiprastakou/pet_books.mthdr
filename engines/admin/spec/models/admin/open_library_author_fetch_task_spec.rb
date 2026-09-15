@@ -53,11 +53,11 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTask do
       create(:external_identity, owner: author, external_id: 'OL1394865A')
     end
     let(:task) { create(:open_library_author_fetch_task, target: external_identity) }
-    let(:fetcher) { instance_double(InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher) }
+    let(:fetcher) { instance_double(Admin::InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher) }
     let(:api_data) { { 'key' => '/authors/OL1394865A', 'name' => 'J. R. R. Tolkien' } }
 
     before do
-      allow(InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher)
+      allow(Admin::InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher)
         .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
     end

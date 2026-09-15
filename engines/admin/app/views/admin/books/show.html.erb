@@ -179,11 +179,11 @@
             <% @book.external_identities.each do |external_identity| %>
               <% identity_label = external_identity.external_id.presence || '—' %>
               <% identity_url = if external_identity.open_library?
-                                  ExternalLinks::OpenLibrary::Work.call(external_identity.external_id)
+                                  Admin::ExternalLinkBuilders::OpenLibrary::Work.call(external_identity.external_id)
                                 elsif external_identity.wikidata?
-                                  ExternalLinks::Wikidata.call(external_identity.external_id)
+                                  Admin::ExternalLinkBuilders::Wikidata.call(external_identity.external_id)
                                 elsif external_identity.librarything?
-                                  ExternalLinks::LibraryThing.call(external_identity.external_id)
+                                  Admin::ExternalLinkBuilders::LibraryThing.call(external_identity.external_id)
                                 end
                  identity_url ||= external_identity.external_link&.url %>
               <div>

@@ -49,7 +49,7 @@ RSpec.describe Admin::BookSummaryTask do
 
     let(:task) { build(:book_summary_task, target: book) }
     let(:book) { build_stubbed(:book) }
-    let(:writer) { instance_double(InfoFetchers::Chats::BookSummaryWriter, chat: chat, errors: []) }
+    let(:writer) { instance_double(Admin::InfoFetchers::Chats::BookSummaryWriter, chat: chat, errors: []) }
     let(:chat) { create(:ai_chat) }
     let(:summaries) do
       [
@@ -59,7 +59,7 @@ RSpec.describe Admin::BookSummaryTask do
     end
 
     before do
-      allow(InfoFetchers::Chats::BookSummaryWriter).to receive(:new).and_return(writer)
+      allow(Admin::InfoFetchers::Chats::BookSummaryWriter).to receive(:new).and_return(writer)
       allow(writer).to receive(:ask).with(book).and_return(summaries)
     end
 

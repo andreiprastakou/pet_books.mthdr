@@ -12,10 +12,10 @@ RSpec.describe Admin::Wikidata::EntityLookup do
       }
     end
     let(:usable_values) { { 'authors' => ['Q82104'], 'open_library_id' => 'OL85742W' } }
-    let(:labels_fetcher) { instance_double(InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher) }
+    let(:labels_fetcher) { instance_double(Admin::InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher) }
 
     before do
-      allow(InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher).to receive(:new).and_return(labels_fetcher)
+      allow(Admin::InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher).to receive(:new).and_return(labels_fetcher)
       allow(labels_fetcher).to receive(:fetch).with(['Q82104']).and_return(
         'Q82104' => { 'label' => 'Ian Fleming', 'description' => 'English author' }
       )
@@ -66,10 +66,10 @@ RSpec.describe Admin::Wikidata::EntityLookup do
 
     context 'when fetch_missing is true and a label is absent' do
       let(:values) { { 'genres' => ['Q20664331'] } }
-      let(:labels_fetcher) { instance_double(InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher) }
+      let(:labels_fetcher) { instance_double(Admin::InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher) }
 
       before do
-        allow(InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher).to receive(:new).and_return(labels_fetcher)
+        allow(Admin::InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher).to receive(:new).and_return(labels_fetcher)
         allow(labels_fetcher).to receive(:fetch).with(['Q20664331']).and_return(
           'Q20664331' => { 'label' => 'spy fiction', 'description' => nil }
         )

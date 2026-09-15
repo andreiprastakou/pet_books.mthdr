@@ -41,7 +41,7 @@ module Admin
     end
 
     def perform
-      results = InfoFetchers::Wikidata::Api::BookSearcher.new(book).search
+      results = Admin::InfoFetchers::Wikidata::Api::BookSearcher.new(book).search
       save_results!(results)
       results
     end
@@ -57,7 +57,7 @@ module Admin
     end
 
     def add_work_identity!(entity_id)
-      qid = ExternalLinks::Wikidata.normalize_id(entity_id)
+      qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
       raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
 
       identity = book.external_identities.create!(
@@ -68,7 +68,7 @@ module Admin
     end
 
     def add_author_identity!(entity_id, author:)
-      qid = ExternalLinks::Wikidata.normalize_id(entity_id)
+      qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
       raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
       raise ArgumentError, 'Author is required' if author.blank?
       raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)

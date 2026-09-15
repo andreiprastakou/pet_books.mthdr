@@ -4,7 +4,7 @@ module Admin
       def update
         book = Book.find(params[:book_id])
         initial_popularity = book.wiki_popularity
-        InfoFetchers::Wiki::BookSyncer.new(book).sync!
+        Admin::InfoFetchers::Wiki::BookSyncer.new(book).sync!
         if book.wiki_popularity > initial_popularity
           redirect_to admin_book_path(book), notice: t('notices.admin.book_wiki_stats.update.success')
         else

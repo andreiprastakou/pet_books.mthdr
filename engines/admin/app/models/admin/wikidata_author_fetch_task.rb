@@ -40,7 +40,7 @@ module Admin
     end
 
     def perform
-      result = InfoFetchers::Wikidata::Api::AuthorDetailsFetcher.new(external_identity.external_id).fetch
+      result = Admin::InfoFetchers::Wikidata::Api::AuthorDetailsFetcher.new(external_identity.external_id).fetch
       if result
         save_results!(result)
         cache_lookup_entities!(result)
