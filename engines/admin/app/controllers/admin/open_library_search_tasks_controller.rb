@@ -51,13 +51,13 @@ module Admin
     def sorted_search_results
       book_year = @book.year_published.to_i
       Array(@task.fetched_usable_values).sort_by do |result|
-        year = result.is_a?(Hash) ? (result['first_publish_year'] || result[:first_publish_year]).to_i : 0
+        year = result.is_a?(Hash) ? result['first_publish_year'].to_i : 0
         (year - book_year).abs
       end
     end
 
     def author_identities_by_olid
-      author_olids = @search_results.flat_map { |result| result_author_keys(result) }
+      author_olids = @search_results.flat_map { |result| result_author_ids(result) }
                                     .filter_map { |key| Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(key) }
                                     .uniq
       return {} if author_olids.empty?
@@ -68,14 +68,13 @@ module Admin
                       .index_by(&:external_id)
     end
 
-    def result_author_keys(result)
+    def result_author_ids(result)
       return [] unless result.is_a?(Hash)
 
-      keys = result['author_key'] || result[:author_key]
-      return Array(keys) if keys.present?
+      authors = result['authors']
+      return [] unless authors.is_a?(Array)
 
-      authors = result['authors'] || result[:authors]
-      authors.is_a?(Hash) ? authors.keys : []
+      authors.filter_map { |author| author['external_id'] if author.is_a?(Hash) }
     end
   end
 end

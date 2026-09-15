@@ -147,4 +147,179 @@ RSpec.describe Admin::OpenLibrarySearchTask do
       expect(described_class.next_unresolved(excluding: first_task)).to eq(second_task)
     end
   end
+
+  describe '#fetched_usable_values' do
+    let(:task) { build(:open_library_search_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      [
+        {
+          'key' => '/works/OL1W',
+          'title' => 'Title A',
+          'first_publish_year' => 1967,
+          'author_key' => %w[OL113611A OL113612A],
+          'author_name' => ['Jules Verne', 'Other Author'],
+          'cover_i' => 123,
+          'edition_count' => 4
+        }
+      ]
+    end
+
+    it 'returns usable fields with paired authors' do
+      expect(task.fetched_usable_values).to eq(
+        [
+          {
+            'external_id' => '/works/OL1W',
+            'title' => 'Title A',
+            'first_publish_year' => 1967,
+            'authors' => [
+              { 'external_id' => 'OL113611A', 'name' => 'Jules Verne' },
+              { 'external_id' => 'OL113612A', 'name' => 'Other Author' }
+            ]
+          }
+        ]
+      )
+    end
+
+    context 'when fetched_data is blank' do
+      let(:fetched_data) { nil }
+
+      it 'returns an empty array' do
+        expect(task.fetched_usable_values).to eq([])
+      end
+    end
+
+    context 'when fetched_data is not an array' do
+      let(:fetched_data) { { 'key' => '/works/OL1W' } }
+
+      it 'returns an empty array' do
+        expect(task.fetched_usable_values).to eq([])
+      end
+    end
+
+    context 'when entries are malformed' do
+      let(:fetched_data) do
+        [
+          'not-a-hash',
+          {
+            'key' => '/works/OL2W',
+            'title' => 'Title B',
+            'author_key' => 'OL113611A',
+            'author_name' => ['Jules Verne']
+          },
+          {
+            'key' => '/works/OL3W',
+            'title' => 'Title C',
+            'author_key' => ['OL113611A', nil, ''],
+            'author_name' => ['Jules Verne']
+          },
+          {
+            'key' => nil,
+            'title' => nil,
+            'first_publish_year' => nil,
+            'author_key' => []
+          }
+        ]
+      end
+
+      it 'skips invalid entries and tolerates bad author collections' do
+        expect(task.fetched_usable_values).to eq(
+          [
+            {
+              'external_id' => '/works/OL2W',
+              'title' => 'Title B'
+            },
+            {
+              'external_id' => '/works/OL3W',
+              'title' => 'Title C',
+              'authors' => [
+                { 'external_id' => 'OL113611A', 'name' => 'Jules Verne' }
+              ]
+            }
+          ]
+        )
+      end
+    end
+
+    context 'when author names are missing' do
+      let(:fetched_data) do
+        [
+          {
+            'key' => '/works/OL4W',
+            'title' => 'Title D',
+            'author_key' => %w[OL1A OL2A],
+            'author_name' => ['Only One Name']
+          }
+        ]
+      end
+
+      it 'keeps authors without paired names' do
+        expect(task.fetched_usable_values).to eq(
+          [
+            {
+              'external_id' => '/works/OL4W',
+              'title' => 'Title D',
+              'authors' => [
+                { 'external_id' => 'OL1A', 'name' => 'Only One Name' },
+                { 'external_id' => 'OL2A' }
+              ]
+            }
+          ]
+        )
+      end
+    end
+
+    context 'with a lifelike Open Library search fixture' do
+      let(:fetched_data) do
+        JSON.parse(
+          File.read(
+            Rails.root.join(
+              'engines/admin/spec/fixtures/open_library/work_search_spy_who_loved_me.json'
+            )
+          )
+        )
+      end
+
+      it 'extracts usable values from the real-shaped payload' do
+        expect(task.fetched_usable_values).to eq(
+          [
+            {
+              'external_id' => '/works/OL85742W',
+              'title' => 'The Spy Who Loved Me',
+              'first_publish_year' => 1962,
+              'authors' => [{ 'external_id' => 'OL29227A', 'name' => 'Ian Fleming' }]
+            },
+            {
+              'external_id' => '/works/OL19026542W',
+              'title' => 'The Spy Who Love Me',
+              'authors' => [{ 'external_id' => 'OL29227A', 'name' => 'Ian Fleming' }]
+            },
+            {
+              'external_id' => '/works/OL19677509W',
+              'title' => 'Thunderball / For Your Eyes Only / The Spy Who Loved Me',
+              'first_publish_year' => 1965,
+              'authors' => [{ 'external_id' => 'OL29227A', 'name' => 'Ian Fleming' }]
+            },
+            {
+              'external_id' => '/works/OL38652797W',
+              'title' => "Thunderball / The Spy Who Loved Me / On Her Majesty's Secret Service",
+              'first_publish_year' => 2024,
+              'authors' => [{ 'external_id' => 'OL29227A', 'name' => 'Ian Fleming' }]
+            },
+            {
+              'external_id' => '/works/OL26442941W',
+              'title' => 'Live and Let Die / Dr. No / Thunderball / The Spy Who Loved Me',
+              'first_publish_year' => 2002,
+              'authors' => [{ 'external_id' => 'OL29227A', 'name' => 'Ian Fleming' }]
+            },
+            {
+              'external_id' => '/works/OL19033855W',
+              'title' => 'Diamonds are forever / Doctor No / Goldfinger / For your eyes only / The spy who loved me',
+              'first_publish_year' => 1993,
+              'authors' => [{ 'external_id' => 'OL29227A', 'name' => 'Ian Fleming' }]
+            }
+          ]
+        )
+      end
+    end
+  end
 end

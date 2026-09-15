@@ -177,4 +177,155 @@ RSpec.describe Admin::OpenLibraryFetchTask do
       expect(book.summary_src).to eq('Open Library')
     end
   end
+
+  describe '#fetched_usable_values' do
+    let(:task) { build(:open_library_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      {
+        'title' => 'The Lord of the Rings',
+        'description' => { 'type' => '/type/text', 'value' => 'An epic fantasy novel.' },
+        'authors' => [
+          { 'author' => { 'key' => '/authors/OL26320A' } },
+          { 'author' => { 'key' => '/authors/OL26321A' } }
+        ],
+        'genres' => %w[Fantasy Adventure],
+        'series' => [
+          { 'series' => { 'key' => '/series/OL123S' } }
+        ],
+        'identifiers' => { 'wikidata' => ['Q15228'] },
+        'links' => [
+          { 'title' => 'Wikipedia', 'url' => 'https://en.wikipedia.org/wiki/The_Lord_of_the_Rings' },
+          { 'title' => 'Missing url' },
+          'not-a-hash'
+        ],
+        'first_sentence' => { 'type' => '/type/text', 'value' => 'When Mr. Bilbo Baggins of Bag End announced...' },
+        'subject_people' => ['Frodo Baggins', 'Gandalf', '', nil],
+        'covers' => [12_345],
+        'subjects' => %w[Fantasy Fiction],
+        'first_publish_date' => '1954'
+      }
+    end
+
+    it 'returns usable fields and mapped related entities' do
+      expect(task.fetched_usable_values).to eq(
+        {
+          'title' => 'The Lord of the Rings',
+          'description' => { 'type' => '/type/text', 'value' => 'An epic fantasy novel.' },
+          'authors' => [
+            { 'external_id' => '/authors/OL26320A' },
+            { 'external_id' => '/authors/OL26321A' }
+          ],
+          'genres' => [
+            { 'external_id' => 'Fantasy' },
+            { 'external_id' => 'Adventure' }
+          ],
+          'series' => [
+            { 'external_id' => '/series/OL123S' }
+          ],
+          'identifiers' => { 'wikidata' => ['Q15228'] },
+          'links' => ['https://en.wikipedia.org/wiki/The_Lord_of_the_Rings'],
+          'first_sentence' => 'When Mr. Bilbo Baggins of Bag End announced...',
+          'subject_people' => ['Frodo Baggins', 'Gandalf'],
+          'covers' => [12_345]
+        }
+      )
+    end
+
+    context 'when fetched_data is nil' do
+      let(:fetched_data) { nil }
+
+      it 'returns an empty hash' do
+        expect(task.fetched_usable_values).to eq({})
+      end
+    end
+
+    context 'when fetched_data is not a hash' do
+      let(:fetched_data) { ['not', 'a', 'hash'] }
+
+      it 'returns an empty hash' do
+        expect(task.fetched_usable_values).to eq({})
+      end
+    end
+
+    context 'when related collections are malformed' do
+      let(:fetched_data) do
+        {
+          'title' => 'Broken Work',
+          'authors' => 'not-an-array',
+          'genres' => { 'Fantasy' => true },
+          'series' => [
+            'plain-string',
+            { 'series' => {} },
+            { 'series' => { 'key' => '/series/OL1S' } },
+            nil
+          ]
+        }
+      end
+
+      it 'skips invalid entries and keeps valid ones' do
+        expect(task.fetched_usable_values).to eq(
+          {
+            'title' => 'Broken Work',
+            'series' => [{ 'external_id' => '/series/OL1S' }]
+          }
+        )
+      end
+    end
+
+    context 'when author entries miss keys' do
+      let(:fetched_data) do
+        {
+          'authors' => [
+            { 'type' => { 'key' => '/type/author_role' } },
+            { 'author' => { 'key' => '' } },
+            { 'author' => { 'key' => '/authors/OL1A' } }
+          ]
+        }
+      end
+
+      it 'omits blank author ids' do
+        expect(task.fetched_usable_values).to eq(
+          {
+            'authors' => [{ 'external_id' => '/authors/OL1A' }]
+          }
+        )
+      end
+    end
+
+    context 'with a lifelike Open Library work fixture' do
+      let(:fetched_data) do
+        JSON.parse(
+          File.read(
+            Rails.root.join(
+              'engines/admin/spec/fixtures/open_library/work_fetch_pillars_of_the_earth.json'
+            )
+          )
+        )
+      end
+
+      it 'extracts usable values from the real-shaped payload' do
+        expect(task.fetched_usable_values).to eq(
+          {
+            'title' => 'The Pillars of the Earth',
+            'description' => fetched_data['description'],
+            'authors' => [{ 'external_id' => '/authors/OL229268A' }],
+            'genres' => [
+              { 'external_id' => '/tags/OL180T' },
+              { 'external_id' => '/tags/OL170T' }
+            ],
+            'links' => [
+              'http://viaf.org/viaf/310270194',
+              'https://en.wikipedia.org/wiki/The_Pillars_of_the_Earth',
+              'https://ken-follett.com/books/the-pillars-of-the-earth/',
+              'https://thegreatestbooks.org/items/334'
+            ],
+            'first_sentence' =>
+              'IN A BROAD VALLEY, at the foot of a sloping hillside, beside a clear bubbling stream, Tom was building a house.',
+            'subject_people' => fetched_data['subject_people'],
+            'covers' => fetched_data['covers']
+          }
+        )
+      end
+    end
+  end
 end

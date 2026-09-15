@@ -21,8 +21,8 @@
 #
 module Admin
   class Author < ::Author
-    include HasWikipedia
-    include HasExternalIdentities
+    include Admin::HasWikipedia
+    include Admin::HasExternalIdentities
 
     has_many :books, class_name: 'Admin::Book', through: :book_authors
     has_many :books_list_tasks, class_name: 'Admin::AuthorBooksListTask', as: :target, dependent: :destroy

@@ -77,6 +77,12 @@ Admin::Engine.routes.draw do
       end
     end
 
+    resources :open_library_author_search_tasks, only: [] do
+      member do
+        post :add_author_identity
+      end
+    end
+
     resources :open_library_fetch_tasks, only: %i[edit] do
       member do
         post :add_identity

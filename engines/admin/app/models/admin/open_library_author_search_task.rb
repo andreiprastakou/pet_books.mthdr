@@ -58,8 +58,20 @@ module Admin
     end
 
     def fetched_usable_values
-      (fetched_data || []).map do |entry|
-        entry.slice('key', 'name', 'birth_date', 'death_date')
+      data = fetched_data
+      return [] unless data.is_a?(Array)
+
+      data.filter_map do |entry|
+        next unless entry.is_a?(Hash)
+
+        {
+          'external_id' => entry['key'],
+          'name' => entry['name'],
+          'birth_date' => entry['birth_date'],
+          'death_date' => entry['death_date'],
+          'type' => entry['type'],
+          'ratings_count' => entry['ratings_count']
+        }.compact_blank.presence
       end
     end
   end

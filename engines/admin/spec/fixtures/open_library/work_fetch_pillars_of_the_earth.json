@@ -1,0 +1,195 @@
+{
+  "description": {
+    "type": "/type/text",
+    "value": "The Pillars of the Earth is a historical novel by Welsh author Ken Follett published in 1989 about the building of a cathedral in the fictional town of Kingsbridge, England. Set in the 12th century, the novel covers the time between the sinking of the White Ship and the murder of Thomas Becket, but focuses primarily on the Anarchy. The book traces the development of Gothic architecture out of the preceding Romanesque architecture, and the fortunes of the Kingsbridge priory and village against the backdrop of historical events of the time.\r\n\r\n---\r\n\r\nSee also:\r\n\r\n- [The Pillars of the Earth: 1/2](https://openlibrary.org/works/OL23632562W)\r\n- [The Pillars of the Earth: 2/2](https://openlibrary.org/works/OL23632516W)"
+  },
+  "links": [
+    {
+      "title": "VIAF ID: 310270194 (Work)",
+      "url": "http://viaf.org/viaf/310270194",
+      "type": {
+        "key": "/type/link"
+      }
+    },
+    {
+      "title": "The Pillars of the Earth - Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/The_Pillars_of_the_Earth",
+      "type": {
+        "key": "/type/link"
+      }
+    },
+    {
+      "title": "ken-follett.com/books/the-pillars-of-the-earth",
+      "url": "https://ken-follett.com/books/the-pillars-of-the-earth/",
+      "type": {
+        "key": "/type/link"
+      }
+    },
+    {
+      "title": "thegreatestbooks.org/items/334",
+      "url": "https://thegreatestbooks.org/items/334",
+      "type": {
+        "key": "/type/link"
+      }
+    }
+  ],
+  "title": "The Pillars of the Earth",
+  "covers": [
+    9269909,
+    -1,
+    10722610,
+    10722611,
+    10722621,
+    10722613,
+    10722626,
+    12373041,
+    11125579,
+    12328228,
+    12569089,
+    13696572,
+    14091068,
+    14091067
+  ],
+  "first_sentence": {
+    "type": "/type/text",
+    "value": "IN A BROAD VALLEY, at the foot of a sloping hillside, beside a clear bubbling stream, Tom was building a house."
+  },
+  "subject_places": [
+    "Great Britain",
+    "Kingsbridge",
+    "Shiring",
+    "Winchester",
+    "Gloucester",
+    "Canterbury",
+    "Christendom"
+  ],
+  "first_publish_date": "November 14, 2007",
+  "subject_people": [
+    "Henry I of England",
+    "Stephen of Blois",
+    "Maud",
+    "Robert of Gloucester",
+    "Henry II of England",
+    "Thomas Becket",
+    "Jack Jackson",
+    "Ellen",
+    "Tom Builder",
+    "Alfred Builder",
+    "Martha",
+    "Prior Philip",
+    "Bishop Waleran Bigod",
+    "Aliena",
+    "Richard of Kingsbridge",
+    "William Hamleigh",
+    "Percy Hamleigh",
+    "Regan Hamleigh",
+    "Francis of Gwynedd",
+    "Bartholomew",
+    "Remigius",
+    "Cutherbert Whitehead",
+    "Milius Bursar",
+    "Johnny Eightpence",
+    "Jack Shareburg",
+    "Agnes",
+    "Jonathan",
+    "Tommy",
+    "Sally",
+    "Raschid Alharoun",
+    "Walter",
+    "Elizabeth"
+  ],
+  "key": "/works/OL1914022W",
+  "authors": [
+    {
+      "author": {
+        "key": "/authors/OL229268A"
+      },
+      "type": {
+        "key": "/type/author_role"
+      }
+    }
+  ],
+  "excerpts": [
+    {
+      "excerpt": "In a broad valley, at the foot of a sloping hillside, beside a clear bubbling stream, Tom was building a house.",
+      "comment": "first sentence",
+      "author": {
+        "key": "/people/seabelis"
+      }
+    }
+  ],
+  "subjects": [
+    "White Ship",
+    "The Anarchy",
+    "Battle of Lincoln",
+    "Anglo-Saxon law",
+    "Suspense & Thriller",
+    "epic fiction",
+    "suspense fiction",
+    "church and state",
+    "historical literature",
+    "church architecture",
+    "fiction",
+    "Epic literature",
+    "Historical fiction",
+    "history",
+    "monks",
+    "Cathedrals",
+    "New York Times bestseller",
+    "Open Library Staff Picks",
+    "Design and construction",
+    "nyt:mass_market_paperback=2010-02-28",
+    "Thriller",
+    "Middles Ages",
+    "Reading Level-Grade 9",
+    "Reading Level-Grade 11",
+    "Reading Level-Grade 10",
+    "Reading Level-Grade 12",
+    "Fictional Works Publication Type",
+    "Middle Ages",
+    "Fiction, historical",
+    "Great britain, fiction",
+    "Sagas",
+    "Kirchenbau",
+    "Familie",
+    "Baumeister",
+    "Thrillers",
+    "England, fiction",
+    "Fiction, thrillers, general",
+    "Fiction, historical, general",
+    "English fiction",
+    "English literature"
+  ],
+  "type": {
+    "key": "/type/work"
+  },
+  "subject_times": [
+    "Stephen, 1135-1154",
+    "1123",
+    "1135",
+    "1136",
+    "1137",
+    "1140",
+    "1141",
+    "1142",
+    "1143",
+    "1144",
+    "1145",
+    "1152-1155",
+    "1170-1174"
+  ],
+  "genres": [
+    "/tags/OL180T",
+    "/tags/OL170T"
+  ],
+  "latest_revision": 59,
+  "revision": 59,
+  "created": {
+    "type": "/type/datetime",
+    "value": "2009-12-09T22:33:43.193902"
+  },
+  "last_modified": {
+    "type": "/type/datetime",
+    "value": "2026-09-04T14:53:13.403729"
+  }
+}
