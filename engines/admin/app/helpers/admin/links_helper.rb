@@ -42,7 +42,7 @@ module Admin
         external_identity.external_resource.to_s.titleize,
         external_identity.external_id.presence
       ].compact.join(': ')
-      path = if owner.is_a?(Author)
+      path = if owner.is_a?(::Author)
                admin_author_external_identity_path(owner, external_identity)
              else
                admin_book_external_identity_path(owner, external_identity)
@@ -116,7 +116,7 @@ module Admin
         if owner.is_a?(::Book)
           admin_link_to "Open Library #{identity.external_id} (#{owner.title})",
                         admin_book_external_identity_path(owner, identity)
-        elsif owner.is_a?(Author)
+        elsif owner.is_a?(::Author)
           admin_link_to "Open Library #{identity.external_id} (#{owner.fullname})",
                         admin_author_external_identity_path(owner, identity)
         else
@@ -128,7 +128,7 @@ module Admin
         if owner.is_a?(::Book)
           admin_link_to "Wikidata #{identity.external_id} (#{owner.title})",
                         admin_book_external_identity_path(owner, identity)
-        elsif owner.is_a?(Author)
+        elsif owner.is_a?(::Author)
           admin_link_to "Wikidata #{identity.external_id} (#{owner.fullname})",
                         admin_author_external_identity_path(owner, identity)
         else

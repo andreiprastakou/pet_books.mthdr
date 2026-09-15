@@ -30,7 +30,9 @@ module Admin
       create!(target: author, input_data: { text: text })
     end
 
-    alias author target
+    def author
+      Admin::Author.cast(target)
+    end
 
     def perform
       parser = InfoFetchers::Chats::AuthorBooksListParser.new

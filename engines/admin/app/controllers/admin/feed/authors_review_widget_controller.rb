@@ -8,7 +8,7 @@ module Admin
       private
 
       def fetch_view_data
-        authors_scope = Author.not_synced.without_tasks
+        authors_scope = Admin::Author.not_synced.without_tasks
         @authors_to_sync = authors_scope.first(5)
         @authors_to_sync_count = authors_scope.count
 

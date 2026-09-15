@@ -15,7 +15,7 @@ module Admin
       def perform_search
         return [] if @key.blank?
 
-        Author.preload(:books).where('fullname LIKE ?', "%#{@key}%").order(id: :desc).to_a
+        Admin::Author.preload(:books).where('fullname LIKE ?', "%#{@key}%").order(id: :desc).to_a
       end
     end
   end

@@ -28,13 +28,6 @@ RSpec.describe Author do
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_authors) }
     it { is_expected.to have_many(:tag_connections).class_name(Joins::TagConnection.name) }
     it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
-    it { is_expected.to have_many(:books_list_tasks).class_name(Admin::AuthorBooksListTask.name) }
-    it { is_expected.to have_many(:list_parsing_tasks).class_name(Admin::AuthorBooksListParsingTask.name) }
-    it do
-      is_expected.to have_many(:open_library_author_search_tasks)
-        .class_name(Admin::OpenLibraryAuthorSearchTask.name)
-    end
-    it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
   end
 
   describe 'validation' do
@@ -76,8 +69,23 @@ RSpec.describe Author do
     end
   end
 
-  it_behaves_like 'has wikipedia' do
-    let(:record) { build(:author) }
+  describe '#==' do
+    it 'equates Admin::Author and Author with the same id' do
+      admin_author = create(:author)
+      expect(described_class.find(admin_author.id)).to eq(admin_author)
+    end
+  end
+
+  describe '#readonly?' do
+    it 'is readonly' do
+      expect(described_class.new).to be_readonly
+      expect(described_class.find(create(:author).id)).to be_readonly
+    end
+
+    it 'rejects persistence' do
+      author = described_class.find(create(:author).id)
+      expect { author.update!(fullname: 'OTHER') }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    end
   end
 
   it_behaves_like 'has external links'
@@ -111,21 +119,6 @@ RSpec.describe Author do
 
     it 'returns the photo card URL' do
       expect(result).to eq('https://example.com/card.jpg')
-    end
-  end
-
-  describe '#history_data_fetch_tasks' do
-    subject(:result) { author.history_data_fetch_tasks }
-
-    let(:author) { create(:author) }
-    let!(:author_task) { create(:open_library_author_search_task, target: author, updated_at: 1.day.ago) }
-    let!(:identity_task) do
-      identity = create(:external_identity, owner: author, external_resource: :open_library, external_id: 'OL1A')
-      create(:open_library_author_fetch_task, target: identity, updated_at: Time.current)
-    end
-
-    it 'returns author and identity tasks newest first' do
-      expect(result).to eq([identity_task, author_task])
     end
   end
 end

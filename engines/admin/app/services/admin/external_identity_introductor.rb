@@ -42,7 +42,7 @@ module Admin
     def self.owner_kind(owner)
       klass = owner.is_a?(Module) ? owner : owner.class
       return :book if klass <= ::Book
-      return :author if klass <= Author
+      return :author if klass <= ::Author
 
       nil
     end
@@ -87,7 +87,11 @@ module Admin
 
     def owner
       raw = external_identity.owner
-      raw.is_a?(::Book) ? Admin::Book.cast(raw) : raw
+      case raw
+      when ::Book then Admin::Book.cast(raw)
+      when ::Author then Admin::Author.cast(raw)
+      else raw
+      end
     end
   end
 end

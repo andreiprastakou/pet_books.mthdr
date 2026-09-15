@@ -30,7 +30,9 @@ module Admin
       create!(target: book)
     end
 
-    alias book target
+    def book
+      Admin::Book.cast(target)
+    end
 
     def perform
       writer = InfoFetchers::Chats::BookSummaryWriter.new

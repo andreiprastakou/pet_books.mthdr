@@ -36,7 +36,9 @@ module Admin
       scope.first
     end
 
-    alias book target
+    def book
+      Admin::Book.cast(target)
+    end
 
     def perform
       result = InfoFetchers::LibraryThing::Api::WorkByTitleFetcher.new(book.title).fetch

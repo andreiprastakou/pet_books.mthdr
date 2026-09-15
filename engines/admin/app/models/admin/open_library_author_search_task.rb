@@ -36,7 +36,9 @@ module Admin
       scope.first
     end
 
-    alias author target
+    def author
+      Admin::Author.cast(target)
+    end
 
     def perform
       results = InfoFetchers::OpenLibrary::Api::AuthorSearcher.new(author).search

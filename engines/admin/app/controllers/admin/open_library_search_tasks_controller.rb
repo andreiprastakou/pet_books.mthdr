@@ -17,7 +17,7 @@ module Admin
     end
 
     def add_author_identity
-      author = Author.find(params.require(:author_id))
+      author = Admin::Author.find(params.require(:author_id))
       @task.add_author_identity!(params.require(:author_key), author: author)
       redirect_to admin_data_fetch_task_path(@task),
                   notice: t('notices.admin.open_library_search_tasks.add_author_identity.success')
@@ -35,10 +35,17 @@ module Admin
     end
 
     def prepare_form_data
-      @book = Book.includes(:external_identities, authors: :external_identities).find(@task.target_id)
+      @book = Admin::Book.includes(:external_identities).find(@task.target_id)
+      assign_admin_authors!
       @search_results = sorted_search_results
       @book_open_library_ids = @book.external_identities.open_library.filter_map(&:external_id).to_set
       @author_identities_by_olid = author_identities_by_olid
+    end
+
+    def assign_admin_authors!
+      author_ids = @book.book_authors.map(&:author_id)
+      authors_by_id = Admin::Author.where(id: author_ids).preload(:external_identities).index_by(&:id)
+      @book.association(:authors).target = author_ids.filter_map { |id| authors_by_id[id] }
     end
 
     def sorted_search_results
@@ -56,7 +63,7 @@ module Admin
       return {} if author_olids.empty?
 
       ExternalIdentity.open_library
-                      .where(owner_type: Author.name, external_id: author_olids)
+                      .where(owner_type: ::Author.name, external_id: author_olids)
                       .includes(:owner)
                       .index_by(&:external_id)
     end
@@ -64,7 +71,11 @@ module Admin
     def result_author_keys(result)
       return [] unless result.is_a?(Hash)
 
-      Array(result['author_key'] || result[:author_key])
+      keys = result['author_key'] || result[:author_key]
+      return Array(keys) if keys.present?
+
+      authors = result['authors'] || result[:authors]
+      authors.is_a?(Hash) ? authors.keys : []
     end
   end
 end

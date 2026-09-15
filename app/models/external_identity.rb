@@ -25,7 +25,7 @@
 #  external_link_id  (external_link_id => external_links.id) ON DELETE => nullify
 #
 class ExternalIdentity < ApplicationRecord
-  belongs_to :owner, polymorphic: true, inverse_of: :external_identities
+  belongs_to :owner, polymorphic: true
   belongs_to :external_link, optional: true
 
   enum :external_resource, {

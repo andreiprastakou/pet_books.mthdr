@@ -10,7 +10,7 @@ module Admin
       private
 
       def set_author
-        @author = Author.find(params.expect(:author_id))
+        @author = Admin::Author.find(params.expect(:author_id))
       end
     end
   end
