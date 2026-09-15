@@ -25,17 +25,157 @@
 #
 require 'rails_helper'
 
-RSpec.describe Admin::BookForm do
+RSpec.describe Admin::Book do
   let(:sentinel) { '' }
 
   it 'has a valid factory' do
-    expect(build(:admin_book_form)).to be_valid
+    expect(build(:admin_book)).to be_valid
+  end
+
+  describe 'associations' do
+    it {
+      is_expected.to have_many(:generative_summary_tasks).class_name(Admin::BookSummaryTask.name)
+                                                         .dependent(:destroy)
+    }
+    it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
+    it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name).dependent(:destroy) }
+  end
+
+  it_behaves_like 'has wikipedia' do
+    let(:record) { build(:admin_book) }
+  end
+
+  describe '#readonly?' do
+    it 'is writable' do
+      expect(described_class.new).not_to be_readonly
+      expect(create(:admin_book)).not_to be_readonly
+    end
+  end
+
+  describe 'scopes' do
+    describe '.not_filled' do
+      subject(:result) { described_class.not_filled }
+
+      before { books }
+
+      let(:books) do
+        [
+          create(:book, data_filled: false),
+          create(:book, data_filled: true)
+        ]
+      end
+
+      it 'returns the books that are not filled' do
+        expect(result).to match_array(books.values_at(0))
+      end
+    end
+
+    describe '.without_tasks' do
+      subject(:result) { described_class.without_tasks }
+
+      before do
+        books
+        create(:book_summary_task, target: books[1])
+      end
+
+      let(:books) { create_list(:book, 2) }
+
+      it 'returns the books that have no tasks' do
+        expect(result).to match_array(books.values_at(0))
+      end
+    end
+
+    describe '.form_requires_summary' do
+      subject(:result) { described_class.form_requires_summary }
+
+      before { books }
+
+      let(:books) do
+        [
+          create(:book, literary_form: 'novel'),
+          create(:book, literary_form: 'novella'),
+          create(:book, literary_form: 'short'),
+          create(:book, literary_form: 'poem'),
+          create(:book, literary_form: 'play'),
+          create(:book, literary_form: 'comics'),
+          create(:book, literary_form: 'non_fiction'),
+          create(:book, literary_form: nil)
+        ]
+      end
+
+      it 'returns the books that require a summary' do
+        expect(result).to match_array(books.values_at(0, 1, 4, 6, 7))
+      end
+    end
+  end
+
+  describe '#next_author_book' do
+    subject(:result) { book.next_author_book }
+
+    let(:book) { books[1] }
+    let(:books) do
+      [
+        create(:book, authors: [author], year_published: 2020),
+        create(:book, authors: [author], year_published: 2020),
+        create(:book, authors: [create(:author)], year_published: 2020),
+        create(:book, authors: [author], year_published: 2020),
+        create(:book, authors: [author], year_published: 2022),
+        create(:book, authors: [author], year_published: 2021)
+      ]
+    end
+    let(:author) { create(:author) }
+
+    it 'picks the next book by year published and id ascending' do
+      expect(result).to eq(books[3])
+    end
+  end
+
+  describe '#needs_data_fetch?' do
+    subject(:result) { book.needs_data_fetch? }
+
+    let(:book) { build(:book, data_filled: false, literary_form: 'novel') }
+
+    context 'when a book is not data_filled' do
+      it { is_expected.to be true }
+
+      context 'when book literary form does not require a summary' do
+        before do
+          book.literary_form = (::Book::STANDARD_FORMS - ::Book::FORMS_REQUIRE_SUMMARY).sample
+        end
+
+        it { is_expected.to be false }
+      end
+
+      context 'when book literary form is nil' do
+        before { book.literary_form = nil }
+
+        it { is_expected.to be true }
+      end
+
+      context 'when a book has pending generative_summary_tasks' do
+        before { book.generative_summary_tasks.build(status: 'fetched') }
+
+        it { is_expected.to be false }
+      end
+
+      context 'when a book has only rejected generative_summary_tasks' do
+        before { book.generative_summary_tasks.build(status: 'rejected') }
+
+        it { is_expected.to be true }
+      end
+    end
+
+    context 'when a book is data_filled' do
+      before { book.data_filled = true }
+
+      it { is_expected.to be false }
+    end
   end
 
   describe '#current_genre_names' do
     subject(:result) { book.current_genre_names }
 
-    let(:book) { build(:admin_book_form, genres: book_genres) }
+    let(:book) { build(:admin_book, genres: book_genres) }
     let(:book_genres) { build_list(:book_genre, 3, genre: build_stubbed(:genre)) }
 
     before { book.genres[1].mark_for_destruction }
@@ -48,7 +188,7 @@ RSpec.describe Admin::BookForm do
   describe '#current_book_genres' do
     subject(:result) { book.current_book_genres }
 
-    let(:book) { build(:admin_book_form, genres: book_genres) }
+    let(:book) { build(:admin_book, genres: book_genres) }
     let(:book_genres) { build_list(:book_genre, 3, genre: build_stubbed(:genre)) }
 
     before { book.genres[1].mark_for_destruction }
@@ -61,7 +201,7 @@ RSpec.describe Admin::BookForm do
   describe '#genre_names=' do
     subject(:call) { book.genre_names = genre_names }
 
-    let(:book) { create(:admin_book_form, genres: book_genres) }
+    let(:book) { create(:admin_book, genres: book_genres) }
     let(:book_genres) do
       [
         build(:book_genre, genre: create(:genre, name: 'genre_a')),
@@ -84,7 +224,7 @@ RSpec.describe Admin::BookForm do
   describe '#author_ids=' do
     subject(:call) { book.author_ids = author_ids }
 
-    let(:book) { create(:admin_book_form, authors: [], book_authors: initial_book_authors) }
+    let(:book) { create(:admin_book, authors: [], book_authors: initial_book_authors) }
     let(:authors) { create_list(:author, 3) }
     let(:initial_book_authors) { [build(:book_author, author: authors[0]), build(:book_author, author: authors[1])] }
     let(:author_ids) { [authors[1].id, authors[2].id, sentinel] }
@@ -101,7 +241,7 @@ RSpec.describe Admin::BookForm do
   describe '#series_ids=' do
     subject(:call) { book.series_ids = series_ids }
 
-    let(:book) { create(:admin_book_form, book_series: initial_book_series) }
+    let(:book) { create(:admin_book, book_series: initial_book_series) }
     let(:series) { create_list(:series, 3) }
     let(:initial_book_series) { [build(:book_series, series: series[0]), build(:book_series, series: series[1])] }
     let(:series_ids) { [series[1].id, series[2].id, sentinel] }
@@ -118,7 +258,7 @@ RSpec.describe Admin::BookForm do
   describe '#current_tag_names' do
     subject(:result) { book.current_tag_names }
 
-    let(:book) { build(:admin_book_form, tags: tags) }
+    let(:book) { build(:admin_book, tags: tags) }
     let(:tags) { create_list(:tag, 3) }
 
     before { book.tag_connections[1].mark_for_destruction }
@@ -131,7 +271,7 @@ RSpec.describe Admin::BookForm do
   describe '#tag_names=' do
     subject(:call) { book.tag_names = tag_names }
 
-    let(:book) { create(:admin_book_form, tags: tags[0..1]) }
+    let(:book) { create(:admin_book, tags: tags[0..1]) }
     let(:tags) { create_list(:tag, 3) }
     let(:tag_names) { tags[1..2].map(&:name) + %w[tag_d] + [sentinel] }
 

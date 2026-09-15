@@ -113,7 +113,7 @@ module Admin
       when Admin::OpenLibraryFetchTask, Admin::OpenLibraryAuthorFetchTask
         identity = task.external_identity
         owner = identity.owner
-        if owner.is_a?(Book)
+        if owner.is_a?(::Book)
           admin_link_to "Open Library #{identity.external_id} (#{owner.title})",
                         admin_book_external_identity_path(owner, identity)
         elsif owner.is_a?(Author)
@@ -125,7 +125,7 @@ module Admin
       when Admin::WikidataFetchTask, Admin::WikidataAuthorFetchTask
         identity = task.external_identity
         owner = identity.owner
-        if owner.is_a?(Book)
+        if owner.is_a?(::Book)
           admin_link_to "Wikidata #{identity.external_id} (#{owner.title})",
                         admin_book_external_identity_path(owner, identity)
         elsif owner.is_a?(Author)

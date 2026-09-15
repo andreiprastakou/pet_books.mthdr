@@ -34,9 +34,9 @@ module Admin
 
     def book
       owner = external_identity.owner
-      raise ArgumentError, 'Wikidata fetch target must belong to a book' unless owner.is_a?(Book)
+      raise ArgumentError, 'Wikidata fetch target must belong to a book' unless owner.is_a?(::Book)
 
-      owner
+      Admin::Book.cast(owner)
     end
 
     def perform

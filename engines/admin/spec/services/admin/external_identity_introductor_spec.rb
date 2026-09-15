@@ -99,7 +99,7 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
   describe '.link_builder_for' do
     it 'returns the book Open Library work builder' do
-      expect(described_class.link_builder_for('open_library', Book)).to eq(ExternalLinks::OpenLibrary::Work)
+      expect(described_class.link_builder_for('open_library', ::Book)).to eq(ExternalLinks::OpenLibrary::Work)
     end
 
     it 'returns the author Open Library author builder' do

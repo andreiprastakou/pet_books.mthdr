@@ -33,7 +33,8 @@ module InfoFetchers
       def update_entity
         return unless wiki_link.entity.is_a?(Book)
 
-        wiki_link.entity.update!(wiki_popularity: wiki_link.entity.wiki_links_sum_views)
+        book = Admin::Book.cast(wiki_link.entity)
+        book.update!(wiki_popularity: book.wiki_links_sum_views)
       end
     end
   end

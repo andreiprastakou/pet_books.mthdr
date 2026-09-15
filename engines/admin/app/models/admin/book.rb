@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: books
@@ -22,11 +24,80 @@
 #  index_books_on_year_published  (year_published)
 #
 module Admin
-  class BookForm < ::Book
+  class Book < ::Book
+    include HasWikipedia
+
+    has_many :generative_summary_tasks, class_name: 'Admin::BookSummaryTask', as: :target, dependent: :destroy
+    has_many :external_identities, class_name: 'ExternalIdentity', as: :owner, dependent: :destroy,
+                                   inverse_of: :owner
+
     accepts_nested_attributes_for :tag_connections, allow_destroy: true
     accepts_nested_attributes_for :genres, allow_destroy: true
     accepts_nested_attributes_for :book_authors, allow_destroy: true
     accepts_nested_attributes_for :book_series, allow_destroy: true
+
+    scope :not_filled, -> { where(data_filled: false) }
+    scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
+    scope :form_requires_summary, -> { where(literary_form: FORMS_REQUIRE_SUMMARY) }
+
+    def readonly?
+      false
+    end
+
+    def self.cast(book)
+      return book if book.is_a?(self)
+      return new(book.attributes) if book.new_record?
+
+      book.becomes(self)
+    end
+
+    def self.cast_collection(books)
+      books.map { |book| cast(book) }
+    end
+
+    # Load Admin::Book rows for ids from a ::Book relation/association, with preloads.
+    def self.for_scope(book_scope, *preloads)
+      scope = where(id: book_scope.select(:id))
+      preloads.present? ? scope.preload(*preloads) : scope
+    end
+
+    # Swap nested :book targets on join records so views get Admin::Book + preloads.
+    def self.assign_to_association!(records, association_name, *preloads)
+      id_method = :"#{association_name}_id"
+      by_id = where(id: records.map(&id_method)).preload(*preloads).index_by(&:id)
+      records.each do |record|
+        record.association(association_name).target = by_id.fetch(record.public_send(id_method))
+      end
+    end
+
+    def next_author_book
+      author_ids = book_authors.map(&:author_id)
+      self.class.by_author(author_ids)
+          .where('(year_published > ?) OR (year_published = ? AND books.id > ?)', year_published, year_published, id)
+          .order(:year_published, 'books.id')
+          .limit(1)
+          .first
+    end
+
+    def needs_data_fetch?
+      generative_summary_tasks.none?(&:fetched?) &&
+        !data_filled? &&
+        literary_form.in?(FORMS_REQUIRE_SUMMARY)
+    end
+
+    def history_data_fetch_tasks
+      book_fetch_tasks = Admin::BaseDataFetchTask.where(
+        target_type: ::Book.name,
+        target_id: id
+      )
+      identities_fetch_tasks = Admin::BaseDataFetchTask.where(
+        target_type: ExternalIdentity.name,
+        target_id: external_identities.select(:id)
+      )
+      (book_fetch_tasks.to_a + identities_fetch_tasks.to_a)
+        .sort_by(&:updated_at)
+        .reverse
+    end
 
     def current_book_genres
       genres.reject(&:marked_for_destruction?)

@@ -45,7 +45,7 @@ module Admin
       end
 
       def prepare_form_data
-        @books = @author.books.to_a
+        @books = Admin::Book.cast_collection(@author.books.to_a)
         @task.fetched_data.each do |attributes|
           attributes = attributes.with_indifferent_access
           next if apply_to_existing_book(attributes)
@@ -69,7 +69,7 @@ module Admin
       end
 
       def build_book(attributes)
-        Book.new(
+        Admin::Book.new(
           attributes.slice(:title, :original_title)
             .merge(
               year_published: attributes[:year],

@@ -46,7 +46,7 @@ module Admin
       end
 
       def prepare_form_data
-        @books = @author.books.to_a
+        @books = Admin::Book.cast_collection(@author.books.to_a)
         @task.fetched_data.each do |attributes|
           next if apply_to_existing_book(attributes)
 
@@ -67,7 +67,7 @@ module Admin
       end
 
       def build_book(attributes)
-        Book.new(attributes.merge(authors: [@author]))
+        Admin::Book.new(attributes.merge(authors: [@author]))
       end
     end
   end

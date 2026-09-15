@@ -7,7 +7,7 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
     let(:task) { build_stubbed(:book_summary_task, target: book) }
 
     before do
-      allow(Admin::BookSummaryTask).to receive(:setup).with(kind_of(Admin::BookForm)).and_return(task)
+      allow(Admin::BookSummaryTask).to receive(:setup).with(kind_of(Admin::Book)).and_return(task)
       allow(task).to receive(:perform)
     end
 
@@ -32,7 +32,7 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
       send_request
       expect(response).to render_template('admin/books/generative_summaries/edit')
       aggregate_failures do
-        expect(assigns(:book)).to be_a(Admin::BookForm)
+        expect(assigns(:book)).to be_a(Admin::Book)
         expect(assigns(:summaries)).to eq(task.fetched_data.map(&:symbolize_keys))
         expect(assigns(:all_themes)).to match_array(%w[theme_a theme_b])
       end

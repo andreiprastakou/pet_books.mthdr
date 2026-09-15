@@ -17,9 +17,12 @@ module Admin
 
     def show
       @book_public_lists = apply_sort(
-        @public_list.book_public_lists.preload(book: %i[authors generative_summary_tasks external_links]).includes(:book),
+        @public_list.book_public_lists.includes(:book),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'role', sort_order: 'desc' }
+      )
+      Admin::Book.assign_to_association!(
+        @book_public_lists, :book, :authors, :generative_summary_tasks, :external_links
       )
     end
 

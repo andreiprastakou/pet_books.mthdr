@@ -2,7 +2,7 @@ module InfoFetchers
   module Wiki
     class BookSyncer
       def initialize(book)
-        @book = book
+        @book = book.is_a?(Admin::Book) ? book : Admin::Book.cast(book)
       end
 
       def sync!

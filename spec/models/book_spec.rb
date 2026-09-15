@@ -29,7 +29,6 @@ RSpec.describe Book do
   describe 'associations' do
     it { is_expected.to have_many(:tag_connections).class_name(TagConnection.name) }
     it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
-    it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name) }
     it { is_expected.to have_many(:book_authors).class_name(BookAuthor.name) }
     it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
     it { is_expected.to have_many(:book_series).class_name(BookSeries.name) }
@@ -38,11 +37,6 @@ RSpec.describe Book do
     it { is_expected.to have_many(:collections).class_name(Collection.name).through(:book_collections) }
     it { is_expected.to have_many(:book_public_lists).class_name(BookPublicList.name) }
     it { is_expected.to have_many(:public_lists).class_name(PublicList.name).through(:book_public_lists) }
-    it { is_expected.to have_many(:external_identities).class_name(ExternalIdentity.name).dependent(:destroy) }
-    it {
-      is_expected.to have_many(:open_library_search_tasks).class_name(Admin::OpenLibrarySearchTask.name)
-                                                         .dependent(:destroy)
-    }
   end
 
   describe 'validation' do
@@ -93,63 +87,10 @@ RSpec.describe Book do
         ]
       end
 
+      before { books }
+
       it 'returns the books by the author' do
-        expect(result).to match_array(books[0..1])
-      end
-    end
-
-    describe '.not_filled' do
-      subject(:result) { described_class.not_filled }
-
-      before { books }
-
-      let(:books) do
-        [
-          create(:book, data_filled: false),
-          create(:book, data_filled: true)
-        ]
-      end
-
-      it 'returns the books that are not filled' do
-        expect(result).to match_array(books.values_at(0))
-      end
-    end
-
-    describe '.without_tasks' do
-      subject(:result) { described_class.without_tasks }
-
-      before do
-        books
-        create(:book_summary_task, target: books[1])
-      end
-
-      let(:books) { create_list(:book, 2) }
-
-      it 'returns the books that have no tasks' do
-        expect(result).to match_array(books.values_at(0))
-      end
-    end
-
-    describe '.form_requires_summary' do
-      subject(:result) { described_class.form_requires_summary }
-
-      before { books }
-
-      let(:books) do
-        [
-          create(:book, literary_form: 'novel'),
-          create(:book, literary_form: 'novella'),
-          create(:book, literary_form: 'short'),
-          create(:book, literary_form: 'poem'),
-          create(:book, literary_form: 'play'),
-          create(:book, literary_form: 'comics'),
-          create(:book, literary_form: 'non_fiction'),
-          create(:book, literary_form: nil)
-        ]
-      end
-
-      it 'returns the books that require a summary' do
-        expect(result).to match_array(books.values_at(0, 1, 4, 6, 7))
+        expect(result.map(&:id)).to match_array(books[0..1].map(&:id))
       end
     end
 
@@ -165,14 +106,31 @@ RSpec.describe Book do
         ]
       end
 
+      before { books }
+
       it 'returns the books that match the title' do
-        expect(result).to match_array(books.values_at(0, 1))
+        expect(result.map(&:id)).to match_array(books.values_at(0, 1).map(&:id))
       end
     end
   end
 
-  it_behaves_like 'has wikipedia' do
-    let(:record) { build(:book) }
+  describe '#==' do
+    it 'equates Admin::Book and Book with the same id' do
+      admin_book = create(:book)
+      expect(described_class.find(admin_book.id)).to eq(admin_book)
+    end
+  end
+
+  describe '#readonly?' do
+    it 'is readonly' do
+      expect(described_class.new).to be_readonly
+      expect(described_class.find(create(:book).id)).to be_readonly
+    end
+
+    it 'rejects persistence' do
+      book = described_class.find(create(:book).id)
+      expect { book.update!(title: 'OTHER') }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    end
   end
 
   it_behaves_like 'has external links'
@@ -207,27 +165,6 @@ RSpec.describe Book do
       before { book.original_title = 'TITLE_A' }
 
       it { is_expected.to be false }
-    end
-  end
-
-  describe '#next_author_book' do
-    subject(:result) { book.next_author_book }
-
-    let(:book) { books[1] }
-    let(:books) do
-      [
-        create(:book, authors: [author], year_published: 2020),
-        create(:book, authors: [author], year_published: 2020),
-        create(:book, authors: [create(:author)], year_published: 2020),
-        create(:book, authors: [author], year_published: 2020),
-        create(:book, authors: [author], year_published: 2022),
-        create(:book, authors: [author], year_published: 2021)
-      ]
-    end
-    let(:author) { create(:author) }
-
-    it 'picks the next book by year published and id ascending' do
-      expect(result).to eq(books[3])
     end
   end
 
@@ -270,48 +207,6 @@ RSpec.describe Book do
       it 'returns "Unknown Author"' do
         expect(result).to eq('Unknown Author')
       end
-    end
-  end
-
-  describe '#needs_data_fetch?' do
-    subject(:result) { book.needs_data_fetch? }
-
-    let(:book) { build(:book, data_filled: false, literary_form: 'novel') }
-
-    context 'when a book is not data_filled' do
-      it { is_expected.to be true }
-
-      context 'when book literary form does not require a summary' do
-        before do
-          book.literary_form = (described_class::STANDARD_FORMS - described_class::FORMS_REQUIRE_SUMMARY).sample
-        end
-
-        it { is_expected.to be false }
-      end
-
-      context 'when book literary form is nil' do
-        before { book.literary_form = nil }
-
-        it { is_expected.to be true }
-      end
-
-      context 'when a book has pending generative_summary_tasks' do
-        before { book.generative_summary_tasks.build(status: 'fetched') }
-
-        it { is_expected.to be false }
-      end
-
-      context 'when a book has only rejected generative_summary_tasks' do
-        before { book.generative_summary_tasks.build(status: 'rejected') }
-
-        it { is_expected.to be true }
-      end
-    end
-
-    context 'when a book is data_filled' do
-      before { book.data_filled = true }
-
-      it { is_expected.to be false }
     end
   end
 end
