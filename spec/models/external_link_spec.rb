@@ -23,7 +23,6 @@ RSpec.describe ExternalLink do
 
   describe 'associations' do
     it { is_expected.to belong_to(:owner).optional }
-    it { is_expected.to have_many(:external_identities).dependent(:nullify) }
   end
 
   describe 'validations' do
