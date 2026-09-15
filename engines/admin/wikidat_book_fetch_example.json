@@ -1,0 +1,1027 @@
+{
+  "type": "item",
+  "labels": {
+    "es": "El espía que me amó",
+    "da": "The Spy Who Loved Me",
+    "en": "The Spy Who Loved Me",
+    "fi": "007 rakastettuni",
+    "fr": "Motel 007",
+    "id": "The Spy Who Loved Me",
+    "it": "La spia che mi amava",
+    "pl": "Szpieg, który mnie kochał",
+    "pt": "The Spy Who Loved Me",
+    "ru": "Шпион, который меня любил",
+    "sv": "Älskade spion",
+    "de": "Der Spion, der mich liebte",
+    "hy": "Լրտեսը, որն ինձ սիրում էր",
+    "nl": "The Spy Who Loved Me",
+    "bg": "Шпионинът",
+    "th": "เดอะสปายฮูลัฟด์มี",
+    "ml": "ദ സ്പൈ ഹു ലവ്ഡ് മി",
+    "eo": "La Spiono Kiu Amis Min",
+    "sh": "The Spy Who Loved Me (roman)",
+    "ko": "나를 사랑한 스파이",
+    "ca": "The Spy Who Loved Me",
+    "he": "המרגל שאהב אותי",
+    "ja": "私を愛したスパイ",
+    "sk": "The Spy Who Loved Me (kniha)"
+  },
+  "descriptions": {
+    "en": "James Bond novel by Ian Fleming",
+    "it": "romanzo scritto da Ian Fleming",
+    "de": "Roman",
+    "nl": "boek van Ian Fleming",
+    "he": "ספר מאת איאן פלמינג",
+    "ar": "كتاب من تأليف إيان فليمنج",
+    "es": "novela de Ian Fleming",
+    "eo": "romano far Iam Fleming",
+    "br": "romant",
+    "ja": "イアン・フレミングの小説",
+    "fi": "Ian Flemingin romaani",
+    "fr": "livre d'Ian Fleming",
+    "sk": "desiata kniha o Jamesovi Bondovi",
+    "ary": "كتاب كتبو إيان فليمنج"
+  },
+  "aliases": {
+    "es": [
+      "El espia que me amo"
+    ],
+    "nl": [
+      "The Spy Who Loved Me (roman)"
+    ],
+    "ko": [
+      "007 나를 사랑한 스파이"
+    ],
+    "fr": [
+      "L'Espion qui m'aimait"
+    ]
+  },
+  "statements": {
+    "P31": [
+      {
+        "id": "q545151$B05892BE-6846-4994-AEB1-DD5B789B26DA",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P31",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q47461344"
+        }
+      }
+    ],
+    "P179": [
+      {
+        "id": "q545151$E3267050-C435-41AB-B640-2740DB6AE9AF",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P179",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q844"
+        }
+      }
+    ],
+    "P50": [
+      {
+        "id": "q545151$D77D22FB-666E-47D2-AD22-198CEAAFCBF1",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "d4bd87b862b12d99d26e86472d44f26858dee639",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q8447"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "14d2400e3b1d36332748dc330276f099eeaa8800",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q1551807"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "9424852ca7d9d48269148c57acbefacca1899882",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q11921"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "d5847b9b6032aa8b13dae3c2dfd9ed5d114d21b3",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q11920"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "c456dc5cd2117249948c288206ff3f8b1bf574f0",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q8449"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P50",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q82104"
+        }
+      }
+    ],
+    "P123": [
+      {
+        "id": "q545151$A5EAB734-90A5-413E-851B-005C971AC8E4",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P123",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q3277534"
+        }
+      }
+    ],
+    "P155": [
+      {
+        "id": "q545151$D26D6BBF-C7F0-4A9B-BCB9-D56D02332BC9",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P155",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q1952957"
+        }
+      }
+    ],
+    "P156": [
+      {
+        "id": "q545151$AE2AB1F2-AD14-4EC1-AF10-0A73F0627B8F",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P156",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q2136755"
+        }
+      }
+    ],
+    "P136": [
+      {
+        "id": "Q545151$2B12D724-46BC-4AB9-97A0-25C1D85F8B37",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P136",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q20664331"
+        }
+      },
+      {
+        "id": "Q545151$8EB7394A-CA47-4970-B3C7-71CF4DA52CC9",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P136",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q5937792"
+        }
+      }
+    ],
+    "P646": [
+      {
+        "id": "Q545151$670CFA2F-2341-4D05-A2AE-D617B838762D",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "2b00cb481cddcac7623114367489b5c194901c4a",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q15241312"
+                }
+              },
+              {
+                "property": {
+                  "id": "P577",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2013-10-28T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P646",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "/m/02gqph"
+        }
+      }
+    ],
+    "P674": [
+      {
+        "id": "Q545151$20615B36-03EB-4895-8BA9-A2381FA53A98",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P674",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q2009573"
+        }
+      },
+      {
+        "id": "Q545151$f8949526-430a-9eff-3bbb-d163d362ff5f",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P674",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q246154"
+        }
+      },
+      {
+        "id": "Q545151$3c37e550-4401-c5c5-a8f1-0af5bad902d6",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P674",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q3561615"
+        }
+      }
+    ],
+    "P736": [
+      {
+        "id": "Q545151$27747717-E79B-4A17-B9B9-A7368A0340D9",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P736",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q7324741"
+        }
+      }
+    ],
+    "P1476": [
+      {
+        "id": "Q545151$855a3763-4b79-1e18-0de8-2d9c93a581c8",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1476",
+          "data_type": "monolingualtext"
+        },
+        "value": {
+          "type": "value",
+          "content": {
+            "text": "The Spy Who Loved Me",
+            "language": "en"
+          }
+        }
+      }
+    ],
+    "P1104": [
+      {
+        "id": "Q545151$cf3aca33-4563-c15f-55f8-c81ecf66abc2",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P1104",
+          "data_type": "quantity"
+        },
+        "value": {
+          "type": "value",
+          "content": {
+            "amount": "+198",
+            "unit": "1"
+          }
+        }
+      }
+    ],
+    "P577": [
+      {
+        "id": "Q545151$A8355784-228C-4278-9F51-30BC1C961A87",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "d4bd87b862b12d99d26e86472d44f26858dee639",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q8447"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P577",
+          "data_type": "time"
+        },
+        "value": {
+          "type": "value",
+          "content": {
+            "time": "+1962-00-00T00:00:00Z",
+            "precision": 9,
+            "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+          }
+        }
+      }
+    ],
+    "P495": [
+      {
+        "id": "Q545151$1A62AC3D-DC2B-45B7-B060-2381E5C6B71F",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "fa278ebfc458360e5aed63d5058cca83c46134f1",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q328"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P495",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q145"
+        }
+      }
+    ],
+    "P407": [
+      {
+        "id": "Q545151$A6435874-F889-4FC0-BE96-E812577BEBE9",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "d4bd87b862b12d99d26e86472d44f26858dee639",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q8447"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "14d2400e3b1d36332748dc330276f099eeaa8800",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q1551807"
+                }
+              }
+            ]
+          },
+          {
+            "hash": "9424852ca7d9d48269148c57acbefacca1899882",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q11921"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P407",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q1860"
+        }
+      }
+    ],
+    "P840": [
+      {
+        "id": "Q545151$4BB6EECB-6F58-4839-9DB2-5980A7A2ED04",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "e2df5e1b62b0705c3e4e657c39c8e22c0e684660",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q11920"
+                }
+              },
+              {
+                "property": {
+                  "id": "P4656",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://it.wikipedia.org/w/index.php?title=La_spia_che_mi_amava_(romanzo)&oldid=100010486"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P840",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q357546"
+        }
+      }
+    ],
+    "P1889": [
+      {
+        "id": "Q545151$D24EB946-2682-4834-9E70-92391CC2383B",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "4d9b2009a3a8679bb3df2804ac11b6a4d39327b2",
+            "parts": [
+              {
+                "property": {
+                  "id": "P143",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q1551807"
+                }
+              },
+              {
+                "property": {
+                  "id": "P4656",
+                  "data_type": "url"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "https://pl.wikipedia.org/w/index.php?title=Szpieg,_który_mnie_kochał_(powieść)&oldid=62801063"
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1889",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q572082"
+        }
+      }
+    ],
+    "P7439": [
+      {
+        "id": "Q545151$28B1F0AD-D01B-4169-AD9F-7F9E0F6B3BBE",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P7439",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "88665"
+        }
+      }
+    ],
+    "P435": [
+      {
+        "id": "Q545151$f08490cc-887d-4081-95ce-43c079fa9dd6",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "6a71250e105aca7b85a4c2204fdd73be96fb84a6",
+            "parts": [
+              {
+                "property": {
+                  "id": "P248",
+                  "data_type": "wikibase-item"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "Q14005"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2022-08-31T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P435",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "657aba63-bcfc-4cfe-9296-a0df7c15087f"
+        }
+      }
+    ],
+    "P6839": [
+      {
+        "id": "Q545151$a79e5cb2-41e2-f44b-a426-2adf232c1406",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P6839",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "Literature/TheSpyWhoLovedMe"
+        }
+      }
+    ],
+    "P7937": [
+      {
+        "id": "Q545151$2F5CF239-4CBD-48EA-9970-12423CFD3676",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P7937",
+          "data_type": "wikibase-item"
+        },
+        "value": {
+          "type": "value",
+          "content": "Q8261"
+        }
+      }
+    ],
+    "P648": [
+      {
+        "id": "Q545151$702675CB-2795-429C-97C8-92DBBC5E67F6",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P648",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "OL85742W"
+        }
+      }
+    ],
+    "P1085": [
+      {
+        "id": "Q545151$3E6FEADD-0251-45DD-818E-9F4769F8C5E7",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [
+          {
+            "hash": "34ff03c4fac4c26667cf7fddb1c197f383694d7e",
+            "parts": [
+              {
+                "property": {
+                  "id": "P648",
+                  "data_type": "external-id"
+                },
+                "value": {
+                  "type": "value",
+                  "content": "OL85742W"
+                }
+              },
+              {
+                "property": {
+                  "id": "P813",
+                  "data_type": "time"
+                },
+                "value": {
+                  "type": "value",
+                  "content": {
+                    "time": "+2025-11-29T00:00:00Z",
+                    "precision": 11,
+                    "calendarmodel": "http://www.wikidata.org/entity/Q1985727"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "property": {
+          "id": "P1085",
+          "data_type": "external-id"
+        },
+        "value": {
+          "type": "value",
+          "content": "38539"
+        }
+      }
+    ],
+    "P18": [
+      {
+        "id": "Q545151$8758c3d7-4083-e85d-91a9-9ff767d1e1cd",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P18",
+          "data_type": "commonsMedia"
+        },
+        "value": {
+          "type": "value",
+          "content": "Fleming's paperback Bonds.jpg"
+        }
+      }
+    ],
+    "P953": [
+      {
+        "id": "Q545151$69d0d233-4d24-61af-ff71-1e9aa4833d80",
+        "rank": "normal",
+        "qualifiers": [],
+        "references": [],
+        "property": {
+          "id": "P953",
+          "data_type": "url"
+        },
+        "value": {
+          "type": "value",
+          "content": "https://www.fadedpage.com/showbook.php?pid=20151114"
+        }
+      }
+    ]
+  },
+  "sitelinks": {
+    "eswiki": {
+      "title": "El espía que me amó (novela)",
+      "badges": [],
+      "url": "https://es.wikipedia.org/wiki/El_esp%C3%ADa_que_me_am%C3%B3_(novela)"
+    },
+    "dawiki": {
+      "title": "The Spy Who Loved Me (bog)",
+      "badges": [],
+      "url": "https://da.wikipedia.org/wiki/The_Spy_Who_Loved_Me_(bog)"
+    },
+    "fiwiki": {
+      "title": "007 rakastettuni (romaani)",
+      "badges": [],
+      "url": "https://fi.wikipedia.org/wiki/007_rakastettuni_(romaani)"
+    },
+    "frwiki": {
+      "title": "Motel 007",
+      "badges": [],
+      "url": "https://fr.wikipedia.org/wiki/Motel_007"
+    },
+    "idwiki": {
+      "title": "The Spy Who Loved Me (novel)",
+      "badges": [
+        "Q17437798"
+      ],
+      "url": "https://id.wikipedia.org/wiki/The_Spy_Who_Loved_Me_(novel)"
+    },
+    "itwiki": {
+      "title": "La spia che mi amava (romanzo)",
+      "badges": [],
+      "url": "https://it.wikipedia.org/wiki/La_spia_che_mi_amava_(romanzo)"
+    },
+    "plwiki": {
+      "title": "Szpieg, który mnie kochał (powieść)",
+      "badges": [],
+      "url": "https://pl.wikipedia.org/wiki/Szpieg,_kt%C3%B3ry_mnie_kocha%C5%82_(powie%C5%9B%C4%87)"
+    },
+    "ptwiki": {
+      "title": "The Spy Who Loved Me (livro)",
+      "badges": [],
+      "url": "https://pt.wikipedia.org/wiki/The_Spy_Who_Loved_Me_(livro)"
+    },
+    "ruwiki": {
+      "title": "Шпион, который меня любил (роман)",
+      "badges": [],
+      "url": "https://ru.wikipedia.org/wiki/%D0%A8%D0%BF%D0%B8%D0%BE%D0%BD,_%D0%BA%D0%BE%D1%82%D0%BE%D1%80%D1%8B%D0%B9_%D0%BC%D0%B5%D0%BD%D1%8F_%D0%BB%D1%8E%D0%B1%D0%B8%D0%BB_(%D1%80%D0%BE%D0%BC%D0%B0%D0%BD)"
+    },
+    "svwiki": {
+      "title": "Älskade spion (roman)",
+      "badges": [],
+      "url": "https://sv.wikipedia.org/wiki/%C3%84lskade_spion_(roman)"
+    },
+    "enwiki": {
+      "title": "The Spy Who Loved Me (novel)",
+      "badges": [
+        "Q17437796"
+      ],
+      "url": "https://en.wikipedia.org/wiki/The_Spy_Who_Loved_Me_(novel)"
+    },
+    "hywiki": {
+      "title": "Լրտեսը, որն ինձ սիրում էր (վեպ)",
+      "badges": [],
+      "url": "https://hy.wikipedia.org/wiki/%D4%BC%D6%80%D5%BF%D5%A5%D5%BD%D5%A8,_%D5%B8%D6%80%D5%B6_%D5%AB%D5%B6%D5%B1_%D5%BD%D5%AB%D6%80%D5%B8%D6%82%D5%B4_%D5%A7%D6%80_(%D5%BE%D5%A5%D5%BA)"
+    },
+    "bgwiki": {
+      "title": "Шпионинът, който ме обичаше (роман)",
+      "badges": [],
+      "url": "https://bg.wikipedia.org/wiki/%D0%A8%D0%BF%D0%B8%D0%BE%D0%BD%D0%B8%D0%BD%D1%8A%D1%82,_%D0%BA%D0%BE%D0%B9%D1%82%D0%BE_%D0%BC%D0%B5_%D0%BE%D0%B1%D0%B8%D1%87%D0%B0%D1%88%D0%B5_(%D1%80%D0%BE%D0%BC%D0%B0%D0%BD)"
+    },
+    "thwiki": {
+      "title": "เดอะสปายฮูลัฟด์มี",
+      "badges": [],
+      "url": "https://th.wikipedia.org/wiki/%E0%B9%80%E0%B8%94%E0%B8%AD%E0%B8%B0%E0%B8%AA%E0%B8%9B%E0%B8%B2%E0%B8%A2%E0%B8%AE%E0%B8%B9%E0%B8%A5%E0%B8%B1%E0%B8%9F%E0%B8%94%E0%B9%8C%E0%B8%A1%E0%B8%B5"
+    },
+    "nlwiki": {
+      "title": "The Spy Who Loved Me (roman)",
+      "badges": [],
+      "url": "https://nl.wikipedia.org/wiki/The_Spy_Who_Loved_Me_(roman)"
+    },
+    "mlwiki": {
+      "title": "ദ സ്പൈ ഹു ലവ്ഡ് മി (നോവൽ)",
+      "badges": [],
+      "url": "https://ml.wikipedia.org/wiki/%E0%B4%A6_%E0%B4%B8%E0%B5%8D%E0%B4%AA%E0%B5%88_%E0%B4%B9%E0%B5%81_%E0%B4%B2%E0%B4%B5%E0%B5%8D%E0%B4%A1%E0%B5%8D_%E0%B4%AE%E0%B4%BF_(%E0%B4%A8%E0%B5%8B%E0%B4%B5%E0%B5%BD)"
+    },
+    "shwiki": {
+      "title": "The Spy Who Loved Me (roman)",
+      "badges": [],
+      "url": "https://sh.wikipedia.org/wiki/The_Spy_Who_Loved_Me_(roman)"
+    },
+    "dewiki": {
+      "title": "Der Spion, der mich liebte (Roman)",
+      "badges": [],
+      "url": "https://de.wikipedia.org/wiki/Der_Spion,_der_mich_liebte_(Roman)"
+    },
+    "hewiki": {
+      "title": "המרגל שאהב אותי (ספר)",
+      "badges": [],
+      "url": "https://he.wikipedia.org/wiki/%D7%94%D7%9E%D7%A8%D7%92%D7%9C_%D7%A9%D7%90%D7%94%D7%91_%D7%90%D7%95%D7%AA%D7%99_(%D7%A1%D7%A4%D7%A8)"
+    },
+    "skwiki": {
+      "title": "The Spy Who Loved Me (kniha)",
+      "badges": [],
+      "url": "https://sk.wikipedia.org/wiki/The_Spy_Who_Loved_Me_(kniha)"
+    }
+  },
+  "id": "Q545151"
+}

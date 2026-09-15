@@ -70,5 +70,11 @@ module Admin
     def review_stage?
       fetched?
     end
+
+    # Values from fetched_data that are copied onto the target or used to pick the right entry.
+    # Override in subclasses; default is an empty hash.
+    def fetched_usable_values
+      {}
+    end
   end
 end

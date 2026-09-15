@@ -43,11 +43,16 @@ module Admin
       result = InfoFetchers::Wikidata::Api::BookDetailsFetcher.new(external_identity.external_id).fetch
       if result
         save_results!(result)
+        cache_lookup_entities!(result)
       else
         save_results!(nil, errors: [StandardError.new('Failed to fetch Wikidata item data')])
       end
     end
 
+    def fetched_usable_values
+      values = Admin::Wikidata::BookUsableValues.call(fetched_data)
+      Admin::Wikidata::EntityLookup.enrich(values, fetch_missing: true)
+    end
 
     def fetched_description
       data = fetched_data
@@ -70,6 +75,11 @@ module Admin
     end
 
     private
+
+    def cache_lookup_entities!(result)
+      usable = Admin::Wikidata::BookUsableValues.call(result)
+      Admin::Wikidata::EntityLookup.cache_from_item!(result, usable_values: usable)
+    end
 
     def extract_localized_text(localized)
       value = localized['en'] || localized[:en] || localized.values.first

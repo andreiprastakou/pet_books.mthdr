@@ -1,0 +1,13 @@
+<%# locals: rows (Array of Hash/Array values to pretty-print on the left) %>
+<table class="table table-bordered align-top mb-0 b-task-fetch-results">
+  <tbody>
+    <% rows.each do |row| %>
+      <tr>
+        <td class="w-50">
+          <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(row) %></pre>
+        </td>
+        <td></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

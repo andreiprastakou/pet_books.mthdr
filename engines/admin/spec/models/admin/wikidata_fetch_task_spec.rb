@@ -67,12 +67,19 @@ RSpec.describe Admin::WikidataFetchTask do
       allow(InfoFetchers::Wikidata::Api::BookDetailsFetcher)
         .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
+      allow(Admin::Wikidata::EntityLookup).to receive(:cache_from_item!)
     end
 
     it 'stores fetched data on the task' do
       call
       expect(task.reload.status).to eq('fetched')
       expect(task.fetched_data).to eq(api_data)
+    end
+
+    it 'caches lookup entities from the payload' do
+      call
+      expect(Admin::Wikidata::EntityLookup).to have_received(:cache_from_item!)
+        .with(api_data, usable_values: kind_of(Hash))
     end
 
     context 'when the fetch fails' do
@@ -82,6 +89,7 @@ RSpec.describe Admin::WikidataFetchTask do
         call
         expect(task.reload.status).to eq('failed')
         expect(task.fetch_error_details).to eq('Failed to fetch Wikidata item data')
+        expect(Admin::Wikidata::EntityLookup).not_to have_received(:cache_from_item!)
       end
     end
   end
@@ -115,6 +123,24 @@ RSpec.describe Admin::WikidataFetchTask do
       it 'raises' do
         expect { task.book }.to raise_error(ArgumentError, 'Wikidata fetch target must belong to a book')
       end
+    end
+  end
+
+  describe '#fetched_usable_values' do
+    let(:task) { build(:wikidata_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) { { 'statements' => {}, 'sitelinks' => {} } }
+    let(:usable) { { 'authors' => ['Q1'] } }
+    let(:enriched) { { 'authors' => [{ 'id' => 'Q1', 'label' => 'Author' }] } }
+
+    before do
+      allow(Admin::Wikidata::BookUsableValues).to receive(:call).with(fetched_data).and_return(usable)
+      allow(Admin::Wikidata::EntityLookup).to receive(:enrich)
+        .with(usable, fetch_missing: true).and_return(enriched)
+    end
+
+    it 'enriches usable values via EntityLookup' do
+      expect(task.fetched_usable_values).to eq(enriched)
+      expect(Admin::Wikidata::EntityLookup).to have_received(:enrich).with(usable, fetch_missing: true)
     end
   end
 

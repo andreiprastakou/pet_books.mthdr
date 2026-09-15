@@ -44,4 +44,10 @@ RSpec.describe Admin::BaseDataFetchTask do
       expect(build(:base_admin_data_fetch_task)).to be_valid
     end
   end
+
+  describe '#fetched_usable_values' do
+    it 'returns an empty hash by default' do
+      expect(described_class.new.fetched_usable_values).to eq({})
+    end
+  end
 end

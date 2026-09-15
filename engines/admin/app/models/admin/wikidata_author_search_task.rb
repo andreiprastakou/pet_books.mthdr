@@ -44,6 +44,16 @@ module Admin
       results
     end
 
+    def fetched_usable_values
+      Array(fetched_data).filter_map do |item|
+        {
+          'id' => item['id'],
+          'label' => item.dig('display-label', 'value'),
+          'description' => item.dig('description', 'value')
+        }.compact.presence
+      end
+    end
+
     def add_author_identity!(entity_id)
       qid = ExternalLinks::Wikidata.normalize_id(entity_id)
       raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?

@@ -73,12 +73,19 @@ RSpec.describe Admin::WikidataAuthorFetchTask do
       allow(InfoFetchers::Wikidata::Api::AuthorDetailsFetcher)
         .to receive(:new).with(external_identity.external_id).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(api_data)
+      allow(Admin::Wikidata::EntityLookup).to receive(:cache_from_item!)
     end
 
     it 'stores fetched data on the task' do
       call
       expect(task.reload.status).to eq('fetched')
       expect(task.fetched_data).to eq(api_data)
+    end
+
+    it 'caches lookup entities from the payload' do
+      call
+      expect(Admin::Wikidata::EntityLookup).to have_received(:cache_from_item!)
+        .with(api_data, usable_values: kind_of(Hash))
     end
 
     context 'when the fetch fails' do
@@ -88,6 +95,7 @@ RSpec.describe Admin::WikidataAuthorFetchTask do
         call
         expect(task.reload.status).to eq('failed')
         expect(task.fetch_error_details).to eq('Failed to fetch Wikidata author data')
+        expect(Admin::Wikidata::EntityLookup).not_to have_received(:cache_from_item!)
       end
     end
   end
@@ -114,6 +122,24 @@ RSpec.describe Admin::WikidataAuthorFetchTask do
           'Wikidata author fetch target must belong to an author'
         )
       end
+    end
+  end
+
+  describe '#fetched_usable_values' do
+    let(:task) { build(:wikidata_author_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) { { 'statements' => {}, 'sitelinks' => {} } }
+    let(:usable) { { 'countries' => ['Q30'] } }
+    let(:enriched) { { 'countries' => [{ 'id' => 'Q30', 'label' => 'United States' }] } }
+
+    before do
+      allow(Admin::Wikidata::AuthorUsableValues).to receive(:call).with(fetched_data).and_return(usable)
+      allow(Admin::Wikidata::EntityLookup).to receive(:enrich)
+        .with(usable, fetch_missing: true).and_return(enriched)
+    end
+
+    it 'enriches usable values via EntityLookup' do
+      expect(task.fetched_usable_values).to eq(enriched)
+      expect(Admin::Wikidata::EntityLookup).to have_received(:enrich).with(usable, fetch_missing: true)
     end
   end
 
