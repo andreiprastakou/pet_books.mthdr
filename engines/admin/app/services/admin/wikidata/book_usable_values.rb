@@ -30,7 +30,7 @@ module Admin
         result['external_identities'] = identities if identities.present?
         sitelinks = usable_sitelinks
         result['sitelinks'] = sitelinks if sitelinks.present?
-        format_publication_date!(result)
+        format_date_fields!(result, %w[publication_date])
         result
       end
 
@@ -46,26 +46,6 @@ module Admin
             'external_id' => values.first
           }
         end
-      end
-
-      def format_publication_date!(result)
-        raw = result['publication_date']
-        return if raw.blank?
-
-        result['publication_date'] = format_wikidata_time(raw)
-      end
-
-      # "+2025-12-09T00:00:00Z" -> "2025-12-09"
-      # "+1962-00-00T00:00:00Z" -> "1962"
-      def format_wikidata_time(value)
-        match = value.to_s.match(/\A\+?(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/)
-        return value unless match
-
-        year, month, day = match.captures
-        return year if month.blank? || month == '00'
-        return "#{year}-#{month}" if day.blank? || day == '00'
-
-        "#{year}-#{month}-#{day}"
       end
     end
   end

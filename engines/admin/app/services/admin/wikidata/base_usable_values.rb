@@ -95,6 +95,40 @@ module Admin
       def sitelink_language(site)
         site.to_s.delete_suffix('wiki')
       end
+
+      def extract_localized_text(localized)
+        return if localized.blank? || !localized.is_a?(Hash)
+
+        value = localized['en'] || localized[:en] || localized.values.first
+        case value
+        when Hash
+          (value['value'] || value[:value]).presence
+        else
+          value.presence
+        end
+      end
+
+      def format_date_fields!(result, keys)
+        Array(keys).each do |key|
+          raw = result[key]
+          next if raw.blank?
+
+          result[key] = format_wikidata_time(raw)
+        end
+      end
+
+      # "+2025-12-09T00:00:00Z" -> "2025-12-09"
+      # "+1962-00-00T00:00:00Z" -> "1962"
+      def format_wikidata_time(value)
+        match = value.to_s.match(/\A\+?(\d{4})(?:-(\d{2}))?(?:-(\d{2}))?/)
+        return value unless match
+
+        year, month, day = match.captures
+        return year if month.blank? || month == '00'
+        return "#{year}-#{month}" if day.blank? || day == '00'
+
+        "#{year}-#{month}-#{day}"
+      end
     end
   end
 end

@@ -6,105 +6,39 @@ RSpec.describe Admin::Wikidata::AuthorUsableValues do
   describe '.call' do
     subject(:result) { described_class.call(fetched_data) }
 
-    let(:fetched_data) do
-      {
-        'statements' => {
-          'P569' => [
-            {
-              'rank' => 'normal',
-              'value' => {
-                'type' => 'value',
-                'content' => { 'time' => '+1977-03-04T00:00:00Z', 'precision' => 11 }
-              }
-            }
-          ],
-          'P570' => [
-            {
-              'rank' => 'normal',
-              'value' => {
-                'type' => 'value',
-                'content' => { 'time' => '+2020-01-01T00:00:00Z', 'precision' => 11 }
-              }
-            }
-          ],
-          'P648' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'OL6761792A' } }
-          ],
-          'P2963' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => '2740668' } }
-          ],
-          'P7400' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'wellsdan' } }
-          ],
-          'P31' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q5' } }
-          ],
-          'P27' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q30' } }
-          ],
-          'P19' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q829' } }
-          ],
-          'P106' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q36180' } },
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q6625963' } }
-          ],
-          'P136' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q186424' } }
-          ],
-          'P166' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q1056237' } }
-          ],
-          'P1412' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q1860' } }
-          ],
-          'P18' => [
-            { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Dan Wells.jpg' } }
-          ]
-        },
-        'sitelinks' => {
-          'frwiki' => {
-            'title' => 'Dan Wells',
-            'badges' => [],
-            'url' => 'https://fr.wikipedia.org/wiki/Dan_Wells'
-          },
-          'enwiki' => {
-            'title' => 'Dan Wells (author)',
-            'badges' => [],
-            'url' => 'https://en.wikipedia.org/wiki/Dan_Wells_(author)'
-          }
-        }
-      }
-    end
+    context 'with a lifelike Wikidata author fixture' do
+      let(:fetched_data) do
+        JSON.parse(
+          File.read(
+            Rails.root.join(
+              'engines/admin/spec/fixtures/wikidata/author_fetch_robert_jordan.json'
+            )
+          )
+        )
+      end
 
-    it 'returns readable author statement values and sitelinks with enwiki first' do
-      expect(result).to eq(
-        'date_of_birth' => '+1977-03-04T00:00:00Z',
-        'date_of_death' => '+2020-01-01T00:00:00Z',
-        'open_library_id' => 'OL6761792A',
-        'goodreads_id' => '2740668',
-        'librarything_id' => 'wellsdan',
-        'instance_of' => ['Q5'],
-        'countries' => ['Q30'],
-        'place_of_birth' => ['Q829'],
-        'occupations' => %w[Q36180 Q6625963],
-        'genres' => ['Q186424'],
-        'awards' => ['Q1056237'],
-        'languages' => ['Q1860'],
-        'image' => 'Dan Wells.jpg',
-        'sitelinks' => [
-          {
-            'title' => 'Dan Wells (author)',
-            'language' => 'en',
-            'url' => 'https://en.wikipedia.org/wiki/Dan_Wells_(author)'
-          },
-          {
-            'title' => 'Dan Wells',
-            'language' => 'fr',
-            'url' => 'https://fr.wikipedia.org/wiki/Dan_Wells'
-          }
-        ]
-      )
+      it 'extracts usable values in the author decision format' do
+        expect(result.except('sitelinks')).to eq(
+          'name' => 'Robert Jordan',
+          'date_of_birth' => '1948-10-17',
+          'date_of_death' => '2007-09-16',
+          'image' => 'Robert Jordan.jpg',
+          'countries' => ['Q30'],
+          'languages' => ['Q1860'],
+          'awards' => %w[Q1754110 Q928314 Q2687578],
+          'external_identities' => [
+            { 'external_resource' => 'open_library', 'external_id' => 'OL233594A' },
+            { 'external_resource' => 'goodreads', 'external_id' => '6252' },
+            { 'external_resource' => 'librarything', 'external_id' => 'jordanrobert-1' }
+          ]
+        )
+        expect(result['sitelinks'].size).to eq(44)
+        expect(result['sitelinks'].first).to eq(
+          'title' => 'Robert Jordan',
+          'language' => 'en',
+          'url' => 'https://en.wikipedia.org/wiki/Robert_Jordan'
+        )
+      end
     end
 
     context 'when fetched_data is blank' do
@@ -127,7 +61,26 @@ RSpec.describe Admin::Wikidata::AuthorUsableValues do
       end
 
       it 'omits nil and empty values' do
-        expect(result).to eq('goodreads_id' => '2740668')
+        expect(result).to eq(
+          'external_identities' => [
+            { 'external_resource' => 'goodreads', 'external_id' => '2740668' }
+          ]
+        )
+      end
+    end
+
+    context 'when English label is missing' do
+      let(:fetched_data) do
+        {
+          'labels' => {
+            'fr' => 'Robert Jordan',
+            'de' => 'Robert Jordan'
+          }
+        }
+      end
+
+      it 'uses the first available label' do
+        expect(result).to eq('name' => 'Robert Jordan')
       end
     end
   end
