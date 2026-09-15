@@ -1,5 +1,5 @@
 <% book_ol_links = @book.external_identities.open_library.filter_map { |identity|
-  url = ExternalLinks::OpenLibrary::Work.call(identity.external_id)
+  url = Admin::ExternalLinkBuilders::OpenLibrary::Work.call(identity.external_id)
   url && external_link_to(identity.external_id, url)
 } %>
 <%= turbo_frame_tag "task_apply_form", target: "_top" do %>
@@ -28,7 +28,7 @@
             <% else %>
               <%= safe_join(@book.authors.map { |author|
                 links = author.external_identities.open_library.filter_map { |identity|
-                  url = ExternalLinks::OpenLibrary::Author.call(identity.external_id)
+                  url = Admin::ExternalLinkBuilders::OpenLibrary::Author.call(identity.external_id)
                   url && external_link_to(identity.external_id, url)
                 }
                 if links.any?
@@ -50,8 +50,8 @@
             <% @search_results.each_with_index do |result, index| %>
               <% result_data = result.is_a?(Hash) ? result : {} %>
               <% work_key = result_data['key'] || result_data[:key] %>
-              <% work_olid = InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.normalize_work_key(work_key) %>
-              <% work_url = work_olid && ExternalLinks::OpenLibrary::Work.call(work_olid) %>
+              <% work_olid = Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.normalize_work_key(work_key) %>
+              <% work_url = work_olid && Admin::ExternalLinkBuilders::OpenLibrary::Work.call(work_olid) %>
               <% work_already_added = work_olid.present? && @book_open_library_ids.include?(work_olid) %>
               <% author_keys = Array(result_data['author_key'] || result_data[:author_key]) %>
               <% if author_keys.empty? && result_data['authors'].is_a?(Hash) %>
@@ -79,9 +79,9 @@
                   <% end %>
 
                   <% author_keys.each_with_index do |author_key, author_index| %>
-                    <% author_olid = ExternalLinks::OpenLibrary::Author.normalize_id(author_key) %>
+                    <% author_olid = Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(author_key) %>
                     <% next if author_olid.blank? %>
-                    <% author_url = ExternalLinks::OpenLibrary::Author.call(author_olid) %>
+                    <% author_url = Admin::ExternalLinkBuilders::OpenLibrary::Author.call(author_olid) %>
                     <% existing_identity = @author_identities_by_olid[author_olid] %>
                     <% existing_author = existing_identity&.owner %>
                     <% already_assigned = existing_author.present? %>

@@ -5,10 +5,10 @@ RSpec.describe Admin::WikiLinkSyncJob do
     subject(:call) { described_class.perform_now(wiki_link.id) }
 
     let(:wiki_link) { create(:wiki_link, entity: build_stubbed(:book)) }
-    let(:syncer) { instance_double(InfoFetchers::Wiki::WikiLinksSyncer) }
+    let(:syncer) { instance_double(Admin::InfoFetchers::Wiki::WikiLinksSyncer) }
 
     before do
-      allow(InfoFetchers::Wiki::WikiLinksSyncer).to receive(:new).and_return(syncer)
+      allow(Admin::InfoFetchers::Wiki::WikiLinksSyncer).to receive(:new).and_return(syncer)
       allow(syncer).to receive(:sync!)
     end
 

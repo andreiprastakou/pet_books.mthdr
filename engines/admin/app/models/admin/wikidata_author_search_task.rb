@@ -41,7 +41,7 @@ module Admin
     end
 
     def perform
-      results = InfoFetchers::Wikidata::Api::AuthorSearcher.new(author).search
+      results = Admin::InfoFetchers::Wikidata::Api::AuthorSearcher.new(author).search
       save_results!(results)
       results
     end
@@ -57,7 +57,7 @@ module Admin
     end
 
     def add_author_identity!(entity_id)
-      qid = ExternalLinks::Wikidata.normalize_id(entity_id)
+      qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
       raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
 
       identity = author.external_identities.create!(

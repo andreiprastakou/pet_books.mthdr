@@ -50,7 +50,7 @@ RSpec.describe Admin::OpenLibrarySearchTask do
 
     let(:task) { create(:open_library_search_task, target: book) }
     let(:book) { create(:book) }
-    let(:searcher) { instance_double(InfoFetchers::OpenLibrary::Api::BookSearcher) }
+    let(:searcher) { instance_double(Admin::InfoFetchers::OpenLibrary::Api::BookSearcher) }
     let(:results) do
       [
         { 'key' => '/works/OL1W', 'title' => 'Title A' },
@@ -59,7 +59,7 @@ RSpec.describe Admin::OpenLibrarySearchTask do
     end
 
     before do
-      allow(InfoFetchers::OpenLibrary::Api::BookSearcher).to receive(:new).with(book).and_return(searcher)
+      allow(Admin::InfoFetchers::OpenLibrary::Api::BookSearcher).to receive(:new).with(book).and_return(searcher)
       allow(searcher).to receive(:search).and_return(results)
     end
 

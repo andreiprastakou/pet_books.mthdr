@@ -58,7 +58,7 @@ module Admin
 
     def author_identities_by_olid
       author_olids = @search_results.flat_map { |result| result_author_keys(result) }
-                                    .filter_map { |key| ExternalLinks::OpenLibrary::Author.normalize_id(key) }
+                                    .filter_map { |key| Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(key) }
                                     .uniq
       return {} if author_olids.empty?
 

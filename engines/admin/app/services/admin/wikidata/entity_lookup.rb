@@ -35,7 +35,7 @@ module Admin
         missing = normalized - existing
         return [] if missing.empty?
 
-        fetched = InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher.new.fetch(missing)
+        fetched = Admin::InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher.new.fetch(missing)
         now = Time.current
         rows = missing.map do |qid|
           data = fetched[qid] || {}

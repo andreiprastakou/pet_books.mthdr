@@ -50,7 +50,7 @@ RSpec.describe Admin::WikidataAuthorSearchTask do
 
     let(:task) { create(:wikidata_author_search_task, target: author) }
     let(:author) { create(:author) }
-    let(:searcher) { instance_double(InfoFetchers::Wikidata::Api::AuthorSearcher) }
+    let(:searcher) { instance_double(Admin::InfoFetchers::Wikidata::Api::AuthorSearcher) }
     let(:results) do
       [
         { 'id' => 'Q892', 'display-label' => { 'language' => 'en', 'value' => 'J. R. R. Tolkien' } },
@@ -59,7 +59,7 @@ RSpec.describe Admin::WikidataAuthorSearchTask do
     end
 
     before do
-      allow(InfoFetchers::Wikidata::Api::AuthorSearcher).to receive(:new).with(author).and_return(searcher)
+      allow(Admin::InfoFetchers::Wikidata::Api::AuthorSearcher).to receive(:new).with(author).and_return(searcher)
       allow(searcher).to receive(:search).and_return(results)
     end
 

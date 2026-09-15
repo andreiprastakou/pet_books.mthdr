@@ -50,7 +50,7 @@ RSpec.describe Admin::LibraryThingSearchTask do
 
     let(:task) { create(:library_thing_search_task, target: book) }
     let(:book) { create(:book, title: 'The Hobbit') }
-    let(:fetcher) { instance_double(InfoFetchers::LibraryThing::Api::WorkByTitleFetcher) }
+    let(:fetcher) { instance_double(Admin::InfoFetchers::LibraryThing::Api::WorkByTitleFetcher) }
     let(:result) do
       {
         'idlist' => {
@@ -62,7 +62,7 @@ RSpec.describe Admin::LibraryThingSearchTask do
     end
 
     before do
-      allow(InfoFetchers::LibraryThing::Api::WorkByTitleFetcher)
+      allow(Admin::InfoFetchers::LibraryThing::Api::WorkByTitleFetcher)
         .to receive(:new).with(book.title).and_return(fetcher)
       allow(fetcher).to receive(:fetch).and_return(result)
     end

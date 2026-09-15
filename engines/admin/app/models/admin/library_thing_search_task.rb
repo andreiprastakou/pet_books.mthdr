@@ -41,13 +41,13 @@ module Admin
     end
 
     def perform
-      result = InfoFetchers::LibraryThing::Api::WorkByTitleFetcher.new(book.title).fetch
+      result = Admin::InfoFetchers::LibraryThing::Api::WorkByTitleFetcher.new(book.title).fetch
       save_results!(result)
       result
     end
 
     def add_work_identity!(work_id)
-      id = ExternalLinks::LibraryThing.normalize_id(work_id)
+      id = Admin::ExternalLinkBuilders::LibraryThing.normalize_id(work_id)
       raise ArgumentError, 'Invalid LibraryThing work id' if id.blank?
 
       identity = book.external_identities.create!(

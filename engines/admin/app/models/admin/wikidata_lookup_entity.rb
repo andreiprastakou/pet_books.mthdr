@@ -26,7 +26,7 @@ module Admin
     validates :qid, presence: true, uniqueness: true, format: { with: QID_FORMAT }
 
     def self.normalize_qid(value)
-      InfoFetchers::Wikidata::Api::BaseCaller.normalize_entity_id(value)
+      Admin::InfoFetchers::Wikidata::Api::BaseCaller.normalize_entity_id(value)
     end
   end
 end

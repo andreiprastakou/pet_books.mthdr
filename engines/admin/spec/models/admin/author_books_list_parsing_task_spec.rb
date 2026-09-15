@@ -52,7 +52,7 @@ RSpec.describe Admin::AuthorBooksListParsingTask do
     let(:task) { build(:author_books_list_parsing_task, target: author, input_data: { 'text' => text }) }
     let(:author) { build_stubbed(:author) }
     let(:text) { 'books: book_a, book_b' }
-    let(:parser) { instance_double(InfoFetchers::Chats::AuthorBooksListParser, chat: chat, errors: []) }
+    let(:parser) { instance_double(Admin::InfoFetchers::Chats::AuthorBooksListParser, chat: chat, errors: []) }
     let(:chat) { create(:ai_chat) }
     let(:books_data) do
       [
@@ -62,7 +62,7 @@ RSpec.describe Admin::AuthorBooksListParsingTask do
     end
 
     before do
-      allow(InfoFetchers::Chats::AuthorBooksListParser).to receive(:new).and_return(parser)
+      allow(Admin::InfoFetchers::Chats::AuthorBooksListParser).to receive(:new).and_return(parser)
       allow(parser).to receive(:parse_books_list).with(text).and_return(books_data)
     end
 

@@ -35,7 +35,7 @@ module Admin
     end
 
     def perform
-      expert = InfoFetchers::Chats::AuthorBooksListExpert.new
+      expert = Admin::InfoFetchers::Chats::AuthorBooksListExpert.new
       books_data = expert.ask_books_list(author)
       save_results!(books_data, chat: expert.chat, errors: expert.errors)
     end
