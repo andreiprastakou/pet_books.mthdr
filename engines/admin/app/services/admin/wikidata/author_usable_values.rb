@@ -12,18 +12,53 @@ module Admin
       STATEMENT_FIELDS = {
         'P569' => { key: 'date_of_birth', multi: false },
         'P570' => { key: 'date_of_death', multi: false },
-        'P648' => { key: 'open_library_id', multi: false },
-        'P2963' => { key: 'goodreads_id', multi: false },
-        'P7400' => { key: 'librarything_id', multi: false },
-        'P31' => { key: 'instance_of', multi: true },
+        'P18' => { key: 'image', multi: false },
         'P27' => { key: 'countries', multi: true },
-        'P19' => { key: 'place_of_birth', multi: true },
-        'P106' => { key: 'occupations', multi: true },
-        'P136' => { key: 'genres', multi: true },
-        'P166' => { key: 'awards', multi: true },
         'P1412' => { key: 'languages', multi: true },
-        'P18' => { key: 'image', multi: false }
+        'P166' => { key: 'awards', multi: true }
       }.freeze
+
+      EXTERNAL_IDENTITY_FIELDS = {
+        'P648' => 'open_library',
+        'P2963' => 'goodreads',
+        'P7400' => 'librarything'
+      }.freeze
+
+      DATE_FIELDS = %w[date_of_birth date_of_death].freeze
+
+      def call
+        result = {}
+        name = usable_name
+        result['name'] = name if name.present?
+        result.merge!(usable_statements)
+        identities = usable_external_identities
+        result['external_identities'] = identities if identities.present?
+        sitelinks = usable_sitelinks
+        result['sitelinks'] = sitelinks if sitelinks.present?
+        format_date_fields!(result, DATE_FIELDS)
+        result
+      end
+
+      private
+
+      def usable_name
+        return if fetched_data.blank? || !fetched_data.is_a?(Hash)
+
+        labels = fetched_data['labels'] || fetched_data[:labels]
+        extract_localized_text(labels)
+      end
+
+      def usable_external_identities
+        EXTERNAL_IDENTITY_FIELDS.filter_map do |property_id, resource|
+          values = statement_values(property_id)
+          next if values.empty?
+
+          {
+            'external_resource' => resource,
+            'external_id' => values.first
+          }
+        end
+      end
     end
   end
 end

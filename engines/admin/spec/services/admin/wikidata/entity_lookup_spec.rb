@@ -140,5 +140,58 @@ RSpec.describe Admin::Wikidata::EntityLookup do
         )
       end
     end
+
+    context 'with enriched author fixture values' do
+      let(:fetched_data) do
+        JSON.parse(
+          File.read(
+            Rails.root.join(
+              'engines/admin/spec/fixtures/wikidata/author_fetch_robert_jordan.json'
+            )
+          )
+        )
+      end
+      let(:values) { Admin::Wikidata::AuthorUsableValues.call(fetched_data) }
+      let(:enriched) { described_class.enrich(values) }
+
+      before do
+        create(:wikidata_lookup_entity, qid: 'Q30', label: 'United States')
+        create(:wikidata_lookup_entity, qid: 'Q1860', label: 'English')
+        create(:wikidata_lookup_entity, qid: 'Q1754110', label: 'Distinguished Flying Cross')
+        create(:wikidata_lookup_entity, qid: 'Q928314', label: 'Bronze Star Medal')
+        create(:wikidata_lookup_entity, qid: 'Q2687578', label: 'Inkpot Award')
+      end
+
+      it 'matches the author usable-values display format' do
+        expect(enriched.except('sitelinks')).to eq(
+          'name' => 'Robert Jordan',
+          'date_of_birth' => '1948-10-17',
+          'date_of_death' => '2007-09-16',
+          'image' => 'Robert Jordan.jpg',
+          'countries' => [
+            { 'external_id' => 'Q30', 'label' => 'United States' }
+          ],
+          'languages' => [
+            { 'external_id' => 'Q1860', 'label' => 'English' }
+          ],
+          'awards' => [
+            { 'external_id' => 'Q1754110', 'label' => 'Distinguished Flying Cross' },
+            { 'external_id' => 'Q928314', 'label' => 'Bronze Star Medal' },
+            { 'external_id' => 'Q2687578', 'label' => 'Inkpot Award' }
+          ],
+          'external_identities' => [
+            { 'external_resource' => 'open_library', 'external_id' => 'OL233594A' },
+            { 'external_resource' => 'goodreads', 'external_id' => '6252' },
+            { 'external_resource' => 'librarything', 'external_id' => 'jordanrobert-1' }
+          ]
+        )
+        expect(enriched['sitelinks'].size).to eq(44)
+        expect(enriched['sitelinks'].first).to eq(
+          'title' => 'Robert Jordan',
+          'language' => 'en',
+          'url' => 'https://en.wikipedia.org/wiki/Robert_Jordan'
+        )
+      end
+    end
   end
 end
