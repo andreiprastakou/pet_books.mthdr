@@ -15,7 +15,7 @@ RSpec.describe Admin::InfoFetchers::Chats::AuthorBooksListExpert do
     subject(:result) { expert.ask_books_list(author) }
 
     let(:author) { create(:author, fullname: 'David Copperfield') }
-    let(:chat) { instance_double(Ai::Chat) }
+    let(:chat) { instance_double(Admin::Ai::Chat) }
     let(:chat_response) { instance_double(RubyLLM::Message, content: chat_output) }
     let(:chat_output) do
       '{"notes": "Notes", "works": ' \
@@ -23,7 +23,7 @@ RSpec.describe Admin::InfoFetchers::Chats::AuthorBooksListExpert do
     end
 
     before do
-      allow(Ai::Chat).to receive(:start).and_return(chat)
+      allow(Admin::Ai::Chat).to receive(:start).and_return(chat)
       allow(chat).to receive(:with_instructions)
       allow(chat).to receive(:ask).with('Author: David Copperfield').and_return(chat_response)
     end

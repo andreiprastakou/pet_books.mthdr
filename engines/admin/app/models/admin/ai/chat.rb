@@ -1,0 +1,28 @@
+# frozen_string_literal: true
+
+# == Schema Information
+#
+# Table name: ai_chats
+# Database name: primary
+#
+#  id         :integer          not null, primary key
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  model_id   :string
+#
+module Admin
+  module Ai
+    class Chat < AiRecord
+      DEFAULT_MODEL_ID = 'gpt-5-mini'.freeze
+
+      acts_as_chat message_class: 'Admin::Ai::Message',
+                   tool_call_class: 'Admin::Ai::ToolCall'
+
+      validates :model_id, presence: true
+
+      def self.start(model_id = DEFAULT_MODEL_ID)
+        create!(model_id: model_id).with_temperature(1)
+      end
+    end
+  end
+end

@@ -27,7 +27,7 @@
 require 'rails_helper'
 
 RSpec.describe Admin::BaseDataFetchTask do
-  it { is_expected.to belong_to(:chat).class_name(Ai::Chat.name).optional }
+  it { is_expected.to belong_to(:chat).class_name(Admin::Ai::Chat.name).optional }
   it { is_expected.to belong_to(:target) }
 
   specify do

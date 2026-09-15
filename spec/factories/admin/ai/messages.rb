@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ai_messages
@@ -25,7 +27,7 @@
 #  tool_call_id  (tool_call_id => ai_tool_calls.id)
 #
 FactoryBot.define do
-  factory :ai_message, class: 'Ai::Message' do
+  factory :ai_message, class: 'Admin::Ai::Message' do
     chat factory: %i[ai_chat], strategy: :create
     role { 'user' }
   end

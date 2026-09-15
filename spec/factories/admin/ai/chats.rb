@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: ai_chats
@@ -9,7 +11,7 @@
 #  model_id   :string
 #
 FactoryBot.define do
-  factory :ai_chat, class: 'Ai::Chat' do
+  factory :ai_chat, class: 'Admin::Ai::Chat' do
     model_id { 'FAKE_MODEL_ID' }
   end
 end

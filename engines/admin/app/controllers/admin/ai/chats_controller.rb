@@ -13,7 +13,7 @@ module Admin
       def index
         @pagy, @chats = pagy(
           apply_sort(
-            ::Ai::Chat.preload(:messages),
+            Ai::Chat.preload(:messages),
             SORTING_MAP,
             defaults: { sort_by: 'id', sort_order: 'desc' }
           )
@@ -27,7 +27,7 @@ module Admin
       private
 
       def fetch_record
-        @chat = ::Ai::Chat.find(params[:id])
+        @chat = Ai::Chat.find(params[:id])
       end
     end
   end

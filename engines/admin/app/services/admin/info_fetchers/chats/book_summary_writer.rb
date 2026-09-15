@@ -15,7 +15,7 @@ module Admin
         end
 
         def chat
-          @chat ||= ::Ai::Chat.start.tap do |chat|
+          @chat ||= Ai::Chat.start.tap do |chat|
             chat.with_instructions(
               instructions(
                 '<GENRES>' => Genre.pluck(:name).join(',')
