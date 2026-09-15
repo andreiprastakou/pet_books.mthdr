@@ -47,5 +47,17 @@ module Admin
         save_results!(nil, errors: [StandardError.new('Failed to fetch Open Library author data')])
       end
     end
+
+    def fetched_usable_values
+      fetched_data&.slice(
+        'key',
+        'name',
+        'bio',
+        'birth_date',
+        'death_date',
+        'remote_ids',
+        'links'
+      )
+    end
   end
 end

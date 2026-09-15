@@ -68,5 +68,11 @@ module Admin
       Admin::ExternalIdentityIntroductor.call(identity)
     end
 
+    def fetched_usable_values
+      (fetched_data || []).map do |entry|
+        authors = entry.fetch('author_key').zip(entry.fetch('author_name')).to_h
+        entry.slice('key', 'title', 'first_publish_year').merge('authors' => authors)
+      end
+    end
   end
 end
