@@ -17,8 +17,6 @@
 require 'rails_helper'
 
 RSpec.describe Series do
-  subject { build(:series) }
-
   describe 'associations' do
     it { is_expected.to have_many(:book_series).class_name(Joins::BookSeries.name) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_series) }
@@ -50,8 +48,23 @@ RSpec.describe Series do
     end
   end
 
-  it_behaves_like 'has wikipedia' do
-    let(:record) { build(:series) }
+  describe '#==' do
+    it 'equates Admin::Series and Series with the same id' do
+      admin_series = create(:series)
+      expect(described_class.find(admin_series.id)).to eq(admin_series)
+    end
+  end
+
+  describe '#readonly?' do
+    it 'is readonly' do
+      expect(described_class.new).to be_readonly
+      expect(described_class.find(create(:series).id)).to be_readonly
+    end
+
+    it 'rejects persistence' do
+      series = described_class.find(create(:series).id)
+      expect { series.update!(name: 'OTHER') }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    end
   end
 
   it_behaves_like 'has external links'

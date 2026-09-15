@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: collections
@@ -16,8 +18,6 @@
 require 'rails_helper'
 
 RSpec.describe Collection do
-  subject { build(:collection) }
-
   describe 'associations' do
     it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollection.name) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_collections) }
@@ -36,8 +36,23 @@ RSpec.describe Collection do
     end
   end
 
-  it_behaves_like 'has wikipedia' do
-    let(:record) { build(:collection) }
+  describe '#==' do
+    it 'equates Admin::Collection and Collection with the same id' do
+      admin_collection = create(:collection)
+      expect(described_class.find(admin_collection.id)).to eq(admin_collection)
+    end
+  end
+
+  describe '#readonly?' do
+    it 'is readonly' do
+      expect(described_class.new).to be_readonly
+      expect(described_class.find(create(:collection).id)).to be_readonly
+    end
+
+    it 'rejects persistence' do
+      collection = described_class.find(create(:collection).id)
+      expect { collection.update!(name: 'OTHER') }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    end
   end
 
   it_behaves_like 'has external links'

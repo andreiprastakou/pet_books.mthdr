@@ -20,9 +20,21 @@
 #
 #  public_list_type_id  (public_list_type_id => public_list_types.id)
 #
-FactoryBot.define do
-  factory :public_list, class: 'Admin::PublicList' do
-    public_list_type factory: %i[public_list_type]
-    year { rand(1990..2025) }
+require 'rails_helper'
+
+RSpec.describe Admin::PublicList do
+  it 'has a valid factory' do
+    expect(build(:admin_public_list)).to be_valid
+  end
+
+  it_behaves_like 'has wikipedia' do
+    let(:record) { build(:admin_public_list) }
+  end
+
+  describe '#readonly?' do
+    it 'is writable' do
+      expect(described_class.new).not_to be_readonly
+      expect(create(:admin_public_list)).not_to be_readonly
+    end
   end
 end

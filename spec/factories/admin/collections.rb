@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: collections
@@ -14,5 +16,5 @@
 #  index_collections_on_name  (name) UNIQUE
 #
 FactoryBot.define do
-  factory :admin_collection_form, class: 'Admin::CollectionForm', parent: :collection
+  factory :admin_collection, class: 'Admin::Collection', parent: :collection
 end

@@ -17,8 +17,6 @@
 require 'rails_helper'
 
 RSpec.describe PublicListType do
-  subject { build(:public_list_type) }
-
   describe 'associations' do
     it { is_expected.to have_many(:public_lists).class_name(PublicList.name).dependent(:restrict_with_error) }
   end
@@ -34,8 +32,23 @@ RSpec.describe PublicListType do
     end
   end
 
-  it_behaves_like 'has wikipedia' do
-    let(:record) { build(:public_list_type) }
+  describe '#==' do
+    it 'equates Admin::PublicListType and PublicListType with the same id' do
+      admin_public_list_type = create(:public_list_type)
+      expect(described_class.find(admin_public_list_type.id)).to eq(admin_public_list_type)
+    end
+  end
+
+  describe '#readonly?' do
+    it 'is readonly' do
+      expect(described_class.new).to be_readonly
+      expect(described_class.find(create(:public_list_type).id)).to be_readonly
+    end
+
+    it 'rejects persistence' do
+      public_list_type = described_class.find(create(:public_list_type).id)
+      expect { public_list_type.update!(name: 'OTHER') }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    end
   end
 
   it_behaves_like 'has external links'

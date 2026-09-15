@@ -79,7 +79,7 @@ module Admin
     private
 
     def fetch_record
-      @series = ::Series.find(params[:id])
+      @series = Series.find(params[:id])
     end
 
     def record_params

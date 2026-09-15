@@ -43,13 +43,13 @@ module Admin
     end
 
     def new
-      @collection = Admin::CollectionForm.new
+      @collection = Collection.new
     end
 
     def edit; end
 
     def create
-      @collection = Admin::CollectionForm.new(record_params)
+      @collection = Collection.new(record_params)
 
       respond_to do |format|
         if @collection.save
@@ -88,7 +88,7 @@ module Admin
     private
 
     def fetch_record
-      @collection = Admin::CollectionForm.find(params[:id])
+      @collection = Collection.find(params[:id])
     end
 
     def record_params

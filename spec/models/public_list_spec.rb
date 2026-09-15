@@ -23,8 +23,6 @@
 require 'rails_helper'
 
 RSpec.describe PublicList do
-  subject { build(:public_list) }
-
   describe 'associations' do
     it { is_expected.to belong_to(:public_list_type).class_name(PublicListType.name).required }
     it { is_expected.to have_many(:book_public_lists).class_name(Joins::BookPublicList.name).dependent(:destroy) }
@@ -50,8 +48,23 @@ RSpec.describe PublicList do
     end
   end
 
-  it_behaves_like 'has wikipedia' do
-    let(:record) { build(:public_list) }
+  describe '#==' do
+    it 'equates Admin::PublicList and PublicList with the same id' do
+      admin_public_list = create(:public_list)
+      expect(described_class.find(admin_public_list.id)).to eq(admin_public_list)
+    end
+  end
+
+  describe '#readonly?' do
+    it 'is readonly' do
+      expect(described_class.new).to be_readonly
+      expect(described_class.find(create(:public_list).id)).to be_readonly
+    end
+
+    it 'rejects persistence' do
+      public_list = described_class.find(create(:public_list).id)
+      expect { public_list.update!(year: 1999) }.to raise_error(ActiveRecord::ReadOnlyRecord)
+    end
   end
 
   it_behaves_like 'has external links'

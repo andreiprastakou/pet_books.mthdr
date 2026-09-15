@@ -16,8 +16,6 @@
 #
 class Series < ApplicationRecord
   include HasExternalLinks
-  include HasWikipedia
-
 
   has_many :book_series, class_name: 'Joins::BookSeries', dependent: :destroy
   has_many :books, class_name: 'Book', through: :book_series
@@ -25,4 +23,19 @@ class Series < ApplicationRecord
   validates :name, presence: true
 
   scope :search_by_name, ->(key) { where('name LIKE ?', "%#{key}%") }
+
+  def readonly?
+    true
+  end
+
+  # Admin::Series shares this table without STI; treat same-id rows as equal.
+  def ==(other)
+    if other.equal?(self)
+      true
+    elsif other.is_a?(::Series)
+      !new_record? && !other.new_record? && id == other.id
+    else
+      false
+    end
+  end
 end

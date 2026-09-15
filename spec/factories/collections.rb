@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: collections
@@ -14,7 +16,7 @@
 #  index_collections_on_name  (name) UNIQUE
 #
 FactoryBot.define do
-  factory :collection, class: 'Collection' do
+  factory :collection, class: 'Admin::Collection' do
     sequence(:name) { |i| "Collection #{i}" }
     year_published { rand(1990..2025) }
   end

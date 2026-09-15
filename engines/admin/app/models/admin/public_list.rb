@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: public_lists
@@ -19,10 +21,25 @@
 #  public_list_type_id  (public_list_type_id => public_list_types.id)
 #
 module Admin
-  class PublicListForm < ::PublicList
+  class PublicList < ::PublicList
+    include HasWikipedia
+
+    belongs_to :public_list_type, class_name: 'Admin::PublicListType', inverse_of: :public_lists
+
     accepts_nested_attributes_for :book_public_lists, allow_destroy: true
 
     validate :validate_books_uniqueness
+
+    def readonly?
+      false
+    end
+
+    def self.cast(public_list)
+      return public_list if public_list.is_a?(self)
+      return new(public_list.attributes) if public_list.new_record?
+
+      public_list.becomes(self)
+    end
 
     private
 

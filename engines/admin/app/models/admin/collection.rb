@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: collections
@@ -14,8 +16,21 @@
 #  index_collections_on_name  (name) UNIQUE
 #
 module Admin
-  class CollectionForm < ::Collection
+  class Collection < ::Collection
+    include HasWikipedia
+
     accepts_nested_attributes_for :book_collections, allow_destroy: true
+
+    def readonly?
+      false
+    end
+
+    def self.cast(collection)
+      return collection if collection.is_a?(self)
+      return new(collection.attributes) if collection.new_record?
+
+      collection.becomes(self)
+    end
 
     def book_ids=(new_book_ids)
       previous_book_ids = book_collections.map(&:book_id)

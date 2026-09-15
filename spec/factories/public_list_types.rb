@@ -15,7 +15,7 @@
 #  index_public_list_types_on_name  (name) UNIQUE
 #
 FactoryBot.define do
-  factory :public_list_type, class: 'PublicListType' do
+  factory :public_list_type, class: 'Admin::PublicListType' do
     sequence(:name) { |i| "Public List Type #{i}" }
   end
 end
