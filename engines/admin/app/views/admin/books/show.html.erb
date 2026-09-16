@@ -219,7 +219,7 @@
             <% @history_tasks.each do |task| %>
               <li class="mb-2">
                 <%= link_to admin_data_fetch_task_path(task) do %>
-                  <%= task.type %>
+                  <%= task.model_name.human %>
                   updated <%= admin_timestamp(task.updated_at) %>
                   (<%= task.status.humanize %>)
                 <% end %>

@@ -191,6 +191,61 @@ RSpec.describe Admin::DataFetchTasksController do
       end
     end
 
+    context 'with a WikipediaBookFetch' do
+      let(:book) { create(:book, wiki_url: 'https://en.wikipedia.org/wiki/Medea_(Seneca)') }
+      let(:task) do
+        create(
+          :wikipedia_book_fetch_task,
+          target: book,
+          status: :fetched,
+          fetched_data: {
+            'query' => {
+              'pages' => [
+                {
+                  'title' => 'Medea (Seneca)',
+                  'extract' => 'Medea is a fabula crepidata written by Seneca the Younger.'
+                }
+              ]
+            }
+          }
+        )
+      end
+
+      it 'returns a successful response with normalized description' do
+        send_request
+        expect(response).to be_successful
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikipedia_book_fetch')
+        expect(response.body).to include('description')
+        expect(response.body).to include('fabula crepidata')
+      end
+    end
+
+    context 'with a WikipediaAuthorFetch' do
+      let(:author) { create(:author, wiki_url: 'https://en.wikipedia.org/wiki/Seneca') }
+      let(:task) do
+        create(
+          :wikipedia_author_fetch_task,
+          target: author,
+          status: :fetched,
+          fetched_data: {
+            'query' => {
+              'pages' => [
+                { 'title' => 'Seneca', 'extract' => 'A Roman Stoic philosopher.' }
+              ]
+            }
+          }
+        )
+      end
+
+      it 'returns a successful response with normalized description' do
+        send_request
+        expect(response).to be_successful
+        expect(response).to render_template('admin/data_fetch_tasks/types/_wikipedia_author_fetch')
+        expect(response.body).to include('description')
+        expect(response.body).to include('Roman Stoic philosopher')
+      end
+    end
+
     context 'when the type-specific partial is missing' do
       let(:task) { create(:library_thing_search_task, status: :fetched, fetched_data: {}) }
 

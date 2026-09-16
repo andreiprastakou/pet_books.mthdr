@@ -12,6 +12,7 @@ Admin::Engine.routes.draw do
         resource :wiki_stats, only: %i[update]
         resources :open_library_searches, only: %i[create]
         resources :wikidata_searches, only: %i[create]
+        resources :wikipedia_fetches, only: %i[create]
         resources :external_identities do
           resources :open_library_fetches, only: %i[create]
           resources :wikidata_fetches, only: %i[create]
@@ -40,6 +41,7 @@ Admin::Engine.routes.draw do
         resources :open_library_searches, only: %i[create]
         resources :wikidata_searches, only: %i[create]
         resources :library_thing_searches, only: %i[create]
+        resources :wikipedia_fetches, only: %i[create]
         resources :external_identities do
           resources :open_library_fetches, only: %i[create]
           resources :wikidata_fetches, only: %i[create]
