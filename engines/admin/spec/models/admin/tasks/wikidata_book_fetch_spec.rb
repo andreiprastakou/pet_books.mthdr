@@ -143,34 +143,4 @@ RSpec.describe Admin::Tasks::WikidataBookFetch do
       expect(Admin::Wikidata::EntityLookup).to have_received(:enrich).with(usable, fetch_missing: true)
     end
   end
-
-  describe '#fetched_description' do
-    let(:task) { build(:wikidata_fetch_task, fetched_data: fetched_data) }
-
-    context 'when descriptions are plain strings' do
-      let(:fetched_data) { { 'descriptions' => { 'en' => 'A fantasy novel' } } }
-
-      it 'returns the English description' do
-        expect(task.fetched_description).to eq('A fantasy novel')
-      end
-    end
-
-    context 'when descriptions are language objects' do
-      let(:fetched_data) do
-        { 'descriptions' => { 'en' => { 'language' => 'en', 'value' => 'A fantasy novel' } } }
-      end
-
-      it 'returns the value' do
-        expect(task.fetched_description).to eq('A fantasy novel')
-      end
-    end
-  end
-
-  describe '#fetched_label' do
-    let(:task) { build(:wikidata_fetch_task, fetched_data: { 'labels' => { 'en' => 'The Hobbit' } }) }
-
-    it 'returns the English label' do
-      expect(task.fetched_label).to eq('The Hobbit')
-    end
-  end
 end

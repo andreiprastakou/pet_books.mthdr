@@ -6,23 +6,6 @@
     <% if task.fetched_data.blank? %>
       <p class="text-muted mb-0">No fetch results returned.</p>
     <% else %>
-      <% if task.fetched_label.present? || task.fetched_description.present? %>
-        <div class="mb-3">
-          <% if task.fetched_label.present? %>
-            <div class="row mb-2">
-              <div class="col-md-3 font-weight-bold text-end">Label:</div>
-              <div class="col-md-9"><%= task.fetched_label %></div>
-            </div>
-          <% end %>
-          <% if task.fetched_description.present? %>
-            <div class="row mb-2">
-              <div class="col-md-3 font-weight-bold text-end">Description:</div>
-              <div class="col-md-9"><%= task.fetched_description %></div>
-            </div>
-          <% end %>
-        </div>
-      <% end %>
-
       <%= render 'admin/data_fetch_tasks/types/wikidata_data_table',
         rows: [task.fetched_data_normalized] %>
     <% end %>

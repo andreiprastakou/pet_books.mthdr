@@ -142,22 +142,4 @@ RSpec.describe Admin::Tasks::WikidataAuthorFetch do
       expect(Admin::Wikidata::EntityLookup).to have_received(:enrich).with(usable, fetch_missing: true)
     end
   end
-
-  describe '#fetched_label' do
-    let(:task) { build(:wikidata_author_fetch_task, fetched_data: { 'labels' => { 'en' => 'J. R. R. Tolkien' } }) }
-
-    it 'returns the English label' do
-      expect(task.fetched_label).to eq('J. R. R. Tolkien')
-    end
-  end
-
-  describe '#fetched_description' do
-    let(:task) do
-      build(:wikidata_author_fetch_task, fetched_data: { 'descriptions' => { 'en' => 'English writer' } })
-    end
-
-    it 'returns the English description' do
-      expect(task.fetched_description).to eq('English writer')
-    end
-  end
 end
