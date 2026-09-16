@@ -7,20 +7,14 @@ export default class extends Controller {
     'literaryFormInput',
     'oldValueViewTemplate',
     'submitButton',
-    'summaryInput',
-    'summarySrcInput',
+    'descriptionTextInput',
+    'descriptionSourceLabelInput',
     'titleInput',
     'wikiQueryLink',
   ]
 
   connect() {
     this.currentAuthors = []
-  }
-
-  // ACTION
-  onSrcClearClicked() {
-    this.summarySrcInputTarget.value = ''
-    this.summarySrcInputTarget.dispatchEvent(new Event('input', { bubbles: true }))
   }
 
   // ACTION
@@ -62,10 +56,9 @@ export default class extends Controller {
     const { summary, src, genres, themes, form } = event.detail
     this.dispatch('addTags', { detail: { names: themes } })
     this.dispatch('addGenres', { detail: { names: genres } })
-    this.summaryInputTarget.value = summary
-    this.summarySrcInputTarget.value = src
+    this.descriptionTextInputTarget.value = summary
+    this.descriptionSourceLabelInputTarget.value = src
     this.literaryFormInputTarget.value = form
-    this.summarySrcInputTarget.dispatchEvent(new Event('input', { bubbles: true }))
 
     this.submitButtonTarget.scrollIntoView()
   }

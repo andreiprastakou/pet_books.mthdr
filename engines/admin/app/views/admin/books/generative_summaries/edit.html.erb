@@ -45,7 +45,7 @@
 
         <div class="container col-md-6">
           <%= label_tag nil, "Book form", class: "form-label" %>
-          <%= render "admin/books/generative_summaries/book_form", book: @book, old_book: @book %>
+          <%= render "admin/books/generative_summaries/book_form", book: @book, task_description: @task_description %>
         </div>
 
         <%= button_to('Reject', reject_admin_data_fetch_task_path(@task), method: :put,

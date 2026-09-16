@@ -45,10 +45,13 @@
         </div>
 
         <div class="row mb-2">
-          <div class="col-md-3 font-weight-bold text-end">Current summary:</div>
+          <div class="col-md-3 font-weight-bold text-end">Current description:</div>
           <div class="col-md-9">
-            <% if @book.summary.present? %>
-              <%= simple_format(@book.summary) %>
+            <% if @task_description&.text.present? %>
+              <%= simple_format(@task_description.text) %>
+              <% if @task_description.source_label.present? %>
+                <span class="text-muted">(SRC: <%= @task_description.source_label %>)</span>
+              <% end %>
             <% else %>
               <span class="text-muted">None</span>
             <% end %>
@@ -95,10 +98,8 @@
                     method: :post,
                     class: "mt-3 text-start",
                     data: { turbo: false } do %>
-                    <%= label_tag :summary, "Summary", class: "form-label" %>
-                    <%= text_area_tag :summary, description, class: "form-control mb-2", rows: 6 %>
-                    <%= text_field_tag :summary_src, "Open Library", class: "form-control mb-2",
-                      readonly: true %>
+                    <%= label_tag :text, "Description", class: "form-label" %>
+                    <%= text_area_tag :text, description, class: "form-control mb-2", rows: 6 %>
                     <%= submit_tag "apply summary", class: "btn btn-sm btn-outline-primary",
                       disabled: description.blank? %>
                   <% end %>

@@ -10,8 +10,6 @@
 #  literary_form   :string
 #  original_title  :string
 #  popularity      :integer          default(0)
-#  summary         :text
-#  summary_src     :string
 #  title           :string           not null
 #  wiki_popularity :integer          default(0)
 #  year_published  :integer          not null

@@ -10,8 +10,6 @@
 #  literary_form   :string
 #  original_title  :string
 #  popularity      :integer          default(0)
-#  summary         :text
-#  summary_src     :string
 #  title           :string           not null
 #  wiki_popularity :integer          default(0)
 #  year_published  :integer          not null
@@ -134,6 +132,72 @@ RSpec.describe Book do
   end
 
   it_behaves_like 'has external links'
+  it_behaves_like 'has descriptions'
+
+  describe '#primary_description' do
+    subject(:result) { book.primary_description }
+
+    let(:book) { create(:book) }
+
+    before do
+      create(:description, owner: book, text: 'Second', priority: 1)
+      create(:description, owner: book, text: 'First', priority: 0)
+    end
+
+    it 'returns the lowest-priority description' do
+      expect(result.text).to eq('First')
+    end
+  end
+
+  describe '#description_for_source' do
+    subject(:result) { book.description_for_source(source) }
+
+    let(:book) { create(:book) }
+    let(:source) { create(:book_summary_task, target: book) }
+
+    before do
+      create(:description, owner: book, text: 'Other', source_type: 'Admin::Tasks::OpenLibraryBookFetch', source_id: 1)
+      create(:description, owner: book, text: 'Matching', source_type: source.class.name, source_id: source.id)
+    end
+
+    it 'returns the description for the source type' do
+      expect(result.text).to eq('Matching')
+    end
+  end
+
+  describe '#upsert_description_from_source!' do
+    subject(:call) do
+      book.upsert_description_from_source!(source, text: 'New text', source_label: 'New src')
+    end
+
+    let(:book) { create(:book) }
+    let(:source) { create(:book_summary_task, target: book) }
+
+    it 'creates a description for the source' do
+      expect { call }.to change(book.descriptions, :count).by(1)
+      expect(call).to have_attributes(
+        text: 'New text',
+        source_label: 'New src',
+        source_type: source.class.name,
+        source_id: source.id
+      )
+    end
+
+    context 'when a description already exists for the source type' do
+      let!(:existing) do
+        create(:description, owner: book, text: 'Old', source_type: source.class.name, source_id: 0)
+      end
+
+      it 'updates the existing description' do
+        expect { call }.not_to change(Description, :count)
+        expect(existing.reload).to have_attributes(
+          text: 'New text',
+          source_label: 'New src',
+          source_id: source.id
+        )
+      end
+    end
+  end
 
   describe '#tag_ids' do
     subject(:result) { book.tag_ids }

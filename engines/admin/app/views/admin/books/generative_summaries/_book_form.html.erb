@@ -81,7 +81,7 @@
       values: series_to_badges_entries(book.series) %>
   </div>
 
-  <%= render "admin/books/form/summary_input", form: form, book: book %>
+  <%= render "admin/books/generative_summaries/description_input", task_description: task_description %>
 
   <%= form.hidden_field :data_filled, data: { book_generated_summaries_target: "dataFilledInput" } %>
 

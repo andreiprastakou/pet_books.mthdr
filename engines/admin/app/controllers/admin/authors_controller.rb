@@ -28,7 +28,8 @@ module Admin
       death_year
       photo_url
     ] + [{
-      external_links_attributes: {}
+      external_links_attributes: {},
+      descriptions_attributes: {}
     }]).freeze
 
     def index
@@ -43,7 +44,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        Admin::Book.preload(:genres, :generative_summary_tasks, :external_links).by_author(@author),
+        Admin::Book.preload(:genres, :generative_summary_tasks, :external_links, :descriptions).by_author(@author),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       ).order(id: :desc)

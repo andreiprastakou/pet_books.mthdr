@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_16_000100) do
+ActiveRecord::Schema[8.1].define(version: 2026_09_16_154000) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -126,8 +126,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_000100) do
     t.string "literary_form"
     t.string "original_title"
     t.integer "popularity", default: 0
-    t.text "summary"
-    t.string "summary_src"
     t.string "title", null: false
     t.datetime "updated_at", null: false
     t.integer "wiki_popularity", default: 0
@@ -153,6 +151,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_16_000100) do
     t.string "title_color", null: false
     t.string "title_font", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "descriptions", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "owner_id", null: false
+    t.string "owner_type", null: false
+    t.integer "priority", default: 0, null: false
+    t.integer "source_id"
+    t.string "source_label"
+    t.string "source_type"
+    t.text "text", null: false
+    t.datetime "updated_at", null: false
+    t.index ["owner_type", "owner_id", "priority"], name: "index_descriptions_on_owner_type_and_owner_id_and_priority"
+    t.index ["source_type", "source_id"], name: "index_descriptions_on_source_type_and_source_id"
   end
 
   create_table "external_api_rate_limits", force: :cascade do |t|

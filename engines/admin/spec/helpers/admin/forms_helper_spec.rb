@@ -47,4 +47,24 @@ RSpec.describe Admin::FormsHelper do
       )
     end
   end
+
+  describe '#descriptions_to_input_entries' do
+    let(:descriptions) do
+      [build_stubbed(:description, text: 'TEXT_A', source_label: 'SRC_A', priority: 2,
+                                   source_type: 'Admin::Tasks::AiBookFetch', source_id: 15)]
+    end
+
+    it 'returns the correct entries' do
+      expect(helper.descriptions_to_input_entries(descriptions)).to eq(
+        [{
+          id: descriptions[0].id,
+          text: 'TEXT_A',
+          source_label: 'SRC_A',
+          priority: 2,
+          source_type: 'Admin::Tasks::AiBookFetch',
+          source_id: 15
+        }]
+      )
+    end
+  end
 end

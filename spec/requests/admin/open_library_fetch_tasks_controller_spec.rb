@@ -1,7 +1,17 @@
 require 'rails_helper'
 
 RSpec.describe Admin::OpenLibraryFetchTasksController do
-  let(:book) { create(:book, title: 'The Sea Serpent', summary: 'Existing summary') }
+  let(:book) { create(:book, title: 'The Sea Serpent') }
+  let!(:description) do
+    create(
+      :description,
+      owner: book,
+      text: 'Existing summary',
+      source_label: 'Old SRC',
+      source_type: 'Admin::Tasks::OpenLibraryBookFetch',
+      source_id: 0
+    )
+  end
   let!(:external_identity) do
     create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1099866W')
   end
@@ -33,8 +43,9 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
       expect(response).to be_successful
       expect(assigns(:book)).to eq(book)
       expect(response.body).to include('Open Library fetch results')
-      expect(response.body).to include('Current summary:')
+      expect(response.body).to include('Current description:')
       expect(response.body).to include('Existing summary')
+      expect(response.body).to include('Old SRC')
       expect(response.body).to include('A Verne novel.')
       expect(response.body).to include('wikidata')
       expect(response.body).to include('https://www.wikidata.org/wiki/Q137179018')
@@ -79,15 +90,18 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
   describe 'POST /admin/open_library_fetch_tasks/:id/apply_summary' do
     let(:send_request) do
       post apply_summary_admin_open_library_fetch_task_path(task),
-           params: { summary: 'A Verne novel.', summary_src: 'Open Library' },
+           params: { text: 'A Verne novel.' },
            headers: authorization_header
     end
 
-    it 'updates the book summary and reloads the task page' do
+    it 'updates the book description and reloads the task page' do
       send_request
       book.reload
-      expect(book.summary).to eq('A Verne novel.')
-      expect(book.summary_src).to eq('Open Library')
+      applied = book.description_for_source(task)
+      expect(applied.text).to eq('A Verne novel.')
+      expect(applied.source_label).to be_nil
+      expect(applied.source_type).to eq(task.class.name)
+      expect(applied.source_id).to eq(task.id)
       expect(task.reload.status).to eq('fetched')
       expect(response).to redirect_to(admin_data_fetch_task_path(task))
       expect(flash[:notice]).to eq('Book summary updated.')

@@ -238,16 +238,17 @@
         <%= render "admin/books/standard_cover", book: @book %>
       </div>
 
-      <% if @book.summary.present? %>
+      <% description = @book.primary_description %>
+      <% if description&.text.present? %>
         <div class="bg-light border p-3 mt-3">
           <h5 class="mb-3">SUMMARY</h5>
           <div class="row mt-3 mb-0">
             <div class="col-md-3 font-weight-bold text-end">Summary:</div>
             <div class="col-md-9 b-book-summary">
-              <%= simple_format(@book.summary) %>
-              <% if @book.summary_src.present? %>
+              <%= simple_format(description.text) %>
+              <% if description.source_label.present? %>
                 <span class="b-book-summary-src">
-                  (SRC: <%= @book.summary_src %>)
+                  (SRC: <%= description.source_label %>)
                 </span>
               <% end %>
             </div>

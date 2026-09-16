@@ -84,5 +84,18 @@ module Admin
         }
       end
     end
+
+    def descriptions_to_input_entries(descriptions)
+      descriptions.map do |description|
+        {
+          id: description.id,
+          text: description.text,
+          source_label: description.source_label,
+          priority: description.priority,
+          source_type: description.source_type,
+          source_id: description.source_id
+        }
+      end
+    end
   end
 end

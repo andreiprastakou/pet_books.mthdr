@@ -35,6 +35,27 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
         expect(assigns(:book)).to be_a(Admin::Book)
         expect(assigns(:summaries)).to eq(task.fetched_data.map(&:symbolize_keys))
         expect(assigns(:all_themes)).to match_array(%w[theme_a theme_b])
+        expect(assigns(:task_description)).to be_nil
+      end
+    end
+
+    context 'when a description for the task source already exists' do
+      let!(:task_description) do
+        create(
+          :description,
+          owner: book,
+          text: 'Existing description',
+          source_label: 'Existing src',
+          source_type: task.class.name,
+          source_id: task.id
+        )
+      end
+
+      it 'assigns the existing task description' do
+        send_request
+        expect(assigns(:task_description)).to eq(task_description)
+        expect(response.body).to include('Existing description')
+        expect(response.body).to include('Existing src')
       end
     end
   end
@@ -52,12 +73,14 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
           original_title: 'UPDATED_ORIGINAL_TITLE',
           year_published: '2026',
           author_ids: book.author_ids,
-          summary: 'UPDATED_SUMMARY',
-          summary_src: 'UPDATED_SUMMARY_SRC',
           literary_form: 'UPDATED_LITERARY_FORM',
           data_filled: true,
           tag_names: %w[tag_a tag_b],
           genre_names: %w[genre_a genre_b]
+        },
+        description: {
+          text: 'UPDATED_SUMMARY',
+          source_label: 'UPDATED_SUMMARY_SRC'
         },
         summary_verified: true
       }
@@ -66,12 +89,15 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
     it 'updates the book' do
       send_request
       book.reload
+      description = book.description_for_source(task)
       aggregate_failures do
         expect(book.title).to eq('UPDATED_TITLE')
         expect(book.original_title).to eq('UPDATED_ORIGINAL_TITLE')
         expect(book.year_published).to eq(2026)
-        expect(book.summary).to eq('UPDATED_SUMMARY')
-        expect(book.summary_src).to eq('UPDATED_SUMMARY_SRC')
+        expect(description.text).to eq('UPDATED_SUMMARY')
+        expect(description.source_label).to eq('UPDATED_SUMMARY_SRC')
+        expect(description.source_type).to eq(task.class.name)
+        expect(description.source_id).to eq(task.id)
         expect(book.literary_form).to eq('UPDATED_LITERARY_FORM')
         expect(book.genres.map(&:genre_name)).to eq(%w[genre_a genre_b])
         expect(book.tags.map(&:name)).to eq(%w[tag_a tag_b])

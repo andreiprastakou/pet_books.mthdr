@@ -11,10 +11,10 @@ RSpec.describe '/api/books/full_entries' do
         genres: book_genres,
         literary_form: 'novel',
         series: series,
-        summary: 'A book summary.',
         tags: tags
       )
     end
+    let!(:description) { create(:description, owner: book, text: 'A book summary.') }
     let(:tags) { create_list(:tag, 2) }
     let(:series) { create_list(:series, 2) }
     let(:wikipedia_link) do
@@ -75,7 +75,7 @@ RSpec.describe '/api/books/full_entries' do
         year_published: book.year_published,
         small: false,
         form_label: 'a fantasy novel',
-        summary: book.summary,
+        summary: description.text,
         external_links: external_links.map { |link| { external_resource: link.external_resource, url: link.url } },
         public_lists: expected_public_lists
       )

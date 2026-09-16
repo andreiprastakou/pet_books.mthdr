@@ -16,8 +16,6 @@ module Admin
       genre
       literary_form
       original_title
-      summary
-      summary_src
       title
       year_published
     ] + [{
@@ -25,7 +23,8 @@ module Admin
       genre_names: [],
       author_ids: [],
       series_ids: [],
-      external_links_attributes: {}
+      external_links_attributes: {},
+      descriptions_attributes: {}
     }]).freeze
 
     DEFAULT_BOOKS_INDEX_VIEW = 'table'.freeze
@@ -35,7 +34,7 @@ module Admin
     def index
       @pagy, @books = pagy(
         apply_sort(
-          Book.preload(:authors, :generative_summary_tasks, :external_links),
+          Book.preload(:authors, :generative_summary_tasks, :external_links, :descriptions),
           SORTING_MAP,
           defaults: { sort_by: 'id', sort_order: 'desc' }
         ),
