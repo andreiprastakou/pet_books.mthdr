@@ -41,7 +41,9 @@ module Admin
         'Admin::Tasks::WikidataAuthorFetch',
         'Admin::Tasks::WikidataAuthorSearch',
         'Admin::Tasks::WikidataBookFetch',
-        'Admin::Tasks::WikidataBookSearch'
+        'Admin::Tasks::WikidataBookSearch',
+        'Admin::Tasks::WikipediaAuthorFetch',
+        'Admin::Tasks::WikipediaBookFetch'
       ].freeze
 
       belongs_to :chat, class_name: 'Admin::Ai::Chat', optional: true

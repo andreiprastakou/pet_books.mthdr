@@ -103,13 +103,13 @@ module Admin
     end
 
     def admin_nav_data_fetch_task_link(task)
-      task.type
+      task.model_name.human
     end
 
     def admin_link_to_data_fetch_task_target(task)
       case task
       when Admin::Tasks::AiBookFetch, Admin::Tasks::LibraryThingBookSearch, Admin::Tasks::OpenLibraryBookSearch,
-           Admin::Tasks::WikidataBookSearch
+           Admin::Tasks::WikidataBookSearch, Admin::Tasks::WikipediaBookFetch
         admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
       when Admin::Tasks::OpenLibraryBookFetch, Admin::Tasks::OpenLibraryAuthorFetch
         identity = task.external_identity
@@ -136,7 +136,7 @@ module Admin
           "Wikidata #{identity.external_id}"
         end
       when Admin::Tasks::AiAuthorWorksParse, Admin::Tasks::AiAuthorWorksFetch, Admin::Tasks::OpenLibraryAuthorSearch,
-           Admin::Tasks::WikidataAuthorSearch
+           Admin::Tasks::WikidataAuthorSearch, Admin::Tasks::WikipediaAuthorFetch
         admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)
       else
         "Entity #{task.target_type} with ID=#{task.target_id}"
@@ -182,8 +182,9 @@ module Admin
       content_tag(:span, class: 'text-muted') do
         safe_join([
                     label,
-                    " (#{pluralize(entity.wiki_links.count, 'page')}, " \
-                    "#{pluralize(entity.wiki_links_sum_views, 'view')})"
+                    ' ('.html_safe,
+                    safe_join(wikipedia_link_details(entity), ', '),
+                    ')'.html_safe
                   ])
       end
     end
@@ -198,6 +199,32 @@ module Admin
     end
 
     private
+
+    def wikipedia_link_details(entity)
+      details = [
+        pluralize(entity.wiki_links.count, 'page'),
+        pluralize(entity.wiki_links_sum_views, 'view')
+      ]
+      fetch_link = wikipedia_intro_fetch_link(entity)
+      details << fetch_link if fetch_link
+      details
+    end
+
+    def wikipedia_intro_fetch_link(entity)
+      path = wikipedia_intro_fetch_path(entity)
+      return if path.blank?
+
+      admin_link_to('fetch', path, data: { turbo_method: :post })
+    end
+
+    def wikipedia_intro_fetch_path(entity)
+      case entity
+      when ::Book
+        admin_book_wikipedia_fetches_path(entity)
+      when ::Author
+        admin_author_wikipedia_fetches_path(entity)
+      end
+    end
 
     def wikipedia_external_link?(external_link)
       external_link.external_resource == ExternalResources::WIKIPEDIA

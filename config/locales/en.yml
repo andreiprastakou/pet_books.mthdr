@@ -108,6 +108,9 @@ en:
       wikidata_fetches:
         create:
           success: "Wikidata data fetch has been queued."
+      wikipedia_fetches:
+        create:
+          success: "Wikipedia intro fetch has been queued."
       library_thing_searches:
         create:
           success: "LibraryThing search has been queued."

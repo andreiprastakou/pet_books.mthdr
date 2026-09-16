@@ -21,7 +21,7 @@
           <%= admin_link_to task.id, admin_data_fetch_task_path(task) %>
         </td>
         <td>
-          <%= task.type %>
+          <%= task.model_name.human %>
         </td>
         <td>
           <%= admin_link_to "show", admin_data_fetch_task_path(task) %>
