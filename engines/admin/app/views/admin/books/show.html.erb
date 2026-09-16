@@ -238,20 +238,20 @@
         <%= render "admin/books/standard_cover", book: @book %>
       </div>
 
-      <% description = @book.primary_description %>
-      <% if description&.text.present? %>
+      <% descriptions = @book.descriptions.select { |d| d.text.present? } %>
+      <% if descriptions.any? %>
         <div class="bg-light border p-3 mt-3">
-          <h5 class="mb-3">SUMMARY</h5>
-          <div class="row mt-3 mb-0">
-            <div class="col-md-3 font-weight-bold text-end">Summary:</div>
-            <div class="col-md-9 b-book-summary">
+          <h5 class="mb-3">DESCRIPTIONS</h5>
+          <div class="b-book-summary">
+            <% descriptions.each_with_index do |description, index| %>
+              <%= tag.br + tag.br if index.positive? %>
               <%= simple_format(description.text) %>
               <% if description.source_label.present? %>
-                <span class="b-book-summary-src">
+                <div class="b-book-summary-src text-end">
                   (SRC: <%= description.source_label %>)
-                </span>
+                </div>
               <% end %>
-            </div>
+            <% end %>
           </div>
         </div>
       <% end %>

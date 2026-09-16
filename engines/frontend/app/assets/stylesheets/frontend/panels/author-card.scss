@@ -18,26 +18,25 @@
     }
   }
 
+  .panel--body {
+    align-items: flex-start;
+    display: flex;
+    gap: 12px;
+  }
+
   .author-image {
+    border-radius: 70px;
     cursor: zoom-in;
     display: block;
-    position: relative;
-    float: left;
+    flex: 0 0 130px;
     height: 130px;
+    position: relative;
     width: 130px;
-    border-radius: 70px;
   }
 
   .details-right {
-    float: right;
-    width: 148px;
-  }
-
-  &.author-card-without-picture {
-    .details-right {
-      float: none;
-      width: 100%;
-    }
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   .author-name {
@@ -62,14 +61,16 @@
   .author-toolbar {
     align-items: center;
     display: flex;
+    flex-wrap: wrap;
     gap: 8px;
     margin-top: 12px;
-    float: left;
     width: 100%;
 
     .btn {
       font-size: 12px;
+      max-width: 100%;
       padding: 4px 8px;
+      white-space: normal;
     }
   }
 }
