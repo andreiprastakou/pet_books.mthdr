@@ -89,6 +89,7 @@ RSpec.describe Author do
   end
 
   it_behaves_like 'has external links'
+  it_behaves_like 'has descriptions'
 
   describe '#photo_thumb_url' do
     subject(:result) { author.photo_thumb_url }

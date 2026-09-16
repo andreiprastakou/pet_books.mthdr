@@ -1,0 +1,56 @@
+<div class="col-md-12">
+  <div data-descriptions-input-target="descriptionsList" data-values="<%= values.to_json %>">
+    <template data-descriptions-input-target="descriptionTemplate">
+      <div class="border rounded p-3 mb-3" data-name="description">
+        <%= hidden_field_tag "#{form_scope}[descriptions_attributes][ENTRY_ID][id]", nil,
+          data: { name: "idInput" } %>
+        <%= hidden_field_tag "#{form_scope}[descriptions_attributes][ENTRY_ID][_destroy]", nil,
+          data: { name: "destroyInput" } %>
+
+        <div class="mb-2">
+          <%= label_tag nil, "Text", class: "form-label" %>
+          <%= text_area_tag "#{form_scope}[descriptions_attributes][ENTRY_ID][text]", nil,
+            class: "form-control", rows: 4, data: { name: "textInput" } %>
+        </div>
+
+        <div class="mb-2">
+          <%= label_tag nil, "Source label", class: "form-label" %>
+          <%= text_field_tag "#{form_scope}[descriptions_attributes][ENTRY_ID][source_label]", nil,
+            class: "form-control", data: { name: "sourceLabelInput" } %>
+        </div>
+
+        <div class="row mb-2" data-name="sourceFields" hidden>
+          <div class="col-md-6">
+            <%= label_tag nil, "Source type", class: "form-label" %>
+            <%= text_field_tag "#{form_scope}[descriptions_attributes][ENTRY_ID][source_type]", nil,
+              class: "form-control", disabled: true, data: { name: "sourceTypeInput" } %>
+          </div>
+          <div class="col-md-6">
+            <%= label_tag nil, "Source id", class: "form-label" %>
+            <%= text_field_tag "#{form_scope}[descriptions_attributes][ENTRY_ID][source_id]", nil,
+              class: "form-control", disabled: true, data: { name: "sourceIdInput" } %>
+          </div>
+        </div>
+
+        <div class="row align-items-end">
+          <div class="col-md-2">
+            <%= label_tag nil, "Priority", class: "form-label" %>
+            <%= number_field_tag "#{form_scope}[descriptions_attributes][ENTRY_ID][priority]", nil,
+              class: "form-control", readonly: true, data: { name: "priorityInput" } %>
+          </div>
+          <div class="col-md-10 text-end">
+            <%= button_tag "up", class: "btn btn-outline-secondary", type: "button", tabindex: "-1",
+              data: { action: "click->descriptions-input#onClickMoveUp" } %>
+            <%= button_tag "down", class: "btn btn-outline-secondary", type: "button", tabindex: "-1",
+              data: { action: "click->descriptions-input#onClickMoveDown" } %>
+            <%= button_tag "remove description", class: "btn btn-outline-danger", type: "button", tabindex: "-1",
+              data: { action: "click->descriptions-input#onClickRemoveDescription" } %>
+          </div>
+        </div>
+      </div>
+    </template>
+  </div>
+
+  <%= button_tag "add description", class: "btn btn-success", type: "button", tabindex: "-1",
+    data: { action: "click->descriptions-input#onClickAddDescription" } %>
+</div>

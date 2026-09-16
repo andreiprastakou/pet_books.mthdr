@@ -68,7 +68,10 @@ RSpec.describe Admin::BooksHelper do
   describe '#book_summary_icon' do
     subject(:result) { helper.book_summary_icon(book) }
 
-    let(:book) { build_stubbed(:book, summary: 'SUMMARY_A') }
+    let(:book) { build_stubbed(:book) }
+    let(:description) { build_stubbed(:description, text: 'SUMMARY_A') }
+
+    before { allow(book).to receive(:primary_description).and_return(description) }
 
     it 'returns a span with the summary' do
       expect(result).to eq(
@@ -76,8 +79,8 @@ RSpec.describe Admin::BooksHelper do
       )
     end
 
-    context 'when the book has no summary' do
-      before { book.summary = nil }
+    context 'when the book has no description' do
+      let(:description) { nil }
 
       it { is_expected.to be_nil }
     end

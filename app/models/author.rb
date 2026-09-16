@@ -24,6 +24,7 @@ class Author < ApplicationRecord
   include CarrierwaveUrlAssign
   include EqualByPersistedId
   include HasExternalLinks
+  include HasDescriptions
 
   has_many :book_authors, class_name: 'Joins::BookAuthor', dependent: :restrict_with_error
   has_many :books, class_name: 'Book', through: :book_authors

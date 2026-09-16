@@ -1,0 +1,9 @@
+<div class="row mb-3">
+  <%= label_tag nil, "Description", class: "form-label" %>
+  <%= text_area_tag "description[text]", task_description&.text,
+    class: "form-control mb-1 b-book-summary", style: "height: 130px;",
+    data: { book_form_target: "descriptionTextInput" } %>
+  <%= text_field_tag "description[source_label]", task_description&.source_label,
+    class: "form-control", placeholder: "SRC",
+    data: { book_form_target: "descriptionSourceLabelInput" } %>
+</div>

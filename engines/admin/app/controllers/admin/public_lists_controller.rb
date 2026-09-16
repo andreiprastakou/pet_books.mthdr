@@ -22,7 +22,7 @@ module Admin
         defaults: { sort_by: 'role', sort_order: 'desc' }
       )
       Admin::Book.assign_to_association!(
-        @book_public_lists, :book, :authors, :generative_summary_tasks, :external_links
+        @book_public_lists, :book, :authors, :generative_summary_tasks, :external_links, :descriptions
       )
     end
 

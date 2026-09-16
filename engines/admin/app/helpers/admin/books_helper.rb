@@ -20,9 +20,10 @@ module Admin
     end
 
     def book_summary_icon(book)
-      return if book.summary.blank?
+      text = book.primary_description&.text
+      return if text.blank?
 
-      content_tag(:span, 'i', class: 'badge bg-secondary', title: book.summary)
+      content_tag(:span, 'i', class: 'badge bg-secondary', title: text)
     end
 
     def button_to_generate_books_summaries(books)

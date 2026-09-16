@@ -10,8 +10,6 @@
 #  literary_form   :string
 #  original_title  :string
 #  popularity      :integer          default(0)
-#  summary         :text
-#  summary_src     :string
 #  title           :string           not null
 #  wiki_popularity :integer          default(0)
 #  year_published  :integer          not null
@@ -38,6 +36,7 @@ class Book < ApplicationRecord
 
   include EqualByPersistedId
   include HasExternalLinks
+  include HasDescriptions
 
   has_many :tag_connections, class_name: 'Joins::TagConnection', as: :entity, dependent: :destroy
   has_many :tags, through: :tag_connections, class_name: 'Tag'
@@ -81,6 +80,26 @@ class Book < ApplicationRecord
 
   def small?
     literary_form.in?(FORMS_SMALL)
+  end
+
+  def primary_description
+    descriptions.first
+  end
+
+  def description_for_source(source)
+    source_type = source.is_a?(String) ? source : source.class.name
+    descriptions.find_by(source_type: source_type)
+  end
+
+  def upsert_description_from_source!(source, text:, source_label: nil)
+    description = descriptions.find_or_initialize_by(source_type: source.class.name)
+    description.assign_attributes(
+      text: text,
+      source_label: source_label.presence,
+      source_id: source.id
+    )
+    description.save!
+    description
   end
 
   def author_names_label

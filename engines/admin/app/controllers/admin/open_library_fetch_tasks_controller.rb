@@ -17,7 +17,7 @@ module Admin
     end
 
     def apply_summary
-      @task.apply_summary!(params.require(:summary), params[:summary_src])
+      @task.apply_summary!(params.require(:text))
       redirect_to admin_data_fetch_task_path(@task),
                   notice: t('notices.admin.open_library_fetch_tasks.apply_summary.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
@@ -34,6 +34,7 @@ module Admin
 
     def prepare_form_data
       @book = @task.book
+      @task_description = @book.description_for_source(@task)
       @fetched_data = @task.fetched_data_normalized
       @book_identity_keys = @book.external_identities.filter_map do |identity|
         next if identity.external_id.blank?

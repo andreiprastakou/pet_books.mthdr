@@ -32,7 +32,7 @@ module Admin
 
     def show
       @books = apply_sort(
-        Admin::Book.for_scope(@genre.books, :genres, :authors, :generative_summary_tasks, :external_links),
+        Admin::Book.for_scope(@genre.books, :genres, :authors, :generative_summary_tasks, :external_links, :descriptions),
         BOOKS_SORTING_MAP,
         defaults: { sort_by: 'year_published', sort_order: 'desc' }
       )

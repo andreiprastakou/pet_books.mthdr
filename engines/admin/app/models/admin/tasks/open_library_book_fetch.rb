@@ -60,13 +60,11 @@ module Admin
         Admin::ExternalIdentityIntroductor.call(identity)
       end
 
-      def apply_summary!(summary, summary_src = nil)
-        text = summary.to_s.strip
-        raise ArgumentError, 'Summary is required' if text.blank?
+      def apply_summary!(text)
+        summary = text.to_s.strip
+        raise ArgumentError, 'Summary is required' if summary.blank?
 
-        attrs = { summary: text }
-        attrs[:summary_src] = summary_src.to_s.strip if summary_src.present?
-        book.update!(attrs)
+        book.upsert_description_from_source!(self, text: summary, source_label: nil)
       end
 
       def fetched_data_normalized

@@ -87,7 +87,11 @@
       values: series_to_badges_entries(book.series) %>
   </div>
 
-  <%= render "admin/books/form/summary_input", form: form, book: book %>
+  <div class="mb-3" data-controller="descriptions-input">
+    <%= form.label nil, "Descriptions", class: "form-label" %>
+    <%= render "admin/common/descriptions_input",
+      form_scope: "book", values: descriptions_to_input_entries(book.descriptions) %>
+  </div>
 
   <div class="mb-3">
     <%= form.label :data_filled, class: "form-label" %>
