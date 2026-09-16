@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { ButtonGroup, Card } from 'react-bootstrap'
+import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 import BookToolbar from 'components/BookToolbar'
@@ -176,15 +176,13 @@ BookDetailsMainInfo.propTypes = {
 
 const BookDetailsLinks = ({ links }) => (
   <div className='book-details-panel-links'>
-    <ButtonGroup>
-      { links.map(link => (
-        <ExternalTextLink
-          href={link.url}
-          key={link.url}
-          resource={link.external_resource}
-        />
-      )) }
-    </ButtonGroup>
+    { links.map(link => (
+      <ExternalTextLink
+        href={link.url}
+        key={link.url}
+        resource={link.external_resource}
+      />
+    )) }
   </div>
 )
 

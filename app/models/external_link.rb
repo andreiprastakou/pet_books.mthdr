@@ -22,4 +22,11 @@ class ExternalLink < ApplicationRecord
   validates :owner_type, presence: true
   validates :external_resource, presence: true
   validates :url, presence: true
+
+  scope :for_frontend, -> { where.not(external_resource: ExternalResources::INTERNAL) }
+
+  def self.frontend_payload(links)
+    links.reject { |link| ExternalResources::INTERNAL.include?(link.external_resource) }
+         .map { |link| { external_resource: link.external_resource, url: link.url } }
+  end
 end

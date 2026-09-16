@@ -189,8 +189,17 @@
   }
 
   .book-details-panel-links {
+    align-items: center;
     border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
     padding: 18px 0;
+
+    .btn {
+      max-width: 100%;
+      white-space: normal;
+    }
   }
 
   .book-details-panel-toolbar {

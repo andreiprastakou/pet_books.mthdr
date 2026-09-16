@@ -18,4 +18,9 @@ module ExternalResources
     WIKIDATA,
     WIKIPEDIA
   ].freeze
+
+  # Stored for admin tooling; omitted from frontend_api responses.
+  INTERNAL = [
+    WIKIDATA
+  ].freeze
 end
