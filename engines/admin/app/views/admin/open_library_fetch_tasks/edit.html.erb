@@ -59,14 +59,17 @@
       <% if @fetched_data.blank? %>
         <p class="text-muted">No fetch results returned.</p>
       <% else %>
+        <% description = @fetched_data['description'] %>
         <table class="table table-bordered align-top mb-0 b-task-fetch-results">
           <tbody>
             <tr>
               <td class="w-50">
-                <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(@task.fetched_data_normalized) %></pre>
+                <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(@fetched_data) %></pre>
               </td>
               <td class="text-center">
-                <% @identifiers.each do |external_resource, external_id| %>
+                <% Array(@fetched_data['identifiers']).each do |identifier| %>
+                  <% external_resource = identifier['external_resource'] %>
+                  <% external_id = identifier['external_id'] %>
                   <% link_builder = Admin::ExternalIdentityIntroductor.link_builder_for(external_resource, Book) %>
                   <% identity_url = link_builder&.call(external_id) %>
                   <% already_added = @book_identity_keys.include?([external_resource, external_id]) %>
@@ -87,17 +90,17 @@
                   <% end %>
                 <% end %>
 
-                <% if @description.present? %>
+                <% if description.present? %>
                   <%= form_with url: apply_summary_admin_open_library_fetch_task_path(@task),
                     method: :post,
                     class: "mt-3 text-start",
                     data: { turbo: false } do %>
                     <%= label_tag :summary, "Summary", class: "form-label" %>
-                    <%= text_area_tag :summary, @description, class: "form-control mb-2", rows: 6 %>
+                    <%= text_area_tag :summary, description, class: "form-control mb-2", rows: 6 %>
                     <%= text_field_tag :summary_src, "Open Library", class: "form-control mb-2",
                       readonly: true %>
                     <%= submit_tag "apply summary", class: "btn btn-sm btn-outline-primary",
-                      disabled: @description.blank? %>
+                      disabled: description.blank? %>
                   <% end %>
                 <% end %>
               </td>

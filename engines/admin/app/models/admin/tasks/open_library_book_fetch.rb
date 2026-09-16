@@ -49,37 +49,6 @@ module Admin
         end
       end
 
-
-      def fetched_identifiers
-        data = fetched_data
-        return [] unless data.is_a?(Hash)
-
-        identifiers = data['identifiers'] || data[:identifiers] || {}
-        return [] unless identifiers.is_a?(Hash)
-
-        identifiers.flat_map do |resource, values|
-          next [] unless Admin::ExternalIdentity.external_resources.key?(resource.to_s)
-
-          Array(values).compact_blank.map { |external_id| [resource.to_s, external_id.to_s] }
-        end
-      end
-
-      def fetched_description
-        data = fetched_data
-        return if data.blank? || !data.is_a?(Hash)
-
-        description = data['description'] || data[:description]
-        text = case description
-               when Hash
-                 (description['value'] || description[:value]).presence
-               else
-                 description.presence
-               end
-        return if text.blank?
-
-        Rails::Html::FullSanitizer.new.sanitize(text.to_s).presence
-      end
-
       def add_identity!(external_resource, external_id)
         resource = external_resource.to_s
         raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
@@ -90,7 +59,6 @@ module Admin
         identity = book.external_identities.create!(external_resource: resource, external_id: id)
         Admin::ExternalIdentityIntroductor.call(identity)
       end
-
 
       def apply_summary!(summary, summary_src = nil)
         text = summary.to_s.strip
@@ -107,11 +75,11 @@ module Admin
 
         {
           'title' => data['title'],
-          'description' => data['description'],
+          'description' => fetched_description_text(data['description']),
           'authors' => fetched_author_entries(data['authors']),
           'genres' => fetched_id_entries(data['genres']),
           'series' => fetched_series_entries(data['series']),
-          'identifiers' => data['identifiers'],
+          'identifiers' => fetched_identifier_entries(data['identifiers']),
           'links' => fetched_link_urls(data['links']),
           'first_sentence' => fetched_text_value(data['first_sentence']),
           'subject_people' => fetched_string_list(data['subject_people']),
@@ -120,6 +88,25 @@ module Admin
       end
 
       private
+
+      def fetched_description_text(description)
+        text = fetched_text_value(description)
+        return if text.blank?
+
+        Rails::Html::FullSanitizer.new.sanitize(text.to_s).presence
+      end
+
+      def fetched_identifier_entries(identifiers)
+        return [] unless identifiers.is_a?(Hash)
+
+        identifiers.flat_map do |resource, values|
+          next [] unless Admin::ExternalIdentity.external_resources.key?(resource.to_s)
+
+          Array(values).compact_blank.map do |external_id|
+            { 'external_resource' => resource.to_s, 'external_id' => external_id.to_s }
+          end
+        end
+      end
 
       def fetched_author_entries(authors)
         return [] unless authors.is_a?(Array)
