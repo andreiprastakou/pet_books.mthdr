@@ -40,12 +40,13 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
       expect(response.body).to include('https://www.wikidata.org/wiki/Q137179018')
       expect(response.body).to include('add to the book')
       expect(response.body).to include('apply summary')
-      expect(assigns(:identifiers)).to eq(
+      expect(assigns(:fetched_data)['identifiers']).to eq(
         [
-          ['wikidata', 'Q137179018'],
-          ['goodreads', '87596585']
+          { 'external_resource' => 'wikidata', 'external_id' => 'Q137179018' },
+          { 'external_resource' => 'goodreads', 'external_id' => '87596585' }
         ]
       )
+      expect(assigns(:fetched_data)['description']).to eq('A Verne novel.')
     end
 
     context 'when an identifier is already present on the book' do

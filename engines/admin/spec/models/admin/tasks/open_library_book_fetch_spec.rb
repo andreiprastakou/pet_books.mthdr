@@ -94,60 +94,6 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     end
   end
 
-  describe '#fetched_identifiers' do
-    let(:task) { build(:open_library_fetch_task, fetched_data: fetched_data) }
-    let(:fetched_data) do
-      {
-        'identifiers' => {
-          'wikidata' => ['Q137179018'],
-          'goodreads' => ['87596585'],
-          'librarything' => ['33363109'],
-          'isfdb' => ['3537436']
-        }
-      }
-    end
-
-    it 'returns allowed identifier pairs and skips unknown resources' do
-      expect(task.fetched_identifiers).to eq(
-        [
-          ['wikidata', 'Q137179018'],
-          ['goodreads', '87596585'],
-          ['librarything', '33363109']
-        ]
-      )
-    end
-  end
-
-  describe '#fetched_description' do
-    let(:task) { build(:open_library_fetch_task, fetched_data: fetched_data) }
-
-    context 'when description is a typed text object' do
-      let(:fetched_data) { { 'description' => { 'type' => '/type/text', 'value' => 'An epic fantasy novel.' } } }
-
-      it 'returns the value' do
-        expect(task.fetched_description).to eq('An epic fantasy novel.')
-      end
-    end
-
-    context 'when description is a string' do
-      let(:fetched_data) { { 'description' => 'Plain description' } }
-
-      it 'returns the string' do
-        expect(task.fetched_description).to eq('Plain description')
-      end
-    end
-
-    context 'when description contains HTML' do
-      let(:fetched_data) do
-        { 'description' => '<p>A tale of <b>adventure</b> and <i>mystery</i>.</p>' }
-      end
-
-      it 'strips tags and returns plain text' do
-        expect(task.fetched_description).to eq('A tale of adventure and mystery.')
-      end
-    end
-  end
-
   describe '#add_identity!' do
     subject(:call) { task.add_identity!('wikidata', 'Q137179018') }
 
@@ -192,7 +138,11 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
         'series' => [
           { 'series' => { 'key' => '/series/OL123S' } }
         ],
-        'identifiers' => { 'wikidata' => ['Q15228'] },
+        'identifiers' => {
+          'wikidata' => ['Q15228'],
+          'goodreads' => ['87596585'],
+          'isfdb' => ['3537436']
+        },
         'links' => [
           { 'title' => 'Wikipedia', 'url' => 'https://en.wikipedia.org/wiki/The_Lord_of_the_Rings' },
           { 'title' => 'Missing url' },
@@ -210,7 +160,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
       expect(task.fetched_data_normalized).to eq(
         {
           'title' => 'The Lord of the Rings',
-          'description' => { 'type' => '/type/text', 'value' => 'An epic fantasy novel.' },
+          'description' => 'An epic fantasy novel.',
           'authors' => [
             { 'external_id' => '/authors/OL26320A' },
             { 'external_id' => '/authors/OL26321A' }
@@ -222,7 +172,10 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
           'series' => [
             { 'external_id' => '/series/OL123S' }
           ],
-          'identifiers' => { 'wikidata' => ['Q15228'] },
+          'identifiers' => [
+            { 'external_resource' => 'wikidata', 'external_id' => 'Q15228' },
+            { 'external_resource' => 'goodreads', 'external_id' => '87596585' }
+          ],
           'links' => ['https://en.wikipedia.org/wiki/The_Lord_of_the_Rings'],
           'first_sentence' => 'When Mr. Bilbo Baggins of Bag End announced...',
           'subject_people' => ['Frodo Baggins', 'Gandalf'],
@@ -244,6 +197,26 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
 
       it 'returns an empty hash' do
         expect(task.fetched_data_normalized).to eq({})
+      end
+    end
+
+    context 'when description is a string' do
+      let(:fetched_data) { { 'description' => 'Plain description' } }
+
+      it 'keeps the string' do
+        expect(task.fetched_data_normalized).to eq('description' => 'Plain description')
+      end
+    end
+
+    context 'when description contains HTML' do
+      let(:fetched_data) do
+        { 'description' => '<p>A tale of <b>adventure</b> and <i>mystery</i>.</p>' }
+      end
+
+      it 'strips tags and returns plain text' do
+        expect(task.fetched_data_normalized).to eq(
+          'description' => 'A tale of adventure and mystery.'
+        )
       end
     end
 
@@ -307,7 +280,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
         expect(task.fetched_data_normalized).to eq(
           {
             'title' => 'The Pillars of the Earth',
-            'description' => fetched_data['description'],
+            'description' => fetched_data.dig('description', 'value'),
             'authors' => [{ 'external_id' => '/authors/OL229268A' }],
             'genres' => [
               { 'external_id' => '/tags/OL180T' },

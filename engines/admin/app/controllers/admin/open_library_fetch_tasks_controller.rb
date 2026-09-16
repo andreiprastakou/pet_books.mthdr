@@ -34,9 +34,7 @@ module Admin
 
     def prepare_form_data
       @book = @task.book
-      @fetched_data = @task.fetched_data
-      @identifiers = @task.fetched_identifiers
-      @description = @task.fetched_description
+      @fetched_data = @task.fetched_data_normalized
       @book_identity_keys = @book.external_identities.filter_map do |identity|
         next if identity.external_id.blank?
 
