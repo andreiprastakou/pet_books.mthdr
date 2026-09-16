@@ -29,7 +29,9 @@ RSpec.describe '/api/public_list_types' do
         name: 'Awards',
         external_links: [
           build(:external_link, external_resource: ExternalResources::WIKIPEDIA,
-                                url: 'https://en.wikipedia.org/wiki/Awards')
+                                url: 'https://en.wikipedia.org/wiki/Awards'),
+          build(:external_link, external_resource: ExternalResources::WIKIDATA,
+                                url: 'https://www.wikidata.org/wiki/Q1')
         ]
       )
     end

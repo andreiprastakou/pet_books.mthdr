@@ -11,7 +11,7 @@ json.series_ids book.series_ids
 json.small book.small?
 json.form_label Books::FormLabel.call(book)
 json.summary book.primary_description&.text
-json.external_links(book.external_links.map { |link| { external_resource: link.external_resource, url: link.url } })
+json.external_links ExternalLink.frontend_payload(book.external_links)
 json.public_lists(book.book_public_lists.sort_by do |entry|
   [-entry.public_list.year, entry.public_list.public_list_type.name.downcase]
 end) do |book_public_list|

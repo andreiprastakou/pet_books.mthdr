@@ -21,7 +21,13 @@ RSpec.describe '/api/books/full_entries' do
       build(:external_link, external_resource: ExternalResources::WIKIPEDIA,
                             url: 'https://en.wikipedia.org/wiki/Book')
     end
-    let(:external_links) { [wikipedia_link] + build_list(:external_link, 2) }
+    let(:wikidata_link) do
+      build(:external_link, external_resource: ExternalResources::WIKIDATA,
+                            url: 'https://www.wikidata.org/wiki/Q1')
+    end
+    let(:other_links) { build_list(:external_link, 2) }
+    let(:external_links) { [wikipedia_link, wikidata_link] + other_links }
+    let(:frontend_external_links) { [wikipedia_link] + other_links }
     let(:book_genres) { [build(:book_genre, genre: create(:genre, name: 'fantasy'))] }
     let(:list_type_a) { create(:public_list_type, name: 'Alpha Prize') }
     let(:list_type_b) { create(:public_list_type, name: 'Beta Prize') }
@@ -76,7 +82,9 @@ RSpec.describe '/api/books/full_entries' do
         small: false,
         form_label: 'a fantasy novel',
         summary: description.text,
-        external_links: external_links.map { |link| { external_resource: link.external_resource, url: link.url } },
+        external_links: frontend_external_links.map { |link|
+          { external_resource: link.external_resource, url: link.url }
+        },
         public_lists: expected_public_lists
       )
     end

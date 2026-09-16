@@ -23,6 +23,23 @@ describe('ExternalTextLink', () => {
     expect(link).toHaveClass('external-link')
   })
 
+  it.each([
+    ['official', 'Official'],
+    ['goodreads', 'Goodreads'],
+    ['librarything', 'LibraryThing'],
+    ['open_library', 'Open Library'],
+    ['wikipedia', 'Wikipedia'],
+  ])('labelizes %s as %s', (resource, label) => {
+    render(
+      <ExternalTextLink
+        href='https://example.com'
+        resource={resource}
+      />
+    )
+
+    expect(screen.getByRole('button', { name: label })).toBeInTheDocument()
+  })
+
   it('falls back to the raw resource name and accepts a custom class', () => {
     render(
       <ExternalTextLink

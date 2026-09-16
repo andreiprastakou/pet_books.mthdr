@@ -37,6 +37,12 @@ RSpec.describe '/api/authors/full_entries' do
     end
 
     before do
+      create(
+        :external_link,
+        owner: author,
+        external_resource: ExternalResources::WIKIDATA,
+        url: 'https://www.wikidata.org/wiki/Q1'
+      )
       author.books << build(:book, authors: [], popularity: 10_000)
     end
 

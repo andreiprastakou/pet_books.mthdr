@@ -5,9 +5,11 @@ import { faLink } from '@fortawesome/free-solid-svg-icons/faLink'
 import PropTypes from 'prop-types'
 
 const RESOURCE_LINK_TEXT = {
-  wikipedia: 'Wikipedia',
+  official: 'Official',
   goodreads: 'Goodreads',
-  official: 'Official link',
+  librarything: 'LibraryThing',
+  open_library: 'Open Library',
+  wikipedia: 'Wikipedia',
 }
 
 const ExternalTextLink = ({ resource, href, className = 'external-link' }) => (
