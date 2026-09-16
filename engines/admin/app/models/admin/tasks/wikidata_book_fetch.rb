@@ -55,41 +55,11 @@ module Admin
         Admin::Wikidata::EntityLookup.enrich(values, fetch_missing: true)
       end
 
-      def fetched_description
-        data = fetched_data
-        return if data.blank? || !data.is_a?(Hash)
-
-        descriptions = data['descriptions'] || data[:descriptions]
-        return if descriptions.blank? || !descriptions.is_a?(Hash)
-
-        extract_localized_text(descriptions)
-      end
-
-      def fetched_label
-        data = fetched_data
-        return if data.blank? || !data.is_a?(Hash)
-
-        labels = data['labels'] || data[:labels]
-        return if labels.blank? || !labels.is_a?(Hash)
-
-        extract_localized_text(labels)
-      end
-
       private
 
       def cache_lookup_entities!(result)
         data = Admin::Wikidata::BookUsableValues.call(result)
         Admin::Wikidata::EntityLookup.cache_from_item!(result, data: data)
-      end
-
-      def extract_localized_text(localized)
-        value = localized['en'] || localized[:en] || localized.values.first
-        case value
-        when Hash
-          (value['value'] || value[:value]).presence
-        else
-          value.presence
-        end
       end
     end
   end
