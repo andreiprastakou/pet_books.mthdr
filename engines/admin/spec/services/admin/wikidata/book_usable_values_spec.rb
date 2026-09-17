@@ -27,7 +27,8 @@ RSpec.describe Admin::Wikidata::BookUsableValues do
           ],
           'publication_date' => '2025-12-09',
           'genres' => %w[Q132311 Q24925],
-          'country_of_origin' => ['Q30']
+          'country_of_origin' => ['Q30'],
+          'form_of_work' => 'Q1279564'
         )
       end
     end

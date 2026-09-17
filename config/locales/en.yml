@@ -122,6 +122,8 @@ en:
       wikidata_book_fetch_tasks:
         apply_year:
           success: "Publication year updated."
+        apply_literary_form:
+          success: "Literary form updated."
         add_identity:
           success: "External identity added."
         add_author_identity:

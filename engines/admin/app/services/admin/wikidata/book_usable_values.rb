@@ -14,7 +14,8 @@ module Admin
         'P179' => { key: 'series', multi: true },
         'P136' => { key: 'genres', multi: true },
         'P166' => { key: 'awards', multi: true },
-        'P495' => { key: 'country_of_origin', multi: true }
+        'P495' => { key: 'country_of_origin', multi: true },
+        'P7937' => { key: 'form_of_work', multi: false }
       }.freeze
 
       EXTERNAL_IDENTITY_FIELDS = {

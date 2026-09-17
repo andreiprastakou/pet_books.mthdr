@@ -31,6 +31,9 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
         ],
         'P648' => [
           { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'OL42413123W' } }
+        ],
+        'P7937' => [
+          { 'rank' => 'normal', 'value' => { 'type' => 'value', 'content' => 'Q1279564' } }
         ]
       },
       'sitelinks' => {
@@ -58,6 +61,7 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
     create(:wikidata_lookup_entity, qid: 'Q457608', label: 'Ken MacLeod')
     create(:wikidata_lookup_entity, qid: 'Q24925', label: 'science fiction')
     create(:wikidata_lookup_entity, qid: 'Q123456', label: 'Engines of Light')
+    create(:wikidata_lookup_entity, qid: 'Q1279564', label: 'short story')
   end
 
   describe 'GET /admin/wikidata_book_fetch_tasks/:id/edit' do
@@ -72,11 +76,15 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
       expect(response.body).to include('1998')
       expect(response.body).to include('Q457608')
       expect(response.body).to include('https://www.wikidata.org/wiki/Q457608')
-      expect(response.body).to include('add to the author')
+      expect(response.body).to include('update author')
       expect(response.body).to include('Q24925')
-      expect(response.body).to include('add to the genre')
+      expect(response.body).to include('upsert genre')
       expect(response.body).to include('Q123456')
-      expect(response.body).to include('add to the series')
+      expect(response.body).to include('upsert series')
+      expect(response.body).to include('Q1279564')
+      expect(response.body).to include('short story')
+      expect(response.body).to include('update form')
+      expect(response.body).to include('literary-form-suggestions')
       expect(response.body).to include('open_library')
       expect(response.body).to include('OL42413123W')
       expect(response.body).to include('en.wikipedia.org')
@@ -123,6 +131,21 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
       expect(book.reload.year_published).to eq(1999)
       expect(response).to redirect_to(edit_admin_wikidata_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('Publication year updated.')
+    end
+  end
+
+  describe 'POST /admin/wikidata_book_fetch_tasks/:id/apply_literary_form' do
+    let(:send_request) do
+      post apply_literary_form_admin_wikidata_book_fetch_task_path(task),
+           params: { literary_form: 'novella' },
+           headers: authorization_header
+    end
+
+    it 'updates the literary form and reloads the apply form' do
+      send_request
+      expect(book.reload.literary_form).to eq('novella')
+      expect(response).to redirect_to(edit_admin_wikidata_book_fetch_task_path(task))
+      expect(flash[:notice]).to eq('Literary form updated.')
     end
   end
 

@@ -159,6 +159,21 @@ RSpec.describe Admin::Tasks::WikidataBookFetch do
     end
   end
 
+  describe '#apply_literary_form!' do
+    subject(:call) { task.apply_literary_form!('novella') }
+
+    let(:book) { create(:book, literary_form: 'novel') }
+    let(:external_identity) do
+      create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+    end
+    let(:task) { create(:wikidata_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'updates the book literary form' do
+      call
+      expect(book.reload.literary_form).to eq('novella')
+    end
+  end
+
   describe '#add_identity!' do
     subject(:call) { task.add_identity!('open_library', 'OL42413123W') }
 

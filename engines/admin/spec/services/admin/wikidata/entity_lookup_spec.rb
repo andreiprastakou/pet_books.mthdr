@@ -117,6 +117,7 @@ RSpec.describe Admin::Wikidata::EntityLookup do
         create(:wikidata_lookup_entity, qid: 'Q132311', label: 'fantasy')
         create(:wikidata_lookup_entity, qid: 'Q24925', label: 'science fiction')
         create(:wikidata_lookup_entity, qid: 'Q30', label: 'United States')
+        create(:wikidata_lookup_entity, qid: 'Q1279564', label: 'short story')
       end
 
       it 'matches the book usable-values display format' do
@@ -136,7 +137,8 @@ RSpec.describe Admin::Wikidata::EntityLookup do
           ],
           'country_of_origin' => [
             { 'external_id' => 'Q30', 'label' => 'United States' }
-          ]
+          ],
+          'form_of_work' => { 'external_id' => 'Q1279564', 'label' => 'short story' }
         )
       end
     end

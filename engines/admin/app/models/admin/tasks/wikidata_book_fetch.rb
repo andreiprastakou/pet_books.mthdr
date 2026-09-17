@@ -57,6 +57,13 @@ module Admin
         book.update!(year_published: value.to_i)
       end
 
+      def apply_literary_form!(literary_form)
+        value = literary_form.to_s.strip
+        raise ArgumentError, 'Literary form is required' if value.blank?
+
+        book.update!(literary_form: value)
+      end
+
       def add_identity!(external_resource, external_id)
         resource = external_resource.to_s
         raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
