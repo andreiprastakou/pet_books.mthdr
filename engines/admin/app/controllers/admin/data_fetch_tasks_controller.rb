@@ -12,12 +12,12 @@ module Admin
 
     def verify
       @task.verified!
-      redirect_to admin_root_path, notice: status_change_notice
+      redirect_after_status_change
     end
 
     def reject
       @task.rejected!
-      redirect_to admin_root_path, notice: status_change_notice
+      redirect_after_status_change
     end
 
     private
@@ -41,6 +41,34 @@ module Admin
 
     def fetch_task
       @task = Admin::Tasks::BaseTask.find(params[:id])
+    end
+
+    def redirect_after_status_change
+      next_task = next_pending_review_task
+      if next_task
+        redirect_to admin_data_fetch_task_path(next_task), notice: status_change_notice
+      else
+        redirect_to status_change_fallback_path, notice: status_change_notice
+      end
+    end
+
+    def next_pending_review_task
+      subject = review_subject
+      return unless subject
+
+      Admin::Tasks::BaseTask.next_pending_review_for(subject, excluding: @task)
+    end
+
+    def status_change_fallback_path
+      case review_subject
+      when ::Book, Admin::Book then admin_book_path(review_subject)
+      when ::Author, Admin::Author then admin_author_path(review_subject)
+      else admin_root_path
+      end
+    end
+
+    def review_subject
+      @review_subject ||= @task.review_subject
     end
 
     def status_change_notice

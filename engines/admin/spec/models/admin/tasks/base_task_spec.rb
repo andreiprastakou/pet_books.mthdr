@@ -50,4 +50,74 @@ RSpec.describe Admin::Tasks::BaseTask do
       expect(described_class.new.fetched_data_normalized).to eq({})
     end
   end
+
+  describe '#save_results!' do
+    let(:task) { create(:open_library_search_task) }
+
+    it 'marks the task fetched when normalized data is present' do
+      task.save_results!([{ 'key' => '/works/OL1W', 'title' => 'Title' }])
+      expect(task.reload.status).to eq('fetched')
+      expect(task.fetched_data).to eq([{ 'key' => '/works/OL1W', 'title' => 'Title' }])
+    end
+
+    it 'marks the task rejected when normalized data is blank' do
+      task.save_results!([])
+      expect(task.reload.status).to eq('rejected')
+      expect(task.fetched_data).to eq([])
+    end
+
+    it 'marks the task failed when errors are present' do
+      task.save_results!(nil, errors: [StandardError.new('boom')])
+      expect(task.reload.status).to eq('failed')
+      expect(task.fetch_error_details).to eq('boom')
+    end
+  end
+
+  describe '#review_subject' do
+    it 'returns the book for a book-targeted task' do
+      book = create(:book)
+      task = create(:wikipedia_book_fetch_task, target: book)
+      expect(task.review_subject).to eq(Admin::Book.cast(book))
+    end
+
+    it 'returns the author for an author-targeted task' do
+      author = create(:author)
+      task = create(:wikipedia_author_fetch_task, target: author)
+      expect(task.review_subject).to eq(Admin::Author.cast(author))
+    end
+
+    it 'returns the owner book for an external-identity-targeted task' do
+      book = create(:book)
+      identity = create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+      task = create(:wikidata_fetch_task, target: identity)
+      expect(task.review_subject).to eq(Admin::Book.cast(book))
+    end
+  end
+
+  describe '.pending_review_tasks_for' do
+    let(:book) { create(:book) }
+
+    it 'orders fetched tasks by source then fetch-before-search' do
+      library_thing = create(:library_thing_search_task, target: book, status: :fetched)
+      open_library_search = create(:open_library_search_task, target: book, status: :fetched)
+      wikidata_search = create(:wikidata_search_task, target: book, status: :fetched)
+      wikipedia = create(:wikipedia_book_fetch_task, target: book, status: :fetched)
+      identity = create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1W')
+      open_library_fetch = create(:open_library_fetch_task, target: identity, status: :fetched)
+      create(:wikidata_search_task, target: book, status: :requested)
+      create(:book_summary_task, target: book, status: :fetched)
+
+      expect(described_class.pending_review_tasks_for(book)).to eq(
+        [wikipedia, wikidata_search, open_library_fetch, open_library_search, library_thing]
+      )
+    end
+
+    it 'returns the first pending review task via .next_pending_review_for' do
+      create(:open_library_search_task, target: book, status: :fetched)
+      wikipedia = create(:wikipedia_book_fetch_task, target: book, status: :fetched)
+
+      expect(described_class.next_pending_review_for(book)).to eq(wikipedia)
+      expect(described_class.next_pending_review_for(book, excluding: wikipedia)).to be_a(Admin::Tasks::OpenLibraryBookSearch)
+    end
+  end
 end
