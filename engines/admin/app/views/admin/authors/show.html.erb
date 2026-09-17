@@ -158,12 +158,32 @@
       </div>
     </div>
 
-    <% if @author.photo_thumb_url.present? %>
+    <% descriptions = @author.descriptions.select { |d| d.text.present? } %>
+    <% if @author.photo_thumb_url.present? || descriptions.any? %>
       <div class="container col-md-6">
-        <div class="bg-light border p-3">
-          <h5 class="mb-3">PHOTO</h5>
-          <%= image_tag @author.photo_thumb_url, class: "b-author-photo" %>
-        </div>
+        <% if @author.photo_thumb_url.present? %>
+          <div class="bg-light border p-3">
+            <h5 class="mb-3">PHOTO</h5>
+            <%= image_tag @author.photo_thumb_url, class: "b-author-photo" %>
+          </div>
+        <% end %>
+
+        <% if descriptions.any? %>
+          <div class="bg-light border p-3 <%= 'mt-3' if @author.photo_thumb_url.present? %>">
+            <h5 class="mb-3">DESCRIPTIONS</h5>
+            <div class="b-book-summary">
+              <% descriptions.each_with_index do |description, index| %>
+                <%= tag.br + tag.br if index.positive? %>
+                <%= simple_format(description.text) %>
+                <% if description.display_source_label.present? %>
+                  <div class="b-book-summary-src text-end">
+                    (SRC: <%= description.display_source_label %>)
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
     <% end %>
   </div>
