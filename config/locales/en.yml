@@ -137,6 +137,18 @@ en:
           updated: "External link label updated."
         add_wikipedia_link:
           success: "Wikipedia link added."
+      wikidata_author_fetch_tasks:
+        apply_birth_year:
+          success: "Birth year updated."
+        apply_death_year:
+          success: "Death year updated."
+        add_identity:
+          success: "External identity added."
+        add_link:
+          success: "External link added."
+          updated: "External link label updated."
+        add_wikipedia_link:
+          success: "Wikipedia link added."
       wikipedia_book_fetch_tasks:
         apply_summary:
           success: "Book summary updated."

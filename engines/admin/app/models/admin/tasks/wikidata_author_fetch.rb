@@ -50,12 +50,88 @@ module Admin
         end
       end
 
+      def apply_birth_year!(year = nil)
+        apply_year!(:birth_year, year, fetched_data_normalized['date_of_birth'])
+      end
+
+      def apply_death_year!(year = nil)
+        apply_year!(:death_year, year, fetched_data_normalized['date_of_death'])
+      end
+
+      def add_identity!(external_resource, external_id)
+        resource = external_resource.to_s
+        raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
+
+        id = external_id.to_s.strip
+        raise ArgumentError, 'External ID is required' if id.blank?
+
+        identity = author.external_identities.create!(external_resource: resource, external_id: id)
+        Admin::ExternalIdentityIntroductor.call(identity)
+      end
+
+      def add_link!(url, external_resource:)
+        resource = external_resource.to_s.strip
+        raise ArgumentError, 'External resource is required' if resource.blank?
+
+        link_url = url.to_s.strip
+        raise ArgumentError, 'URL is required' if link_url.blank?
+
+        link = author.external_links.find_or_initialize_by(url: link_url)
+        link.external_resource = resource
+        link.save!
+        link
+      end
+
       def fetched_data_normalized
         values = Admin::Wikidata::AuthorUsableValues.call(fetched_data)
         Admin::Wikidata::EntityLookup.enrich(values, fetch_missing: true)
       end
 
+      def applyable_external_identities
+        Array(fetched_data_normalized['external_identities']).select do |entry|
+          Admin::ExternalIdentity.external_resources.key?(entry['external_resource'].to_s)
+        end
+      end
+
+      def wikipedia_sitelinks
+        Array(fetched_data_normalized['sitelinks']).select { |link| self.class.wikipedia_url?(link['url']) }
+      end
+
+      def other_sitelinks
+        Array(fetched_data_normalized['sitelinks']).filter_map do |link|
+          url = link['url'].presence
+          next if url.blank? || self.class.wikipedia_url?(url)
+
+          host = self.class.host_from_url(url)
+          next if host.blank?
+
+          { 'external_resource' => host, 'url' => url }
+        end
+      end
+
+      def self.parse_year(date_string)
+        date_string.to_s[/\b(\d{4})\b/, 1]&.to_i
+      end
+
+      def self.wikipedia_url?(url)
+        host = host_from_url(url)
+        host.present? && host.end_with?('wikipedia.org')
+      end
+
+      def self.host_from_url(url)
+        URI.parse(url.to_s.strip).host.presence
+      rescue URI::InvalidURIError
+        nil
+      end
+
       private
+
+      def apply_year!(attribute, year, date_string)
+        value = year.presence || self.class.parse_year(date_string)
+        raise ArgumentError, 'Year is required' if value.blank?
+
+        author.update!(attribute => value.to_i)
+      end
 
       def cache_lookup_entities!(result)
         data = Admin::Wikidata::AuthorUsableValues.call(result)
