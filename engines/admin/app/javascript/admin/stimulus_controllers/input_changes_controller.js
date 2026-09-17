@@ -7,15 +7,12 @@ export default class extends Controller {
   ]
 
   connect() {
-    const inputElement = this.inputTarget
-
     const display = this.element.querySelector('[data-name="oldValueText"]')
     if (display)
       display.textContent = this.evaluateOldValueDisplayed()
 
     this.toggleOldValueDisplay()
-
-    inputElement.addEventListener('input', () => this.toggleOldValueDisplay.bind(this)())
+    this.inputTarget.addEventListener('input', () => this.toggleOldValueDisplay())
   }
 
   evaluateOldValueDisplayed() {
@@ -44,7 +41,7 @@ export default class extends Controller {
   toggleOldValueDisplay() {
     const inputElement = this.inputTarget
     const currentValue = inputElement.value.trim()
-    const { oldValue } = this.element.dataset
+    const oldValue = this.element.dataset.oldValue?.trim() ?? ''
 
     this.assignDecoration(oldValue, currentValue)
 
@@ -52,6 +49,15 @@ export default class extends Controller {
       this.hideOldValue()
     else
       this.showOldValue()
+
+    this.syncSubmitButton(oldValue, currentValue)
+  }
+
+  syncSubmitButton(oldValue, currentValue) {
+    const button = this.element.closest('form')?.querySelector('[data-input-changes-submit]')
+    if (!button || !oldValue) return
+
+    button.disabled = currentValue === oldValue || currentValue === ''
   }
 
   showOldValue() {

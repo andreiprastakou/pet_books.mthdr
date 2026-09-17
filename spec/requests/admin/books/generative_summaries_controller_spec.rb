@@ -110,9 +110,9 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
       expect(task.reload).to be_verified
     end
 
-    it 'redirects to the book page' do
+    it 'redirects to the apply form' do
       send_request
-      expect(response).to redirect_to(admin_book_path(book))
+      expect(response).to redirect_to(edit_admin_book_generative_summary_path(book, task))
     end
 
     context 'with invalid parameters' do

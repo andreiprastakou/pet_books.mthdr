@@ -8,7 +8,7 @@ module Admin
 
     def add_identity
       @task.add_identity!(params.require(:external_resource), params.require(:external_id))
-      redirect_to admin_data_fetch_task_path(@task),
+      redirect_to edit_admin_open_library_fetch_task_path(@task),
                   notice: t('notices.admin.open_library_fetch_tasks.add_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message
@@ -18,7 +18,7 @@ module Admin
 
     def apply_summary
       @task.apply_summary!(params.require(:text))
-      redirect_to admin_data_fetch_task_path(@task),
+      redirect_to edit_admin_open_library_fetch_task_path(@task),
                   notice: t('notices.admin.open_library_fetch_tasks.apply_summary.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message

@@ -13,6 +13,10 @@
 @import 'cover_designs';
 @import 'fonts';
 
+:root {
+  --bs-btn-disabled-opacity: 0.9;
+}
+
 a[href^='http'] {
   color: $orange-600;
 }

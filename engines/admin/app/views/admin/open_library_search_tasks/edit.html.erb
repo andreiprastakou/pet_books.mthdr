@@ -1,47 +1,22 @@
-<% book_ol_links = @book.external_identities.open_library.filter_map { |identity|
-  url = Admin::ExternalLinkBuilders::OpenLibrary::Work.call(identity.external_id)
-  url && external_link_to(identity.external_id, url)
-} %>
-
-<%= turbo_frame_tag "task_apply_form", target: "_top" do %>
+<%= turbo_frame_tag "task_apply_form" do %>
   <div class="card mt-2">
     <div class="card-header">
       Open Library search results
     </div>
 
     <div class="card-body">
-      <div class="mb-4">
-        <div class="row mb-2">
-          <div class="col-md-3 font-weight-bold text-end">Title:</div>
-          <div class="col-md-9">
-            <%= @book.title %><% if book_ol_links.any? %> (<%= safe_join(book_ol_links, ', ') %>)<% end %>
-          </div>
+      <% if notice.present? %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-        <div class="row mb-2">
-          <div class="col-md-3 font-weight-bold text-end">Year:</div>
-          <div class="col-md-9"><%= @book.year_published %></div>
+      <% end %>
+      <% if flash[:error].present? %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= flash[:error] %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         </div>
-        <div class="row mb-2">
-          <div class="col-md-3 font-weight-bold text-end">Authors:</div>
-          <div class="col-md-9">
-            <% if @book.authors.empty? %>
-              Unknown Author
-            <% else %>
-              <%= safe_join(@book.authors.map { |author|
-                links = author.external_identities.open_library.filter_map { |identity|
-                  url = Admin::ExternalLinkBuilders::OpenLibrary::Author.call(identity.external_id)
-                  url && external_link_to(identity.external_id, url)
-                }
-                if links.any?
-                  safe_join([author.fullname, ' (', safe_join(links, ', '), ')'])
-                else
-                  author.fullname
-                end
-              }, ', ') %>
-            <% end %>
-          </div>
-        </div>
-      </div>
+      <% end %>
 
       <% if @search_results.empty? %>
         <p class="text-muted">No search results returned.</p>
@@ -65,8 +40,7 @@
                   <% if work_olid.present? %>
                     <%= form_with url: add_work_identity_admin_open_library_search_task_path(@task),
                       method: :post,
-                      class: "d-flex align-items-center justify-content-center gap-2 mb-2",
-                      data: { turbo: false } do %>
+                      class: "d-flex align-items-center justify-content-center gap-2 mb-2" do %>
                       <%= hidden_field_tag :work_key, work_olid %>
                       <% if work_url %>
                         <%= external_link_to work_olid, work_url %>
@@ -85,15 +59,13 @@
                     <% existing_identity = @author_identities_by_olid[author_olid] %>
                     <% existing_author = existing_identity&.owner %>
                     <% already_assigned = existing_author.present? %>
-                    <% author_on_book = existing_author && @book.authors.include?(existing_author) %>
+                    <% author_on_book = existing_author && @book.author_ids.include?(existing_author.id) %>
                     <% select_authors = @book.authors.to_a %>
                     <% select_authors = (select_authors + [existing_author]).uniq if existing_author && !author_on_book %>
                     <div class="mb-2">
                       <%= form_with url: add_author_identity_admin_open_library_search_task_path(@task),
                         method: :post,
-                        class: "d-flex align-items-center justify-content-center gap-2 flex-wrap",
-                        data: { turbo: false } do %>
-                        <%= hidden_field_tag :author_key, author_olid %>
+                        class: "d-flex align-items-center justify-content-center gap-2 flex-wrap" do %>                        <%= hidden_field_tag :author_key, author_olid %>
                         <% if author_url %>
                           <%= external_link_to author_olid, author_url %>
                         <% else %>

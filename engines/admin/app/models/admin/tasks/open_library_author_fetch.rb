@@ -82,7 +82,10 @@ module Admin
         link_url = url.to_s.strip
         raise ArgumentError, 'URL is required' if link_url.blank?
 
-        author.external_links.create!(external_resource: resource, url: link_url)
+        link = author.external_links.find_or_initialize_by(url: link_url)
+        link.external_resource = resource
+        link.save!
+        link
       end
 
       def fetched_data_normalized

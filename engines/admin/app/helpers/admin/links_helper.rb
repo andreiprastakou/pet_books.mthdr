@@ -4,6 +4,15 @@ module Admin
       link_to text, url, options.reverse_merge(target: '_blank')
     end
 
+    # Colored chain icon (emoji glyphs ignore CSS `color`).
+    def external_link_icon_to(url, **options)
+      external_link_to(
+        external_link_chain_icon,
+        url,
+        **options.reverse_merge(class: 'b-external-link-icon-link', title: url.to_s)
+      )
+    end
+
     def display_link_to(text, url, **options)
       link_to text, url, options.reverse_merge(target: '_blank', class: 'btn btn-link display-link')
     end
@@ -110,37 +119,32 @@ module Admin
       case task
       when Admin::Tasks::AiBookFetch, Admin::Tasks::LibraryThingBookSearch, Admin::Tasks::OpenLibraryBookSearch,
            Admin::Tasks::WikidataBookSearch, Admin::Tasks::WikipediaBookFetch
-        admin_link_to "Book \"#{task.book.title}\" by #{task.book.author_names_label}", admin_book_path(task.book)
-      when Admin::Tasks::OpenLibraryBookFetch, Admin::Tasks::OpenLibraryAuthorFetch
-        identity = task.external_identity
-        owner = identity.owner
-        if owner.is_a?(::Book)
-          admin_link_to "Open Library #{identity.external_id} (#{owner.title})",
-                        admin_book_external_identity_path(owner, identity)
-        elsif owner.is_a?(::Author)
-          admin_link_to "Open Library #{identity.external_id} (#{owner.fullname})",
-                        admin_author_external_identity_path(owner, identity)
-        else
-          "Open Library #{identity.external_id}"
-        end
-      when Admin::Tasks::WikidataBookFetch, Admin::Tasks::WikidataAuthorFetch
-        identity = task.external_identity
-        owner = identity.owner
-        if owner.is_a?(::Book)
-          admin_link_to "Wikidata #{identity.external_id} (#{owner.title})",
-                        admin_book_external_identity_path(owner, identity)
-        elsif owner.is_a?(::Author)
-          admin_link_to "Wikidata #{identity.external_id} (#{owner.fullname})",
-                        admin_author_external_identity_path(owner, identity)
-        else
-          "Wikidata #{identity.external_id}"
-        end
+           admin_link_to_data_fetch_task_book(task.book)
       when Admin::Tasks::AiAuthorWorksParse, Admin::Tasks::AiAuthorWorksFetch, Admin::Tasks::OpenLibraryAuthorSearch,
-           Admin::Tasks::WikidataAuthorSearch, Admin::Tasks::WikipediaAuthorFetch
-        admin_link_to "Author #{task.author.fullname}", admin_author_path(task.author)
+            Admin::Tasks::WikidataAuthorSearch, Admin::Tasks::WikipediaAuthorFetch
+        admin_link_to_data_fetch_task_author(task.author)
+      when Admin::Tasks::OpenLibraryBookFetch, Admin::Tasks::OpenLibraryAuthorFetch,
+           Admin::Tasks::WikidataBookFetch, Admin::Tasks::WikidataAuthorFetch
+        identity = task.external_identity
+        owner = identity.owner
+        if owner.is_a?(::Book)
+          admin_link_to_data_fetch_task_book(owner)
+        elsif owner.is_a?(::Author)
+          admin_link_to_data_fetch_task_author(owner)
+        else
+          "#{identity.external_resource} #{identity.external_id}"
+        end
       else
         "Entity #{task.target_type} with ID=#{task.target_id}"
       end
+    end
+
+    def admin_link_to_data_fetch_task_book(book)
+      admin_link_to "Book \"#{book.title}\" (#{book.year_published}) by #{book.author_names_label}", admin_book_path(book)
+    end
+
+    def admin_link_to_data_fetch_task_author(author)
+      admin_link_to "Author #{author.fullname}", admin_author_path(author)
     end
 
     def admin_nav_series_index_link
@@ -250,6 +254,32 @@ module Admin
         end
       end
       content_for :page_title, safe_join(crumbs_for_page_title, ' > ')
+    end
+
+    def external_link_chain_icon
+      tag.svg(
+        xmlns: 'http://www.w3.org/2000/svg',
+        width: 16,
+        height: 16,
+        fill: 'currentColor',
+        viewBox: '0 0 16 16',
+        class: 'b-external-link-icon',
+        'aria-hidden': true
+      ) do
+        safe_join(
+          [
+            tag.path(
+              d: 'M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1 ' \
+                 '1 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4 4 0 0 1-' \
+                 '.128-1.287z'
+            ),
+            tag.path(
+              d: 'M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 ' \
+                 '2.83l-.793.792c.192.4.3.84.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243z'
+            )
+          ]
+        )
+      end
     end
   end
 end

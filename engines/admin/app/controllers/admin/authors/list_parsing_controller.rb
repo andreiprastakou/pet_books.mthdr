@@ -20,11 +20,12 @@ module Admin
         updater = Admin::BooksBatchUpdater.new
         if apply_via_updater(updater)
           @task.verified!
-          redirect_to admin_data_fetch_task_path(@task), notice: t('notices.admin.books_batch.updates_applied')
+          redirect_to edit_admin_author_list_parsing_path(@author, @task),
+                      notice: t('notices.admin.books_batch.updates_applied')
         else
           flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
           prepare_form_data
-          render :edit
+          render :edit, status: :unprocessable_content
         end
       end
 

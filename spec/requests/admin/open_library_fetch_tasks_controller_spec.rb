@@ -79,10 +79,10 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
            headers: authorization_header
     end
 
-    it 'creates an identity and reloads the task page' do
+    it 'creates an identity and reloads the apply form' do
       expect { send_request }.to change(book.external_identities, :count).by(1)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
       expect(flash[:notice]).to eq('External identity added.')
     end
   end
@@ -94,7 +94,7 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
            headers: authorization_header
     end
 
-    it 'updates the book description and reloads the task page' do
+    it 'updates the book description and reloads the apply form' do
       send_request
       book.reload
       applied = book.description_for_source(task)
@@ -103,7 +103,7 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
       expect(applied.source_type).to eq(task.class.name)
       expect(applied.source_id).to eq(task.id)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
       expect(flash[:notice]).to eq('Book summary updated.')
     end
   end

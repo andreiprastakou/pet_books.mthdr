@@ -92,10 +92,10 @@ RSpec.describe Admin::OpenLibrarySearchTasksController do
            headers: authorization_header
     end
 
-    it 'creates a work identity and reloads the task page' do
+    it 'creates a work identity and reloads the apply form' do
       expect { send_request }.to change(book.external_identities, :count).by(1)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_search_task_path(task))
       expect(flash[:notice]).to eq('Open Library work identity added.')
     end
   end
@@ -107,10 +107,10 @@ RSpec.describe Admin::OpenLibrarySearchTasksController do
            headers: authorization_header
     end
 
-    it 'creates an author identity and reloads the task page' do
+    it 'creates an author identity and reloads the apply form' do
       expect { send_request }.to change(author.external_identities, :count).by(1)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_search_task_path(task))
       expect(flash[:notice]).to eq('Open Library author identity added.')
     end
   end

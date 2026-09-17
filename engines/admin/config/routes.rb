@@ -79,25 +79,25 @@ Admin::Engine.routes.draw do
       end
     end
 
-    resources :open_library_author_search_tasks, only: [] do
+    resources :open_library_author_search_tasks, only: %i[edit] do
       member do
         post :add_author_identity
       end
     end
 
-    resources :wikidata_book_search_tasks, only: [] do
+    resources :wikidata_book_search_tasks, only: %i[edit] do
       member do
         post :add_work_identity
       end
     end
 
-    resources :wikidata_author_search_tasks, only: [] do
+    resources :wikidata_author_search_tasks, only: %i[edit] do
       member do
         post :add_author_identity
       end
     end
 
-    resources :library_thing_book_search_tasks, only: [] do
+    resources :library_thing_book_search_tasks, only: %i[edit] do
       member do
         post :add_work_link
       end

@@ -8,7 +8,7 @@ module Admin
 
     def add_work_identity
       @task.add_work_identity!(params.require(:work_key))
-      redirect_to admin_data_fetch_task_path(@task),
+      redirect_to edit_admin_open_library_search_task_path(@task),
                   notice: t('notices.admin.open_library_search_tasks.add_work_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message
@@ -19,7 +19,7 @@ module Admin
     def add_author_identity
       author = Admin::Author.find(params.require(:author_id))
       @task.add_author_identity!(params.require(:author_key), author: author)
-      redirect_to admin_data_fetch_task_path(@task),
+      redirect_to edit_admin_open_library_search_task_path(@task),
                   notice: t('notices.admin.open_library_search_tasks.add_author_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid,
            ActiveRecord::RecordNotFound => e

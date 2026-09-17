@@ -1,0 +1,51 @@
+<%= turbo_frame_tag "task_apply_form" do %>
+  <div class="card mt-2">
+    <div class="card-header">LibraryThing search results</div>
+    <div class="card-body">
+      <% if notice.present? %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+      <% if flash[:error].present? %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= flash[:error] %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+
+      <% data = @task.fetched_data_normalized %>
+      <% if data.blank? %>
+        <p class="text-muted mb-0">No search results returned.</p>
+      <% else %>
+        <% external_link = data['external_link'] %>
+        <% current_lt_url = @book.external_links.find { |link|
+          link.external_resource == ExternalResources::LIBRARYTHING
+        }&.url %>
+        <% already_added = external_link.present? && current_lt_url == external_link %>
+        <table class="table table-bordered align-top mb-0 b-task-fetch-results">
+          <tbody>
+            <tr>
+              <td class="w-50">
+                <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(data) %></pre>
+              </td>
+              <td class="text-center">
+                <% if external_link.present? %>
+                  <%= form_with url: add_work_link_admin_library_thing_book_search_task_path(@task),
+                    method: :post,
+                    class: "d-flex align-items-center justify-content-center gap-2" do %>
+                    <%= hidden_field_tag :url, external_link %>
+                    <%= external_link_to 'librarything', external_link %>
+                    <%= submit_tag "add to the book", class: "btn btn-sm btn-outline-primary",
+                      disabled: already_added %>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+<% end %>
