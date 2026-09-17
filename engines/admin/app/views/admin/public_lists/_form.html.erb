@@ -14,11 +14,8 @@
     </div>
   </div>
 
-  <div class="mb-3" data-controller="external-links-input">
-    <%= form.label nil, "External Links", class: "form-label" %>
-    <%= render "admin/common/external_links_input",
-      form_scope: "public_list", values: external_links_to_input_entries(@public_list.external_links) %>
-  </div>
+  <%= render "admin/common/external_links_and_identities_fields",
+    form_scope: "public_list", record: @public_list %>
 
   <div class="row mb-3 b-public-list-books-input" data-controller="public-list-books-input">
     <%= render "admin/public_lists/books_input",

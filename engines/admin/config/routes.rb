@@ -13,7 +13,7 @@ Admin::Engine.routes.draw do
         resources :open_library_searches, only: %i[create]
         resources :wikidata_searches, only: %i[create]
         resources :wikipedia_fetches, only: %i[create]
-        resources :external_identities do
+        resources :external_identities, only: [] do
           resources :open_library_fetches, only: %i[create]
           resources :wikidata_fetches, only: %i[create]
         end
@@ -42,7 +42,7 @@ Admin::Engine.routes.draw do
         resources :wikidata_searches, only: %i[create]
         resources :library_thing_searches, only: %i[create]
         resources :wikipedia_fetches, only: %i[create]
-        resources :external_identities do
+        resources :external_identities, only: [] do
           resources :open_library_fetches, only: %i[create]
           resources :wikidata_fetches, only: %i[create]
         end
@@ -106,7 +106,11 @@ Admin::Engine.routes.draw do
     resources :open_library_fetch_tasks, only: %i[edit] do
       member do
         post :add_identity
+        post :add_author_identity
+        post :add_genre_identity
+        post :add_series_identity
         post :apply_summary
+        post :add_link
       end
     end
 

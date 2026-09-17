@@ -66,11 +66,8 @@
       form_scope: "author", values: descriptions_to_input_entries(@author.descriptions) %>
   </div>
 
-  <div class="mb-3" data-controller="external-links-input">
-    <%= form.label nil, "External Links", class: "form-label" %>
-    <%= render "admin/common/external_links_input",
-      form_scope: "author", values: external_links_to_input_entries(@author.external_links) %>
-  </div>
+  <%= render "admin/common/external_links_and_identities_fields",
+    form_scope: "author", record: author %>
 
   <div class="mb-3">
     <%= form.submit class: "btn btn-primary" %>

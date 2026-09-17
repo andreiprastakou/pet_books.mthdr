@@ -17,10 +17,13 @@ module Admin
       literary_form
     ].index_by(&:to_s).freeze
 
-    PARAMS = %i[
+    PARAMS = (%i[
       name
       cover_design_id
-    ].freeze
+    ] + [{
+      external_links_attributes: {},
+      external_identities_attributes: {}
+    }]).freeze
 
     def index
       @genres = apply_sort(

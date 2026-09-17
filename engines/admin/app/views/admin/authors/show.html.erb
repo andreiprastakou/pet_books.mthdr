@@ -123,9 +123,6 @@
                 <% else %>
                   <%= identity_label %>
                 <% end %>
-                <%= admin_link_to "edit", edit_admin_author_external_identity_path(@author, external_identity) %>
-                <%= admin_link_to "delete", admin_author_external_identity_path(@author, external_identity),
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
                 <% if external_identity.open_library? %>
                   <%= admin_link_to "fetch data",
                     admin_author_external_identity_open_library_fetches_path(@author, external_identity),
@@ -137,7 +134,6 @@
                 <% end %>
               </div>
             <% end %>
-            <%= admin_buttonly_link_to "Add", new_admin_author_external_identity_path(@author) %>
           </div>
         </div>
       </div>

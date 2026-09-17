@@ -12,7 +12,7 @@ module Admin
 
     PARAMS = ([
       :year,
-      { book_public_lists_attributes: {}, external_links_attributes: {} }
+      { book_public_lists_attributes: {}, external_links_attributes: {}, external_identities_attributes: {} }
     ]).freeze
 
     def show

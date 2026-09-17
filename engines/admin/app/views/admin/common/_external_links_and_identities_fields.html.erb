@@ -1,0 +1,12 @@
+<%# locals: form_scope, record %>
+<div class="mb-3" data-controller="external-links-input">
+  <%= label_tag nil, "External Links", class: "form-label" %>
+  <%= render "admin/common/external_links_input",
+    form_scope: form_scope, values: external_links_to_input_entries(record.external_links) %>
+</div>
+
+<div class="mb-3" data-controller="external-identities-input">
+  <%= label_tag nil, "External Identities", class: "form-label" %>
+  <%= render "admin/common/external_identities_input",
+    form_scope: form_scope, values: external_identities_to_input_entries(record.external_identities) %>
+</div>

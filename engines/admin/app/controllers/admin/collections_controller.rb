@@ -23,7 +23,8 @@ module Admin
       year_published
     ] + [{
       book_ids: [],
-      external_links_attributes: {}
+      external_links_attributes: {},
+      external_identities_attributes: {}
     }]).freeze
 
     def index

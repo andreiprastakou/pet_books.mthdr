@@ -85,6 +85,16 @@ module Admin
       end
     end
 
+    def external_identities_to_input_entries(external_identities)
+      external_identities.map do |external_identity|
+        {
+          id: external_identity.id,
+          external_resource: external_identity.external_resource,
+          external_id: external_identity.external_id
+        }
+      end
+    end
+
     def descriptions_to_input_entries(descriptions)
       descriptions.map do |description|
         {

@@ -68,13 +68,6 @@ en:
       data_fetch_tasks:
         status_change:
           success: "Task ID=%{id} marked as %{status}"
-      external_identities:
-        create:
-          success: "External identity was successfully created."
-        update:
-          success: "External identity was successfully updated."
-        destroy:
-          success: "External identity was successfully destroyed."
       generative_summaries:
         create:
           success: "Task has been queued for processing."
@@ -103,8 +96,17 @@ en:
       open_library_fetch_tasks:
         add_identity:
           success: "External identity added."
+        add_author_identity:
+          success: "Open Library author identity added."
+        add_genre_identity:
+          success: "Open Library genre identity added."
+        add_series_identity:
+          success: "Open Library series identity added."
         apply_summary:
           success: "Book summary updated."
+        add_link:
+          success: "External link added."
+          updated: "External link label updated."
       open_library_author_fetch_tasks:
         apply_birth_year:
           success: "Birth year updated."

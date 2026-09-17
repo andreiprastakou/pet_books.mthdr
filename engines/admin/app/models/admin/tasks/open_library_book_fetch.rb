@@ -60,11 +60,63 @@ module Admin
         Admin::ExternalIdentityIntroductor.call(identity)
       end
 
+      def add_author_identity!(author_key, author:)
+        olid = Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(author_key)
+        raise ArgumentError, 'Invalid Open Library author key' if olid.blank?
+        raise ArgumentError, 'Author is required' if author.blank?
+        raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
+
+        identity = Admin::Author.cast(author).external_identities.create!(
+          external_resource: ExternalResources::OPEN_LIBRARY,
+          external_id: olid
+        )
+        Admin::ExternalIdentityIntroductor.call(identity)
+      end
+
+      def add_genre_identity!(genre_key, genre:)
+        olid = self.class.normalize_open_library_key(genre_key)
+        raise ArgumentError, 'Invalid Open Library genre key' if olid.blank?
+        raise ArgumentError, 'Genre is required' if genre.blank?
+        raise ArgumentError, 'Genre is not linked to this book' unless book.genres.exists?(genre_id: genre.id)
+
+        identity = Admin::Genre.cast(genre).external_identities.create!(
+          external_resource: ExternalResources::OPEN_LIBRARY,
+          external_id: olid
+        )
+        Admin::ExternalIdentityIntroductor.call(identity)
+      end
+
+      def add_series_identity!(series_key, series:)
+        olid = self.class.normalize_open_library_key(series_key)
+        raise ArgumentError, 'Invalid Open Library series key' if olid.blank?
+        raise ArgumentError, 'Series is required' if series.blank?
+        raise ArgumentError, 'Series is not linked to this book' unless book.series.exists?(id: series.id)
+
+        identity = Admin::Series.cast(series).external_identities.create!(
+          external_resource: ExternalResources::OPEN_LIBRARY,
+          external_id: olid
+        )
+        Admin::ExternalIdentityIntroductor.call(identity)
+      end
+
       def apply_summary!(text)
         summary = text.to_s.strip
         raise ArgumentError, 'Summary is required' if summary.blank?
 
         book.upsert_description_from_source!(self, text: summary, source_label: nil)
+      end
+
+      def add_link!(url, external_resource:)
+        resource = external_resource.to_s.strip
+        raise ArgumentError, 'External resource is required' if resource.blank?
+
+        link_url = url.to_s.strip
+        raise ArgumentError, 'URL is required' if link_url.blank?
+
+        link = book.external_links.find_or_initialize_by(url: link_url)
+        link.external_resource = resource
+        link.save!
+        link
       end
 
       def fetched_data_normalized
@@ -78,11 +130,37 @@ module Admin
           'genres' => fetched_id_entries(data['genres']),
           'series' => fetched_series_entries(data['series']),
           'identifiers' => fetched_identifier_entries(data['identifiers']),
-          'links' => fetched_link_urls(data['links']),
+          'links' => fetched_link_entries(data['links']),
           'first_sentence' => fetched_text_value(data['first_sentence']),
           'subject_people' => fetched_string_list(data['subject_people']),
           'covers' => data['covers']
         }.compact_blank
+      end
+
+      def applyable_links
+        Array(fetched_data_normalized['links'])
+      end
+
+      def self.normalize_open_library_key(key)
+        value = key.to_s.strip
+        return if value.blank?
+
+        value = value.delete_prefix('https://openlibrary.org').delete_prefix('http://openlibrary.org')
+        value.split('?', 2).first.to_s.split('#', 2).first.presence
+      end
+
+      def self.open_library_url(key)
+        path = normalize_open_library_key(key)
+        return if path.blank?
+        return path if path.match?(%r{\Ahttps?://}i)
+
+        "https://openlibrary.org#{path.start_with?('/') ? path : "/#{path}"}"
+      end
+
+      def self.host_from_url(url)
+        URI.parse(url.to_s.strip).host.presence
+      rescue URI::InvalidURIError
+        nil
       end
 
       private
@@ -137,13 +215,19 @@ module Admin
         end
       end
 
-      def fetched_link_urls(links)
+      def fetched_link_entries(links)
         return [] unless links.is_a?(Array)
 
         links.filter_map do |link|
           next unless link.is_a?(Hash)
 
-          link['url'].presence
+          url = link['url'].presence
+          next unless url
+
+          host = self.class.host_from_url(url)
+          next if host.blank?
+
+          { 'external_resource' => host, 'url' => url }
         end
       end
 

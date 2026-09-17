@@ -24,6 +24,7 @@ module Admin
       author_ids: [],
       series_ids: [],
       external_links_attributes: {},
+      external_identities_attributes: {},
       descriptions_attributes: {}
     }]).freeze
 
