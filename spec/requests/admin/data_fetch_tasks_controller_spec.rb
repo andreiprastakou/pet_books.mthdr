@@ -103,13 +103,11 @@ RSpec.describe Admin::DataFetchTasksController do
         )
       end
 
-      it 'returns a successful response with usable values' do
+      it 'returns a successful response' do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_book_fetch')
-        expect(response.body).to include('open_library')
-        expect(response.body).to include('OL27482W')
-        expect(response.body).to include('en.wikipedia.org')
+        expect(response.body).to include(edit_admin_wikidata_book_fetch_task_path(task))
       end
     end
 

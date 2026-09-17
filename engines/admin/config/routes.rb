@@ -124,6 +124,18 @@ Admin::Engine.routes.draw do
       end
     end
 
+    resources :wikidata_book_fetch_tasks, only: %i[edit] do
+      member do
+        post :apply_year
+        post :add_identity
+        post :add_author_identity
+        post :add_genre_identity
+        post :add_series_identity
+        post :add_link
+        post :add_wikipedia_link
+      end
+    end
+
     resources :genres
 
     resources :public_list_types do
@@ -141,6 +153,10 @@ Admin::Engine.routes.draw do
         end
 
         namespace :books do
+          resource :search, only: :show, controller: 'search'
+        end
+
+        namespace :genres do
           resource :search, only: :show, controller: 'search'
         end
 

@@ -38,6 +38,14 @@
       width: 5.5rem;
     }
   }
+
+  form.b-task-link-form {
+    .b-reversible-input-container {
+      flex: 0 1 auto;
+      width: 12rem;
+      max-width: 100%;
+    }
+  }
 }
 
 a.b-external-link-icon-link {
