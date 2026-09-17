@@ -85,10 +85,38 @@ Admin::Engine.routes.draw do
       end
     end
 
+    resources :wikidata_book_search_tasks, only: [] do
+      member do
+        post :add_work_identity
+      end
+    end
+
+    resources :wikidata_author_search_tasks, only: [] do
+      member do
+        post :add_author_identity
+      end
+    end
+
+    resources :library_thing_book_search_tasks, only: [] do
+      member do
+        post :add_work_link
+      end
+    end
+
     resources :open_library_fetch_tasks, only: %i[edit] do
       member do
         post :add_identity
         post :apply_summary
+      end
+    end
+
+    resources :open_library_author_fetch_tasks, only: %i[edit] do
+      member do
+        post :apply_birth_year
+        post :apply_death_year
+        post :apply_description
+        post :add_identity
+        post :add_link
       end
     end
 

@@ -110,8 +110,28 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
       expect(described_class.link_builder_for('wikidata', ::Author)).to eq(Admin::ExternalLinkBuilders::Wikidata)
     end
 
+    it 'returns the author LibraryThing author builder' do
+      expect(described_class.link_builder_for('librarything', ::Author))
+        .to eq(Admin::ExternalLinkBuilders::LibraryThing::Author)
+    end
+
+    it 'returns the book LibraryThing work builder' do
+      expect(described_class.link_builder_for(:librarything, ::Book))
+        .to eq(Admin::ExternalLinkBuilders::LibraryThing::Work)
+    end
+
+    it 'returns the author Goodreads author builder' do
+      expect(described_class.link_builder_for('goodreads', ::Author))
+        .to eq(Admin::ExternalLinkBuilders::Goodreads::Author)
+    end
+
+    it 'returns the book Goodreads work builder' do
+      expect(described_class.link_builder_for(:goodreads, ::Book))
+        .to eq(Admin::ExternalLinkBuilders::Goodreads::Work)
+    end
+
     it 'returns nil when no builder is defined' do
-      expect(described_class.link_builder_for('goodreads', ::Author)).to be_nil
+      expect(described_class.link_builder_for('isfdb', ::Author)).to be_nil
     end
   end
 end

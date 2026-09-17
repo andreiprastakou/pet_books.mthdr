@@ -49,6 +49,42 @@ module Admin
         end
       end
 
+      def apply_birth_year!(year = nil)
+        apply_year!(:birth_year, year, fetched_data_normalized['birth_date'])
+      end
+
+      def apply_death_year!(year = nil)
+        apply_year!(:death_year, year, fetched_data_normalized['death_date'])
+      end
+
+      def apply_description!(text)
+        summary = text.to_s.strip
+        raise ArgumentError, 'Description is required' if summary.blank?
+
+        author.upsert_description_from_source!(self, text: summary, source_label: nil)
+      end
+
+      def add_identity!(external_resource, external_id)
+        resource = external_resource.to_s
+        raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
+
+        id = external_id.to_s.strip
+        raise ArgumentError, 'External ID is required' if id.blank?
+
+        identity = author.external_identities.create!(external_resource: resource, external_id: id)
+        Admin::ExternalIdentityIntroductor.call(identity)
+      end
+
+      def add_link!(url, external_resource:)
+        resource = external_resource.to_s.strip
+        raise ArgumentError, 'External resource is required' if resource.blank?
+
+        link_url = url.to_s.strip
+        raise ArgumentError, 'URL is required' if link_url.blank?
+
+        author.external_links.create!(external_resource: resource, url: link_url)
+      end
+
       def fetched_data_normalized
         data = fetched_data
         return {} unless data.is_a?(Hash)
@@ -66,7 +102,53 @@ module Admin
         }.compact_blank
       end
 
+      def applyable_remote_ids
+        Array(fetched_data_normalized['remote_ids']).select do |entry|
+          Admin::ExternalIdentity.external_resources.key?(entry['external_resource'].to_s)
+        end
+      end
+
+      def applyable_links
+        Array(fetched_data_normalized['links']).filter_map do |link|
+          url = link['url'].presence
+          next unless url
+
+          resource = self.class.external_resource_from_label(link['label'])
+          next if resource.blank?
+
+          { 'external_resource' => resource, 'url' => url }
+        end
+      end
+
+      def description_for_textarea
+        self.class.filter_bio_reference_links(fetched_data_normalized['bio'])
+      end
+
+      def self.parse_year(date_string)
+        date_string.to_s[/\b(\d{4})\b/, 1]&.to_i
+      end
+
+      # Open Library bios use markdown reference links like "[1][1]" / "[label][id]".
+      def self.filter_bio_reference_links(text)
+        text.to_s.gsub(/\[([^\]]+)\]\[[^\]]+\]/, '\1').presence
+      end
+
+      # Open Library link titles sometimes include boilerplate like "Author's …" / "… Author Entry".
+      def self.external_resource_from_label(label)
+        value = label.to_s.strip
+        return if value.blank?
+
+        value.delete_prefix("Author's ").delete_suffix(' Author Entry').strip.presence
+      end
+
       private
+
+      def apply_year!(attribute, year, date_string)
+        value = year.presence || self.class.parse_year(date_string)
+        raise ArgumentError, 'Year is required' if value.blank?
+
+        author.update!(attribute => value.to_i)
+      end
 
       def fetched_text_value(value)
         case value

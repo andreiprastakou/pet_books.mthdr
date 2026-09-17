@@ -86,22 +86,6 @@ class Book < ApplicationRecord
     descriptions.first
   end
 
-  def description_for_source(source)
-    source_type = source.is_a?(String) ? source : source.class.name
-    descriptions.find_by(source_type: source_type)
-  end
-
-  def upsert_description_from_source!(source, text:, source_label: nil)
-    description = descriptions.find_or_initialize_by(source_type: source.class.name)
-    description.assign_attributes(
-      text: text,
-      source_label: source_label.presence,
-      source_id: source.id
-    )
-    description.save!
-    description
-  end
-
   def author_names_label
     return 'Unknown Author' if authors.empty?
 

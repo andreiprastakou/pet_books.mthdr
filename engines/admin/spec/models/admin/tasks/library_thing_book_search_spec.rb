@@ -75,6 +75,66 @@ RSpec.describe Admin::Tasks::LibraryThingBookSearch do
     end
   end
 
+  describe '#fetched_data_normalized' do
+    let(:task) { build(:library_thing_search_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      JSON.parse(
+        File.read(
+          Rails.root.join(
+            'engines/admin/spec/fixtures/library_thing/book_search_by_title.json'
+          )
+        )
+      )
+    end
+
+    it 'returns the LibraryThing work link' do
+      expect(task.fetched_data_normalized).to eq(
+        'external_link' => 'https://www.librarything.com/work/31661953'
+      )
+    end
+
+    context 'when fetched data is blank' do
+      let(:fetched_data) { nil }
+
+      it 'returns an empty hash' do
+        expect(task.fetched_data_normalized).to eq({})
+      end
+    end
+
+    context 'when the response has no link' do
+      let(:fetched_data) { { 'idlist' => { 'title' => 'Unknown' } } }
+
+      it 'returns an empty hash' do
+        expect(task.fetched_data_normalized).to eq({})
+      end
+    end
+  end
+
+  describe '#add_work_link!' do
+    subject(:call) { task.add_work_link!(url) }
+
+    let(:task) { create(:library_thing_search_task, target: book, status: :fetched) }
+    let(:book) { create(:book) }
+    let(:url) { 'https://www.librarything.com/work/31661953' }
+
+    it 'creates an external link without changing task status' do
+      expect { call }.to change(book.external_links, :count).by(1)
+      link = call
+      expect(link.external_resource).to eq(ExternalResources::LIBRARYTHING)
+      expect(link.url).to eq('https://www.librarything.com/work/31661953')
+      expect(task.reload.status).to eq('fetched')
+    end
+
+    context 'when url is invalid' do
+      let(:url) { 'not-a-librarything-url' }
+
+      it 'raises and does not change status' do
+        expect { call }.to raise_error(ArgumentError, 'Invalid LibraryThing work url')
+        expect(task.reload.status).to eq('fetched')
+      end
+    end
+  end
+
   describe '#add_work_identity!' do
     subject(:call) { task.add_work_identity!(work_id) }
 
