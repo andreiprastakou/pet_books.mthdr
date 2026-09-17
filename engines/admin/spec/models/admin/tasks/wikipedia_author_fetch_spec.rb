@@ -110,6 +110,42 @@ RSpec.describe Admin::Tasks::WikipediaAuthorFetch do
     end
   end
 
+  describe '#apply_description!' do
+    subject(:call) { task.apply_description!('Updated description from Wikipedia') }
+
+    let(:author) { create(:author) }
+    let(:task) { create(:wikipedia_author_fetch_task, target: author) }
+
+    it 'upserts an author description for the task source' do
+      call
+      description = author.reload.description_for_source(task)
+      expect(description.text).to eq('Updated description from Wikipedia')
+      expect(description.source_label).to be_nil
+      expect(description.source_type).to eq(task.class.name)
+      expect(description.source_id).to eq(task.id)
+    end
+
+    context 'when a description for the source type already exists' do
+      before do
+        create(
+          :description,
+          owner: author,
+          text: 'Old description',
+          source_label: 'Wikipedia',
+          source_type: task.class.name,
+          source_id: task.id
+        )
+      end
+
+      it 'updates the existing description and clears source_label' do
+        expect { call }.not_to change(Description, :count)
+        description = author.reload.description_for_source(task)
+        expect(description.text).to eq('Updated description from Wikipedia')
+        expect(description.source_label).to be_nil
+      end
+    end
+  end
+
   describe '#fetched_data_normalized' do
     let(:task) { build(:wikipedia_author_fetch_task, fetched_data: fetched_data) }
 

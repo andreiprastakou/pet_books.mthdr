@@ -137,6 +137,18 @@ Admin::Engine.routes.draw do
       end
     end
 
+    resources :wikipedia_book_fetch_tasks, only: %i[edit] do
+      member do
+        post :apply_summary
+      end
+    end
+
+    resources :wikipedia_author_fetch_tasks, only: %i[edit] do
+      member do
+        post :apply_description
+      end
+    end
+
     resources :genres
 
     resources :public_list_types do

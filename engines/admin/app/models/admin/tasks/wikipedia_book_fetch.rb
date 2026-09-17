@@ -37,6 +37,13 @@ module Admin
         Admin::Book.cast(target)
       end
 
+      def apply_summary!(text)
+        summary = text.to_s.strip
+        raise ArgumentError, 'Summary is required' if summary.blank?
+
+        book.upsert_description_from_source!(self, text: summary, source_label: nil)
+      end
+
       private
 
       def wikipedia_owner
