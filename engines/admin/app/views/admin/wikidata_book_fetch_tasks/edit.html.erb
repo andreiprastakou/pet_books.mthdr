@@ -74,7 +74,7 @@
                         class: 'form-select form-select-sm w-auto',
                         id: "author_id_#{index}",
                         disabled: already_assigned || select_authors.empty? %>
-                      <%= submit_tag 'add to the author', class: 'btn btn-sm btn-outline-primary',
+                      <%= submit_tag 'update author', class: 'btn btn-sm btn-outline-primary',
                         disabled: already_assigned || select_authors.empty? %>
                     <% end %>
                     <% if existing_author && !author_on_book %>
@@ -125,7 +125,7 @@
                           } %>
                         <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
                       </div>
-                      <%= submit_tag 'add to the genre',
+                      <%= submit_tag 'upsert genre',
                         class: 'btn btn-sm btn-outline-primary',
                         disabled: fully_applied || prefill_label.blank?,
                         data: {
@@ -181,7 +181,7 @@
                           } %>
                         <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
                       </div>
-                      <%= submit_tag 'add to the series',
+                      <%= submit_tag 'upsert series',
                         class: 'btn btn-sm btn-outline-primary',
                         disabled: fully_applied || prefill_label.blank?,
                         data: {
