@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Admin::ExternalLinkBuilders::Goodreads do
+RSpec.describe Admin::ExternalLinkBuilders::Goodreads::Work do
   describe '.call' do
     subject(:result) { described_class.call(identificator) }
 

@@ -8,13 +8,15 @@ module Admin
     BOOK_LINK_BUILDERS = {
       ExternalResources::OPEN_LIBRARY => Admin::ExternalLinkBuilders::OpenLibrary::Work,
       ExternalResources::WIKIDATA => Admin::ExternalLinkBuilders::Wikidata,
-      ExternalResources::LIBRARYTHING => Admin::ExternalLinkBuilders::LibraryThing,
-      ExternalResources::GOODREADS => Admin::ExternalLinkBuilders::Goodreads
+      ExternalResources::LIBRARYTHING => Admin::ExternalLinkBuilders::LibraryThing::Work,
+      ExternalResources::GOODREADS => Admin::ExternalLinkBuilders::Goodreads::Work
     }.freeze
 
     AUTHOR_LINK_BUILDERS = {
       ExternalResources::OPEN_LIBRARY => Admin::ExternalLinkBuilders::OpenLibrary::Author,
-      ExternalResources::WIKIDATA => Admin::ExternalLinkBuilders::Wikidata
+      ExternalResources::WIKIDATA => Admin::ExternalLinkBuilders::Wikidata,
+      ExternalResources::LIBRARYTHING => Admin::ExternalLinkBuilders::LibraryThing::Author,
+      ExternalResources::GOODREADS => Admin::ExternalLinkBuilders::Goodreads::Author
     }.freeze
 
     FETCH_TASKS = {

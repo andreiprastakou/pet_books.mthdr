@@ -47,8 +47,25 @@ module Admin
         result
       end
 
+      def fetched_data_normalized
+        link = fetched_data.is_a?(Hash) ? fetched_data.dig('idlist', 'link').presence : nil
+        return {} if link.blank?
+
+        { 'external_link' => link }
+      end
+
+      def add_work_link!(url)
+        normalized_url = Admin::ExternalLinkBuilders::LibraryThing::Work.call(url)
+        raise ArgumentError, 'Invalid LibraryThing work url' if normalized_url.blank?
+
+        book.external_links.create!(
+          external_resource: ExternalResources::LIBRARYTHING,
+          url: normalized_url
+        )
+      end
+
       def add_work_identity!(work_id)
-        id = Admin::ExternalLinkBuilders::LibraryThing.normalize_id(work_id)
+        id = Admin::ExternalLinkBuilders::LibraryThing::Work.normalize_id(work_id)
         raise ArgumentError, 'Invalid LibraryThing work id' if id.blank?
 
         identity = book.external_identities.create!(
@@ -57,7 +74,6 @@ module Admin
         )
         Admin::ExternalIdentityIntroductor.call(identity)
       end
-
     end
   end
 end

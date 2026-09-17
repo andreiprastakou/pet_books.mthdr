@@ -110,6 +110,10 @@
                                   Admin::ExternalLinkBuilders::OpenLibrary::Author.call(external_identity.external_id)
                                 elsif external_identity.wikidata?
                                   Admin::ExternalLinkBuilders::Wikidata.call(external_identity.external_id)
+                                elsif external_identity.librarything?
+                                  Admin::ExternalLinkBuilders::LibraryThing::Author.call(external_identity.external_id)
+                                elsif external_identity.goodreads?
+                                  Admin::ExternalLinkBuilders::Goodreads::Author.call(external_identity.external_id)
                                 end
                  identity_url ||= external_identity.external_link&.url %>
               <div>

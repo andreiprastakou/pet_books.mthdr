@@ -219,4 +219,187 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
       end
     end
   end
+
+  describe '.parse_year' do
+    it 'extracts a four-digit year from a date string' do
+      expect(described_class.parse_year('9 July 1945')).to eq(1945)
+      expect(described_class.parse_year('2 September 1973')).to eq(1973)
+      expect(described_class.parse_year(nil)).to be_nil
+    end
+  end
+
+  describe '.external_resource_from_label' do
+    it 'uses the label, stripping Author boilerplate' do
+      expect(described_class.external_resource_from_label('Official Web Site'))
+        .to eq('Official Web Site')
+      expect(described_class.external_resource_from_label("Author's Wikipedia"))
+        .to eq('Wikipedia')
+      expect(described_class.external_resource_from_label('Wikipedia Author Entry'))
+        .to eq('Wikipedia')
+      expect(described_class.external_resource_from_label("Author's Wikipedia Author Entry"))
+        .to eq('Wikipedia')
+      expect(described_class.external_resource_from_label(nil)).to be_nil
+    end
+  end
+
+  describe '.filter_bio_reference_links' do
+    it 'replaces [label][id] markdown references with the label' do
+      expect(described_class.filter_bio_reference_links('See <sup>[1][1]</sup> here'))
+        .to eq('See <sup>1</sup> here')
+      expect(described_class.filter_bio_reference_links('Read [Dean Koontz][wiki] now'))
+        .to eq('Read Dean Koontz now')
+      expect(described_class.filter_bio_reference_links(nil)).to be_nil
+    end
+  end
+
+  describe '#description_for_textarea' do
+    let(:task) { build(:open_library_author_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      { 'bio' => 'Pen names.<sup>[1][1]</sup>' }
+    end
+
+    it 'returns the bio with reference links flattened' do
+      expect(task.description_for_textarea).to eq('Pen names.<sup>1</sup>')
+    end
+  end
+
+  describe '#applyable_links' do
+    let(:task) { build(:open_library_author_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      {
+        'links' => [
+          { 'title' => "Author's Wikipedia Author Entry", 'url' => 'https://en.wikipedia.org/wiki/X' },
+          { 'title' => 'Official Web Site', 'url' => 'http://www.example.com/' },
+          { 'title' => 'No url' }
+        ]
+      }
+    end
+
+    it 'maps cleaned labels to external_resource' do
+      expect(task.applyable_links).to eq(
+        [
+          { 'external_resource' => 'Wikipedia', 'url' => 'https://en.wikipedia.org/wiki/X' },
+          { 'external_resource' => 'Official Web Site', 'url' => 'http://www.example.com/' }
+        ]
+      )
+    end
+  end
+
+  describe '#applyable_remote_ids' do
+    let(:task) { build(:open_library_author_fetch_task, fetched_data: fetched_data) }
+    let(:fetched_data) do
+      {
+        'remote_ids' => {
+          'viaf' => '95218067',
+          'wikidata' => 'Q892',
+          'goodreads' => '9355',
+          'librarything' => 'koontzdean'
+        }
+      }
+    end
+
+    it 'keeps only ExternalIdentity-supported resources' do
+      expect(task.applyable_remote_ids).to eq(
+        [
+          { 'external_resource' => 'wikidata', 'external_id' => 'Q892' },
+          { 'external_resource' => 'goodreads', 'external_id' => '9355' },
+          { 'external_resource' => 'librarything', 'external_id' => 'koontzdean' }
+        ]
+      )
+    end
+  end
+
+  describe '#apply_birth_year!' do
+    subject(:call) { task.apply_birth_year! }
+
+    let(:author) { create(:author, birth_year: nil) }
+    let(:external_identity) { create(:external_identity, owner: author, external_id: 'OL26320A') }
+    let(:task) do
+      create(
+        :open_library_author_fetch_task,
+        target: external_identity,
+        status: :fetched,
+        fetched_data: { 'birth_date' => '3 January 1892' }
+      )
+    end
+
+    it 'sets the author birth year from the fetched date' do
+      expect { call }.to change { author.reload.birth_year }.from(nil).to(1892)
+      expect(task.reload.status).to eq('fetched')
+    end
+  end
+
+  describe '#apply_death_year!' do
+    subject(:call) { task.apply_death_year!(1973) }
+
+    let(:author) { create(:author, death_year: 1970) }
+    let(:external_identity) { create(:external_identity, owner: author, external_id: 'OL26320A') }
+    let(:task) do
+      create(
+        :open_library_author_fetch_task,
+        target: external_identity,
+        status: :fetched,
+        fetched_data: { 'death_date' => '2 September 1973' }
+      )
+    end
+
+    it 'updates the author death year' do
+      expect { call }.to change { author.reload.death_year }.from(1970).to(1973)
+    end
+  end
+
+  describe '#apply_description!' do
+    subject(:call) { task.apply_description!('English writer and philologist.') }
+
+    let(:author) { create(:author) }
+    let(:external_identity) { create(:external_identity, owner: author, external_id: 'OL26320A') }
+    let(:task) { create(:open_library_author_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'saves a description sourced from the task' do
+      expect { call }.to change(author.descriptions, :count).by(1)
+      description = call
+      expect(description.text).to eq('English writer and philologist.')
+      expect(description.source_type).to eq(task.class.name)
+      expect(description.source_id).to eq(task.id)
+      expect(task.reload.status).to eq('fetched')
+    end
+  end
+
+  describe '#add_identity!' do
+    subject(:call) { task.add_identity!('wikidata', 'Q892') }
+
+    let(:author) { create(:author) }
+    let(:external_identity) { create(:external_identity, owner: author, external_id: 'OL26320A') }
+    let(:task) { create(:open_library_author_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates an author external identity' do
+      identity = call
+      expect(identity.external_resource).to eq('wikidata')
+      expect(identity.external_id).to eq('Q892')
+      expect(author.external_identities.find_by!(external_resource: :wikidata, external_id: 'Q892')).to eq(identity)
+    end
+
+    context 'when the resource is unsupported' do
+      subject(:call) { task.add_identity!('viaf', '95218067') }
+
+      it 'raises' do
+        expect { call }.to raise_error(ArgumentError, 'Invalid external resource')
+      end
+    end
+  end
+
+  describe '#add_link!' do
+    subject(:call) { task.add_link!('https://en.wikipedia.org/wiki/J._R._R._Tolkien', external_resource: 'wikipedia') }
+
+    let(:author) { create(:author) }
+    let(:external_identity) { create(:external_identity, owner: author, external_id: 'OL26320A') }
+    let(:task) { create(:open_library_author_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates an author external link' do
+      expect { call }.to change(author.external_links, :count).by(1)
+      link = call
+      expect(link.external_resource).to eq('wikipedia')
+      expect(link.url).to eq('https://en.wikipedia.org/wiki/J._R._R._Tolkien')
+    end
+  end
 end
