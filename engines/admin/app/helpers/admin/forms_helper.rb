@@ -91,6 +91,7 @@ module Admin
           id: description.id,
           text: description.text,
           source_label: description.source_label,
+          display_source_label: description.display_source_label,
           priority: description.priority,
           source_type: description.source_type,
           source_id: description.source_id
