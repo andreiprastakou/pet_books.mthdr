@@ -109,6 +109,102 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     end
   end
 
+  describe '#add_author_identity!' do
+    subject(:call) { task.add_author_identity!('/authors/OL26320A', author: author) }
+
+    let(:book) { create(:book) }
+    let(:author) { create(:author) }
+    let!(:external_identity) { create(:external_identity, owner: book) }
+    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
+
+    before { create(:book_author, book: book, author: author) }
+
+    it 'creates an open library identity on the author' do
+      expect { call }.to change(author.external_identities, :count).by(1)
+      identity = author.external_identities.find_by!(external_resource: :open_library)
+      expect(identity.external_id).to eq('OL26320A')
+    end
+
+    context 'when the author is not linked to the book' do
+      subject(:call) { task.add_author_identity!('/authors/OL26320A', author: other_author) }
+
+      let(:other_author) { create(:author) }
+
+      it 'raises' do
+        expect { call }.to raise_error(ArgumentError, 'Author is not linked to this book')
+      end
+    end
+  end
+
+  describe '#add_genre_identity!' do
+    subject(:call) { task.add_genre_identity!('/tags/OL180T', genre: genre) }
+
+    let(:book) { create(:book) }
+    let(:genre) { create(:genre) }
+    let!(:external_identity) { create(:external_identity, owner: book) }
+    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
+
+    before { create(:book_genre, book: book, genre: genre) }
+
+    it 'creates an open library identity on the genre' do
+      expect { call }.to change(genre.external_identities, :count).by(1)
+      identity = genre.external_identities.find_by!(external_resource: :open_library)
+      expect(identity.external_id).to eq('/tags/OL180T')
+    end
+  end
+
+  describe '#add_series_identity!' do
+    subject(:call) { task.add_series_identity!('/series/OL123S', series: series) }
+
+    let(:book) { create(:book) }
+    let(:series) { create(:series) }
+    let!(:external_identity) { create(:external_identity, owner: book) }
+    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
+
+    before { create(:book_series, book: book, series: series) }
+
+    it 'creates an open library identity on the series' do
+      expect { call }.to change(series.external_identities, :count).by(1)
+      identity = series.external_identities.find_by!(external_resource: :open_library)
+      expect(identity.external_id).to eq('/series/OL123S')
+    end
+  end
+
+  describe '#add_link!' do
+    subject(:call) do
+      task.add_link!('https://en.wikipedia.org/wiki/The_Lord_of_the_Rings', external_resource: 'en.wikipedia.org')
+    end
+
+    let(:book) { create(:book) }
+    let(:external_identity) { create(:external_identity, owner: book) }
+    let(:task) { create(:open_library_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates an external link on the book' do
+      expect { call }.to change(book.external_links, :count).by(1)
+      link = book.external_links.find_by!(url: 'https://en.wikipedia.org/wiki/The_Lord_of_the_Rings')
+      expect(link.external_resource).to eq('en.wikipedia.org')
+      expect(call).to be_previously_new_record
+    end
+
+    context 'when the url already exists with a different label' do
+      before do
+        create(
+          :external_link,
+          owner: book,
+          external_resource: 'Wikipedia',
+          url: 'https://en.wikipedia.org/wiki/The_Lord_of_the_Rings'
+        )
+      end
+
+      it 'updates the label and reports an existing record' do
+        expect { call }.not_to change(book.external_links, :count)
+        link = call
+        expect(link.external_resource).to eq('en.wikipedia.org')
+        expect(link).not_to be_previously_new_record
+      end
+    end
+  end
+
   describe '#apply_summary!' do
     subject(:call) { task.apply_summary!('Updated summary from Open Library') }
 
@@ -198,7 +294,12 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
             { 'external_resource' => 'wikidata', 'external_id' => 'Q15228' },
             { 'external_resource' => 'goodreads', 'external_id' => '87596585' }
           ],
-          'links' => ['https://en.wikipedia.org/wiki/The_Lord_of_the_Rings'],
+          'links' => [
+            {
+              'external_resource' => 'en.wikipedia.org',
+              'url' => 'https://en.wikipedia.org/wiki/The_Lord_of_the_Rings'
+            }
+          ],
           'first_sentence' => 'When Mr. Bilbo Baggins of Bag End announced...',
           'subject_people' => ['Frodo Baggins', 'Gandalf'],
           'covers' => [12_345]
@@ -309,10 +410,19 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
               { 'external_id' => '/tags/OL170T' }
             ],
             'links' => [
-              'http://viaf.org/viaf/310270194',
-              'https://en.wikipedia.org/wiki/The_Pillars_of_the_Earth',
-              'https://ken-follett.com/books/the-pillars-of-the-earth/',
-              'https://thegreatestbooks.org/items/334'
+              { 'external_resource' => 'viaf.org', 'url' => 'http://viaf.org/viaf/310270194' },
+              {
+                'external_resource' => 'en.wikipedia.org',
+                'url' => 'https://en.wikipedia.org/wiki/The_Pillars_of_the_Earth'
+              },
+              {
+                'external_resource' => 'ken-follett.com',
+                'url' => 'https://ken-follett.com/books/the-pillars-of-the-earth/'
+              },
+              {
+                'external_resource' => 'thegreatestbooks.org',
+                'url' => 'https://thegreatestbooks.org/items/334'
+              }
             ],
             'first_sentence' =>
               'IN A BROAD VALLEY, at the foot of a sloping hillside, beside a clear bubbling stream, Tom was building a house.',

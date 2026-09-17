@@ -46,10 +46,7 @@ RSpec.describe Admin::AuthorsController do
       send_request
       expect(response.body).to include('Open Library:')
       expect(response.body).to include('OL1A')
-      expect(response.body).to include(edit_admin_author_external_identity_path(author, identity))
-      expect(response.body).to include(admin_author_external_identity_path(author, identity))
       expect(response.body).to include(admin_author_external_identity_open_library_fetches_path(author, identity))
-      expect(response.body).to include(new_admin_author_external_identity_path(author))
       expect(response.body).not_to include(admin_author_open_library_searches_path(author))
       expect(response.body).to include(admin_author_wikidata_searches_path(author))
     end
@@ -59,15 +56,9 @@ RSpec.describe Admin::AuthorsController do
       send_request
       expect(response.body).to include('Wikidata:')
       expect(response.body).to include('Q892')
-      expect(response.body).to include(edit_admin_author_external_identity_path(author, identity))
       expect(response.body).to include(admin_author_external_identity_wikidata_fetches_path(author, identity))
       expect(response.body).to include(admin_author_open_library_searches_path(author))
       expect(response.body).not_to include(admin_author_wikidata_searches_path(author))
-    end
-
-    it 'renders an Add link for external identities' do
-      send_request
-      expect(response.body).to include(new_admin_author_external_identity_path(author))
     end
   end
 
@@ -84,10 +75,12 @@ RSpec.describe Admin::AuthorsController do
   describe 'GET /admin/authors/:id/edit' do
     let(:send_request) { get edit_admin_author_path(author), headers: authorization_header }
 
-    it 'renders a successful response' do
+    it 'renders a successful response with external identities section' do
       send_request
       expect(response).to be_successful
       expect(response).to render_template 'admin/authors/edit'
+      expect(response.body).to include('External Identities')
+      expect(response.body).to include('add identity')
     end
   end
 
@@ -144,6 +137,21 @@ RSpec.describe Admin::AuthorsController do
         send_request
         author.reload
         expect(author.fullname).to eq('Jane Doe')
+      end
+
+      it 'creates external identities from nested attributes' do
+        patch admin_author_path(author),
+              params: {
+                author: {
+                  fullname: author.fullname,
+                  external_identities_attributes: {
+                    '0' => { external_resource: 'goodreads', external_id: '58' }
+                  }
+                }
+              },
+              headers: authorization_header
+
+        expect(author.external_identities.reload.find_by(external_resource: :goodreads).external_id).to eq('58')
       end
 
       it 'redirects to the author' do

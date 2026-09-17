@@ -1,0 +1,36 @@
+<div class="col-md-12">
+  <table class="table">
+    <tbody data-external-identities-input-target="identitiesList" data-values="<%= values.to_json %>">
+      <template data-external-identities-input-target="identityTemplate">
+        <tr data-name="identity">
+          <td>
+            <%= hidden_field_tag "#{form_scope}[external_identities_attributes][ENTRY_ID][id]", nil,
+              data: { name: "idInput" } %>
+            <%= hidden_field_tag "#{form_scope}[external_identities_attributes][ENTRY_ID][_destroy]", nil,
+              data: { name: "destroyInput" } %>
+            <%= select_tag "#{form_scope}[external_identities_attributes][ENTRY_ID][external_resource]",
+              options_for_select(Admin::ExternalIdentity.external_resources.keys.map { |r| [r.titleize, r] }),
+              include_blank: true, class: "form-select",
+              data: { name: "externalResource" } %>
+          </td>
+          <td>
+            <%= text_field_tag "#{form_scope}[external_identities_attributes][ENTRY_ID][external_id]", nil, class: 'form-control',
+              data: { name: "externalId" } %>
+          </td>
+          <td>
+            <%= button_tag "-", class: "btn btn-success", type: "button", tabindex: "-1",
+              data: { action: "click->external-identities-input#onClickDeleteIdentity" } %>
+          </td>
+        </tr>
+      </template>
+    </tbody>
+    <tfoot>
+      <tr class="b-external-identity-new-entry-inputs">
+        <td colspan="3">
+          <%= button_tag "add identity", class: "btn btn-success", type: "button", tabindex: "-1",
+            data: { action: "click->external-identities-input#onClickAddIdentity" } %>
+        </td>
+      </tr>
+    </tfoot>
+  </table>
+</div>

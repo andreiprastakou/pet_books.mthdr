@@ -41,17 +41,14 @@ RSpec.describe Admin::BooksController do
       expect(response).to render_template 'admin/books/show'
     end
 
-    it 'renders external identities with links and an Add button' do
+    it 'renders external identities with fetch links' do
       identity = create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL99W')
       send_request
       expect(response.body).to include('External identities:')
       expect(response.body).to include('Open Library:')
       expect(response.body).to include('OL99W')
       expect(response.body).to include('https://openlibrary.org/works/OL99W')
-      expect(response.body).to include(edit_admin_book_external_identity_path(book, identity))
-      expect(response.body).to include(admin_book_external_identity_path(book, identity))
       expect(response.body).to include(admin_book_external_identity_open_library_fetches_path(book, identity))
-      expect(response.body).to include(new_admin_book_external_identity_path(book))
       expect(response.body).not_to include('search in OpenLibrary')
       expect(response.body).to include(admin_book_wikidata_searches_path(book))
       expect(response.body).to include(admin_book_library_thing_searches_path(book))
@@ -101,10 +98,12 @@ RSpec.describe Admin::BooksController do
   describe 'GET /admin/books/:id/edit' do
     let(:send_request) { get edit_admin_book_path(book), headers: authorization_header }
 
-    it 'renders a successful response' do
+    it 'renders a successful response with external identities section' do
       send_request
       expect(response).to be_successful
       expect(response).to render_template 'admin/books/edit'
+      expect(response.body).to include('External Identities')
+      expect(response.body).to include('add identity')
     end
   end
 
@@ -166,6 +165,21 @@ RSpec.describe Admin::BooksController do
       send_request
       book.reload
       expect(book.title).to eq('Updated Book Title')
+    end
+
+    it 'creates external identities from nested attributes' do
+      patch admin_book_path(book),
+            params: {
+              book: {
+                title: book.title,
+                external_identities_attributes: {
+                  '0' => { external_resource: 'goodreads', external_id: '99999' }
+                }
+              }
+            },
+            headers: authorization_header
+
+      expect(book.external_identities.reload.find_by(external_resource: :goodreads).external_id).to eq('99999')
     end
 
     it 'redirects to the book' do

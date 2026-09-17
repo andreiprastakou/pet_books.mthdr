@@ -195,9 +195,6 @@
                 <% else %>
                   <%= identity_label %>
                 <% end %>
-                <%= admin_link_to "edit", edit_admin_book_external_identity_path(@book, external_identity) %>
-                <%= admin_link_to "delete", admin_book_external_identity_path(@book, external_identity),
-                  data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
                 <% if external_identity.open_library? %>
                   <%= admin_link_to "fetch data",
                     admin_book_external_identity_open_library_fetches_path(@book, external_identity),
@@ -209,7 +206,6 @@
                 <% end %>
               </div>
             <% end %>
-            <%= admin_buttonly_link_to "Add", new_admin_book_external_identity_path(@book) %>
           </div>
         </div>
       </div>

@@ -46,19 +46,6 @@ module Admin
       ["\"#{truncate_crumb(book.title, length: 40)}\"", admin_book_path(book)]
     end
 
-    def admin_nav_external_identity_link(owner, external_identity)
-      label = [
-        external_identity.external_resource.to_s.titleize,
-        external_identity.external_id.presence
-      ].compact.join(': ')
-      path = if owner.is_a?(::Author)
-               admin_author_external_identity_path(owner, external_identity)
-             else
-               admin_book_external_identity_path(owner, external_identity)
-             end
-      [truncate_crumb(label.presence || 'External Identity'), path]
-    end
-
     def admin_nav_ai_chats_link
       ['AI Chats', admin_ai_chats_path]
     end

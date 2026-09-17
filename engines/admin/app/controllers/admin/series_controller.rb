@@ -19,7 +19,7 @@ module Admin
 
     PARAMS = ([
       :name,
-      { external_links_attributes: {} }
+      { external_links_attributes: {}, external_identities_attributes: {} }
     ]).freeze
 
     def index
