@@ -116,6 +116,7 @@ en:
           success: "External identity added."
         add_link:
           success: "External link added."
+          updated: "External link label updated."
       open_library_searches:
         create:
           success: "Open Library search has been queued."

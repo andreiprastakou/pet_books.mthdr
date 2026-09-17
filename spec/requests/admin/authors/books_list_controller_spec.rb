@@ -107,9 +107,9 @@ RSpec.describe Admin::Authors::BooksListController do
       expect(task.reload).to be_verified
     end
 
-    it 'redirects to the data fetch task page' do
+    it 'redirects to the apply form' do
       send_request
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_author_books_list_path(author, task))
     end
 
     context 'with invalid params' do

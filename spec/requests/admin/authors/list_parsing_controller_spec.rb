@@ -106,9 +106,9 @@ RSpec.describe Admin::Authors::ListParsingController do
       expect(task.reload).to be_verified
     end
 
-    it 'redirects to the data fetch task page' do
+    it 'redirects to the apply form' do
       send_request
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_author_list_parsing_path(author, task))
       expect(flash[:notice]).to eq('Updates applied.')
     end
 

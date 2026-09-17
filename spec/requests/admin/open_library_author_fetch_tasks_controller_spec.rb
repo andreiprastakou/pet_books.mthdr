@@ -31,7 +31,7 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTasksController do
       expect(response).to be_successful
       expect(assigns(:author)).to eq(author)
       expect(response.body).to include('Open Library author fetch results')
-      expect(response.body).to include('birth year')
+      expect(response.body).to include('Born in')
       expect(response.body).to include('1945')
       expect(response.body).to include('wikidata')
       expect(response.body).to include('https://www.wikidata.org/wiki/Q272076')
@@ -43,9 +43,9 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTasksController do
       expect(response.body).to include('Official Web Site')
       expect(response.body).to include('http://www.deankoontz.com/')
       expect(response.body).to include('Dean Koontz Books in Order')
-      expect(response.body).to include('🔗')
+      expect(response.body).to include('b-external-link-icon')
       expect(response.body).to include('Description')
-      expect(response.body).to include('apply')
+      expect(response.body).to include('value="add"')
       expect(assigns(:bio)).to include('<sup>1</sup>')
       expect(assigns(:bio)).not_to include('[1][1]')
     end
@@ -62,18 +62,41 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTasksController do
         author.update!(birth_year: 1945)
       end
 
-      it 'disables matching add buttons' do
+      it 'disables matching identity add and link update-label buttons' do
         send_request
         expect(response.body).to include('disabled')
+        expect(response.body).to include('update label')
+        expect(response.body).to include('value="update"')
+      end
+    end
+
+    context 'when the author has a link with a different label' do
+      before do
+        create(
+          :external_link,
+          owner: author,
+          external_resource: 'Homepage',
+          url: 'http://www.deankoontz.com/'
+        )
+      end
+
+      it 'shows the old label hint and an enabled update-label button' do
+        send_request
+        expect(response.body).to include('data-old-value="Homepage"')
+        expect(response.body).to include('was &lt;')
+        expect(response.body).to include('value="update label"')
+        expect(response.body).not_to match(/value="update label"[^>]*disabled/)
       end
     end
 
     context 'when the author has a different birth year' do
       before { author.update!(birth_year: 1940) }
 
-      it 'offers a change-from button' do
+      it 'shows the original birth year in an input-changes hint' do
         send_request
-        expect(response.body).to include('change from 1940')
+        expect(response.body).to include('data-old-value="1940"')
+        expect(response.body).to include('was &lt;')
+        expect(response.body).to include('value="update"')
       end
     end
   end
@@ -138,6 +161,24 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTasksController do
       expect(link.url).to eq('http://www.deankoontz.com/')
       expect(response).to redirect_to(edit_admin_open_library_author_fetch_task_path(task))
       expect(flash[:notice]).to eq('External link added.')
+    end
+
+    context 'when a link with the same URL already exists' do
+      let!(:existing_link) do
+        create(
+          :external_link,
+          owner: author,
+          external_resource: 'Official Web Site',
+          url: 'http://www.deankoontz.com/'
+        )
+      end
+
+      it 'updates the existing link label' do
+        expect { send_request }.not_to change(ExternalLink, :count)
+        expect(existing_link.reload.external_resource).to eq('Homepage')
+        expect(response).to redirect_to(edit_admin_open_library_author_fetch_task_path(task))
+        expect(flash[:notice]).to eq('External link label updated.')
+      end
     end
   end
 end

@@ -15,4 +15,43 @@
     white-space: pre-wrap;
     word-break: break-word;
   }
+
+  // Keep label input + link icon + button on one row; hint stays under the input.
+  form.d-flex .b-reversible-input-container {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+  }
+
+  form.d-flex > .btn {
+    flex-shrink: 0;
+  }
+
+  form.b-task-year-form {
+    .col-form-label {
+      flex-shrink: 0;
+      padding-top: 0.25rem;
+    }
+
+    .b-reversible-input-container {
+      flex: 0 0 auto;
+      width: 5.5rem;
+    }
+  }
+}
+
+a.b-external-link-icon-link {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  line-height: 1;
+  padding-top: 0.375rem;
+  padding-bottom: 0.125rem;
+  // text-decoration is unreliable on flex+SVG anchors; border matches text-link look
+  border-bottom: 1px solid currentColor;
+  text-decoration: none;
+
+  .b-external-link-icon {
+    display: block;
+  }
 }

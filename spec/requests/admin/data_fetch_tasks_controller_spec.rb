@@ -162,8 +162,8 @@ RSpec.describe Admin::DataFetchTasksController do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_book_search')
-        expect(response.body).to include('Q320423')
-        expect(response.body).to include('The Spy Who Loved Me')
+        expect(response.body).to include('task_apply_form')
+        expect(response.body).to include(edit_admin_wikidata_book_search_task_path(task))
       end
     end
 
@@ -186,8 +186,8 @@ RSpec.describe Admin::DataFetchTasksController do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_search')
-        expect(response.body).to include('Q892')
-        expect(response.body).to include('J. R. R. Tolkien')
+        expect(response.body).to include('task_apply_form')
+        expect(response.body).to include(edit_admin_wikidata_author_search_task_path(task))
       end
     end
 
@@ -248,6 +248,14 @@ RSpec.describe Admin::DataFetchTasksController do
 
     context 'when the type-specific partial is missing' do
       let(:task) { create(:library_thing_search_task, status: :fetched, fetched_data: {}) }
+
+      before do
+        allow_any_instance_of(ActionView::LookupContext).to receive(:exists?)
+          .and_call_original
+        allow_any_instance_of(ActionView::LookupContext).to receive(:exists?)
+          .with('library_thing_book_search', 'admin/data_fetch_tasks/types', true)
+          .and_return(false)
+      end
 
       it 'falls back to the shared task info card' do
         send_request

@@ -16,7 +16,8 @@ module Admin
 
       def apply
         if apply_updates
-          redirect_to admin_book_path(@book), notice: t('notices.admin.generative_summaries.update.success')
+          redirect_to edit_admin_book_generative_summary_path(@book, @task),
+                      notice: t('notices.admin.generative_summaries.update.success')
         else
           prepare_form_data
           render :edit, status: :unprocessable_content

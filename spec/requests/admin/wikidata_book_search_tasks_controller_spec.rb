@@ -17,8 +17,8 @@ RSpec.describe Admin::WikidataBookSearchTasksController do
     )
   end
 
-  describe 'GET /admin/data_fetch_tasks/:id' do
-    let(:send_request) { get admin_data_fetch_task_path(task), headers: authorization_header }
+  describe 'GET /admin/wikidata_book_search_tasks/:id/edit' do
+    let(:send_request) { get edit_admin_wikidata_book_search_task_path(task), headers: authorization_header }
 
     it 'renders usable values with an add-to-book form' do
       send_request
@@ -50,10 +50,10 @@ RSpec.describe Admin::WikidataBookSearchTasksController do
            headers: authorization_header
     end
 
-    it 'creates a work identity and reloads the task page' do
+    it 'creates a work identity and reloads the apply form' do
       expect { send_request }.to change(book.external_identities, :count).by(1)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_wikidata_book_search_task_path(task))
       expect(flash[:notice]).to eq('Wikidata work identity added.')
     end
 
@@ -64,9 +64,10 @@ RSpec.describe Admin::WikidataBookSearchTasksController do
              headers: authorization_header
       end
 
-      it 'redirects back with an error' do
+      it 're-renders the apply form with an error' do
         expect { send_request }.not_to change(book.external_identities, :count)
-        expect(response).to redirect_to(admin_data_fetch_task_path(task))
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response).to render_template(:edit)
         expect(flash[:error]).to eq('Invalid Wikidata entity id')
       end
     end

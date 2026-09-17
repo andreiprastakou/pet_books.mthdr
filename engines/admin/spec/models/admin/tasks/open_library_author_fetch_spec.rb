@@ -400,6 +400,24 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
       link = call
       expect(link.external_resource).to eq('wikipedia')
       expect(link.url).to eq('https://en.wikipedia.org/wiki/J._R._R._Tolkien')
+      expect(link).to be_previously_new_record
+    end
+
+    context 'when a link with the same URL already exists' do
+      let!(:existing_link) do
+        create(
+          :external_link,
+          owner: author,
+          external_resource: 'Homepage',
+          url: 'https://en.wikipedia.org/wiki/J._R._R._Tolkien'
+        )
+      end
+
+      it 'updates the existing link label' do
+        expect { call }.not_to change(author.external_links, :count)
+        expect(existing_link.reload.external_resource).to eq('wikipedia')
+        expect(call).not_to be_previously_new_record
+      end
     end
   end
 end

@@ -47,9 +47,10 @@ module Admin
     end
 
     def add_link
-      @task.add_link!(params.require(:url), external_resource: params.require(:external_resource))
+      link = @task.add_link!(params.require(:url), external_resource: params.require(:external_resource))
+      notice_key = link.previously_new_record? ? :success : :updated
       redirect_to edit_admin_open_library_author_fetch_task_path(@task),
-                  notice: t('notices.admin.open_library_author_fetch_tasks.add_link.success')
+                  notice: t("notices.admin.open_library_author_fetch_tasks.add_link.#{notice_key}")
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message
       prepare_form_data
@@ -76,7 +77,7 @@ module Admin
 
         [identity.external_resource.to_s, identity.external_id]
       end.to_set
-      @author_link_urls = @author.external_links.filter_map(&:url).to_set
+      @author_links_by_url = @author.external_links.index_by(&:url)
     end
   end
 end

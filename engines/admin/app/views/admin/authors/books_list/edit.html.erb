@@ -1,4 +1,17 @@
-<%= turbo_frame_tag "task_apply_form", target: "_top" do %>
+<%= turbo_frame_tag "task_apply_form" do %>
+  <% if notice.present? %>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <%= notice %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% end %>
+  <% if flash[:error].present? %>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+      <%= flash[:error] %>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+  <% end %>
+
   <div class="card mt-2">
     <div class="card-header">
       References:
@@ -25,7 +38,8 @@
     <div class="card-body">
       <%= render 'admin/books/batch_edit', books: @books, target: apply_admin_author_books_list_path(@author, @task),
         actions: [
-          button_to('Reject', reject_admin_data_fetch_task_path(@task), method: :put, type: 'button', class: 'btn btn-danger btn-lg')
+          button_to('Reject', reject_admin_data_fetch_task_path(@task), method: :put, type: 'button',
+            class: 'btn btn-danger btn-lg', form: { data: { turbo_frame: '_top' } })
         ]
       %>
     </div>

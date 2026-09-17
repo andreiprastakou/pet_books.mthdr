@@ -20,8 +20,8 @@ RSpec.describe Admin::LibraryThingBookSearchTasksController do
     )
   end
 
-  describe 'GET /admin/data_fetch_tasks/:id' do
-    let(:send_request) { get admin_data_fetch_task_path(task), headers: authorization_header }
+  describe 'GET /admin/library_thing_book_search_tasks/:id/edit' do
+    let(:send_request) { get edit_admin_library_thing_book_search_task_path(task), headers: authorization_header }
 
     it 'renders usable values with an add-to-book form' do
       send_request
@@ -58,10 +58,10 @@ RSpec.describe Admin::LibraryThingBookSearchTasksController do
            headers: authorization_header
     end
 
-    it 'creates an external link and reloads the task page' do
+    it 'creates an external link and reloads the apply form' do
       expect { send_request }.to change(book.external_links, :count).by(1)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(admin_data_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_library_thing_book_search_task_path(task))
       expect(flash[:notice]).to eq('LibraryThing link added.')
     end
 
@@ -72,9 +72,10 @@ RSpec.describe Admin::LibraryThingBookSearchTasksController do
              headers: authorization_header
       end
 
-      it 'redirects back with an error' do
+      it 're-renders the apply form with an error' do
         expect { send_request }.not_to change(book.external_links, :count)
-        expect(response).to redirect_to(admin_data_fetch_task_path(task))
+        expect(response).to have_http_status(:unprocessable_content)
+        expect(response).to render_template(:edit)
         expect(flash[:error]).to eq('Invalid LibraryThing work url')
       end
     end
