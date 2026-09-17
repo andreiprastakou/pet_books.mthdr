@@ -137,6 +137,12 @@ en:
           updated: "External link label updated."
         add_wikipedia_link:
           success: "Wikipedia link added."
+      wikipedia_book_fetch_tasks:
+        apply_summary:
+          success: "Book summary updated."
+      wikipedia_author_fetch_tasks:
+        apply_description:
+          success: "Author description updated."
       open_library_searches:
         create:
           success: "Open Library search has been queued."

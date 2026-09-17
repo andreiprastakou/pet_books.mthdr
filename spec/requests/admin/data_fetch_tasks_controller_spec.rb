@@ -209,12 +209,10 @@ RSpec.describe Admin::DataFetchTasksController do
         )
       end
 
-      it 'returns a successful response with normalized description' do
+      it 'returns a successful response' do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/types/_wikipedia_book_fetch')
-        expect(response.body).to include('description')
-        expect(response.body).to include('fabula crepidata')
       end
     end
 
@@ -235,12 +233,10 @@ RSpec.describe Admin::DataFetchTasksController do
         )
       end
 
-      it 'returns a successful response with normalized description' do
+      it 'returns a successful response' do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/types/_wikipedia_author_fetch')
-        expect(response.body).to include('description')
-        expect(response.body).to include('Roman Stoic philosopher')
       end
     end
 

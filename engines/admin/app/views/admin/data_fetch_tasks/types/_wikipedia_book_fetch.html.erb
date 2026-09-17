@@ -1,14 +1,3 @@
 <%= render 'admin/data_fetch_tasks/task_info_card', task: task %>
 
-<div class="card mt-2">
-  <div class="card-header">Wikipedia book fetch results</div>
-  <div class="card-body">
-    <% data = task.fetched_data_normalized %>
-    <% if data.blank? %>
-      <p class="text-muted mb-0">No fetch results returned.</p>
-    <% else %>
-      <%= render 'admin/data_fetch_tasks/types/wikidata_data_table',
-        rows: [data] %>
-    <% end %>
-  </div>
-</div>
+<%= turbo_frame_tag "task_apply_form", src: edit_admin_wikipedia_book_fetch_task_path(task) %>

@@ -110,6 +110,42 @@ RSpec.describe Admin::Tasks::WikipediaBookFetch do
     end
   end
 
+  describe '#apply_summary!' do
+    subject(:call) { task.apply_summary!('Updated summary from Wikipedia') }
+
+    let(:book) { create(:book) }
+    let(:task) { create(:wikipedia_book_fetch_task, target: book) }
+
+    it 'upserts a book description for the task source' do
+      call
+      description = book.reload.description_for_source(task)
+      expect(description.text).to eq('Updated summary from Wikipedia')
+      expect(description.source_label).to be_nil
+      expect(description.source_type).to eq(task.class.name)
+      expect(description.source_id).to eq(task.id)
+    end
+
+    context 'when a description for the source type already exists' do
+      before do
+        create(
+          :description,
+          owner: book,
+          text: 'Old summary',
+          source_label: 'Wikipedia',
+          source_type: task.class.name,
+          source_id: task.id
+        )
+      end
+
+      it 'updates the existing description and clears source_label' do
+        expect { call }.not_to change(Description, :count)
+        description = book.reload.description_for_source(task)
+        expect(description.text).to eq('Updated summary from Wikipedia')
+        expect(description.source_label).to be_nil
+      end
+    end
+  end
+
   describe '#fetched_data_normalized' do
     let(:task) { build(:wikipedia_book_fetch_task, fetched_data: fetched_data) }
 
