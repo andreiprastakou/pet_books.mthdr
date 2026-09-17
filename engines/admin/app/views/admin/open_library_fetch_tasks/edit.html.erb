@@ -162,19 +162,21 @@
                   <%= form_with url: apply_summary_admin_open_library_fetch_task_path(@task),
                     method: :post,
                     class: 'mt-3 text-start' do %>
-                    <%= label_tag :text, 'Description', class: 'form-label' %>
+                    <%= label_tag :text, 'Description', class: 'col-form-label-sm' %>
                     <%= admin_reversible_input(old_value: @task_description&.text) do %>
                       <%= text_area_tag :text, @description, class: 'form-control mb-2', rows: 6,
                         data: { input_changes_target: 'input' } %>
                     <% end %>
-                    <% if @task_description&.text.blank? %>
-                      <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary' %>
-                    <% else %>
-                      <%= submit_tag 'update',
-                        class: 'btn btn-sm btn-outline-primary',
-                        disabled: @task_description.text == @description,
-                        data: { input_changes_submit: true } %>
-                    <% end %>
+                    <div class="text-end">
+                      <% if @task_description&.text.blank? %>
+                        <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary' %>
+                      <% else %>
+                        <%= submit_tag 'update',
+                          class: 'btn btn-sm btn-outline-primary',
+                          disabled: @task_description.text == @description,
+                          data: { input_changes_submit: true } %>
+                      <% end %>
+                    </div>
                   <% end %>
                 <% end %>
 
@@ -184,7 +186,7 @@
                   <% existing_link = @book_links_by_url[url] %>
                   <%= form_with url: add_link_admin_open_library_fetch_task_path(@task),
                     method: :post,
-                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2 mt-2' do %>
+                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2 mt-2 b-task-link-form' do %>
                     <%= hidden_field_tag :url, url %>
                     <%= admin_reversible_input(old_value: existing_link&.external_resource) do %>
                       <%= text_field_tag :external_resource, external_resource,

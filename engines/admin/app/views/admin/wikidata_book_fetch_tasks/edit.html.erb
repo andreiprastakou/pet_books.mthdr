@@ -1,0 +1,285 @@
+<%= turbo_frame_tag "task_apply_form" do %>
+  <div class="card mt-2">
+    <div class="card-header">
+      Wikidata fetch results
+    </div>
+
+    <div class="card-body">
+      <% if notice.present? %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+      <% if flash[:error].present? %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= flash[:error] %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+
+      <% if @fetched_data.blank? %>
+        <p class="text-muted">No fetch results returned.</p>
+      <% else %>
+        <table class="table table-bordered align-top mb-0 b-task-fetch-results">
+          <tbody>
+            <tr>
+              <td class="w-50">
+                <pre class="mb-0 small b-task-fetch-data"><%= JSON.pretty_generate(@fetched_data) %></pre>
+              </td>
+              <td class="text-center">
+                <% if @year.present? %>
+                  <%= form_with url: apply_year_admin_wikidata_book_fetch_task_path(@task),
+                    method: :post,
+                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2 b-task-year-form' do %>
+                    <%= label_tag :year, 'Year', class: 'col-form-label col-form-label-sm mb-0' %>
+                    <%= admin_reversible_input(old_value: @book.year_published) do %>
+                      <%= text_field_tag :year, @year, class: 'form-control form-control-sm',
+                        id: 'year', data: { input_changes_target: 'input' } %>
+                    <% end %>
+                    <% if @book.year_published.blank? %>
+                      <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary' %>
+                    <% else %>
+                      <%= submit_tag 'update',
+                        class: 'btn btn-sm btn-outline-primary',
+                        disabled: @book.year_published.to_s == @year.to_s,
+                        data: { input_changes_submit: true } %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+
+                <% Array(@fetched_data['authors']).each_with_index do |author_entry, index| %>
+                  <% qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(author_entry['external_id']) %>
+                  <% next if qid.blank? %>
+                  <% entity_url = Admin::ExternalLinkBuilders::Wikidata.call(qid) %>
+                  <% existing_identity = @author_identities_by_qid[qid] %>
+                  <% existing_author = existing_identity&.owner %>
+                  <% already_assigned = existing_author.present? %>
+                  <% author_on_book = existing_author && @book.author_ids.include?(existing_author.id) %>
+                  <% select_authors = @book.authors.to_a %>
+                  <% select_authors = (select_authors + [existing_author]).uniq if existing_author && !author_on_book %>
+                  <% selected_author_id = existing_author&.id || select_authors.first&.id %>
+                  <div class="mb-2">
+                    <%= form_with url: add_author_identity_admin_wikidata_book_fetch_task_path(@task),
+                      method: :post,
+                      class: 'd-flex align-items-center justify-content-center gap-2 flex-wrap' do %>
+                      <%= hidden_field_tag :entity_id, qid %>
+                      <% if entity_url %>
+                        <%= external_link_to qid, entity_url %>
+                      <% else %>
+                        <%= qid %>
+                      <% end %>
+                      <%= select_tag :author_id,
+                        options_from_collection_for_select(select_authors, :id, :fullname, selected_author_id),
+                        class: 'form-select form-select-sm w-auto',
+                        id: "author_id_#{index}",
+                        disabled: already_assigned || select_authors.empty? %>
+                      <%= submit_tag 'add to the author', class: 'btn btn-sm btn-outline-primary',
+                        disabled: already_assigned || select_authors.empty? %>
+                    <% end %>
+                    <% if existing_author && !author_on_book %>
+                      <div class="text-danger small mt-1">
+                        Author "<%= existing_author.fullname %>" is not linked to this book.
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <% Array(@fetched_data['genres']).each_with_index do |genre_entry, index| %>
+                  <% qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(genre_entry['external_id']) %>
+                  <% next if qid.blank? %>
+                  <% entity_url = Admin::ExternalLinkBuilders::Wikidata.call(qid) %>
+                  <% existing_identity = @genre_identities_by_qid[qid] %>
+                  <% existing_genre = existing_identity&.owner %>
+                  <% already_assigned = existing_genre.present? %>
+                  <% genre_on_book = existing_genre && @book.genres.exists?(genre_id: existing_genre.id) %>
+                  <% fully_applied = already_assigned && genre_on_book %>
+                  <% prefill_label = existing_genre&.name.presence || genre_entry['label'] %>
+                  <div class="mb-2"
+                    data-controller="autocomplete-pick"
+                    data-action="input->autocomplete-pick#onInput">
+                    <%= form_with url: add_genre_identity_admin_wikidata_book_fetch_task_path(@task),
+                      method: :post,
+                      class: 'd-flex align-items-center justify-content-center gap-2 flex-wrap' do %>
+                      <%= hidden_field_tag :entity_id, qid %>
+                      <%= hidden_field_tag :genre_id, existing_genre&.id,
+                        data: { autocomplete_pick_target: 'hidden' } %>
+                      <% if entity_url %>
+                        <%= external_link_to qid, entity_url %>
+                      <% else %>
+                        <%= qid %>
+                      <% end %>
+                      <div class="b-autocomplete-container" data-controller="autocomplete"
+                        data-autocomplete-url-value="<%= admin_api_genres_search_path(format: :json) %>"
+                        data-autocomplete-keep-input-value="true"
+                        data-action="autocomplete:selected->autocomplete-pick#onSelected">
+                        <%= text_field_tag :genre_query, prefill_label,
+                          class: 'form-control form-control-sm',
+                          id: "genre_query_#{index}",
+                          autocomplete: 'off',
+                          disabled: fully_applied,
+                          data: {
+                            autocomplete_target: 'input',
+                            autocomplete_pick_target: 'input',
+                            action: 'input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus'
+                          } %>
+                        <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
+                      </div>
+                      <%= submit_tag 'add to the genre',
+                        class: 'btn btn-sm btn-outline-primary',
+                        disabled: fully_applied || prefill_label.blank?,
+                        data: {
+                          autocomplete_pick_target: 'submit',
+                          force_disabled: fully_applied
+                        } %>
+                    <% end %>
+                    <% if existing_genre && !genre_on_book %>
+                      <div class="text-danger small mt-1">
+                        Genre "<%= existing_genre.name %>" is not linked to this book.
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <% Array(@fetched_data['series']).each_with_index do |series_entry, index| %>
+                  <% qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(series_entry['external_id']) %>
+                  <% next if qid.blank? %>
+                  <% entity_url = Admin::ExternalLinkBuilders::Wikidata.call(qid) %>
+                  <% existing_identity = @series_identities_by_qid[qid] %>
+                  <% existing_series = existing_identity&.owner %>
+                  <% already_assigned = existing_series.present? %>
+                  <% series_on_book = existing_series && @book.series_ids.include?(existing_series.id) %>
+                  <% fully_applied = already_assigned && series_on_book %>
+                  <% prefill_label = existing_series&.name.presence || series_entry['label'] %>
+                  <div class="mb-2"
+                    data-controller="autocomplete-pick"
+                    data-action="input->autocomplete-pick#onInput">
+                    <%= form_with url: add_series_identity_admin_wikidata_book_fetch_task_path(@task),
+                      method: :post,
+                      class: 'd-flex align-items-center justify-content-center gap-2 flex-wrap' do %>
+                      <%= hidden_field_tag :entity_id, qid %>
+                      <%= hidden_field_tag :series_id, existing_series&.id,
+                        data: { autocomplete_pick_target: 'hidden' } %>
+                      <% if entity_url %>
+                        <%= external_link_to qid, entity_url %>
+                      <% else %>
+                        <%= qid %>
+                      <% end %>
+                      <div class="b-autocomplete-container" data-controller="autocomplete"
+                        data-autocomplete-url-value="<%= admin_api_series_search_path(format: :json) %>"
+                        data-autocomplete-keep-input-value="true"
+                        data-action="autocomplete:selected->autocomplete-pick#onSelected">
+                        <%= text_field_tag :series_query, prefill_label,
+                          class: 'form-control form-control-sm',
+                          id: "series_query_#{index}",
+                          autocomplete: 'off',
+                          disabled: fully_applied,
+                          data: {
+                            autocomplete_target: 'input',
+                            autocomplete_pick_target: 'input',
+                            action: 'input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus'
+                          } %>
+                        <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
+                      </div>
+                      <%= submit_tag 'add to the series',
+                        class: 'btn btn-sm btn-outline-primary',
+                        disabled: fully_applied || prefill_label.blank?,
+                        data: {
+                          autocomplete_pick_target: 'submit',
+                          force_disabled: fully_applied
+                        } %>
+                    <% end %>
+                    <% if existing_series && !series_on_book %>
+                      <div class="text-danger small mt-1">
+                        Series "<%= existing_series.name %>" is not linked to this book.
+                      </div>
+                    <% end %>
+                  </div>
+                <% end %>
+
+                <% @external_identities.each do |identifier| %>
+                  <% external_resource = identifier['external_resource'] %>
+                  <% external_id = identifier['external_id'] %>
+                  <% link_builder = Admin::ExternalIdentityIntroductor.link_builder_for(external_resource, Book) %>
+                  <% identity_url = link_builder&.call(external_id) %>
+                  <% already_added = @book_identity_keys.include?([external_resource, external_id]) %>
+                  <%= form_with url: add_identity_admin_wikidata_book_fetch_task_path(@task),
+                    method: :post,
+                    class: 'd-flex align-items-center justify-content-center gap-2 mb-2 flex-wrap' do %>
+                    <%= hidden_field_tag :external_resource, external_resource %>
+                    <%= hidden_field_tag :external_id, external_id %>
+                    <span><%= external_resource %></span>
+                    <% if identity_url.present? %>
+                      <%= external_link_to external_id, identity_url %>
+                    <% else %>
+                      <%= external_id %>
+                    <% end %>
+                    <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary', disabled: already_added %>
+                  <% end %>
+                <% end %>
+
+                <% if @wikipedia_sitelinks.any? %>
+                  <% selected_wikipedia = @wikipedia_sitelinks.first %>
+                  <%= form_with url: add_wikipedia_link_admin_wikidata_book_fetch_task_path(@task),
+                    method: :post,
+                    class: 'd-flex align-items-center justify-content-center gap-2 mb-2 flex-wrap',
+                    data: {
+                      controller: 'sitelink-select',
+                      sitelink_select_existing_urls_value: @book_link_urls.to_a.to_json
+                    } do %>
+                    <%= select_tag :url,
+                      options_for_select(
+                        @wikipedia_sitelinks.map { |link|
+                          label = [link['language'], link['title']].compact_blank.join(' — ')
+                          [label.presence || link['url'], link['url']]
+                        },
+                        selected_wikipedia['url']
+                      ),
+                      class: 'form-select form-select-sm w-auto',
+                      id: 'wikipedia_sitelink_url',
+                      data: {
+                        sitelink_select_target: 'select',
+                        action: 'change->sitelink-select#change'
+                      } %>
+                    <%= external_link_icon_to selected_wikipedia['url'],
+                      data: { sitelink_select_target: 'link' } %>
+                    <%= submit_tag 'add',
+                      class: 'btn btn-sm btn-outline-primary',
+                      disabled: @book_link_urls.include?(selected_wikipedia['url']),
+                      data: { sitelink_select_target: 'submit' } %>
+                  <% end %>
+                <% end %>
+
+                <% @other_sitelinks.each_with_index do |link, index| %>
+                  <% external_resource = link['external_resource'] %>
+                  <% url = link['url'] %>
+                  <% existing_link = @book_links_by_url[url] %>
+                  <%= form_with url: add_link_admin_wikidata_book_fetch_task_path(@task),
+                    method: :post,
+                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2 b-task-link-form' do %>
+                    <%= hidden_field_tag :url, url %>
+                    <%= admin_reversible_input(old_value: existing_link&.external_resource) do %>
+                      <%= text_field_tag :external_resource, external_resource,
+                        class: 'form-control form-control-sm',
+                        id: "external_resource_#{index}",
+                        data: { input_changes_target: 'input' } %>
+                    <% end %>
+                    <%= external_link_icon_to url %>
+                    <% if existing_link.nil? %>
+                      <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary' %>
+                    <% else %>
+                      <%= submit_tag 'update label',
+                        class: 'btn btn-sm btn-outline-primary',
+                        disabled: existing_link.external_resource == external_resource,
+                        data: { input_changes_submit: true } %>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+<% end %>

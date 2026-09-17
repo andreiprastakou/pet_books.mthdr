@@ -50,9 +50,128 @@ module Admin
         end
       end
 
+      def apply_year!(year = nil)
+        value = year.presence || self.class.parse_year(fetched_data_normalized['publication_date'])
+        raise ArgumentError, 'Year is required' if value.blank?
+
+        book.update!(year_published: value.to_i)
+      end
+
+      def add_identity!(external_resource, external_id)
+        resource = external_resource.to_s
+        raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
+
+        id = external_id.to_s.strip
+        raise ArgumentError, 'External ID is required' if id.blank?
+
+        identity = book.external_identities.create!(external_resource: resource, external_id: id)
+        Admin::ExternalIdentityIntroductor.call(identity)
+      end
+
+      def add_author_identity!(entity_id, author:)
+        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
+        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
+        raise ArgumentError, 'Author is required' if author.blank?
+        raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
+
+        identity = Admin::Author.cast(author).external_identities.create!(
+          external_resource: ExternalResources::WIKIDATA,
+          external_id: qid
+        )
+        Admin::ExternalIdentityIntroductor.call(identity)
+      end
+
+      def add_genre_identity!(entity_id, genre:)
+        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
+        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
+        raise ArgumentError, 'Genre is required' if genre.blank?
+
+        admin_genre = Admin::Genre.cast(genre)
+        identity = admin_genre.external_identities.wikidata.find_by(external_id: qid)
+        unless identity
+          identity = admin_genre.external_identities.create!(
+            external_resource: ExternalResources::WIKIDATA,
+            external_id: qid
+          )
+          Admin::ExternalIdentityIntroductor.call(identity)
+        end
+
+        book.genres.find_or_create_by!(genre_id: admin_genre.id)
+        identity
+      end
+
+      def add_series_identity!(entity_id, series:)
+        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
+        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
+        raise ArgumentError, 'Series is required' if series.blank?
+
+        admin_series = Admin::Series.cast(series)
+        identity = admin_series.external_identities.wikidata.find_by(external_id: qid)
+        unless identity
+          identity = admin_series.external_identities.create!(
+            external_resource: ExternalResources::WIKIDATA,
+            external_id: qid
+          )
+          Admin::ExternalIdentityIntroductor.call(identity)
+        end
+
+        book.book_series.find_or_create_by!(series_id: admin_series.id)
+        identity
+      end
+
+      def add_link!(url, external_resource:)
+        resource = external_resource.to_s.strip
+        raise ArgumentError, 'External resource is required' if resource.blank?
+
+        link_url = url.to_s.strip
+        raise ArgumentError, 'URL is required' if link_url.blank?
+
+        link = book.external_links.find_or_initialize_by(url: link_url)
+        link.external_resource = resource
+        link.save!
+        link
+      end
+
       def fetched_data_normalized
         values = Admin::Wikidata::BookUsableValues.call(fetched_data)
         Admin::Wikidata::EntityLookup.enrich(values, fetch_missing: true)
+      end
+
+      def applyable_external_identities
+        Array(fetched_data_normalized['external_identities']).select do |entry|
+          Admin::ExternalIdentity.external_resources.key?(entry['external_resource'].to_s)
+        end
+      end
+
+      def wikipedia_sitelinks
+        Array(fetched_data_normalized['sitelinks']).select { |link| self.class.wikipedia_url?(link['url']) }
+      end
+
+      def other_sitelinks
+        Array(fetched_data_normalized['sitelinks']).filter_map do |link|
+          url = link['url'].presence
+          next if url.blank? || self.class.wikipedia_url?(url)
+
+          host = self.class.host_from_url(url)
+          next if host.blank?
+
+          { 'external_resource' => host, 'url' => url }
+        end
+      end
+
+      def self.parse_year(date_string)
+        date_string.to_s[/\b(\d{4})\b/, 1]&.to_i
+      end
+
+      def self.wikipedia_url?(url)
+        host = host_from_url(url)
+        host.present? && host.end_with?('wikipedia.org')
+      end
+
+      def self.host_from_url(url)
+        URI.parse(url.to_s.strip).host.presence
+      rescue URI::InvalidURIError
+        nil
       end
 
       private

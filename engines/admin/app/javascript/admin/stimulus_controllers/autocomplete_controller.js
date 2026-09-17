@@ -9,7 +9,8 @@ export default class extends Controller {
   ]
 
   static values = {
-    url: String
+    url: String,
+    keepInput: Boolean
   }
 
   connect() {
@@ -83,7 +84,7 @@ export default class extends Controller {
   }
 
   selectEntry(entry) {
-    this.inputTarget.value = null
+    this.inputTarget.value = this.keepInputValue ? (entry.label || '') : null
     this.resultsTarget.hidden = true
     this.notifySelection(entry)
   }

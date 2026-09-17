@@ -143,4 +143,162 @@ RSpec.describe Admin::Tasks::WikidataBookFetch do
       expect(Admin::Wikidata::EntityLookup).to have_received(:enrich).with(usable, fetch_missing: true)
     end
   end
+
+  describe '#apply_year!' do
+    subject(:call) { task.apply_year!(2025) }
+
+    let(:book) { create(:book, year_published: 1900) }
+    let(:external_identity) do
+      create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+    end
+    let(:task) { create(:wikidata_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'updates the book year' do
+      call
+      expect(book.reload.year_published).to eq(2025)
+    end
+  end
+
+  describe '#add_identity!' do
+    subject(:call) { task.add_identity!('open_library', 'OL42413123W') }
+
+    let(:book) { create(:book) }
+    let(:external_identity) do
+      create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+    end
+    let(:task) { create(:wikidata_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates an external identity on the book' do
+      expect { call }.to change { book.external_identities.open_library.count }.by(1)
+      identity = book.external_identities.find_by!(external_resource: :open_library)
+      expect(identity.external_id).to eq('OL42413123W')
+    end
+  end
+
+  describe '#add_author_identity!' do
+    subject(:call) { task.add_author_identity!('Q457608', author: author) }
+
+    let(:author) { create(:author) }
+    let(:book) { create(:book, authors: [author]) }
+    let(:external_identity) do
+      create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+    end
+    let(:task) { create(:wikidata_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates a wikidata identity on the author' do
+      expect { call }.to change(author.external_identities, :count).by(1)
+      identity = author.external_identities.find_by!(external_resource: :wikidata)
+      expect(identity.external_id).to eq('Q457608')
+    end
+  end
+
+  describe '#add_genre_identity!' do
+    subject(:call) { task.add_genre_identity!('Q132311', genre: genre) }
+
+    let(:book) { create(:book) }
+    let(:genre) { create(:genre) }
+    let(:external_identity) do
+      create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+    end
+    let(:task) { create(:wikidata_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates a wikidata identity on the genre and links it to the book' do
+      expect { call }.to change(genre.external_identities, :count).by(1)
+        .and change { book.genres.count }.by(1)
+      expect(genre.external_identities.find_by!(external_resource: :wikidata).external_id).to eq('Q132311')
+      expect(book.genres.find_by!(genre_id: genre.id)).to be_present
+    end
+
+    context 'when the identity already exists but the genre is not on the book' do
+      before do
+        create(:external_identity, owner: genre, external_resource: :wikidata, external_id: 'Q132311')
+      end
+
+      it 'links the genre to the book without creating another identity' do
+        expect { call }.to change { book.genres.count }.by(1)
+        expect(genre.external_identities.count).to eq(1)
+      end
+    end
+  end
+
+  describe '#add_series_identity!' do
+    subject(:call) { task.add_series_identity!('Q123', series: series) }
+
+    let(:book) { create(:book) }
+    let(:series) { create(:series) }
+    let(:external_identity) do
+      create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+    end
+    let(:task) { create(:wikidata_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates a wikidata identity on the series and links it to the book' do
+      expect { call }.to change(series.external_identities, :count).by(1)
+        .and change { book.book_series.count }.by(1)
+      expect(series.external_identities.find_by!(external_resource: :wikidata).external_id).to eq('Q123')
+      expect(book.series_ids).to include(series.id)
+    end
+
+    context 'when the identity already exists but the series is not on the book' do
+      before do
+        create(:external_identity, owner: series, external_resource: :wikidata, external_id: 'Q123')
+      end
+
+      it 'links the series to the book without creating another identity' do
+        expect { call }.to change { book.book_series.count }.by(1)
+        expect(series.external_identities.count).to eq(1)
+      end
+    end
+  end
+
+  describe '#add_link!' do
+    subject(:call) do
+      task.add_link!('https://en.wikipedia.org/wiki/The_Hobbit', external_resource: 'wikipedia')
+    end
+
+    let(:book) { create(:book) }
+    let(:external_identity) do
+      create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+    end
+    let(:task) { create(:wikidata_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates an external link on the book' do
+      expect { call }.to change(book.external_links, :count).by(1)
+      link = book.external_links.find_by!(url: 'https://en.wikipedia.org/wiki/The_Hobbit')
+      expect(link.external_resource).to eq('wikipedia')
+    end
+  end
+
+  describe '#wikipedia_sitelinks / #other_sitelinks' do
+    let(:task) { build(:wikidata_fetch_task, fetched_data: {}) }
+    let(:normalized) do
+      {
+        'sitelinks' => [
+          {
+            'title' => 'The Hobbit',
+            'language' => 'en',
+            'url' => 'https://en.wikipedia.org/wiki/The_Hobbit'
+          },
+          {
+            'title' => 'Robert Jordan',
+            'language' => 'enwikiquote',
+            'url' => 'https://en.wikiquote.org/wiki/Robert_Jordan'
+          }
+        ]
+      }
+    end
+
+    before { allow(task).to receive(:fetched_data_normalized).and_return(normalized) }
+
+    it 'splits wikipedia and other sitelinks' do
+      expect(task.wikipedia_sitelinks).to eq([normalized['sitelinks'].first])
+      expect(task.other_sitelinks).to eq(
+        [
+          {
+            'external_resource' => 'en.wikiquote.org',
+            'url' => 'https://en.wikiquote.org/wiki/Robert_Jordan'
+          }
+        ]
+      )
+    end
+  end
 end

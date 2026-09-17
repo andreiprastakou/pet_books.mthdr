@@ -119,6 +119,22 @@ en:
         add_link:
           success: "External link added."
           updated: "External link label updated."
+      wikidata_book_fetch_tasks:
+        apply_year:
+          success: "Publication year updated."
+        add_identity:
+          success: "External identity added."
+        add_author_identity:
+          success: "Wikidata author identity added."
+        add_genre_identity:
+          success: "Wikidata genre identity added."
+        add_series_identity:
+          success: "Wikidata series identity added."
+        add_link:
+          success: "External link added."
+          updated: "External link label updated."
+        add_wikipedia_link:
+          success: "Wikipedia link added."
       open_library_searches:
         create:
           success: "Open Library search has been queued."

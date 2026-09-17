@@ -31,7 +31,7 @@
                 <% if @birth_year.present? %>
                   <%= form_with url: apply_birth_year_admin_open_library_author_fetch_task_path(@task),
                     method: :post,
-                    class: 'd-flex align-items-start gap-2 mb-2 b-task-year-form' do %>
+                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2 b-task-year-form' do %>
                     <%= label_tag :birth_year, 'Born in', class: 'col-form-label col-form-label-sm mb-0' %>
                     <%= admin_reversible_input(old_value: @author.birth_year) do %>
                       <%= text_field_tag :year, @birth_year, class: 'form-control form-control-sm',
@@ -51,7 +51,7 @@
                 <% if @death_year.present? %>
                   <%= form_with url: apply_death_year_admin_open_library_author_fetch_task_path(@task),
                     method: :post,
-                    class: 'd-flex align-items-start gap-2 mb-2 b-task-year-form' do %>
+                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2 b-task-year-form' do %>
                     <%= label_tag :death_year, 'Died in', class: 'col-form-label col-form-label-sm mb-0' %>
                     <%= admin_reversible_input(old_value: @author.death_year) do %>
                       <%= text_field_tag :year, @death_year, class: 'form-control form-control-sm',
@@ -72,19 +72,21 @@
                   <%= form_with url: apply_description_admin_open_library_author_fetch_task_path(@task),
                     method: :post,
                     class: 'mt-3 text-start' do %>
-                    <%= label_tag :text, 'Description', class: 'form-label' %>
+                    <%= label_tag :text, 'Description', class: 'col-form-label-sm' %>
                     <%= admin_reversible_input(old_value: @task_description&.text) do %>
                       <%= text_area_tag :text, @bio, class: 'form-control mb-2', rows: 6,
                         data: { input_changes_target: 'input' } %>
                     <% end %>
-                    <% if @task_description&.text.blank? %>
-                      <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary' %>
-                    <% else %>
-                      <%= submit_tag 'update',
-                        class: 'btn btn-sm btn-outline-primary',
-                        disabled: @task_description.text == @bio,
-                        data: { input_changes_submit: true } %>
-                    <% end %>
+                    <div class="text-end">
+                      <% if @task_description&.text.blank? %>
+                        <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary' %>
+                      <% else %>
+                        <%= submit_tag 'update',
+                          class: 'btn btn-sm btn-outline-primary',
+                          disabled: @task_description.text == @bio,
+                          data: { input_changes_submit: true } %>
+                      <% end %>
+                    </div>
                   <% end %>
                 <% end %>
 
@@ -115,7 +117,7 @@
                   <% existing_link = @author_links_by_url[url] %>
                   <%= form_with url: add_link_admin_open_library_author_fetch_task_path(@task),
                     method: :post,
-                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2' do %>
+                    class: 'd-flex align-items-start justify-content-center gap-2 mb-2 b-task-link-form' do %>
                     <%= hidden_field_tag :url, url %>
                     <%= admin_reversible_input(old_value: existing_link&.external_resource) do %>
                       <%= text_field_tag :external_resource, external_resource,
