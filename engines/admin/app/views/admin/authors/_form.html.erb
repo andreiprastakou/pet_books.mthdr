@@ -25,6 +25,23 @@
   </div>
 
   <div class="row mb-3">
+    <div class="col-md-6">
+      <%= form.label :birth_year, class: "form-label" %>
+      <%= admin_reversible_input(old_value: author.birth_year_was) do %>
+        <%= form.number_field :birth_year, class: "form-control", max: DateTime.tomorrow.year,
+          data: { input_changes_target: "input" } %>
+      <% end %>
+    </div>
+    <div class="col-md-6">
+      <%= form.label :death_year, class: "form-label" %>
+      <%= admin_reversible_input(old_value: author.death_year_was) do %>
+        <%= form.number_field :death_year, class: "form-control", max: DateTime.tomorrow.year,
+          data: { input_changes_target: "input" } %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="row mb-3">
     <%= form.label :photo_url, "Author Photo", class: "form-label" %>
     <div class="col-md-2">
       <%= link_to "GOOGLE", "http://google.com/search?#{{tbm: "isch", q: "author photo #{author.fullname}"}.to_query}", target: "_blank",
@@ -43,33 +60,16 @@
     </div>
   </div>
 
-  <div class="mb-3" data-controller="external-links-input">
-    <%= form.label nil, "External Links", class: "form-label" %>
-    <%= render "admin/common/external_links_input",
-      form_scope: "author", values: external_links_to_input_entries(@author.external_links) %>
-  </div>
-
   <div class="mb-3" data-controller="descriptions-input">
     <%= form.label nil, "Descriptions", class: "form-label" %>
     <%= render "admin/common/descriptions_input",
       form_scope: "author", values: descriptions_to_input_entries(@author.descriptions) %>
   </div>
 
-  <div class="row mb-3">
-    <div class="col-md-6">
-      <%= form.label :birth_year, class: "form-label" %>
-      <%= admin_reversible_input(old_value: author.birth_year_was) do %>
-        <%= form.number_field :birth_year, class: "form-control", max: DateTime.tomorrow.year,
-          data: { input_changes_target: "input" } %>
-      <% end %>
-    </div>
-    <div class="col-md-6">
-      <%= form.label :death_year, class: "form-label" %>
-      <%= admin_reversible_input(old_value: author.death_year_was) do %>
-        <%= form.number_field :death_year, class: "form-control", max: DateTime.tomorrow.year,
-          data: { input_changes_target: "input" } %>
-      <% end %>
-    </div>
+  <div class="mb-3" data-controller="external-links-input">
+    <%= form.label nil, "External Links", class: "form-label" %>
+    <%= render "admin/common/external_links_input",
+      form_scope: "author", values: external_links_to_input_entries(@author.external_links) %>
   </div>
 
   <div class="mb-3">

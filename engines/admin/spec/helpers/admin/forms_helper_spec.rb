@@ -60,6 +60,7 @@ RSpec.describe Admin::FormsHelper do
           id: descriptions[0].id,
           text: 'TEXT_A',
           source_label: 'SRC_A',
+          display_source_label: 'SRC_A',
           priority: 2,
           source_type: 'Admin::Tasks::AiBookFetch',
           source_id: 15

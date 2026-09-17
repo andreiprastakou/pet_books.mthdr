@@ -42,10 +42,6 @@ class Description < ApplicationRecord
   validates :owner_type, presence: true
   validates :priority, presence: true, numericality: { only_integer: true }
 
-  def summary_source
-    source_label.presence || external_resource_for_source
-  end
-
   def display_source_label
     source_label.presence || external_resource_for_source&.titleize
   end

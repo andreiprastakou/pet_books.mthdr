@@ -29,7 +29,8 @@ export default class extends Controller {
     const newEntry = this.descriptionsListTarget.appendChild(tempWorkbench.firstElementChild)
     newEntry.querySelector('[data-name="idInput"]').value = description.id || ''
     newEntry.querySelector('[data-name="textInput"]').value = description.text || ''
-    newEntry.querySelector('[data-name="sourceLabelInput"]').value = description.source_label || ''
+    newEntry.querySelector('[data-name="sourceLabelInput"]').value =
+      description.display_source_label || description.source_label || ''
     newEntry.querySelector('[data-name="priorityInput"]').value = priority
 
     this.fillSourceFields(newEntry, description)
@@ -37,14 +38,17 @@ export default class extends Controller {
 
   fillSourceFields(entry, description) {
     const sourceFields = entry.querySelector('[data-name="sourceFields"]')
+    const sourceLabelInput = entry.querySelector('[data-name="sourceLabelInput"]')
     const sourceType = description.source_type
     const sourceId = description.source_id
     if (!sourceType || sourceId == null || sourceId === '') {
       sourceFields.hidden = true
+      sourceLabelInput.disabled = false
       return
     }
 
     sourceFields.hidden = false
+    sourceLabelInput.disabled = true
     entry.querySelector('[data-name="sourceTypeInput"]').value = sourceType
     entry.querySelector('[data-name="sourceIdInput"]').value = sourceId
   }

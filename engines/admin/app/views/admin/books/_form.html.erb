@@ -49,12 +49,6 @@
     </div>
   </div>
 
-  <div class="mb-3" data-controller="external-links-input">
-    <%= form.label nil, "External Links", class: "form-label" %>
-    <%= render "admin/common/external_links_input",
-      form_scope: "book", values: external_links_to_input_entries(book.external_links) %>
-  </div>
-
   <div class="mb-3">
     <%= form.label :literary_form, class: "form-label" %>
     <%= admin_reversible_input(old_value: book.literary_form_was) do %>
@@ -91,6 +85,12 @@
     <%= form.label nil, "Descriptions", class: "form-label" %>
     <%= render "admin/common/descriptions_input",
       form_scope: "book", values: descriptions_to_input_entries(book.descriptions) %>
+  </div>
+
+  <div class="mb-3" data-controller="external-links-input">
+    <%= form.label nil, "External Links", class: "form-label" %>
+    <%= render "admin/common/external_links_input",
+      form_scope: "book", values: external_links_to_input_entries(book.external_links) %>
   </div>
 
   <div class="mb-3">

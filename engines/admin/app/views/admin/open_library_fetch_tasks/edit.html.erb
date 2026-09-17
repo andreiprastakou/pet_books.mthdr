@@ -63,7 +63,7 @@
             <% if @task_description&.text.present? %>
               <%= simple_format(@task_description.text) %>
               <% if @task_description.display_source_label.present? %>
-                <span class="text-muted">(SRC: <%= @task_description.display_source_label %>)</span>
+                <span class="text-muted">(source: <%= @task_description.display_source_label %>)</span>
               <% end %>
             <% else %>
               <span class="text-muted">None</span>
