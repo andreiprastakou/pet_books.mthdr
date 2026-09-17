@@ -132,12 +132,10 @@ RSpec.describe Admin::DataFetchTasksController do
         )
       end
 
-      it 'returns a successful response with usable values' do
+      it 'returns a successful response' do
         send_request
         expect(response).to be_successful
         expect(response).to render_template('admin/data_fetch_tasks/types/_wikidata_author_fetch')
-        expect(response.body).to include('goodreads')
-        expect(response.body).to include('2740668')
       end
     end
 

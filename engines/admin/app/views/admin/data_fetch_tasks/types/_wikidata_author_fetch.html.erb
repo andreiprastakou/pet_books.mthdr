@@ -1,13 +1,3 @@
 <%= render 'admin/data_fetch_tasks/task_info_card', task: task %>
 
-<div class="card mt-2">
-  <div class="card-header">Wikidata author fetch results</div>
-  <div class="card-body">
-    <% if task.fetched_data.blank? %>
-      <p class="text-muted mb-0">No fetch results returned.</p>
-    <% else %>
-      <%= render 'admin/data_fetch_tasks/types/wikidata_data_table',
-        rows: [task.fetched_data_normalized] %>
-    <% end %>
-  </div>
-</div>
+<%= turbo_frame_tag "task_apply_form", src: edit_admin_wikidata_author_fetch_task_path(task) %>

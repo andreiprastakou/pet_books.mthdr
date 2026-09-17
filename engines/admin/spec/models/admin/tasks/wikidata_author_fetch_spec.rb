@@ -142,4 +142,128 @@ RSpec.describe Admin::Tasks::WikidataAuthorFetch do
       expect(Admin::Wikidata::EntityLookup).to have_received(:enrich).with(usable, fetch_missing: true)
     end
   end
+
+  describe '#apply_birth_year!' do
+    subject(:call) { task.apply_birth_year! }
+
+    let(:author) { create(:author, birth_year: nil) }
+    let(:external_identity) do
+      create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+    end
+    let(:task) do
+      create(
+        :wikidata_author_fetch_task,
+        target: external_identity,
+        status: :fetched,
+        fetched_data: {
+          'statements' => {
+            'P569' => [
+              {
+                'rank' => 'normal',
+                'value' => {
+                  'type' => 'value',
+                  'content' => { 'time' => '+1892-01-03T00:00:00Z', 'precision' => 11 }
+                }
+              }
+            ]
+          }
+        }
+      )
+    end
+
+    it 'sets the author birth year from the fetched date' do
+      expect { call }.to change { author.reload.birth_year }.from(nil).to(1892)
+      expect(task.reload.status).to eq('fetched')
+    end
+  end
+
+  describe '#apply_death_year!' do
+    subject(:call) { task.apply_death_year!(1973) }
+
+    let(:author) { create(:author, death_year: 1970) }
+    let(:external_identity) do
+      create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+    end
+    let(:task) { create(:wikidata_author_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'updates the author death year' do
+      expect { call }.to change { author.reload.death_year }.from(1970).to(1973)
+    end
+  end
+
+  describe '#add_identity!' do
+    subject(:call) { task.add_identity!('open_library', 'OL26320A') }
+
+    let(:author) { create(:author) }
+    let(:external_identity) do
+      create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+    end
+    let(:task) { create(:wikidata_author_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates an external identity on the author' do
+      expect { call }.to change { author.external_identities.open_library.count }.by(1)
+      identity = author.external_identities.find_by!(external_resource: :open_library)
+      expect(identity.external_id).to eq('OL26320A')
+    end
+  end
+
+  describe '#add_link!' do
+    subject(:call) do
+      task.add_link!('https://en.wikipedia.org/wiki/J._R._R._Tolkien', external_resource: 'wikipedia')
+    end
+
+    let(:author) { create(:author) }
+    let(:external_identity) do
+      create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+    end
+    let(:task) { create(:wikidata_author_fetch_task, target: external_identity, status: :fetched) }
+
+    it 'creates an external link on the author' do
+      expect { call }.to change(author.external_links, :count).by(1)
+      link = author.external_links.find_by!(url: 'https://en.wikipedia.org/wiki/J._R._R._Tolkien')
+      expect(link.external_resource).to eq('wikipedia')
+    end
+  end
+
+  describe '#wikipedia_sitelinks / #other_sitelinks' do
+    let(:task) { build(:wikidata_author_fetch_task, fetched_data: {}) }
+    let(:normalized) do
+      {
+        'sitelinks' => [
+          {
+            'title' => 'J. R. R. Tolkien',
+            'language' => 'en',
+            'url' => 'https://en.wikipedia.org/wiki/J._R._R._Tolkien'
+          },
+          {
+            'title' => 'J. R. R. Tolkien',
+            'language' => 'enwikiquote',
+            'url' => 'https://en.wikiquote.org/wiki/J._R._R._Tolkien'
+          }
+        ]
+      }
+    end
+
+    before { allow(task).to receive(:fetched_data_normalized).and_return(normalized) }
+
+    it 'splits wikipedia and other sitelinks' do
+      expect(task.wikipedia_sitelinks).to eq([normalized['sitelinks'].first])
+      expect(task.other_sitelinks).to eq(
+        [
+          {
+            'external_resource' => 'en.wikiquote.org',
+            'url' => 'https://en.wikiquote.org/wiki/J._R._R._Tolkien'
+          }
+        ]
+      )
+    end
+  end
+
+  describe '.parse_year' do
+    it 'extracts a four-digit year from a date string' do
+      expect(described_class.parse_year('1892-01-03')).to eq(1892)
+      expect(described_class.parse_year('1973')).to eq(1973)
+      expect(described_class.parse_year(nil)).to be_nil
+    end
+  end
 end
