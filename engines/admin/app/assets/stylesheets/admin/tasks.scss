@@ -46,6 +46,13 @@
       max-width: 100%;
     }
   }
+
+  form.b-task-literary-form-form {
+    .b-reversible-input-container {
+      flex: 0 0 auto;
+      width: 8rem;
+    }
+  }
 }
 
 a.b-external-link-icon-link {

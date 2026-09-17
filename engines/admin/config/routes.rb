@@ -127,6 +127,7 @@ Admin::Engine.routes.draw do
     resources :wikidata_book_fetch_tasks, only: %i[edit] do
       member do
         post :apply_year
+        post :apply_literary_form
         post :add_identity
         post :add_author_identity
         post :add_genre_identity

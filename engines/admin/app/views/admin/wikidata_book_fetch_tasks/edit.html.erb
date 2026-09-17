@@ -48,6 +48,42 @@
                   <% end %>
                 <% end %>
 
+                <datalist id="literary-form-suggestions">
+                  <% Book::STANDARD_FORMS.each do |form| %>
+                    <option value="<%= form %>"></option>
+                  <% end %>
+                </datalist>
+                <% Array.wrap(@fetched_data['form_of_work']).each_with_index do |form_entry, index| %>
+                  <% next unless form_entry.is_a?(Hash) %>
+                  <% qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(form_entry['external_id']) %>
+                  <% next if qid.blank? %>
+                  <% entity_url = Admin::ExternalLinkBuilders::Wikidata.call(qid) %>
+                  <% prefill_form = form_entry['label'].presence || qid %>
+                  <div class="mb-2">
+                    <%= form_with url: apply_literary_form_admin_wikidata_book_fetch_task_path(@task),
+                      method: :post,
+                      class: 'd-flex align-items-center justify-content-center gap-2 flex-wrap b-task-literary-form-form' do %>
+                      <% if entity_url %>
+                        <%= external_link_to qid, entity_url %>
+                      <% else %>
+                        <%= qid %>
+                      <% end %>
+                      <%= admin_reversible_input(old_value: @book.literary_form) do %>
+                        <%= text_field_tag :literary_form, prefill_form,
+                          class: 'form-control form-control-sm',
+                          id: "literary_form_#{index}",
+                          list: 'literary-form-suggestions',
+                          autocomplete: 'off',
+                          data: { input_changes_target: 'input' } %>
+                      <% end %>
+                      <%= submit_tag 'update form',
+                        class: 'btn btn-sm btn-outline-primary',
+                        disabled: @book.literary_form.to_s == prefill_form.to_s,
+                        data: { input_changes_submit: true } %>
+                    <% end %>
+                  </div>
+                <% end %>
+
                 <% Array(@fetched_data['authors']).each_with_index do |author_entry, index| %>
                   <% qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(author_entry['external_id']) %>
                   <% next if qid.blank? %>

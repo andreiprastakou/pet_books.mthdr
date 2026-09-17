@@ -16,6 +16,16 @@ module Admin
       render :edit, status: :unprocessable_content
     end
 
+    def apply_literary_form
+      @task.apply_literary_form!(params.require(:literary_form))
+      redirect_to edit_admin_wikidata_book_fetch_task_path(@task),
+                  notice: t('notices.admin.wikidata_book_fetch_tasks.apply_literary_form.success')
+    rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
+      flash.now[:error] = e.message
+      prepare_form_data
+      render :edit, status: :unprocessable_content
+    end
+
     def add_identity
       @task.add_identity!(params.require(:external_resource), params.require(:external_id))
       redirect_to edit_admin_wikidata_book_fetch_task_path(@task),
