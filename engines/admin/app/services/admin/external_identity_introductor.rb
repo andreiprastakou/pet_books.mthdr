@@ -21,7 +21,9 @@ module Admin
 
     FETCH_TASKS = {
       [ExternalResources::OPEN_LIBRARY, :book] => Admin::Tasks::OpenLibraryBookFetch,
-      [ExternalResources::OPEN_LIBRARY, :author] => Admin::Tasks::OpenLibraryAuthorFetch
+      [ExternalResources::OPEN_LIBRARY, :author] => Admin::Tasks::OpenLibraryAuthorFetch,
+      [ExternalResources::WIKIDATA, :book] => Admin::Tasks::WikidataBookFetch,
+      [ExternalResources::WIKIDATA, :author] => Admin::Tasks::WikidataAuthorFetch
     }.freeze
 
     def self.call(external_identity)

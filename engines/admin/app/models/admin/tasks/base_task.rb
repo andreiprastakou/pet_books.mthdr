@@ -46,6 +46,24 @@ module Admin
         'Admin::Tasks::WikipediaBookFetch'
       ].freeze
 
+      # Wikipedia → Wikidata → OpenLibrary → LibraryThing; fetch before search.
+      BOOK_REVIEW_PRIORITY = [
+        'Admin::Tasks::WikipediaBookFetch',
+        'Admin::Tasks::WikidataBookFetch',
+        'Admin::Tasks::WikidataBookSearch',
+        'Admin::Tasks::OpenLibraryBookFetch',
+        'Admin::Tasks::OpenLibraryBookSearch',
+        'Admin::Tasks::LibraryThingBookSearch'
+      ].freeze
+
+      AUTHOR_REVIEW_PRIORITY = [
+        'Admin::Tasks::WikipediaAuthorFetch',
+        'Admin::Tasks::WikidataAuthorFetch',
+        'Admin::Tasks::WikidataAuthorSearch',
+        'Admin::Tasks::OpenLibraryAuthorFetch',
+        'Admin::Tasks::OpenLibraryAuthorSearch'
+      ].freeze
+
       belongs_to :chat, class_name: 'Admin::Ai::Chat', optional: true
       belongs_to :target, polymorphic: true
 
@@ -57,6 +75,50 @@ module Admin
         verified: 'verified'
       }, default: :requested
 
+      def self.review_priority_types_for(subject)
+        case subject
+        when ::Book, Admin::Book then BOOK_REVIEW_PRIORITY
+        when ::Author, Admin::Author then AUTHOR_REVIEW_PRIORITY
+        else []
+        end
+      end
+
+      def self.pending_review_tasks_for(subject)
+        priority = review_priority_types_for(subject)
+        return [] if priority.empty?
+
+        scope_for_review_subject(subject)
+          .where(status: :fetched, type: priority)
+          .to_a
+          .sort_by { |task| [priority.index(task.type), task.id] }
+      end
+
+      def self.next_pending_review_for(subject, excluding: nil)
+        tasks = pending_review_tasks_for(subject)
+        tasks = tasks.reject { |task| task.id == excluding.id } if excluding
+        tasks.first
+      end
+
+      def self.scope_for_review_subject(subject)
+        owner_type, owner_id, identity_ids = review_subject_query_parts(subject)
+        return none if owner_type.blank?
+
+        where(target_type: owner_type, target_id: owner_id)
+          .or(where(target_type: Admin::ExternalIdentity.name, target_id: identity_ids))
+      end
+
+      def self.review_subject_query_parts(subject)
+        case subject
+        when ::Book, Admin::Book
+          [::Book.name, subject.id, Admin::Book.cast(subject).external_identities.select(:id)]
+        when ::Author, Admin::Author
+          [::Author.name, subject.id, Admin::Author.cast(subject).external_identities.select(:id)]
+        else
+          [nil, nil, nil]
+        end
+      end
+      private_class_method :review_subject_query_parts
+
       def enqueue_for_processing!
         Admin::DataFetchJob.perform_later(id)
       end
@@ -66,7 +128,10 @@ module Admin
           update!(status: :failed, chat: chat, fetched_data: data,
                   fetch_error_details: errors.map(&:message).join(', '))
         else
-          update!(status: :fetched, chat: chat, fetched_data: data)
+          self.fetched_data = data
+          self.chat = chat
+          self.status = fetched_data_normalized.blank? ? :rejected : :fetched
+          save!
         end
       end
 
@@ -76,6 +141,22 @@ module Admin
 
       def fetched_data_normalized
         fetched_data || {}
+      end
+
+      # Book / Author this task should advance review for (via direct target or ExternalIdentity).
+      def review_subject
+        case target
+        when ::Book, Admin::Book
+          Admin::Book.cast(target)
+        when ::Author, Admin::Author
+          Admin::Author.cast(target)
+        when Admin::ExternalIdentity
+          owner = target.owner
+          case owner
+          when ::Book, Admin::Book then Admin::Book.cast(owner)
+          when ::Author, Admin::Author then Admin::Author.cast(owner)
+          end
+        end
       end
     end
   end

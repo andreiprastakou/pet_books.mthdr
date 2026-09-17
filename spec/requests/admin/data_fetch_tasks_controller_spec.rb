@@ -269,26 +269,61 @@ RSpec.describe Admin::DataFetchTasksController do
   end
 
   describe 'PUT /admin/data_fetch_tasks/:id/verify' do
-    let(:task) { create(:open_library_search_task, status: :fetched) }
+    let(:book) { create(:book) }
+    let(:task) { create(:open_library_search_task, target: book, status: :fetched) }
     let(:send_request) { put verify_admin_data_fetch_task_path(task), headers: authorization_header }
 
-    it 'marks the task verified and redirects home' do
+    it 'marks the task verified and redirects to the target book when no next review task exists' do
       send_request
       expect(task.reload.status).to eq('verified')
-      expect(response).to redirect_to(admin_root_path)
+      expect(response).to redirect_to(admin_book_path(book))
       expect(flash[:notice]).to eq("Task ID=#{task.id} marked as verified")
+    end
+
+    context 'when another fetched task exists for the same book' do
+      let!(:next_task) { create(:wikipedia_book_fetch_task, target: book, status: :fetched) }
+
+      it 'redirects to the highest-priority pending review task' do
+        send_request
+        expect(task.reload.status).to eq('verified')
+        expect(response).to redirect_to(admin_data_fetch_task_path(next_task))
+      end
+    end
+
+    context 'when the task targets an external identity owned by a book' do
+      let(:identity) do
+        create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
+      end
+      let(:task) { create(:wikidata_fetch_task, target: identity, status: :fetched) }
+      let!(:next_task) { create(:open_library_search_task, target: book, status: :fetched) }
+
+      it 'redirects to the next pending review task for the owner book' do
+        send_request
+        expect(response).to redirect_to(admin_data_fetch_task_path(next_task))
+      end
     end
   end
 
   describe 'PUT /admin/data_fetch_tasks/:id/reject' do
-    let(:task) { create(:open_library_search_task, status: :fetched) }
+    let(:author) { create(:author) }
+    let(:task) { create(:wikidata_author_search_task, target: author, status: :fetched) }
     let(:send_request) { put reject_admin_data_fetch_task_path(task), headers: authorization_header }
 
-    it 'marks the task rejected and redirects home' do
+    it 'marks the task rejected and redirects to the target author when no next review task exists' do
       send_request
       expect(task.reload.status).to eq('rejected')
-      expect(response).to redirect_to(admin_root_path)
+      expect(response).to redirect_to(admin_author_path(author))
       expect(flash[:notice]).to eq("Task ID=#{task.id} marked as rejected")
+    end
+
+    context 'when another fetched task exists for the same author' do
+      let!(:next_task) { create(:wikipedia_author_fetch_task, target: author, status: :fetched) }
+
+      it 'redirects to the highest-priority pending review task' do
+        send_request
+        expect(task.reload.status).to eq('rejected')
+        expect(response).to redirect_to(admin_data_fetch_task_path(next_task))
+      end
     end
   end
 end

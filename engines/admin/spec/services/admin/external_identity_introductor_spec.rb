@@ -46,13 +46,33 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
         create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q137179018')
       end
 
-      it 'attaches a link but does not enqueue a fetch task' do
+      it 'attaches a link and enqueues a Wikidata fetch task' do
         expect { call }.to change(book.external_links, :count).by(1)
+                         .and change(Admin::Tasks::WikidataBookFetch, :count).by(1)
+                         .and have_enqueued_job(Admin::DataFetchJob)
                          .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
-                         .and change(Admin::Tasks::WikidataBookFetch, :count).by(0)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q137179018')
+        expect(Admin::Tasks::WikidataBookFetch.last.target).to eq(identity)
+      end
+    end
+
+    context 'when an author wikidata identity is created' do
+      let(:author) { create(:author) }
+      let(:identity) do
+        create(:external_identity, owner: author, external_resource: :wikidata, external_id: 'Q892')
+      end
+
+      it 'attaches an author link and enqueues a Wikidata author fetch task' do
+        expect { call }.to change(author.external_links, :count).by(1)
+                         .and change(Admin::Tasks::WikidataAuthorFetch, :count).by(1)
+                         .and have_enqueued_job(Admin::DataFetchJob)
+                         .and change(Admin::Tasks::WikidataBookFetch, :count).by(0)
+
+        identity.reload
+        expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q892')
+        expect(Admin::Tasks::WikidataAuthorFetch.last.target).to eq(identity)
       end
     end
 

@@ -97,6 +97,10 @@ module Admin
         .reverse
     end
 
+    def pending_review_data_fetch_tasks
+      Admin::Tasks::BaseTask.pending_review_tasks_for(self)
+    end
+
     def current_book_genres
       genres.reject(&:marked_for_destruction?)
     end
