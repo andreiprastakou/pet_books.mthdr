@@ -14,7 +14,14 @@ RSpec.describe '/api/books/full_entries' do
         tags: tags
       )
     end
-    let!(:description) { create(:description, owner: book, text: 'A book summary.') }
+    let!(:description) do
+      create(
+        :description,
+        owner: book,
+        text: 'A book summary.',
+        source_label: 'AI: Claude'
+      )
+    end
     let(:tags) { create_list(:tag, 2) }
     let(:series) { create_list(:series, 2) }
     let(:wikipedia_link) do
@@ -82,11 +89,31 @@ RSpec.describe '/api/books/full_entries' do
         small: false,
         form_label: 'a fantasy novel',
         summary: description.text,
+        summary_source: 'AI: Claude',
         external_links: frontend_external_links.map { |link|
           { external_resource: link.external_resource, url: link.url }
         },
         public_lists: expected_public_lists
       )
+    end
+
+    context 'when the primary description has no source_label but an Open Library source' do
+      let!(:description) do
+        create(
+          :description,
+          owner: book,
+          text: 'A book summary.',
+          source_type: 'Admin::Tasks::OpenLibraryBookFetch',
+          source_id: 1
+        )
+      end
+
+      it 'returns the open_library external resource as summary_source' do
+        send_request
+
+        expect(response).to be_successful
+        expect(json_response[:summary_source]).to eq(ExternalResources::OPEN_LIBRARY)
+      end
     end
   end
 end

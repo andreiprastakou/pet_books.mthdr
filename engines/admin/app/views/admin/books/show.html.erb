@@ -246,9 +246,9 @@
             <% descriptions.each_with_index do |description, index| %>
               <%= tag.br + tag.br if index.positive? %>
               <%= simple_format(description.text) %>
-              <% if description.source_label.present? %>
+              <% if description.display_source_label.present? %>
                 <div class="b-book-summary-src text-end">
-                  (SRC: <%= description.source_label %>)
+                  (SRC: <%= description.display_source_label %>)
                 </div>
               <% end %>
             <% end %>
