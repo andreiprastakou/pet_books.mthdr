@@ -26,23 +26,22 @@ module Admin
     end
 
     def wiki_url=(value)
-      normalized = value.to_s.strip.presence
-      link = wikipedia_external_link
-
-      if normalized.blank?
-        link&.mark_for_destruction
-        return
-      end
-
-      if link
-        link.url = normalized
-      else
-        external_links.build(external_resource: ExternalResources::WIKIPEDIA, url: normalized)
-      end
+      assign_wikipedia_link(value.to_s.strip.presence)
     end
 
     def wiki_links_sum_views
       wiki_links.map(&:views).compact.sum
+    end
+
+    def assign_wikipedia_link(url)
+      link = wikipedia_external_link
+      if url.blank?
+        link&.mark_for_destruction
+      elsif link
+        link.url = url
+      else
+        external_links.build(external_resource: ExternalResources::WIKIPEDIA, url: url)
+      end
     end
 
     private

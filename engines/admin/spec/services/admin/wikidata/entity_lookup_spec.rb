@@ -33,11 +33,9 @@ RSpec.describe Admin::Wikidata::EntityLookup do
         .to change(Admin::WikidataLookupEntity, :count).by(2)
 
       main = Admin::WikidataLookupEntity.find_by!(qid: 'Q545151')
-      expect(main.label).to eq('The Spy Who Loved Me')
-      expect(main.description).to eq('James Bond novel')
-
       author = Admin::WikidataLookupEntity.find_by!(qid: 'Q82104')
-      expect(author.label).to eq('Ian Fleming')
+      expect(main).to have_attributes(label: 'The Spy Who Loved Me', description: 'James Bond novel')
+      expect(author).to have_attributes(label: 'Ian Fleming')
       expect(labels_fetcher).to have_received(:fetch).with(['Q82104'])
     end
 
@@ -160,7 +158,7 @@ RSpec.describe Admin::Wikidata::EntityLookup do
         create(:wikidata_lookup_entity, qid: 'Q2687578', label: 'Inkpot Award')
       end
 
-      it 'matches the author usable-values display format' do
+      it 'matches the author usable-values display format' do # rubocop:disable RSpec/ExampleLength
         expect(enriched.except('sitelinks')).to eq(
           'name' => 'Robert Jordan',
           'date_of_birth' => '1948-10-17',

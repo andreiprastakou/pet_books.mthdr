@@ -274,7 +274,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
       }
     end
 
-    it 'returns usable fields and mapped related entities' do
+    it 'returns usable fields and mapped related entities' do # rubocop:disable RSpec/ExampleLength
       expect(task.fetched_data_normalized).to eq(
         {
           'title' => 'The Lord of the Rings',
@@ -397,7 +397,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
         )
       end
 
-      it 'extracts usable values from the real-shaped payload' do
+      it 'extracts usable values from the real-shaped payload' do # rubocop:disable RSpec/ExampleLength
         expect(task.fetched_data_normalized).to eq(
           {
             'title' => 'The Pillars of the Earth',
@@ -423,7 +423,8 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
               }
             ],
             'first_sentence' =>
-              'IN A BROAD VALLEY, at the foot of a sloping hillside, beside a clear bubbling stream, Tom was building a house.',
+              'IN A BROAD VALLEY, at the foot of a sloping hillside, beside a clear bubbling stream, ' \
+              'Tom was building a house.',
             'subject_people' => fetched_data['subject_people'],
             'covers' => fetched_data['covers']
           }

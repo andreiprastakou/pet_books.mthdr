@@ -26,6 +26,7 @@
 #
 module Admin
   module Tasks
+    # rubocop:disable-next Metrics/ClassLength
     class OpenLibraryBookFetch < BaseTask
       def self.setup(external_identity)
         create!(target: external_identity)
@@ -125,6 +126,11 @@ module Admin
         data = fetched_data
         return {} unless data.is_a?(Hash)
 
+        normalized_book_payload(data)
+      end
+
+      # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
+      def normalized_book_payload(data)
         {
           'title' => data['title'],
           'description' => fetched_description_text(data['description']),

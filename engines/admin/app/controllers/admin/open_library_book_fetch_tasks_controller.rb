@@ -1,4 +1,5 @@
 module Admin
+  # rubocop:disable-next Metrics/ClassLength
   class OpenLibraryBookFetchTasksController < AdminController
     before_action :fetch_task
 
@@ -86,21 +87,39 @@ module Admin
       @fetched_data = @task.fetched_data_normalized
       @description = @fetched_data['description']
       @links = @task.applyable_links
+      load_book_identities_and_links
+      load_open_library_identities
+    end
+
+    def load_book_identities_and_links
       @book_identity_keys = identity_keys_for(@book.external_identities)
       @book_links_by_url = @book.external_links.index_by(&:url)
+    end
+
+    def load_open_library_identities
       @author_identities_by_olid = open_library_identities_by_id(::Author.name, author_olids)
       @genre_identities_by_olid = open_library_identities_by_id(::Genre.name, genre_olids)
       @series_identities_by_olid = open_library_identities_by_id(::Series.name, series_olids)
     end
 
     def assign_book_associations!
+      assign_book_authors!
+      assign_book_genres!
+      assign_book_series!
+    end
+
+    def assign_book_authors!
       author_ids = @book.book_authors.map(&:author_id)
       authors_by_id = Admin::Author.where(id: author_ids).preload(:external_identities).index_by(&:id)
       @book.association(:authors).target = author_ids.filter_map { |id| authors_by_id[id] }
+    end
 
+    def assign_book_genres!
       genre_ids = @book.genres.map(&:genre_id)
       @book_genres = Admin::Genre.where(id: genre_ids).preload(:external_identities).to_a
+    end
 
+    def assign_book_series!
       series_ids = @book.book_series.map(&:series_id)
       series_by_id = Admin::Series.where(id: series_ids).preload(:external_identities).index_by(&:id)
       @book.association(:series).target = series_ids.filter_map { |id| series_by_id[id] }

@@ -9,7 +9,7 @@ module Admin
           DEFAULT_LANGUAGE = 'en'.freeze
           DEFAULT_LIMIT = 10
 
-          def initialize(book)
+          def initialize(book) # rubocop:disable Lint/MissingSuper
             @book = book
           end
 

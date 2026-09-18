@@ -18,32 +18,44 @@ module Admin
             return {} if normalized.empty?
 
             normalized.each_slice(MAX_IDS_PER_REQUEST).with_object({}) do |batch, result|
-              data = request_action_data(
-                action: 'wbgetentities',
-                ids: batch.join('|'),
-                props: 'labels|descriptions',
-                languages: language,
-                languagefallback: 1,
-                format: 'json'
-              )
-              next if data.blank?
-
-              entities = data['entities']
-              next unless entities.is_a?(Hash)
-
-              entities.each do |qid, entity|
-                next unless entity.is_a?(Hash)
-                next if entity.key?('missing')
-
-                result[qid.to_s.upcase] = {
-                  'label' => localized_text(entity['labels'], language),
-                  'description' => localized_text(entity['descriptions'], language)
-                }
-              end
+              merge_batch_labels!(result, batch, language: language)
             end
           end
 
           private
+
+          def merge_batch_labels!(result, batch, language:)
+            entities = fetch_entities(batch, language: language)
+            return if entities.blank?
+
+            entities.each do |qid, entity|
+              labels = entity_labels_for(entity, language: language)
+              result[qid.to_s.upcase] = labels if labels
+            end
+          end
+
+          def fetch_entities(batch, language:)
+            data = request_action_data(
+              action: 'wbgetentities',
+              ids: batch.join('|'),
+              props: 'labels|descriptions',
+              languages: language,
+              languagefallback: 1,
+              format: 'json'
+            )
+            entities = data&.dig('entities')
+            entities if entities.is_a?(Hash)
+          end
+
+          def entity_labels_for(entity, language:)
+            return unless entity.is_a?(Hash)
+            return if entity.key?('missing')
+
+            {
+              'label' => localized_text(entity['labels'], language),
+              'description' => localized_text(entity['descriptions'], language)
+            }
+          end
 
           def request_action_data(params)
             url = "#{ACTION_API_URL}?#{params.compact.to_query}"

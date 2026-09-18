@@ -32,23 +32,23 @@ module Admin
 
     def self.claim_slot!(name, min_interval_seconds:)
       ensure_record!(name, min_interval_seconds)
-
-      transaction do
-        record = lock.find_by!(name: name)
-        now = Time.current
-        wait = if record.last_requested_at
-                 [(record.last_requested_at + record.min_interval_seconds) - now, 0.0].max
-               else
-                 0.0
-               end
-
-        record.update!(
-          last_requested_at: now + wait,
-          min_interval_seconds: min_interval_seconds
-        )
-        wait
-      end
+      transaction { claim_slot_in_transaction!(name, min_interval_seconds) }
     end
+
+    def self.claim_slot_in_transaction!(name, min_interval_seconds)
+      record = lock.find_by!(name: name)
+      now = Time.current
+      wait = wait_until_next_slot(record, now)
+      record.update!(last_requested_at: now + wait, min_interval_seconds: min_interval_seconds)
+      wait
+    end
+
+    def self.wait_until_next_slot(record, now)
+      return 0.0 unless record.last_requested_at
+
+      [(record.last_requested_at + record.min_interval_seconds) - now, 0.0].max
+    end
+    private_class_method :claim_slot_in_transaction!, :wait_until_next_slot
 
     def self.ensure_record!(name, min_interval_seconds)
       find_or_create_by!(name: name) do |record|

@@ -143,8 +143,10 @@ RSpec.describe Admin::Tasks::LibraryThingBookSearch do
     it 'creates an external identity without changing task status' do
       expect { call }.to change(book.external_identities, :count).by(1)
       identity = call
-      expect(identity.external_resource).to eq('librarything')
-      expect(identity.external_id).to eq('14184045')
+      expect(identity).to have_attributes(
+        external_resource: 'librarything',
+        external_id: '14184045'
+      )
       expect(identity.external_link.url).to eq('https://www.librarything.com/work/14184045')
       expect(task.reload.status).to eq('fetched')
     end

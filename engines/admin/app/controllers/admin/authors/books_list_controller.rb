@@ -20,13 +20,9 @@ module Admin
         @author = @task.target
         updater = Admin::BooksBatchUpdater.new
         if apply_via_updater(updater)
-          @task.verified!
-          redirect_to edit_admin_author_books_list_path(@author, @task),
-                      notice: t('notices.admin.books_batch.updates_applied')
+          apply_success
         else
-          flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
-          prepare_form_data
-          render :edit, status: :unprocessable_content
+          apply_failure(updater)
         end
       end
 
@@ -38,6 +34,18 @@ module Admin
 
       def fetch_task
         @task = Admin::Tasks::AiAuthorWorksFetch.find(params[:id])
+      end
+
+      def apply_success
+        @task.verified!
+        redirect_to edit_admin_author_books_list_path(@author, @task),
+                    notice: t('notices.admin.books_batch.updates_applied')
+      end
+
+      def apply_failure(updater)
+        flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
+        prepare_form_data
+        render :edit, status: :unprocessable_content
       end
 
       def apply_via_updater(updater)

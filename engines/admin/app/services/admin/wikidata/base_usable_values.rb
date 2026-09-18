@@ -4,6 +4,7 @@ module Admin
   module Wikidata
     # Shared extraction of copyable / decision-helping values from a Wikidata
     # item payload (as stored on admin data-fetch tasks).
+    # rubocop:disable-next Metrics/ClassLength
     class BaseUsableValues
       STATEMENT_FIELDS = {}.freeze
 
@@ -40,43 +41,59 @@ module Admin
       end
 
       def statement_values(property_id)
+        claims = claims_for_property(property_id)
+        return [] if claims.blank?
+
+        ranked_claims(claims).filter_map { |claim| extract_statement_content(claim) }
+      end
+
+      def claims_for_property(property_id)
         return [] if fetched_data.blank? || !fetched_data.is_a?(Hash)
 
         statements = fetched_data['statements'] || fetched_data[:statements]
         return [] if statements.blank? || !statements.is_a?(Hash)
 
-        claims = statements[property_id] || statements[property_id.to_sym]
-        return [] if claims.blank?
+        statements[property_id] || statements[property_id.to_sym]
+      end
 
+      def ranked_claims(claims)
         preferred = claims.select { |claim| claim.is_a?(Hash) && claim['rank'] == 'preferred' }
-        entries = preferred.presence || claims.reject { |claim| claim.is_a?(Hash) && claim['rank'] == 'deprecated' }
-
-        entries.filter_map { |claim| extract_statement_content(claim) }
+        preferred.presence || claims.reject { |claim| claim.is_a?(Hash) && claim['rank'] == 'deprecated' }
       end
 
       def extract_statement_content(claim)
         return unless claim.is_a?(Hash)
 
+        content = statement_value_content(claim)
+        return content unless content.is_a?(Hash)
+
+        content['time'] || content[:time] || content['text'] || content[:text]
+      end
+
+      def statement_value_content(claim)
         value = claim['value'] || claim[:value]
         return unless value.is_a?(Hash)
         return unless (value['type'] || value[:type]) == 'value'
 
-        content = value['content'] || value[:content]
-        case content
-        when Hash
-          content['time'] || content[:time] || content['text'] || content[:text]
-        else
-          content
-        end
+        value['content'] || value[:content]
       end
 
       def usable_sitelinks
-        return [] if fetched_data.blank? || !fetched_data.is_a?(Hash)
+        raw = sitelinks_hash
+        return [] if raw.blank?
+
+        prioritize_english_sitelinks(build_sitelink_entries(raw))
+      end
+
+      def sitelinks_hash
+        return unless fetched_data.is_a?(Hash)
 
         raw = fetched_data['sitelinks'] || fetched_data[:sitelinks]
-        return [] if raw.blank? || !raw.is_a?(Hash)
+        raw if raw.is_a?(Hash) && raw.present?
+      end
 
-        entries = raw.filter_map do |site, link|
+      def build_sitelink_entries(raw)
+        raw.filter_map do |site, link|
           next unless link.is_a?(Hash)
 
           {
@@ -85,7 +102,9 @@ module Admin
             'url' => link['url'] || link[:url]
           }
         end
+      end
 
+      def prioritize_english_sitelinks(entries)
         en = entries.find { |entry| entry['language'] == 'en' }
         return entries if en.blank?
 

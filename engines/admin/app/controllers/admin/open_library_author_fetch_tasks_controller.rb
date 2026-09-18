@@ -72,12 +72,20 @@ module Admin
       @death_year = Admin::Tasks::OpenLibraryAuthorFetch.parse_year(@fetched_data['death_date'])
       @remote_ids = @task.applyable_remote_ids
       @links = @task.applyable_links
-      @author_identity_keys = @author.external_identities.filter_map do |identity|
+      load_author_identities_and_links
+    end
+
+    def load_author_identities_and_links
+      @author_identity_keys = identity_keys_for(@author.external_identities)
+      @author_links_by_url = @author.external_links.index_by(&:url)
+    end
+
+    def identity_keys_for(identities)
+      identities.filter_map do |identity|
         next if identity.external_id.blank?
 
         [identity.external_resource.to_s, identity.external_id]
       end.to_set
-      @author_links_by_url = @author.external_links.index_by(&:url)
     end
   end
 end

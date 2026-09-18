@@ -26,6 +26,7 @@
 #
 module Admin
   module Tasks
+    # rubocop:disable-next Metrics/ClassLength
     class BaseTask < ApplicationRecord
       self.table_name = 'admin_data_fetch_tasks'
 
@@ -146,16 +147,16 @@ module Admin
       # Book / Author this task should advance review for (via direct target or ExternalIdentity).
       def review_subject
         case target
-        when ::Book, Admin::Book
-          Admin::Book.cast(target)
-        when ::Author, Admin::Author
-          Admin::Author.cast(target)
-        when Admin::ExternalIdentity
-          owner = target.owner
-          case owner
-          when ::Book, Admin::Book then Admin::Book.cast(owner)
-          when ::Author, Admin::Author then Admin::Author.cast(owner)
-          end
+        when ::Book, Admin::Book then Admin::Book.cast(target)
+        when ::Author, Admin::Author then Admin::Author.cast(target)
+        when Admin::ExternalIdentity then review_subject_for_identity(target)
+        end
+      end
+
+      def review_subject_for_identity(identity)
+        case identity.owner
+        when ::Book, Admin::Book then Admin::Book.cast(identity.owner)
+        when ::Author, Admin::Author then Admin::Author.cast(identity.owner)
         end
       end
     end

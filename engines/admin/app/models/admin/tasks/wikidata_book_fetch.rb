@@ -26,6 +26,7 @@
 #
 module Admin
   module Tasks
+    # rubocop:disable-next Metrics/ClassLength
     class WikidataBookFetch < BaseTask
       def self.setup(external_identity)
         create!(target: external_identity)
@@ -91,40 +92,41 @@ module Admin
       end
 
       def add_genre_identity!(entity_id, genre:)
-        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
-        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
+        qid = validate_wikidata_entity_id!(entity_id)
         raise ArgumentError, 'Genre is required' if genre.blank?
 
         admin_genre = Admin::Genre.cast(genre)
-        identity = admin_genre.external_identities.wikidata.find_by(external_id: qid)
-        unless identity
-          identity = admin_genre.external_identities.create!(
-            external_resource: ExternalResources::WIKIDATA,
-            external_id: qid
-          )
-          Admin::ExternalIdentityIntroductor.call(identity)
-        end
-
+        identity = find_or_create_wikidata_identity!(admin_genre, qid)
         book.genres.find_or_create_by!(genre_id: admin_genre.id)
         identity
       end
 
       def add_series_identity!(entity_id, series:)
-        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
-        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
+        qid = validate_wikidata_entity_id!(entity_id)
         raise ArgumentError, 'Series is required' if series.blank?
 
         admin_series = Admin::Series.cast(series)
-        identity = admin_series.external_identities.wikidata.find_by(external_id: qid)
-        unless identity
-          identity = admin_series.external_identities.create!(
-            external_resource: ExternalResources::WIKIDATA,
-            external_id: qid
-          )
-          Admin::ExternalIdentityIntroductor.call(identity)
-        end
-
+        identity = find_or_create_wikidata_identity!(admin_series, qid)
         book.book_series.find_or_create_by!(series_id: admin_series.id)
+        identity
+      end
+
+      def validate_wikidata_entity_id!(entity_id)
+        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
+        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
+
+        qid
+      end
+
+      def find_or_create_wikidata_identity!(owner, qid)
+        identity = owner.external_identities.wikidata.find_by(external_id: qid)
+        return identity if identity
+
+        identity = owner.external_identities.create!(
+          external_resource: ExternalResources::WIKIDATA,
+          external_id: qid
+        )
+        Admin::ExternalIdentityIntroductor.call(identity)
         identity
       end
 
