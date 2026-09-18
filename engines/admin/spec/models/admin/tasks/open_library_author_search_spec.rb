@@ -194,11 +194,9 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorSearch do
     context 'with a lifelike Open Library author search fixture' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/open_library/author_search_robert_jordan.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/open_library/author_search_robert_jordan.json'
+          ).read
         )
       end
 

@@ -49,7 +49,7 @@ RSpec.describe Admin::InfoFetchers::Wikidata::Api::EntitiesLabelsFetcher do
 
       it 'does not call the API' do
         expect(result).to eq({})
-        expect(a_request(:get, %r{wikidata\.org})).not_to have_been_made
+        expect(a_request(:get, /wikidata\.org/)).not_to have_been_made
       end
     end
 

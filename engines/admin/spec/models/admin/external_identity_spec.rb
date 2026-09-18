@@ -34,7 +34,6 @@ RSpec.describe Admin::ExternalIdentity do
     it { is_expected.to belong_to(:external_link).optional }
   end
 
-
   describe '#external_resource enum' do
     it do
       expect(identity).to define_enum_for(:external_resource).with_values(

@@ -27,19 +27,24 @@ RSpec.describe Admin::Author do
   end
 
   describe 'associations' do
+    subject(:author) { build(:admin_author) }
+
     it {
-      is_expected.to have_many(:books_list_tasks).class_name(Admin::Tasks::AiAuthorWorksFetch.name)
-                                                 .dependent(:destroy)
+      expect(author).to have_many(:books_list_tasks).class_name(Admin::Tasks::AiAuthorWorksFetch.name)
+                                                    .dependent(:destroy)
     }
+
     it {
-      is_expected.to have_many(:list_parsing_tasks).class_name(Admin::Tasks::AiAuthorWorksParse.name)
-                                                   .dependent(:destroy)
+      expect(author).to have_many(:list_parsing_tasks).class_name(Admin::Tasks::AiAuthorWorksParse.name)
+                                                      .dependent(:destroy)
     }
+
     it do
-      is_expected.to have_many(:open_library_author_search_tasks)
+      expect(author).to have_many(:open_library_author_search_tasks)
         .class_name(Admin::Tasks::OpenLibraryAuthorSearch.name)
         .dependent(:destroy)
     end
+
     it { is_expected.to have_many(:external_identities).class_name(Admin::ExternalIdentity.name).dependent(:destroy) }
     it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name).dependent(:destroy) }
   end

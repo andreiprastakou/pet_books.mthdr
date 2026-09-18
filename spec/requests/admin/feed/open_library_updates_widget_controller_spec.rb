@@ -13,16 +13,16 @@ RSpec.describe Admin::Feed::OpenLibraryUpdatesWidgetController do
     describe 'rendered data' do
       let!(:book_search_tasks) do
         [
-          create(:open_library_search_task, status: :requested),
-          create(:open_library_search_task, status: :fetched),
-          create(:open_library_search_task, status: :verified)
+          create(:open_library_book_search_task, status: :requested),
+          create(:open_library_book_search_task, status: :fetched),
+          create(:open_library_book_search_task, status: :verified)
         ]
       end
       let!(:book_fetch_tasks) do
         [
-          create(:open_library_fetch_task, status: :requested),
-          create(:open_library_fetch_task, status: :fetched),
-          create(:open_library_fetch_task, status: :verified)
+          create(:open_library_book_fetch_task, status: :requested),
+          create(:open_library_book_fetch_task, status: :fetched),
+          create(:open_library_book_fetch_task, status: :verified)
         ]
       end
       let!(:author_search_tasks) do

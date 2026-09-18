@@ -17,10 +17,10 @@ module Admin
       literary_form
     ].index_by(&:to_s).freeze
 
-    PARAMS = ([
+    PARAMS = [
       :name,
       { external_links_attributes: {}, external_identities_attributes: {} }
-    ]).freeze
+    ].freeze
 
     def index
       @series = apply_sort(

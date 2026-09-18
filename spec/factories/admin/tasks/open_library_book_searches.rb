@@ -25,7 +25,7 @@
 #  chat_id  (chat_id => ai_chats.id)
 #
 FactoryBot.define do
-  factory :open_library_search_task, class: 'Admin::Tasks::OpenLibraryBookSearch', parent: :base_admin_data_fetch_task do
+  factory :open_library_book_search_task, class: 'Admin::Tasks::OpenLibraryBookSearch', parent: :base_admin_data_fetch_task do
     chat { nil }
   end
 end

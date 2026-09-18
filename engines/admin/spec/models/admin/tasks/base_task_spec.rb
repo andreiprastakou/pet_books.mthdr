@@ -52,7 +52,7 @@ RSpec.describe Admin::Tasks::BaseTask do
   end
 
   describe '#save_results!' do
-    let(:task) { create(:open_library_search_task) }
+    let(:task) { create(:open_library_book_search_task) }
 
     it 'marks the task fetched when normalized data is present' do
       task.save_results!([{ 'key' => '/works/OL1W', 'title' => 'Title' }])
@@ -99,11 +99,11 @@ RSpec.describe Admin::Tasks::BaseTask do
 
     it 'orders fetched tasks by source then fetch-before-search' do
       library_thing = create(:library_thing_search_task, target: book, status: :fetched)
-      open_library_search = create(:open_library_search_task, target: book, status: :fetched)
+      open_library_search = create(:open_library_book_search_task, target: book, status: :fetched)
       wikidata_search = create(:wikidata_search_task, target: book, status: :fetched)
       wikipedia = create(:wikipedia_book_fetch_task, target: book, status: :fetched)
       identity = create(:external_identity, owner: book, external_resource: :open_library, external_id: 'OL1W')
-      open_library_fetch = create(:open_library_fetch_task, target: identity, status: :fetched)
+      open_library_fetch = create(:open_library_book_fetch_task, target: identity, status: :fetched)
       create(:wikidata_search_task, target: book, status: :requested)
       create(:book_summary_task, target: book, status: :fetched)
 
@@ -113,7 +113,7 @@ RSpec.describe Admin::Tasks::BaseTask do
     end
 
     it 'returns the first pending review task via .next_pending_review_for' do
-      create(:open_library_search_task, target: book, status: :fetched)
+      create(:open_library_book_search_task, target: book, status: :fetched)
       wikipedia = create(:wikipedia_book_fetch_task, target: book, status: :fetched)
 
       expect(described_class.next_pending_review_for(book)).to eq(wikipedia)

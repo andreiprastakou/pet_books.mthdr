@@ -1,5 +1,5 @@
 module Admin
-  class OpenLibrarySearchTasksController < AdminController
+  class OpenLibraryBookSearchTasksController < AdminController
     before_action :fetch_task
 
     def edit
@@ -8,8 +8,8 @@ module Admin
 
     def add_work_identity
       @task.add_work_identity!(params.require(:work_key))
-      redirect_to edit_admin_open_library_search_task_path(@task),
-                  notice: t('notices.admin.open_library_search_tasks.add_work_identity.success')
+      redirect_to edit_admin_open_library_book_search_task_path(@task),
+                  notice: t('notices.admin.open_library_book_search_tasks.add_work_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message
       prepare_form_data
@@ -19,8 +19,8 @@ module Admin
     def add_author_identity
       author = Admin::Author.find(params.require(:author_id))
       @task.add_author_identity!(params.require(:author_key), author: author)
-      redirect_to edit_admin_open_library_search_task_path(@task),
-                  notice: t('notices.admin.open_library_search_tasks.add_author_identity.success')
+      redirect_to edit_admin_open_library_book_search_task_path(@task),
+                  notice: t('notices.admin.open_library_book_search_tasks.add_author_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid,
            ActiveRecord::RecordNotFound => e
       flash.now[:error] = e.message
@@ -63,9 +63,9 @@ module Admin
       return {} if author_olids.empty?
 
       Admin::ExternalIdentity.open_library
-                      .where(owner_type: ::Author.name, external_id: author_olids)
-                      .includes(:owner)
-                      .index_by(&:external_id)
+                             .where(owner_type: ::Author.name, external_id: author_olids)
+                             .includes(:owner)
+                             .index_by(&:external_id)
     end
 
     def result_author_ids(result)

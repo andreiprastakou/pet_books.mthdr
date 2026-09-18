@@ -33,7 +33,7 @@ RSpec.describe Admin::BooksBatchUpdater do
 
     it 'creates books with no IDs' do
       expect { update }.to change(Book, :count).by(1)
-      book_b = Book.last
+      book_b = Admin::Book.last
       aggregate_failures do
         expect(book_b.title).to eq 'TITLE_B'
         expect(book_b.original_title).to eq 'ORIGINAL_TITLE_B'

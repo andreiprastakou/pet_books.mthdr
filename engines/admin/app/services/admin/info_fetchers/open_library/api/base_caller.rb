@@ -3,14 +3,14 @@ module Admin
     module OpenLibrary
       module Api
         class BaseCaller
-          BASE_URL = 'https://openlibrary.org'
+          BASE_URL = 'https://openlibrary.org'.freeze
           # Identified clients get 3 req/s (vs 1 req/s anonymous). Include a real contact email via ENV.
           # See https://openlibrary.org/developers/api
           USER_AGENT = ENV.fetch(
             'OPEN_LIBRARY_USER_AGENT',
             'books.mthdr (https://books-mthdr.fly.dev)'
           ).freeze
-          RATE_LIMIT_NAME = 'open_library'
+          RATE_LIMIT_NAME = 'open_library'.freeze
           RATE_LIMIT_INTERVAL_SECONDS = 1.0 / 3
           OPEN_TIMEOUT = 10
           TIMEOUT = 30

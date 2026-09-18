@@ -127,7 +127,7 @@ RSpec.describe Admin::InfoFetchers::Wikipedia::Api::Fetcher do
 
       it 'does not call the API and returns nil' do
         expect(result).to be_nil
-        expect(a_request(:get, %r{wikipedia\.org})).not_to have_been_made
+        expect(a_request(:get, /wikipedia\.org/)).not_to have_been_made
       end
     end
   end

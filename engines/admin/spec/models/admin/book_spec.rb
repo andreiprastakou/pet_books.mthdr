@@ -31,10 +31,13 @@ RSpec.describe Admin::Book do
   end
 
   describe 'associations' do
+    subject(:book) { build(:admin_book) }
+
     it {
-      is_expected.to have_many(:generative_summary_tasks).class_name(Admin::Tasks::AiBookFetch.name)
-                                                         .dependent(:destroy)
+      expect(book).to have_many(:generative_summary_tasks).class_name(Admin::Tasks::AiBookFetch.name)
+                                                          .dependent(:destroy)
     }
+
     it { is_expected.to have_many(:external_identities).class_name(Admin::ExternalIdentity.name).dependent(:destroy) }
     it { is_expected.to have_many(:wiki_links).class_name(WikiLink.name).dependent(:destroy) }
   end
@@ -138,7 +141,7 @@ RSpec.describe Admin::Book do
 
       context 'when book literary form does not require a summary' do
         before do
-          book.literary_form = (::Book::STANDARD_FORMS - ::Book::FORMS_REQUIRE_SUMMARY).sample
+          book.literary_form = (Book::STANDARD_FORMS - Book::FORMS_REQUIRE_SUMMARY).sample
         end
 
         it { is_expected.to be false }

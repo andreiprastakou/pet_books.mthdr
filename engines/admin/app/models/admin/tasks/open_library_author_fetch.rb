@@ -66,7 +66,9 @@ module Admin
 
       def add_identity!(external_resource, external_id)
         resource = external_resource.to_s
-        raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
+        unless Admin::ExternalIdentity.external_resources.key?(resource)
+          raise ArgumentError, 'Invalid external resource'
+        end
 
         id = external_id.to_s.strip
         raise ArgumentError, 'External ID is required' if id.blank?
@@ -189,7 +191,7 @@ module Admin
       def fetched_photos(photos)
         return [] unless photos.is_a?(Array)
 
-        photos.select { |photo| photo.is_a?(Integer) }
+        photos.grep(Integer)
       end
     end
   end

@@ -25,7 +25,7 @@
 #  chat_id  (chat_id => ai_chats.id)
 #
 FactoryBot.define do
-  factory :open_library_fetch_task, class: 'Admin::Tasks::OpenLibraryBookFetch', parent: :base_admin_data_fetch_task do
+  factory :open_library_book_fetch_task, class: 'Admin::Tasks::OpenLibraryBookFetch', parent: :base_admin_data_fetch_task do
     chat { nil }
     target factory: %i[external_identity], strategy: :create
   end

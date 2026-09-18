@@ -103,11 +103,9 @@ RSpec.describe Admin::Wikidata::EntityLookup do
     context 'with enriched book fixture values' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/wikidata/book_fetch_tailored_realities.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/wikidata/book_fetch_tailored_realities.json'
+          ).read
         )
       end
       let(:values) { Admin::Wikidata::BookUsableValues.call(fetched_data) }
@@ -146,11 +144,9 @@ RSpec.describe Admin::Wikidata::EntityLookup do
     context 'with enriched author fixture values' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/wikidata/author_fetch_robert_jordan.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/wikidata/author_fetch_robert_jordan.json'
+          ).read
         )
       end
       let(:values) { Admin::Wikidata::AuthorUsableValues.call(fetched_data) }

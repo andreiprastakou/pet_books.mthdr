@@ -3,12 +3,11 @@ module Admin
     module Chats
       class BaseChat
         class << self
-          # rubocop:disable Naming/PredicatePrefix
+          # rubocop:disable-next Naming/PredicatePrefix
           def has_instructions(file_name, overrides = {})
             @instructions_file_name = file_name
             @instructions_overrides = overrides
           end
-          # rubocop:enable Naming/PredicatePrefix
 
           def instructions(overrides = {})
             @instructions ||= build_instructions

@@ -6,7 +6,7 @@ module Admin
         # Docs: https://www.wikidata.org/wiki/Wikidata:REST_API
         # Endpoint: GET /search/items?q=...&language=en
         class BookSearcher < BaseCaller
-          DEFAULT_LANGUAGE = 'en'
+          DEFAULT_LANGUAGE = 'en'.freeze
           DEFAULT_LIMIT = 10
 
           def initialize(book)

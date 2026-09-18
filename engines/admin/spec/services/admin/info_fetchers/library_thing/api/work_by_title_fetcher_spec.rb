@@ -43,7 +43,7 @@ RSpec.describe Admin::InfoFetchers::LibraryThing::Api::WorkByTitleFetcher do
 
       it 'does not call the API and returns nil' do
         expect(result).to be_nil
-        expect(a_request(:get, %r{librarything\.com})).not_to have_been_made
+        expect(a_request(:get, /librarything\.com/)).not_to have_been_made
       end
     end
 

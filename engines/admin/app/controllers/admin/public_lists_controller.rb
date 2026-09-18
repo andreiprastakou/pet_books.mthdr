@@ -10,10 +10,10 @@ module Admin
       'wiki_popularity' => 'books.wiki_popularity'
     }.freeze
 
-    PARAMS = ([
+    PARAMS = [
       :year,
       { book_public_lists_attributes: {}, external_links_attributes: {}, external_identities_attributes: {} }
-    ]).freeze
+    ].freeze
 
     def show
       @book_public_lists = apply_sort(

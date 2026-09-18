@@ -9,11 +9,9 @@ RSpec.describe Admin::Wikidata::AuthorUsableValues do
     context 'with a lifelike Wikidata author fixture' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/wikidata/author_fetch_robert_jordan.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/wikidata/author_fetch_robert_jordan.json'
+          ).read
         )
       end
 

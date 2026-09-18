@@ -35,7 +35,8 @@ RSpec.describe Admin::Tasks::WikidataBookFetch do
 
   describe '.setup' do
     let(:external_identity) do
-      create(:external_identity, external_resource: :wikidata, external_id: "Q#{SecureRandom.random_number(1_000_000_000)}")
+      create(:external_identity, external_resource: :wikidata,
+                                 external_id: "Q#{SecureRandom.random_number(1_000_000_000)}")
     end
 
     it 'creates a new wikidata fetch task' do
@@ -52,14 +53,25 @@ RSpec.describe Admin::Tasks::WikidataBookFetch do
 
     let(:task) { create(:wikidata_fetch_task, target: external_identity) }
     let(:external_identity) do
-      create(:external_identity, external_resource: :wikidata, external_id: "Q#{SecureRandom.random_number(1_000_000_000)}")
+      create(:external_identity, external_resource: :wikidata,
+                                 external_id: "Q#{SecureRandom.random_number(1_000_000_000)}")
     end
     let(:fetcher) { instance_double(Admin::InfoFetchers::Wikidata::Api::BookDetailsFetcher) }
     let(:api_data) do
       {
         'id' => external_identity.external_id,
         'labels' => { 'en' => 'The Hobbit' },
-        'descriptions' => { 'en' => '1937 novel by J. R. R. Tolkien' }
+        'statements' => {
+          'P577' => [
+            {
+              'rank' => 'normal',
+              'value' => {
+                'type' => 'value',
+                'content' => { 'time' => '+1927-00-00T00:00:00Z', 'precision' => 9 }
+              }
+            }
+          ]
+        }
       }
     end
 
@@ -219,7 +231,7 @@ RSpec.describe Admin::Tasks::WikidataBookFetch do
 
     it 'creates a wikidata identity on the genre and links it to the book' do
       expect { call }.to change(genre.external_identities, :count).by(1)
-        .and change { book.genres.count }.by(1)
+                                                                  .and change { book.genres.count }.by(1)
       expect(genre.external_identities.find_by!(external_resource: :wikidata).external_id).to eq('Q132311')
       expect(book.genres.find_by!(genre_id: genre.id)).to be_present
     end
@@ -248,7 +260,7 @@ RSpec.describe Admin::Tasks::WikidataBookFetch do
 
     it 'creates a wikidata identity on the series and links it to the book' do
       expect { call }.to change(series.external_identities, :count).by(1)
-        .and change { book.book_series.count }.by(1)
+                                                                   .and change { book.book_series.count }.by(1)
       expect(series.external_identities.find_by!(external_resource: :wikidata).external_id).to eq('Q123')
       expect(book.series_ids).to include(series.id)
     end

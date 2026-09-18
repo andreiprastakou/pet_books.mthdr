@@ -29,7 +29,7 @@ require 'rails_helper'
 RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
   describe 'validation' do
     it 'has a valid factory' do
-      expect(build(:open_library_search_task)).to be_valid
+      expect(build(:open_library_book_search_task)).to be_valid
     end
   end
 
@@ -48,7 +48,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
   describe '#perform' do
     subject(:call) { task.perform }
 
-    let(:task) { create(:open_library_search_task, target: book) }
+    let(:task) { create(:open_library_book_search_task, target: book) }
     let(:book) { create(:book) }
     let(:searcher) { instance_double(Admin::InfoFetchers::OpenLibrary::Api::BookSearcher) }
     let(:results) do
@@ -74,7 +74,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
   describe '#add_work_identity!' do
     subject(:call) { task.add_work_identity!(work_key) }
 
-    let(:task) { create(:open_library_search_task, target: book, status: :fetched) }
+    let(:task) { create(:open_library_book_search_task, target: book, status: :fetched) }
     let(:book) { create(:book) }
     let(:work_key) { '/works/OL27448W' }
 
@@ -102,7 +102,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
 
     let(:author) { create(:author) }
     let(:book) { create(:book, authors: [author]) }
-    let(:task) { create(:open_library_search_task, target: book, status: :fetched) }
+    let(:task) { create(:open_library_book_search_task, target: book, status: :fetched) }
     let(:author_key) { '/authors/OL113611A' }
 
     it 'creates an external identity on the author' do
@@ -134,10 +134,10 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
   end
 
   describe '.next_unresolved' do
-    let!(:first_task) { create(:open_library_search_task, status: :fetched) }
-    let!(:second_task) { create(:open_library_search_task, status: :fetched) }
+    let!(:first_task) { create(:open_library_book_search_task, status: :fetched) }
+    let!(:second_task) { create(:open_library_book_search_task, status: :fetched) }
 
-    before { create(:open_library_search_task, status: :verified) }
+    before { create(:open_library_book_search_task, status: :verified) }
 
     it 'returns the earliest fetched task' do
       expect(described_class.next_unresolved).to eq(first_task)
@@ -149,7 +149,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
   end
 
   describe '#fetched_data_normalized' do
-    let(:task) { build(:open_library_search_task, fetched_data: fetched_data) }
+    let(:task) { build(:open_library_book_search_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       [
         {
@@ -271,11 +271,9 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
     context 'with a lifelike Open Library search fixture' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/open_library/work_search_spy_who_loved_me.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/open_library/work_search_spy_who_loved_me.json'
+          ).read
         )
       end
 

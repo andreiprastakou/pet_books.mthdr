@@ -6,7 +6,7 @@ module Admin
         # Docs: https://www.librarything.com/developer/documentation/thingapis
         # Requires LIBRARYTHING_APP_TOKEN from a free LibraryThing developer account.
         class BaseCaller
-          BASE_URL = 'https://www.librarything.com'
+          BASE_URL = 'https://www.librarything.com'.freeze
           USER_AGENT = ENV.fetch(
             'LIBRARYTHING_USER_AGENT',
             ENV.fetch(
@@ -14,7 +14,7 @@ module Admin
               'books.mthdr (https://books-mthdr.fly.dev)'
             )
           ).freeze
-          RATE_LIMIT_NAME = 'library_thing'
+          RATE_LIMIT_NAME = 'library_thing'.freeze
           # LT docs: max 1 request/second for lightweight APIs.
           RATE_LIMIT_INTERVAL_SECONDS = 1.0
           OPEN_TIMEOUT = 10

@@ -16,7 +16,7 @@ RSpec.describe Admin::DataFetchTasksController do
 
     context 'when filtering by type' do
       let!(:summary_task) { create(:book_summary_task) }
-      let!(:search_task) { create(:open_library_search_task) }
+      let!(:search_task) { create(:open_library_book_search_task) }
       let(:send_request) do
         get admin_data_fetch_tasks_path,
             params: { type: 'Admin::Tasks::AiBookFetch' },
@@ -61,7 +61,7 @@ RSpec.describe Admin::DataFetchTasksController do
     end
 
     context 'with an OpenLibraryBookSearch' do
-      let(:task) { create(:open_library_search_task, status: :fetched, fetched_data: []) }
+      let(:task) { create(:open_library_book_search_task, status: :fetched, fetched_data: []) }
 
       it 'returns a successful response' do
         send_request
@@ -71,7 +71,7 @@ RSpec.describe Admin::DataFetchTasksController do
     end
 
     context 'with an OpenLibraryBookFetch' do
-      let(:task) { create(:open_library_fetch_task, status: :fetched, fetched_data: { 'title' => 'X' }) }
+      let(:task) { create(:open_library_book_fetch_task, status: :fetched, fetched_data: { 'title' => 'X' }) }
 
       it 'returns a successful response' do
         send_request
@@ -258,7 +258,7 @@ RSpec.describe Admin::DataFetchTasksController do
     end
 
     context 'when the task is fetched' do
-      let(:task) { create(:open_library_search_task, status: :fetched, fetched_data: []) }
+      let(:task) { create(:open_library_book_search_task, status: :fetched, fetched_data: []) }
 
       it 'renders verify and reject buttons' do
         send_request
@@ -270,7 +270,7 @@ RSpec.describe Admin::DataFetchTasksController do
 
   describe 'PUT /admin/data_fetch_tasks/:id/verify' do
     let(:book) { create(:book) }
-    let(:task) { create(:open_library_search_task, target: book, status: :fetched) }
+    let(:task) { create(:open_library_book_search_task, target: book, status: :fetched) }
     let(:send_request) { put verify_admin_data_fetch_task_path(task), headers: authorization_header }
 
     it 'marks the task verified and redirects to the target book when no next review task exists' do
@@ -295,7 +295,7 @@ RSpec.describe Admin::DataFetchTasksController do
         create(:external_identity, owner: book, external_resource: :wikidata, external_id: 'Q1')
       end
       let(:task) { create(:wikidata_fetch_task, target: identity, status: :fetched) }
-      let!(:next_task) { create(:open_library_search_task, target: book, status: :fetched) }
+      let!(:next_task) { create(:open_library_book_search_task, target: book, status: :fetched) }
 
       it 'redirects to the next pending review task for the owner book' do
         send_request
