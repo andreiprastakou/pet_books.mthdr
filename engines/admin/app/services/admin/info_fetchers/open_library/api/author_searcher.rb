@@ -9,7 +9,7 @@ module Admin
         class AuthorSearcher < BaseCaller
           DEFAULT_LIMIT = 10
 
-          def initialize(author)
+          def initialize(author) # rubocop:disable Lint/MissingSuper
             @author = author
           end
 

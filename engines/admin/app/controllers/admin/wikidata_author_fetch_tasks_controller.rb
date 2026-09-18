@@ -71,6 +71,10 @@ module Admin
       @external_identities = @task.applyable_external_identities
       @wikipedia_sitelinks = @task.wikipedia_sitelinks
       @other_sitelinks = @task.other_sitelinks
+      load_author_identities_and_links
+    end
+
+    def load_author_identities_and_links
       @author_identity_keys = identity_keys_for(@author.external_identities)
       @author_link_urls = @author.external_links.filter_map(&:url).to_set
       @author_links_by_url = @author.external_links.index_by(&:url)

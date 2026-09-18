@@ -6,7 +6,7 @@ module Admin
         # Docs: https://www.wikidata.org/wiki/Wikidata:REST_API
         # Endpoint: GET /entities/items/{QID}
         class BookDetailsFetcher < BaseCaller
-          def initialize(entity_id)
+          def initialize(entity_id) # rubocop:disable Lint/MissingSuper
             @entity_id = entity_id
           end
 

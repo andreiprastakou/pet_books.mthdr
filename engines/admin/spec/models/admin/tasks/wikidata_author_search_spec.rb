@@ -112,8 +112,10 @@ RSpec.describe Admin::Tasks::WikidataAuthorSearch do
     it 'creates an external identity on the author' do
       expect { call }.to change(author.external_identities, :count).by(1)
       identity = call
-      expect(identity.external_resource).to eq('wikidata')
-      expect(identity.external_id).to eq('Q892')
+      expect(identity).to have_attributes(
+        external_resource: 'wikidata',
+        external_id: 'Q892'
+      )
       expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q892')
       expect(task.reload.status).to eq('fetched')
     end

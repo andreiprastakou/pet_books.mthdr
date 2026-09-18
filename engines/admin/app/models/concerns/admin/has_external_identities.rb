@@ -14,7 +14,8 @@ module Admin
 
       accepts_nested_attributes_for :external_identities, allow_destroy: true,
                                                           reject_if: lambda { |attrs|
-                                                            attrs['external_resource'].blank? && attrs['external_id'].blank?
+                                                            blank = attrs['external_resource'].blank?
+                                                            blank && attrs['external_id'].blank?
                                                           }
 
       after_save :introduce_changed_external_identities

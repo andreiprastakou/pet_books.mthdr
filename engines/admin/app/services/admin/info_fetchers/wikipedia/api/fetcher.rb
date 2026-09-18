@@ -36,6 +36,13 @@ module Admin
           OPEN_TIMEOUT = 10
           TIMEOUT = 30
           MAX_RETRIES = 3
+          RETRY_EXCEPTIONS = [
+            Faraday::ConnectionFailed,
+            Faraday::TimeoutError,
+            Faraday::RetriableResponse,
+            Errno::ECONNRESET,
+            Errno::ETIMEDOUT
+          ].freeze
           DEFAULT_LANGUAGE = 'en'
 
           # Runs inside Faraday's retry stack so each attempt (including retries) is spaced.
@@ -95,27 +102,27 @@ module Admin
           end
 
           def connection
-            @connection ||= Faraday.new do |f|
-              f.use RateLimitMiddleware
-              f.request :retry, {
-                max: MAX_RETRIES,
-                interval: 0.5,
-                interval_randomness: 0.5,
-                backoff_factor: 2,
-                exceptions: [
-                  Faraday::ConnectionFailed,
-                  Faraday::TimeoutError,
-                  Faraday::RetriableResponse,
-                  Errno::ECONNRESET,
-                  Errno::ETIMEDOUT
-                ]
-              }
-              f.headers['User-Agent'] = USER_AGENT
-              f.headers['Accept'] = 'application/json'
-              f.options.open_timeout = OPEN_TIMEOUT
-              f.options.timeout = TIMEOUT
-              f.adapter Faraday.default_adapter
-            end
+            @connection ||= Faraday.new { |f| configure_connection(f) }
+          end
+
+          def configure_connection(faraday)
+            faraday.use RateLimitMiddleware
+            faraday.request :retry, retry_options
+            faraday.headers['User-Agent'] = USER_AGENT
+            faraday.headers['Accept'] = 'application/json'
+            faraday.options.open_timeout = OPEN_TIMEOUT
+            faraday.options.timeout = TIMEOUT
+            faraday.adapter Faraday.default_adapter
+          end
+
+          def retry_options
+            {
+              max: MAX_RETRIES,
+              interval: 0.5,
+              interval_randomness: 0.5,
+              backoff_factor: 2,
+              exceptions: RETRY_EXCEPTIONS
+            }
           end
 
           def build_url(params = {})

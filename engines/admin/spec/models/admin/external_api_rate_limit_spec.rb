@@ -89,16 +89,20 @@ RSpec.describe Admin::ExternalApiRateLimit do
   describe '.throttle!' do
     it 'sleeps for the claimed wait duration' do
       allow(described_class).to receive(:claim_slot!).with(name, min_interval_seconds: interval).and_return(0.25)
-      expect(described_class).to receive(:sleep).with(0.25)
+      allow(described_class).to receive(:sleep)
 
       described_class.throttle!(name, min_interval_seconds: interval)
+
+      expect(described_class).to have_received(:sleep).with(0.25)
     end
 
     it 'does not sleep when no wait is needed' do
       allow(described_class).to receive(:claim_slot!).with(name, min_interval_seconds: interval).and_return(0.0)
-      expect(described_class).not_to receive(:sleep)
+      allow(described_class).to receive(:sleep)
 
       described_class.throttle!(name, min_interval_seconds: interval)
+
+      expect(described_class).not_to have_received(:sleep)
     end
   end
 end

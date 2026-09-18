@@ -41,6 +41,13 @@ module Admin
       end
 
       def apply_updates
+        persist_task_updates!
+        true
+      rescue ActiveRecord::RecordInvalid
+        false
+      end
+
+      def persist_task_updates!
         ActiveRecord::Base.transaction do
           @book.update!(admin_book_params)
           @book.upsert_description_from_source!(
@@ -50,9 +57,6 @@ module Admin
           )
           @task.verified!
         end
-        true
-      rescue ActiveRecord::RecordInvalid
-        false
       end
 
       def admin_book_params

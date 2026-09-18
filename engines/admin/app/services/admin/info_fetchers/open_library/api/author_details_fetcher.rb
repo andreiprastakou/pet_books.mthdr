@@ -6,7 +6,7 @@ module Admin
         # Docs: https://openlibrary.org/dev/docs/api/authors
         # Endpoint: GET /authors/{OLID}.json
         class AuthorDetailsFetcher < BaseCaller
-          def initialize(author_key)
+          def initialize(author_key) # rubocop:disable Lint/MissingSuper
             @author_key = author_key
           end
 

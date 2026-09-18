@@ -34,11 +34,13 @@ RSpec.describe Admin::LinksHelper do
       it 'includes page/view counts and a fetch link' do
         result = helper.admin_external_link_to(book, book.wikipedia_external_link)
 
-        expect(result).to include('wikipedia')
-        expect(result).to include('1 page')
-        expect(result).to include('99555 views')
-        expect(result).to include('fetch')
-        expect(result).to include(admin_book_wikipedia_fetches_path(book))
+        expect(result).to include(
+          'wikipedia',
+          '1 page',
+          '99555 views',
+          'fetch',
+          admin_book_wikipedia_fetches_path(book)
+        )
       end
     end
 

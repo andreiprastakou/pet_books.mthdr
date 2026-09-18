@@ -75,16 +75,18 @@ module Admin
         data = fetched_data
         return [] unless data.is_a?(Array)
 
-        data.filter_map do |entry|
-          next unless entry.is_a?(Hash)
+        data.filter_map { |entry| normalized_search_entry(entry) }
+      end
 
-          {
-            'external_id' => entry['key'],
-            'title' => entry['title'],
-            'first_publish_year' => entry['first_publish_year'],
-            'authors' => fetched_author_entries(entry)
-          }.compact_blank.presence
-        end
+      def normalized_search_entry(entry)
+        return unless entry.is_a?(Hash)
+
+        {
+          'external_id' => entry['key'],
+          'title' => entry['title'],
+          'first_publish_year' => entry['first_publish_year'],
+          'authors' => fetched_author_entries(entry)
+        }.compact_blank.presence
       end
 
       private

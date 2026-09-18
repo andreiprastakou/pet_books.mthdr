@@ -26,6 +26,7 @@
 #
 module Admin
   module Tasks
+    # rubocop:disable-next Metrics/ClassLength
     class OpenLibraryAuthorFetch < BaseTask
       def self.setup(external_identity)
         create!(target: external_identity)
@@ -94,6 +95,11 @@ module Admin
         data = fetched_data
         return {} unless data.is_a?(Hash)
 
+        normalized_author_payload(data)
+      end
+
+      # rubocop:disable-next Metrics/MethodLength
+      def normalized_author_payload(data)
         {
           'name' => data['name'],
           'personal_name' => data['personal_name'],

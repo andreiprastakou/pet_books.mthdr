@@ -81,8 +81,10 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
     it 'creates an external identity without changing task status' do
       expect { call }.to change(book.external_identities, :count).by(1)
       identity = call
-      expect(identity.external_resource).to eq('open_library')
-      expect(identity.external_id).to eq('OL27448W')
+      expect(identity).to have_attributes(
+        external_resource: 'open_library',
+        external_id: 'OL27448W'
+      )
       expect(identity.external_link.url).to eq('https://openlibrary.org/works/OL27448W')
       expect(task.reload.status).to eq('fetched')
     end
@@ -108,8 +110,10 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
     it 'creates an external identity on the author' do
       expect { call }.to change(author.external_identities, :count).by(1)
       identity = call
-      expect(identity.external_resource).to eq('open_library')
-      expect(identity.external_id).to eq('OL113611A')
+      expect(identity).to have_attributes(
+        external_resource: 'open_library',
+        external_id: 'OL113611A'
+      )
       expect(identity.external_link.url).to eq('https://openlibrary.org/authors/OL113611A')
       expect(task.reload.status).to eq('fetched')
     end
@@ -277,7 +281,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookSearch do
         )
       end
 
-      it 'extracts usable values from the real-shaped payload' do
+      it 'extracts usable values from the real-shaped payload' do # rubocop:disable RSpec/ExampleLength
         expect(task.fetched_data_normalized).to eq(
           [
             {

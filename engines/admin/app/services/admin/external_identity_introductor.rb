@@ -69,17 +69,25 @@ module Admin
     attr_reader :external_identity
 
     def attach_external_link!
-      builder = self.class.link_builder_for(external_identity.external_resource, owner)
-      return unless builder
-
-      url = builder.call(external_identity.external_id)
+      url = external_link_url
       return if url.blank?
 
-      link = owner.external_links.where(external_resource: external_identity.external_resource, url: url)
-                  .first_or_create!
+      link = find_or_create_external_link!(url)
       return if external_identity.external_link_id == link.id
 
       external_identity.update!(external_link: link)
+    end
+
+    def external_link_url
+      builder = self.class.link_builder_for(external_identity.external_resource, owner)
+      return unless builder
+
+      builder.call(external_identity.external_id).presence
+    end
+
+    def find_or_create_external_link!(url)
+      owner.external_links.where(external_resource: external_identity.external_resource, url: url)
+           .first_or_create!
     end
 
     def enqueue_fetch_task!

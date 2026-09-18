@@ -6,7 +6,7 @@ module Admin
         # Docs: https://www.librarything.com/developer/documentation/thingapis (thingTitle)
         # Endpoint: GET /api/{token}/thingTitle/{title}
         class WorkByTitleFetcher < BaseCaller
-          def initialize(title)
+          def initialize(title) # rubocop:disable Lint/MissingSuper
             @title = title
           end
 

@@ -22,6 +22,7 @@
 #  index_books_on_year_published  (year_published)
 #
 module Admin
+  # rubocop:disable-next Metrics/ClassLength
   class Book < ::Book
     include Admin::HasWikipedia
     include Admin::HasExternalIdentities
@@ -84,17 +85,15 @@ module Admin
     end
 
     def history_data_fetch_tasks
-      book_fetch_tasks = Admin::Tasks::BaseTask.where(
-        target_type: ::Book.name,
-        target_id: id
+      owner_tasks = Admin::Tasks::BaseTask.where(target_type: ::Book.name, target_id: id)
+      identity_tasks = Admin::Tasks::BaseTask.where(
+        target_type: Admin::ExternalIdentity.name, target_id: external_identities.select(:id)
       )
-      identities_fetch_tasks = Admin::Tasks::BaseTask.where(
-        target_type: Admin::ExternalIdentity.name,
-        target_id: external_identities.select(:id)
-      )
-      (book_fetch_tasks.to_a + identities_fetch_tasks.to_a)
-        .sort_by(&:updated_at)
-        .reverse
+      merge_tasks_by_updated_at(owner_tasks, identity_tasks)
+    end
+
+    def merge_tasks_by_updated_at(*scopes)
+      scopes.flat_map(&:to_a).sort_by(&:updated_at).reverse
     end
 
     def pending_review_data_fetch_tasks

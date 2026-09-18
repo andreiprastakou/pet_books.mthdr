@@ -1,4 +1,5 @@
 module Admin
+  # rubocop:disable-next Metrics/ClassLength
   class WikidataBookFetchTasksController < AdminController
     before_action :fetch_task
 
@@ -107,9 +108,17 @@ module Admin
       @external_identities = @task.applyable_external_identities
       @wikipedia_sitelinks = @task.wikipedia_sitelinks
       @other_sitelinks = @task.other_sitelinks
+      load_book_identities_and_links
+      load_wikidata_identities
+    end
+
+    def load_book_identities_and_links
       @book_identity_keys = identity_keys_for(@book.external_identities)
       @book_link_urls = @book.external_links.filter_map(&:url).to_set
       @book_links_by_url = @book.external_links.index_by(&:url)
+    end
+
+    def load_wikidata_identities
       @author_identities_by_qid = wikidata_identities_by_id(::Author.name, author_qids)
       @genre_identities_by_qid = wikidata_identities_by_id(::Genre.name, genre_qids)
       @series_identities_by_qid = wikidata_identities_by_id(::Series.name, series_qids)

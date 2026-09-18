@@ -191,7 +191,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
         )
       end
 
-      it 'extracts usable values from the real-shaped payload' do
+      it 'extracts usable values from the real-shaped payload' do # rubocop:disable RSpec/ExampleLength
         expect(task.fetched_data_normalized).to eq(
           {
             'name' => 'Dean Koontz',
@@ -227,7 +227,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
   end
 
   describe '.external_resource_from_label' do
-    it 'uses the label, stripping Author boilerplate' do
+    it 'uses the label, stripping Author boilerplate' do # rubocop:disable RSpec/MultipleExpectations
       expect(described_class.external_resource_from_label('Official Web Site'))
         .to eq('Official Web Site')
       expect(described_class.external_resource_from_label("Author's Wikipedia"))
@@ -356,9 +356,11 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
     it 'saves a description sourced from the task' do
       expect { call }.to change(author.descriptions, :count).by(1)
       description = call
-      expect(description.text).to eq('English writer and philologist.')
-      expect(description.source_type).to eq(task.class.name)
-      expect(description.source_id).to eq(task.id)
+      expect(description).to have_attributes(
+        text: 'English writer and philologist.',
+        source_type: task.class.name,
+        source_id: task.id
+      )
       expect(task.reload.status).to eq('fetched')
     end
   end

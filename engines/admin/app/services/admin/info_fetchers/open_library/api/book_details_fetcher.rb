@@ -6,7 +6,7 @@ module Admin
         # Docs: https://openlibrary.org/developers/api (Work & Edition APIs)
         # Endpoint: GET /works/{OLID}.json
         class BookDetailsFetcher < BaseCaller
-          def initialize(work_key)
+          def initialize(work_key) # rubocop:disable Lint/MissingSuper
             @work_key = work_key
           end
 

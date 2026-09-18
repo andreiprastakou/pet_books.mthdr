@@ -15,7 +15,7 @@ module Admin
           ].freeze
           DEFAULT_LIMIT = 10
 
-          def initialize(book)
+          def initialize(book) # rubocop:disable Lint/MissingSuper
             @book = book
           end
 
@@ -23,15 +23,7 @@ module Admin
             title = simplify_query(book.title)
             return [] if title.blank?
 
-            params = {
-              title: title,
-              fields: fields.join(','),
-              limit: limit
-            }
-            authors = simplified_author_names
-            params[:author] = authors.join(' ') if authors.any?
-
-            data = request_data('/search.json', params)
+            data = request_data('/search.json', search_params(title, limit: limit, fields: fields))
             return [] if data.blank?
 
             data.fetch('docs', [])
@@ -40,6 +32,13 @@ module Admin
           private
 
           attr_reader :book
+
+          def search_params(title, limit:, fields:)
+            params = { title: title, fields: fields.join(','), limit: limit }
+            authors = simplified_author_names
+            params[:author] = authors.join(' ') if authors.any?
+            params
+          end
 
           def simplified_author_names
             book.authors.filter_map { |author| simplify_query(author.fullname).presence }
