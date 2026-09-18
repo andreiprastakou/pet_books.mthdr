@@ -38,7 +38,7 @@
                 </td>
                 <td class="text-center">
                   <% if work_olid.present? %>
-                    <%= form_with url: add_work_identity_admin_open_library_search_task_path(@task),
+                    <%= form_with url: add_work_identity_admin_open_library_book_search_task_path(@task),
                       method: :post,
                       class: "d-flex align-items-center justify-content-center gap-2 mb-2" do %>
                       <%= hidden_field_tag :work_key, work_olid %>
@@ -63,7 +63,7 @@
                     <% select_authors = @book.authors.to_a %>
                     <% select_authors = (select_authors + [existing_author]).uniq if existing_author && !author_on_book %>
                     <div class="mb-2">
-                      <%= form_with url: add_author_identity_admin_open_library_search_task_path(@task),
+                      <%= form_with url: add_author_identity_admin_open_library_book_search_task_path(@task),
                         method: :post,
                         class: "d-flex align-items-center justify-content-center gap-2 flex-wrap" do %>                        <%= hidden_field_tag :author_key, author_olid %>
                         <% if author_url %>

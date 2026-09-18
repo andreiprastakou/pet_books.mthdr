@@ -72,7 +72,7 @@ Admin::Engine.routes.draw do
       put :reject, on: :member
     end
 
-    resources :open_library_search_tasks, only: %i[edit] do
+    resources :open_library_book_search_tasks, only: %i[edit] do
       member do
         post :add_work_identity
         post :add_author_identity
@@ -103,7 +103,7 @@ Admin::Engine.routes.draw do
       end
     end
 
-    resources :open_library_fetch_tasks, only: %i[edit] do
+    resources :open_library_book_fetch_tasks, only: %i[edit] do
       member do
         post :add_identity
         post :add_author_identity

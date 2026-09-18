@@ -40,7 +40,7 @@
                   <% select_authors = @book.authors.to_a %>
                   <% select_authors = (select_authors + [existing_author]).uniq if existing_author && !author_on_book %>
                   <div class="mb-2">
-                    <%= form_with url: add_author_identity_admin_open_library_fetch_task_path(@task),
+                    <%= form_with url: add_author_identity_admin_open_library_book_fetch_task_path(@task),
                       method: :post,
                       class: 'd-flex align-items-center justify-content-center gap-2 flex-wrap' do %>
                       <%= hidden_field_tag :author_key, author_olid %>
@@ -76,7 +76,7 @@
                   <% select_genres = @book_genres.dup %>
                   <% select_genres = (select_genres + [Admin::Genre.cast(existing_genre)]).uniq if existing_genre && !genre_on_book %>
                   <div class="mb-2">
-                    <%= form_with url: add_genre_identity_admin_open_library_fetch_task_path(@task),
+                    <%= form_with url: add_genre_identity_admin_open_library_book_fetch_task_path(@task),
                       method: :post,
                       class: 'd-flex align-items-center justify-content-center gap-2 flex-wrap' do %>
                       <%= hidden_field_tag :genre_key, genre_key %>
@@ -112,7 +112,7 @@
                   <% select_series = @book_series.dup %>
                   <% select_series = (select_series + [Admin::Series.cast(existing_series)]).uniq if existing_series && !series_on_book %>
                   <div class="mb-2">
-                    <%= form_with url: add_series_identity_admin_open_library_fetch_task_path(@task),
+                    <%= form_with url: add_series_identity_admin_open_library_book_fetch_task_path(@task),
                       method: :post,
                       class: 'd-flex align-items-center justify-content-center gap-2 flex-wrap' do %>
                       <%= hidden_field_tag :series_key, series_key %>
@@ -143,7 +143,7 @@
                   <% link_builder = Admin::ExternalIdentityIntroductor.link_builder_for(external_resource, Book) %>
                   <% identity_url = link_builder&.call(external_id) %>
                   <% already_added = @book_identity_keys.include?([external_resource, external_id]) %>
-                  <%= form_with url: add_identity_admin_open_library_fetch_task_path(@task),
+                  <%= form_with url: add_identity_admin_open_library_book_fetch_task_path(@task),
                     method: :post,
                     class: 'd-flex align-items-center justify-content-center gap-2 mb-2 flex-wrap' do %>
                     <%= hidden_field_tag :external_resource, external_resource %>
@@ -159,7 +159,7 @@
                 <% end %>
 
                 <% if @description.present? %>
-                  <%= form_with url: apply_summary_admin_open_library_fetch_task_path(@task),
+                  <%= form_with url: apply_summary_admin_open_library_book_fetch_task_path(@task),
                     method: :post,
                     class: 'mt-3 text-start' do %>
                     <%= label_tag :text, 'Description', class: 'col-form-label-sm' %>
@@ -184,7 +184,7 @@
                   <% external_resource = link['external_resource'] %>
                   <% url = link['url'] %>
                   <% existing_link = @book_links_by_url[url] %>
-                  <%= form_with url: add_link_admin_open_library_fetch_task_path(@task),
+                  <%= form_with url: add_link_admin_open_library_book_fetch_task_path(@task),
                     method: :post,
                     class: 'd-flex align-items-start justify-content-center gap-2 mb-2 mt-2 b-task-link-form' do %>
                     <%= hidden_field_tag :url, url %>

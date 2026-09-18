@@ -22,7 +22,7 @@ module Admin
           return query[/(\d+)/, 1] if query
         end
 
-        value[%r{\A(\d+)\z}, 1]
+        value[/\A(\d+)\z/, 1]
       end
     end
   end

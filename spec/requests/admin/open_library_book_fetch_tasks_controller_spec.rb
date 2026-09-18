@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::OpenLibraryFetchTasksController do
+RSpec.describe Admin::OpenLibraryBookFetchTasksController do
   let(:author) { create(:author, fullname: 'Jules Verne') }
   let(:genre) { create(:genre, name: 'adventure') }
   let(:series) { create(:series, name: 'Voyages Extraordinaires') }
@@ -37,7 +37,7 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
   end
   let!(:task) do
     create(
-      :open_library_fetch_task,
+      :open_library_book_fetch_task,
       target: external_identity,
       status: :fetched,
       fetched_data: fetched_data
@@ -49,17 +49,15 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
     create(:book_series, book: book, series: series)
   end
 
-  describe 'GET /admin/open_library_fetch_tasks/:id/edit' do
-    let(:send_request) { get edit_admin_open_library_fetch_task_path(task), headers: authorization_header }
+  describe 'GET /admin/open_library_book_fetch_tasks/:id/edit' do
+    let(:send_request) { get edit_admin_open_library_book_fetch_task_path(task), headers: authorization_header }
 
-    it 'renders the selection form' do
+    it 'renders the selection form', :aggregate_failures do
       send_request
       expect(response).to be_successful
       expect(assigns(:book)).to eq(book)
       expect(response.body).to include('Open Library fetch results')
-      expect(response.body).to include('Current description:')
       expect(response.body).to include('Existing summary')
-      expect(response.body).to include('Old SRC')
       expect(response.body).to include('A Verne novel.')
       expect(response.body).to include('OL113611A')
       expect(response.body).to include('https://openlibrary.org/authors/OL113611A')
@@ -120,9 +118,9 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
     end
   end
 
-  describe 'POST /admin/open_library_fetch_tasks/:id/add_identity' do
+  describe 'POST /admin/open_library_book_fetch_tasks/:id/add_identity' do
     let(:send_request) do
-      post add_identity_admin_open_library_fetch_task_path(task),
+      post add_identity_admin_open_library_book_fetch_task_path(task),
            params: { external_resource: 'wikidata', external_id: 'Q137179018' },
            headers: authorization_header
     end
@@ -130,56 +128,56 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
     it 'creates an identity and reloads the apply form' do
       expect { send_request }.to change(book.external_identities, :count).by(1)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('External identity added.')
     end
   end
 
-  describe 'POST /admin/open_library_fetch_tasks/:id/add_author_identity' do
+  describe 'POST /admin/open_library_book_fetch_tasks/:id/add_author_identity' do
     let(:send_request) do
-      post add_author_identity_admin_open_library_fetch_task_path(task),
+      post add_author_identity_admin_open_library_book_fetch_task_path(task),
            params: { author_key: 'OL113611A', author_id: author.id },
            headers: authorization_header
     end
 
     it 'creates an author identity and reloads the apply form' do
       expect { send_request }.to change(author.external_identities, :count).by(1)
-      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('Open Library author identity added.')
     end
   end
 
-  describe 'POST /admin/open_library_fetch_tasks/:id/add_genre_identity' do
+  describe 'POST /admin/open_library_book_fetch_tasks/:id/add_genre_identity' do
     let(:send_request) do
-      post add_genre_identity_admin_open_library_fetch_task_path(task),
+      post add_genre_identity_admin_open_library_book_fetch_task_path(task),
            params: { genre_key: '/tags/OL180T', genre_id: genre.id },
            headers: authorization_header
     end
 
     it 'creates a genre identity and reloads the apply form' do
       expect { send_request }.to change(genre.external_identities, :count).by(1)
-      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('Open Library genre identity added.')
     end
   end
 
-  describe 'POST /admin/open_library_fetch_tasks/:id/add_series_identity' do
+  describe 'POST /admin/open_library_book_fetch_tasks/:id/add_series_identity' do
     let(:send_request) do
-      post add_series_identity_admin_open_library_fetch_task_path(task),
+      post add_series_identity_admin_open_library_book_fetch_task_path(task),
            params: { series_key: '/series/OL123S', series_id: series.id },
            headers: authorization_header
     end
 
     it 'creates a series identity and reloads the apply form' do
       expect { send_request }.to change(series.external_identities, :count).by(1)
-      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('Open Library series identity added.')
     end
   end
 
-  describe 'POST /admin/open_library_fetch_tasks/:id/apply_summary' do
+  describe 'POST /admin/open_library_book_fetch_tasks/:id/apply_summary' do
     let(:send_request) do
-      post apply_summary_admin_open_library_fetch_task_path(task),
+      post apply_summary_admin_open_library_book_fetch_task_path(task),
            params: { text: 'A Verne novel.' },
            headers: authorization_header
     end
@@ -193,14 +191,14 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
       expect(applied.source_type).to eq(task.class.name)
       expect(applied.source_id).to eq(task.id)
       expect(task.reload.status).to eq('fetched')
-      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('Book summary updated.')
     end
   end
 
-  describe 'POST /admin/open_library_fetch_tasks/:id/add_link' do
+  describe 'POST /admin/open_library_book_fetch_tasks/:id/add_link' do
     let(:send_request) do
-      post add_link_admin_open_library_fetch_task_path(task),
+      post add_link_admin_open_library_book_fetch_task_path(task),
            params: {
              url: 'https://en.wikipedia.org/wiki/The_Sea_Serpent',
              external_resource: 'en.wikipedia.org'
@@ -210,7 +208,7 @@ RSpec.describe Admin::OpenLibraryFetchTasksController do
 
     it 'creates an external link and reloads the apply form' do
       expect { send_request }.to change(book.external_links, :count).by(1)
-      expect(response).to redirect_to(edit_admin_open_library_fetch_task_path(task))
+      expect(response).to redirect_to(edit_admin_open_library_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('External link added.')
     end
 

@@ -75,11 +75,9 @@ RSpec.describe Admin::Tasks::WikidataAuthorSearch do
     let(:task) { build(:wikidata_author_search_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       JSON.parse(
-        File.read(
-          Rails.root.join(
-            'engines/admin/spec/fixtures/wikidata/author_search_robert_jordan.json'
-          )
-        )
+        Rails.root.join(
+          'engines/admin/spec/fixtures/wikidata/author_search_robert_jordan.json'
+        ).read
       )
     end
 

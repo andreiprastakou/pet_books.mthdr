@@ -16,10 +16,10 @@ module Admin
       updated_at
     ].index_by(&:to_s).freeze
 
-    PARAMS = ([
+    PARAMS = [
       :name,
       { external_links_attributes: {}, external_identities_attributes: {} }
-    ]).freeze
+    ].freeze
 
     def index
       @public_list_types = apply_sort(

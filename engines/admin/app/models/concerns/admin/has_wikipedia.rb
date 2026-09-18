@@ -47,7 +47,7 @@ module Admin
 
     private
 
-    # rubocop:disable Style/RescueModifier
+    # rubocop:disable-next Style/RescueModifier
     def refresh_wiki_links
       return if wiki_url.blank?
 
@@ -58,7 +58,6 @@ module Admin
       wiki_links.each(&:mark_for_destruction)
       wiki_links << new_link
     end
-    # rubocop:enable Style/RescueModifier
 
     def validate_wiki_url_format
       return if wiki_url.blank?

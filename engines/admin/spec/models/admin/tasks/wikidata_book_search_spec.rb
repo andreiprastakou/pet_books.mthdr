@@ -75,11 +75,9 @@ RSpec.describe Admin::Tasks::WikidataBookSearch do
     let(:task) { build(:wikidata_search_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       JSON.parse(
-        File.read(
-          Rails.root.join(
-            'engines/admin/spec/fixtures/wikidata/book_search_in_the_slopes.json'
-          )
-        )
+        Rails.root.join(
+          'engines/admin/spec/fixtures/wikidata/book_search_in_the_slopes.json'
+        ).read
       )
     end
 

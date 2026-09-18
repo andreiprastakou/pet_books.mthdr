@@ -6,8 +6,8 @@ module Admin
           query = params[:q].to_s.strip
           @authors = if query.present?
                        Admin::Author.where('fullname LIKE ?', "%#{query}%")
-                             .order(:fullname)
-                             .limit(10)
+                                    .order(:fullname)
+                                    .limit(10)
                      else
                        []
                      end

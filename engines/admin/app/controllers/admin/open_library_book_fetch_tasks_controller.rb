@@ -1,5 +1,5 @@
 module Admin
-  class OpenLibraryFetchTasksController < AdminController
+  class OpenLibraryBookFetchTasksController < AdminController
     before_action :fetch_task
 
     def edit
@@ -8,8 +8,8 @@ module Admin
 
     def add_identity
       @task.add_identity!(params.require(:external_resource), params.require(:external_id))
-      redirect_to edit_admin_open_library_fetch_task_path(@task),
-                  notice: t('notices.admin.open_library_fetch_tasks.add_identity.success')
+      redirect_to edit_admin_open_library_book_fetch_task_path(@task),
+                  notice: t('notices.admin.open_library_book_fetch_tasks.add_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message
       prepare_form_data
@@ -19,8 +19,8 @@ module Admin
     def add_author_identity
       author = Admin::Author.find(params.require(:author_id))
       @task.add_author_identity!(params.require(:author_key), author: author)
-      redirect_to edit_admin_open_library_fetch_task_path(@task),
-                  notice: t('notices.admin.open_library_fetch_tasks.add_author_identity.success')
+      redirect_to edit_admin_open_library_book_fetch_task_path(@task),
+                  notice: t('notices.admin.open_library_book_fetch_tasks.add_author_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid,
            ActiveRecord::RecordNotFound => e
       flash.now[:error] = e.message
@@ -31,8 +31,8 @@ module Admin
     def add_genre_identity
       genre = Admin::Genre.find(params.require(:genre_id))
       @task.add_genre_identity!(params.require(:genre_key), genre: genre)
-      redirect_to edit_admin_open_library_fetch_task_path(@task),
-                  notice: t('notices.admin.open_library_fetch_tasks.add_genre_identity.success')
+      redirect_to edit_admin_open_library_book_fetch_task_path(@task),
+                  notice: t('notices.admin.open_library_book_fetch_tasks.add_genre_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid,
            ActiveRecord::RecordNotFound => e
       flash.now[:error] = e.message
@@ -43,8 +43,8 @@ module Admin
     def add_series_identity
       series = Admin::Series.find(params.require(:series_id))
       @task.add_series_identity!(params.require(:series_key), series: series)
-      redirect_to edit_admin_open_library_fetch_task_path(@task),
-                  notice: t('notices.admin.open_library_fetch_tasks.add_series_identity.success')
+      redirect_to edit_admin_open_library_book_fetch_task_path(@task),
+                  notice: t('notices.admin.open_library_book_fetch_tasks.add_series_identity.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid,
            ActiveRecord::RecordNotFound => e
       flash.now[:error] = e.message
@@ -54,8 +54,8 @@ module Admin
 
     def apply_summary
       @task.apply_summary!(params.require(:text))
-      redirect_to edit_admin_open_library_fetch_task_path(@task),
-                  notice: t('notices.admin.open_library_fetch_tasks.apply_summary.success')
+      redirect_to edit_admin_open_library_book_fetch_task_path(@task),
+                  notice: t('notices.admin.open_library_book_fetch_tasks.apply_summary.success')
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message
       prepare_form_data
@@ -65,8 +65,8 @@ module Admin
     def add_link
       link = @task.add_link!(params.require(:url), external_resource: params.require(:external_resource))
       notice_key = link.previously_new_record? ? :success : :updated
-      redirect_to edit_admin_open_library_fetch_task_path(@task),
-                  notice: t("notices.admin.open_library_fetch_tasks.add_link.#{notice_key}")
+      redirect_to edit_admin_open_library_book_fetch_task_path(@task),
+                  notice: t("notices.admin.open_library_book_fetch_tasks.add_link.#{notice_key}")
     rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid => e
       flash.now[:error] = e.message
       prepare_form_data

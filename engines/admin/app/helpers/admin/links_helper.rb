@@ -106,7 +106,7 @@ module Admin
       case task
       when Admin::Tasks::AiBookFetch, Admin::Tasks::LibraryThingBookSearch, Admin::Tasks::OpenLibraryBookSearch,
            Admin::Tasks::WikidataBookSearch, Admin::Tasks::WikipediaBookFetch
-           admin_link_to_data_fetch_task_book(task.book)
+        admin_link_to_data_fetch_task_book(task.book)
       when Admin::Tasks::AiAuthorWorksParse, Admin::Tasks::AiAuthorWorksFetch, Admin::Tasks::OpenLibraryAuthorSearch,
             Admin::Tasks::WikidataAuthorSearch, Admin::Tasks::WikipediaAuthorFetch
         admin_link_to_data_fetch_task_author(task.author)
@@ -127,7 +127,8 @@ module Admin
     end
 
     def admin_link_to_data_fetch_task_book(book)
-      admin_link_to "Book \"#{book.title}\" (#{book.year_published}) by #{book.author_names_label}", admin_book_path(book)
+      admin_link_to "Book \"#{book.title}\" (#{book.year_published}) by #{book.author_names_label}",
+                    admin_book_path(book)
     end
 
     def admin_link_to_data_fetch_task_author(author)

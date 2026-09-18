@@ -7,7 +7,7 @@ RSpec.describe Admin::InfoFetchers::OpenLibrary::Api::BookSearcher do
     let(:options) { {} }
     let(:author) { create(:author, fullname: 'Fyodor Dostoevsky') }
     let(:book) do
-      create(:book, title: "Crime and Punishment!", authors: [author], year_published: 1866)
+      create(:book, title: 'Crime and Punishment!', authors: [author], year_published: 1866)
     end
 
     let(:expected_params) do

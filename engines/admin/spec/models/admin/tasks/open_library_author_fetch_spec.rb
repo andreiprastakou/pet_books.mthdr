@@ -119,7 +119,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
           { 'title' => 'Missing url' },
           'not-a-hash'
         ],
-        'photos' => [6425004, 'not-an-int', nil],
+        'photos' => [6_425_004, 'not-an-int', nil],
         'revision' => 12,
         'key' => '/authors/OL26320A',
         'alternate_names' => ['JRR Tolkien']
@@ -156,7 +156,7 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
     end
 
     context 'when fetched_data is not a hash' do
-      let(:fetched_data) { ['not', 'a', 'hash'] }
+      let(:fetched_data) { %w[not a hash] }
 
       it 'returns an empty hash' do
         expect(task.fetched_data_normalized).to eq({})
@@ -185,11 +185,9 @@ RSpec.describe Admin::Tasks::OpenLibraryAuthorFetch do
     context 'with a lifelike Open Library author fetch fixture' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/open_library/author_fetch_dean_koontz.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/open_library/author_fetch_dean_koontz.json'
+          ).read
         )
       end
 

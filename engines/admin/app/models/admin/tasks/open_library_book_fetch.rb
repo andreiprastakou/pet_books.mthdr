@@ -51,7 +51,9 @@ module Admin
 
       def add_identity!(external_resource, external_id)
         resource = external_resource.to_s
-        raise ArgumentError, 'Invalid external resource' unless Admin::ExternalIdentity.external_resources.key?(resource)
+        unless Admin::ExternalIdentity.external_resources.key?(resource)
+          raise ArgumentError, 'Invalid external resource'
+        end
 
         id = external_id.to_s.strip
         raise ArgumentError, 'External ID is required' if id.blank?

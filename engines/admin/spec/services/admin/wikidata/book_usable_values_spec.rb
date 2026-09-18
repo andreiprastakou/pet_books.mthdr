@@ -9,11 +9,9 @@ RSpec.describe Admin::Wikidata::BookUsableValues do
     context 'with a lifelike Wikidata book fixture' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/wikidata/book_fetch_tailored_realities.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/wikidata/book_fetch_tailored_realities.json'
+          ).read
         )
       end
 

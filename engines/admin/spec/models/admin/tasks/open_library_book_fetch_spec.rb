@@ -29,7 +29,7 @@ require 'rails_helper'
 RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
   describe 'validation' do
     it 'has a valid factory' do
-      expect(build(:open_library_fetch_task)).to be_valid
+      expect(build(:open_library_book_fetch_task)).to be_valid
     end
   end
 
@@ -48,7 +48,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
   describe '#perform' do
     subject(:call) { task.perform }
 
-    let(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let(:task) { create(:open_library_book_fetch_task, target: external_identity) }
     let(:external_identity) { create(:external_identity, external_id: 'OL27448W') }
     let(:fetcher) { instance_double(Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher) }
     let(:api_data) { { 'key' => '/works/OL27448W', 'title' => 'The Lord of the Rings' } }
@@ -79,7 +79,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
   describe '#book' do
     let(:book) { create(:book) }
     let(:external_identity) { create(:external_identity, owner: book) }
-    let(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let(:task) { create(:open_library_book_fetch_task, target: external_identity) }
 
     it 'returns the external identity owner book' do
       expect(task.book).to eq(book)
@@ -99,7 +99,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
 
     let(:book) { create(:book) }
     let!(:external_identity) { create(:external_identity, owner: book) }
-    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let!(:task) { create(:open_library_book_fetch_task, target: external_identity) }
 
     it 'creates an external identity on the book' do
       expect { call }.to change(book.external_identities, :count).by(1)
@@ -115,7 +115,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     let(:book) { create(:book) }
     let(:author) { create(:author) }
     let!(:external_identity) { create(:external_identity, owner: book) }
-    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let!(:task) { create(:open_library_book_fetch_task, target: external_identity) }
 
     before { create(:book_author, book: book, author: author) }
 
@@ -142,7 +142,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     let(:book) { create(:book) }
     let(:genre) { create(:genre) }
     let!(:external_identity) { create(:external_identity, owner: book) }
-    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let!(:task) { create(:open_library_book_fetch_task, target: external_identity) }
 
     before { create(:book_genre, book: book, genre: genre) }
 
@@ -159,7 +159,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     let(:book) { create(:book) }
     let(:series) { create(:series) }
     let!(:external_identity) { create(:external_identity, owner: book) }
-    let!(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let!(:task) { create(:open_library_book_fetch_task, target: external_identity) }
 
     before { create(:book_series, book: book, series: series) }
 
@@ -177,7 +177,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
 
     let(:book) { create(:book) }
     let(:external_identity) { create(:external_identity, owner: book) }
-    let(:task) { create(:open_library_fetch_task, target: external_identity, status: :fetched) }
+    let(:task) { create(:open_library_book_fetch_task, target: external_identity, status: :fetched) }
 
     it 'creates an external link on the book' do
       expect { call }.to change(book.external_links, :count).by(1)
@@ -210,7 +210,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
 
     let(:book) { create(:book) }
     let(:external_identity) { create(:external_identity, owner: book) }
-    let(:task) { create(:open_library_fetch_task, target: external_identity) }
+    let(:task) { create(:open_library_book_fetch_task, target: external_identity) }
 
     it 'upserts a book description for the task source' do
       call
@@ -243,7 +243,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
   end
 
   describe '#fetched_data_normalized' do
-    let(:task) { build(:open_library_fetch_task, fetched_data: fetched_data) }
+    let(:task) { build(:open_library_book_fetch_task, fetched_data: fetched_data) }
     let(:fetched_data) do
       {
         'title' => 'The Lord of the Rings',
@@ -316,7 +316,7 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     end
 
     context 'when fetched_data is not a hash' do
-      let(:fetched_data) { ['not', 'a', 'hash'] }
+      let(:fetched_data) { %w[not a hash] }
 
       it 'returns an empty hash' do
         expect(task.fetched_data_normalized).to eq({})
@@ -391,11 +391,9 @@ RSpec.describe Admin::Tasks::OpenLibraryBookFetch do
     context 'with a lifelike Open Library work fixture' do
       let(:fetched_data) do
         JSON.parse(
-          File.read(
-            Rails.root.join(
-              'engines/admin/spec/fixtures/open_library/work_fetch_pillars_of_the_earth.json'
-            )
-          )
+          Rails.root.join(
+            'engines/admin/spec/fixtures/open_library/work_fetch_pillars_of_the_earth.json'
+          ).read
         )
       end
 

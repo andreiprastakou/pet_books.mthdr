@@ -13,9 +13,9 @@ module Admin
                                      inverse_of: :owner
 
       accepts_nested_attributes_for :external_identities, allow_destroy: true,
-                                    reject_if: ->(attrs) {
-                                      attrs['external_resource'].blank? && attrs['external_id'].blank?
-                                    }
+                                                          reject_if: lambda { |attrs|
+                                                            attrs['external_resource'].blank? && attrs['external_id'].blank?
+                                                          }
 
       after_save :introduce_changed_external_identities
     end

@@ -3,7 +3,7 @@ module Admin
     module Wikidata
       module Api
         class BaseCaller
-          BASE_URL = 'https://www.wikidata.org/w/rest.php/wikibase/v1'
+          BASE_URL = 'https://www.wikidata.org/w/rest.php/wikibase/v1'.freeze
           # Wikimedia requires an identifying User-Agent with contact info.
           # See https://meta.wikimedia.org/wiki/User-Agent_policy
           USER_AGENT = ENV.fetch(
@@ -13,7 +13,7 @@ module Admin
               'books.mthdr (https://books-mthdr.fly.dev)'
             )
           ).freeze
-          RATE_LIMIT_NAME = 'wikidata'
+          RATE_LIMIT_NAME = 'wikidata'.freeze
           RATE_LIMIT_INTERVAL_SECONDS = 1.0
           OPEN_TIMEOUT = 10
           TIMEOUT = 30

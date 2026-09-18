@@ -76,7 +76,7 @@ en:
         reject:
           success: "Summaries rejected!"
           nothing_else: "Nothing else to review"
-      open_library_search_tasks:
+      open_library_book_search_tasks:
         add_work_identity:
           success: "Open Library work identity added."
         add_author_identity:
@@ -93,7 +93,7 @@ en:
       library_thing_book_search_tasks:
         add_work_link:
           success: "LibraryThing link added."
-      open_library_fetch_tasks:
+      open_library_book_fetch_tasks:
         add_identity:
           success: "External identity added."
         add_author_identity:

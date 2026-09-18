@@ -40,9 +40,7 @@ RSpec.describe Admin::ExternalApiRateLimit do
   describe '.claim_slot!' do
     subject(:wait) { described_class.claim_slot!(name, min_interval_seconds: interval) }
 
-    around do |example|
-      freeze_time { example.run }
-    end
+    before { freeze_time }
 
     it 'creates the rate limit row and allows the first request immediately' do
       expect { wait }.to change(described_class, :count).by(1)

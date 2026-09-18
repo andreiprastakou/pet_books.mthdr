@@ -14,8 +14,9 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'attaches an external link and enqueues an Open Library fetch task' do
         expect { call }.to change(book.external_links, :count).by(1)
-                         .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(1)
-                         .and have_enqueued_job(Admin::DataFetchJob)
+                                                              .and change(Admin::Tasks::OpenLibraryBookFetch,
+                                                                          :count).by(1)
+          .and have_enqueued_job(Admin::DataFetchJob)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://openlibrary.org/works/OL27448W')
@@ -31,9 +32,10 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'attaches an author link and enqueues an Open Library author fetch task' do
         expect { call }.to change(author.external_links, :count).by(1)
-                         .and change(Admin::Tasks::OpenLibraryAuthorFetch, :count).by(1)
-                         .and have_enqueued_job(Admin::DataFetchJob)
-                         .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
+                                                                .and change(Admin::Tasks::OpenLibraryAuthorFetch,
+                                                                            :count).by(1)
+          .and have_enqueued_job(Admin::DataFetchJob)
+          .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://openlibrary.org/authors/OL1394865A')
@@ -48,9 +50,9 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'attaches a link and enqueues a Wikidata fetch task' do
         expect { call }.to change(book.external_links, :count).by(1)
-                         .and change(Admin::Tasks::WikidataBookFetch, :count).by(1)
-                         .and have_enqueued_job(Admin::DataFetchJob)
-                         .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
+                                                              .and change(Admin::Tasks::WikidataBookFetch, :count).by(1)
+                                                                                                                  .and have_enqueued_job(Admin::DataFetchJob)
+          .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q137179018')
@@ -66,9 +68,10 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'attaches an author link and enqueues a Wikidata author fetch task' do
         expect { call }.to change(author.external_links, :count).by(1)
-                         .and change(Admin::Tasks::WikidataAuthorFetch, :count).by(1)
-                         .and have_enqueued_job(Admin::DataFetchJob)
-                         .and change(Admin::Tasks::WikidataBookFetch, :count).by(0)
+                                                                .and change(Admin::Tasks::WikidataAuthorFetch,
+                                                                            :count).by(1)
+          .and have_enqueued_job(Admin::DataFetchJob)
+          .and change(Admin::Tasks::WikidataBookFetch, :count).by(0)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q892')
@@ -109,7 +112,7 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
       it 'reattaches the link for the new id and enqueues another fetch task' do
         expect { call }.to change(Admin::Tasks::OpenLibraryBookFetch, :count).by(1)
-                         .and have_enqueued_job(Admin::DataFetchJob)
+                                                                             .and have_enqueued_job(Admin::DataFetchJob)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://openlibrary.org/works/OL2W')
@@ -119,39 +122,39 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
 
   describe '.link_builder_for' do
     it 'returns the book Open Library work builder' do
-      expect(described_class.link_builder_for('open_library', ::Book)).to eq(Admin::ExternalLinkBuilders::OpenLibrary::Work)
+      expect(described_class.link_builder_for('open_library', Book)).to eq(Admin::ExternalLinkBuilders::OpenLibrary::Work)
     end
 
     it 'returns the author Open Library author builder' do
-      expect(described_class.link_builder_for(:open_library, ::Author)).to eq(Admin::ExternalLinkBuilders::OpenLibrary::Author)
+      expect(described_class.link_builder_for(:open_library, Author)).to eq(Admin::ExternalLinkBuilders::OpenLibrary::Author)
     end
 
     it 'returns the author Wikidata builder' do
-      expect(described_class.link_builder_for('wikidata', ::Author)).to eq(Admin::ExternalLinkBuilders::Wikidata)
+      expect(described_class.link_builder_for('wikidata', Author)).to eq(Admin::ExternalLinkBuilders::Wikidata)
     end
 
     it 'returns the author LibraryThing author builder' do
-      expect(described_class.link_builder_for('librarything', ::Author))
+      expect(described_class.link_builder_for('librarything', Author))
         .to eq(Admin::ExternalLinkBuilders::LibraryThing::Author)
     end
 
     it 'returns the book LibraryThing work builder' do
-      expect(described_class.link_builder_for(:librarything, ::Book))
+      expect(described_class.link_builder_for(:librarything, Book))
         .to eq(Admin::ExternalLinkBuilders::LibraryThing::Work)
     end
 
     it 'returns the author Goodreads author builder' do
-      expect(described_class.link_builder_for('goodreads', ::Author))
+      expect(described_class.link_builder_for('goodreads', Author))
         .to eq(Admin::ExternalLinkBuilders::Goodreads::Author)
     end
 
     it 'returns the book Goodreads work builder' do
-      expect(described_class.link_builder_for(:goodreads, ::Book))
+      expect(described_class.link_builder_for(:goodreads, Book))
         .to eq(Admin::ExternalLinkBuilders::Goodreads::Work)
     end
 
     it 'returns nil when no builder is defined' do
-      expect(described_class.link_builder_for('isfdb', ::Author)).to be_nil
+      expect(described_class.link_builder_for('isfdb', Author)).to be_nil
     end
   end
 end

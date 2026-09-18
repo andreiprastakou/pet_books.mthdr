@@ -21,10 +21,10 @@ require 'rails_helper'
 #
 RSpec.describe Admin::WikidataLookupEntity do
   describe 'validation' do
-    subject { build(:wikidata_lookup_entity) }
+    subject(:lookup_entity) { build(:wikidata_lookup_entity) }
 
     it 'has a valid factory' do
-      expect(subject).to be_valid
+      expect(lookup_entity).to be_valid
     end
 
     it { is_expected.to validate_presence_of(:qid) }

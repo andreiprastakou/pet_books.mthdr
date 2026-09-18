@@ -112,7 +112,7 @@ RSpec.describe '/api/books/full_entries' do
         send_request
 
         expect(response).to be_successful
-        expect(json_response[:summary_source]).to eq(ExternalResources::OPEN_LIBRARY)
+        expect(json_response[:summary_source]).to eq('Open Library')
       end
     end
   end

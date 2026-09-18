@@ -13,7 +13,7 @@
 module Admin
   module Ai
     class Chat < AiRecord
-      DEFAULT_MODEL_ID = 'gpt-5-mini'.freeze
+      DEFAULT_MODEL_ID = 'gpt-5-mini'
 
       acts_as_chat message_class: 'Admin::Ai::Message',
                    tool_call_class: 'Admin::Ai::ToolCall'
