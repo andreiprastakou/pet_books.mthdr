@@ -149,6 +149,9 @@ en:
           updated: "External link label updated."
         add_wikipedia_link:
           success: "Wikipedia link added."
+      wikidata_author_works_fetch_tasks:
+        apply_work:
+          success: "Book created/updated from Wikidata work."
       wikipedia_book_fetch_tasks:
         apply_summary:
           success: "Book summary updated."
@@ -167,6 +170,9 @@ en:
       wikidata_fetches:
         create:
           success: "Wikidata data fetch has been queued."
+      wikidata_works_fetches:
+        create:
+          success: "Wikidata works fetch has been queued."
       wikipedia_fetches:
         create:
           success: "Wikipedia intro fetch has been queued."

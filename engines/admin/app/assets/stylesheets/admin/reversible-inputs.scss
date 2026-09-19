@@ -9,6 +9,11 @@
     select {
       background-color: lavender;
     }
+
+    // Non-input content (e.g. external id links ready to be attached)
+    &:not(:has(input, textarea, select)) {
+      background-color: lavender;
+    }
   }
 
   &.changed {
