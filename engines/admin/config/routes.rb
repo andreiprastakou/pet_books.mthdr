@@ -16,6 +16,7 @@ Admin::Engine.routes.draw do
         resources :external_identities, only: [] do
           resources :open_library_fetches, only: %i[create]
           resources :wikidata_fetches, only: %i[create]
+          resources :wikidata_works_fetches, only: %i[create]
         end
 
         resources :books_list, only: %i[create edit] do
@@ -144,6 +145,12 @@ Admin::Engine.routes.draw do
         post :add_identity
         post :add_link
         post :add_wikipedia_link
+      end
+    end
+
+    resources :wikidata_author_works_fetch_tasks, only: %i[edit] do
+      member do
+        post :apply_work
       end
     end
 

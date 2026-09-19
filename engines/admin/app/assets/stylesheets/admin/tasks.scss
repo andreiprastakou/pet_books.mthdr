@@ -53,6 +53,17 @@
       width: 8rem;
     }
   }
+
+  &.b-wikidata-author-works {
+    tbody td {
+      border-left: 0;
+      border-right: 0;
+    }
+
+    tbody tr:hover > td {
+      background-color: rgba(0, 0, 0, 0.04);
+    }
+  }
 }
 
 a.b-external-link-icon-link {

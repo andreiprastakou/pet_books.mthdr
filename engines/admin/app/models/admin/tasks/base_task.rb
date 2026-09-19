@@ -41,6 +41,7 @@ module Admin
         'Admin::Tasks::OpenLibraryBookSearch',
         'Admin::Tasks::WikidataAuthorFetch',
         'Admin::Tasks::WikidataAuthorSearch',
+        'Admin::Tasks::WikidataAuthorWorksFetch',
         'Admin::Tasks::WikidataBookFetch',
         'Admin::Tasks::WikidataBookSearch',
         'Admin::Tasks::WikipediaAuthorFetch',

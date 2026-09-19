@@ -57,6 +57,7 @@ RSpec.describe Admin::AuthorsController do
       expect(response.body).to include('Wikidata:')
       expect(response.body).to include('Q892')
       expect(response.body).to include(admin_author_external_identity_wikidata_fetches_path(author, identity))
+      expect(response.body).to include(admin_author_external_identity_wikidata_works_fetches_path(author, identity))
       expect(response.body).to include(admin_author_open_library_searches_path(author))
       expect(response.body).not_to include(admin_author_wikidata_searches_path(author))
     end

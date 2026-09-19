@@ -108,7 +108,8 @@ module Admin
            Admin::Tasks::WikidataBookSearch, Admin::Tasks::WikipediaBookFetch
         admin_link_to_data_fetch_task_book(task.book)
       when Admin::Tasks::AiAuthorWorksParse, Admin::Tasks::AiAuthorWorksFetch, Admin::Tasks::OpenLibraryAuthorSearch,
-            Admin::Tasks::WikidataAuthorSearch, Admin::Tasks::WikipediaAuthorFetch
+            Admin::Tasks::WikidataAuthorSearch, Admin::Tasks::WikidataAuthorWorksFetch,
+            Admin::Tasks::WikipediaAuthorFetch
         admin_link_to_data_fetch_task_author(task.author)
       when Admin::Tasks::OpenLibraryBookFetch, Admin::Tasks::OpenLibraryAuthorFetch,
            Admin::Tasks::WikidataBookFetch, Admin::Tasks::WikidataAuthorFetch
@@ -175,7 +176,7 @@ module Admin
         safe_join([
                     label,
                     ' ('.html_safe,
-                    safe_join(wikipedia_link_details(entity), ', '),
+                    wikipedia_intro_fetch_link(entity),
                     ')'.html_safe
                   ])
       end
@@ -191,16 +192,6 @@ module Admin
     end
 
     private
-
-    def wikipedia_link_details(entity)
-      details = [
-        pluralize(entity.wiki_links.count, 'page'),
-        pluralize(entity.wiki_links_sum_views, 'view')
-      ]
-      fetch_link = wikipedia_intro_fetch_link(entity)
-      details << fetch_link if fetch_link
-      details
-    end
 
     def wikipedia_intro_fetch_link(entity)
       path = wikipedia_intro_fetch_path(entity)

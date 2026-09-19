@@ -1,0 +1,116 @@
+<%= turbo_frame_tag "task_apply_form" do %>
+  <div class="card mt-2">
+    <div class="card-header">
+      Wikidata author works
+    </div>
+
+    <div class="card-body">
+      <% if notice.present? %>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <%= notice %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+      <% if flash[:error].present? %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= flash[:error] %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+
+      <% if @rows.blank? %>
+        <p class="text-muted mb-0">No books or Wikidata works to show.</p>
+      <% else %>
+        <% @rows.each_with_index do |row, index| %>
+          <% next if row.work.blank? %>
+          <%= form_with url: apply_work_admin_wikidata_author_works_fetch_task_path(@task),
+            method: :post,
+            html: { id: "wikidata_author_work_row_#{index}", class: 'd-none' } do %>
+          <% end %>
+        <% end %>
+
+        <table class="table table-sm table-bordered align-middle mb-0 b-task-fetch-results b-wikidata-author-works">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Title</th>
+              <th>Wikidata work type</th>
+              <th>Year</th>
+              <th>Wikidata ID</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @rows.each_with_index do |row, index| %>
+              <% form_id = row.work.present? ? "wikidata_author_work_row_#{index}" : nil %>
+              <tr>
+                <td>
+                  <% if row.book.present? %>
+                    <%= hidden_field_tag :book_id, row.book.id, form: form_id if form_id %>
+                    <%= admin_link_to row.book.id, admin_book_path(row.book), target: '_blank' %>
+                  <% elsif form_id %>
+                    <%= select_tag :book_id,
+                      options_for_select(
+                        @author_books.map { |book| ["#{book.id}: #{book.title} (#{book.year_published})", book.id] }
+                      ),
+                      include_blank: true,
+                      class: 'form-select form-select-sm',
+                      form: form_id,
+                      id: "book_id_#{index}" %>
+                  <% end %>
+                  <% if form_id && row.wikidata_id.present? %>
+                    <%= hidden_field_tag :entity_id, row.wikidata_id, form: form_id %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if row.work.present? %>
+                    <%= admin_reversible_input(old_value: row.old_title) do %>
+                      <%= text_field_tag :title, row.title,
+                        class: 'form-control form-control-sm',
+                        form: form_id,
+                        data: { input_changes_target: 'input' } %>
+                    <% end %>
+                  <% else %>
+                    <%= row.title %>
+                  <% end %>
+                </td>
+                <td><%= row.work_type %></td>
+                <td>
+                  <% if row.work.present? %>
+                    <%= admin_reversible_input(old_value: row.old_year) do %>
+                      <%= text_field_tag :year, row.year,
+                        class: 'form-control form-control-sm',
+                        form: form_id,
+                        data: { input_changes_target: 'input' } %>
+                    <% end %>
+                  <% else %>
+                    <%= row.year %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if row.wikidata_id.present? %>
+                    <% entity_url = Admin::ExternalLinkBuilders::Wikidata.call(row.wikidata_id) %>
+                    <%= content_tag(:div, class: ['b-reversible-input-container form-control-sm', ('new' if row.new_wikidata_id)]) do %>
+                      <% if entity_url %>
+                        <%= external_link_to row.wikidata_id, entity_url %>
+                      <% else %>
+                        <%= row.wikidata_id %>
+                      <% end %>
+                    <% end %>
+                  <% end %>
+                </td>
+                <td>
+                  <% if row.book.present? && row.work.present? %>
+                    <%= submit_tag 'update', class: 'btn btn-sm btn-outline-primary', form: form_id %>
+                  <% elsif row.work.present? %>
+                    <%= submit_tag 'add', class: 'btn btn-sm btn-outline-primary', form: form_id %>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
+    </div>
+  </div>
+<% end %>

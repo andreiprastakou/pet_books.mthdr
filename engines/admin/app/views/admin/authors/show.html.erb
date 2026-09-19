@@ -131,6 +131,9 @@
                   <%= admin_link_to "fetch data",
                     admin_author_external_identity_wikidata_fetches_path(@author, external_identity),
                     data: { turbo_method: :post } %>
+                  <%= admin_link_to "fetch works",
+                    admin_author_external_identity_wikidata_works_fetches_path(@author, external_identity),
+                    data: { turbo_method: :post } %>
                 <% end %>
               </div>
             <% end %>
