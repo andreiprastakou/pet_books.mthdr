@@ -4,15 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLink } from '@fortawesome/free-solid-svg-icons/faLink'
 import PropTypes from 'prop-types'
 
-const RESOURCE_LINK_TEXT = {
-  official: 'Official',
-  goodreads: 'Goodreads',
-  librarything: 'LibraryThing',
-  'open_library': 'Open Library',
-  wikipedia: 'Wikipedia',
-}
-
-const ExternalTextLink = ({ resource, href, className = 'external-link' }) => (
+const ExternalTextLink = ({ label, href, className = 'external-link' }) => (
   <Button
     className={className}
     href={href}
@@ -20,7 +12,7 @@ const ExternalTextLink = ({ resource, href, className = 'external-link' }) => (
     target='_blank'
     variant='outline-secondary'
   >
-    { RESOURCE_LINK_TEXT[resource] || resource }
+    { label }
 
     <FontAwesomeIcon
       className='external-link-icon'
@@ -32,7 +24,7 @@ const ExternalTextLink = ({ resource, href, className = 'external-link' }) => (
 ExternalTextLink.propTypes = {
   className: PropTypes.string,
   href: PropTypes.string.isRequired,
-  resource: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired,
 }
 
 export default ExternalTextLink

@@ -7,11 +7,11 @@ import ExternalTextLink from 'components/ExternalTextLink'
 afterEach(cleanup)
 
 describe('ExternalTextLink', () => {
-  it('renders a known resource label as an external link button', () => {
+  it('renders the label as an external link button', () => {
     render(
       <ExternalTextLink
         href='https://en.wikipedia.org/wiki/Example'
-        resource='wikipedia'
+        label='Wikipedia'
       />
     )
 
@@ -23,29 +23,12 @@ describe('ExternalTextLink', () => {
     expect(link).toHaveClass('external-link')
   })
 
-  it.each([
-    ['official', 'Official'],
-    ['goodreads', 'Goodreads'],
-    ['librarything', 'LibraryThing'],
-    ['open_library', 'Open Library'],
-    ['wikipedia', 'Wikipedia'],
-  ])('labelizes %s as %s', (resource, label) => {
-    render(
-      <ExternalTextLink
-        href='https://example.com'
-        resource={resource}
-      />
-    )
-
-    expect(screen.getByRole('button', { name: label })).toBeInTheDocument()
-  })
-
-  it('falls back to the raw resource name and accepts a custom class', () => {
+  it('accepts a custom class', () => {
     render(
       <ExternalTextLink
         className='custom-external'
         href='https://example.com'
-        resource='blog'
+        label='blog'
       />
     )
 

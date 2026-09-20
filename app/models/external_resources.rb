@@ -23,4 +23,19 @@ module ExternalResources
   INTERNAL = [
     WIKIDATA
   ].freeze
+
+  # Display labels for frontend_api link buttons.
+  LABELS = {
+    FAN => 'Fan',
+    GOODREADS => 'Goodreads',
+    LIBRARYTHING => 'LibraryThing',
+    OFFICIAL => 'Official',
+    OPEN_LIBRARY => 'Open Library',
+    WIKIDATA => 'Wikidata',
+    WIKIPEDIA => 'Wikipedia'
+  }.freeze
+
+  def self.label_for(external_resource)
+    LABELS[external_resource] || external_resource
+  end
 end

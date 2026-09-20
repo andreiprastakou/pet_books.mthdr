@@ -10,8 +10,8 @@ afterEach(cleanup)
 const listType = {
   name: 'Awards',
   external_links: [
-    { external_resource: 'wikipedia', url: 'https://en.wikipedia.org/wiki/Awards' },
-    { external_resource: 'official', url: 'https://example.com/awards' },
+    { external_resource: 'wikipedia', label: 'Wikipedia', url: 'https://en.wikipedia.org/wiki/Awards' },
+    { external_resource: 'official', label: 'Official', url: 'https://example.com/awards' },
   ],
   public_lists: [
     { id: 1, year: 2020 },
@@ -26,7 +26,7 @@ describe('PublicListIntro', () => {
         listType={listType}
         selectedList={{
           year: 2021,
-          external_links: [{ external_resource: 'blog', url: 'https://example.com/2021' }],
+          external_links: [{ external_resource: 'blog', label: 'blog', url: 'https://example.com/2021' }],
         }}
         selectedListId={2}
         setSelectedListId={vi.fn()}

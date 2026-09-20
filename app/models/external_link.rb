@@ -27,6 +27,12 @@ class ExternalLink < ApplicationRecord
 
   def self.frontend_payload(links)
     links.reject { |link| ExternalResources::INTERNAL.include?(link.external_resource) }
-         .map { |link| { external_resource: link.external_resource, url: link.url } }
+         .map do |link|
+           {
+             external_resource: link.external_resource,
+             label: ExternalResources.label_for(link.external_resource),
+             url: link.url
+           }
+         end
   end
 end

@@ -50,6 +50,7 @@ RSpec.describe '/api/public_list_types' do
         name: 'Awards',
         external_links: [{
           external_resource: ExternalResources::WIKIPEDIA,
+          label: 'Wikipedia',
           url: 'https://en.wikipedia.org/wiki/Awards'
         }],
         public_lists: [

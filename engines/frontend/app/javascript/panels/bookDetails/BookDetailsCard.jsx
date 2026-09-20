@@ -180,7 +180,7 @@ const BookDetailsLinks = ({ links }) => (
       <ExternalTextLink
         href={link.url}
         key={link.url}
-        resource={link.external_resource}
+        label={link.label}
       />
     )) }
   </div>
