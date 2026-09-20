@@ -35,4 +35,27 @@ RSpec.describe ExternalResources do
       expect(described_class::INTERNAL - described_class::ALL).to be_empty
     end
   end
+
+  describe 'LABELS' do
+    it 'maps every known resource to a display label' do
+      expect(described_class::LABELS.keys).to match_array(described_class::ALL)
+      expect(described_class::LABELS).to include(
+        described_class::OFFICIAL => 'Official',
+        described_class::GOODREADS => 'Goodreads',
+        described_class::LIBRARYTHING => 'LibraryThing',
+        described_class::OPEN_LIBRARY => 'Open Library',
+        described_class::WIKIPEDIA => 'Wikipedia'
+      )
+    end
+  end
+
+  describe '.label_for' do
+    it 'returns the display label for a known resource' do
+      expect(described_class.label_for(described_class::LIBRARYTHING)).to eq('LibraryThing')
+    end
+
+    it 'falls back to the raw slug for unknown resources' do
+      expect(described_class.label_for('blog')).to eq('blog')
+    end
+  end
 end

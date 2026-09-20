@@ -16,7 +16,7 @@ describe('books API models', () => {
       tag_ids: [2],
       series_ids: [4],
       form_label: 'a fantasy novel',
-      external_links: [{ url: 'https://x' }],
+      external_links: [{ url: 'https://x', label: 'Official' }],
       public_lists: [{
         public_list_id: 10,
         public_list_type_id: 3,
@@ -33,7 +33,7 @@ describe('books API models', () => {
       tagIds: [2],
       seriesIds: [4],
       formLabel: 'a fantasy novel',
-      externalLinks: [{ url: 'https://x' }],
+      externalLinks: [{ url: 'https://x', label: 'Official' }],
       publicLists: [{
         publicListId: 10,
         publicListTypeId: 3,

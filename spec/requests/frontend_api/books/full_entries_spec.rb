@@ -91,7 +91,11 @@ RSpec.describe '/api/books/full_entries' do
         summary: description.text,
         summary_source: 'AI: Claude',
         external_links: frontend_external_links.map { |link|
-          { external_resource: link.external_resource, url: link.url }
+          {
+            external_resource: link.external_resource,
+            label: ExternalResources.label_for(link.external_resource),
+            url: link.url
+          }
         },
         public_lists: expected_public_lists
       )

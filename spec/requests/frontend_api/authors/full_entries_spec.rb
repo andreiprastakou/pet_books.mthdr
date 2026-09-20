@@ -25,6 +25,7 @@ RSpec.describe '/api/authors/full_entries' do
         photo_full_url: nil,
         external_links: [{
           external_resource: ExternalResources::WIKIPEDIA,
+          label: 'Wikipedia',
           url: 'https://en.wikipedia.org/wiki/foobar'
         }],
         birth_year: 1900,

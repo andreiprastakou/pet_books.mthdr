@@ -21,7 +21,7 @@ describe('series apiClient', () => {
       .mockResolvedValueOnce({
         id: 1,
         name: 'Earthsea',
-        external_links: [{ external_resource: 'wikipedia', url: 'https://wiki' }],
+        external_links: [{ external_resource: 'wikipedia', label: 'Wikipedia', url: 'https://wiki' }],
       })
       .mockResolvedValueOnce([{ id: 1, name: 'Earthsea' }])
       .mockResolvedValueOnce([{ series_id: 1, label: 'Earthsea' }])
@@ -35,7 +35,7 @@ describe('series apiClient', () => {
     expect(index[0]).toMatchObject({ id: 1, name: 'Earthsea' })
     expect(entry).toMatchObject({
       name: 'Earthsea',
-      externalLinks: [{ external_resource: 'wikipedia', url: 'https://wiki' }],
+      externalLinks: [{ external_resource: 'wikipedia', label: 'Wikipedia', url: 'https://wiki' }],
     })
     expect(refs[0]).toEqual({ id: 1, name: 'Earthsea' })
     expect(search).toEqual([{ seriesId: 1, label: 'Earthsea' }])

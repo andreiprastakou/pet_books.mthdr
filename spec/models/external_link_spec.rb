@@ -62,9 +62,13 @@ RSpec.describe ExternalLink do
                             url: 'https://www.wikidata.org/wiki/Q1')
     end
 
-    it 'serializes only non-internal links' do
+    it 'serializes only non-internal links with display labels' do
       expect(described_class.frontend_payload([wikipedia_link, wikidata_link])).to eq(
-        [{ external_resource: ExternalResources::WIKIPEDIA, url: 'https://en.wikipedia.org/wiki/Book' }]
+        [{
+          external_resource: ExternalResources::WIKIPEDIA,
+          label: 'Wikipedia',
+          url: 'https://en.wikipedia.org/wiki/Book'
+        }]
       )
     end
   end

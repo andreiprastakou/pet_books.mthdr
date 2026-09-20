@@ -9,11 +9,11 @@ describe('series API models', () => {
     expect(SeriesIndexEntry.parse({
       id: 1,
       name: 'Earthsea',
-      external_links: [{ external_resource: 'official', url: 'https://x' }],
+      external_links: [{ external_resource: 'official', label: 'Official', url: 'https://x' }],
     })).toEqual({
       id: 1,
       name: 'Earthsea',
-      externalLinks: [{ external_resource: 'official', url: 'https://x' }],
+      externalLinks: [{ external_resource: 'official', label: 'Official', url: 'https://x' }],
     })
 
     expect(SeriesRef.parse({ id: 2, name: 'Foundation' })).toEqual({

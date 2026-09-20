@@ -30,7 +30,11 @@ RSpec.describe '/api/series/index_entries' do
         id: series.id,
         name: series.name,
         external_links: frontend_external_links.map { |link|
-          { external_resource: link.external_resource, url: link.url }
+          {
+            external_resource: link.external_resource,
+            label: ExternalResources.label_for(link.external_resource),
+            url: link.url
+          }
         }
       )
     end
