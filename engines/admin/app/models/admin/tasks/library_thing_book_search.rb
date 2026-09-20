@@ -62,7 +62,14 @@ module Admin
       end
 
       def add_work_identity!(work_id)
-        attach_library_thing_work_to!(book, work_id)
+        id = Admin::ExternalLinkBuilders::LibraryThing::Work.normalize_id(work_id)
+        raise ArgumentError, 'Invalid LibraryThing work id' if id.blank?
+
+        create_introduced_identity!(
+          book,
+          external_resource: ExternalResources::LIBRARYTHING,
+          external_id: id
+        )
       end
     end
   end

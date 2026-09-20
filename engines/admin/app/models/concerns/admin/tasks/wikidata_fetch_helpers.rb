@@ -20,9 +20,7 @@ module Admin
       end
 
       def applyable_external_identities
-        Array(fetched_data_normalized['external_identities']).select do |entry|
-          Admin::ExternalIdentity.external_resources.key?(entry['external_resource'].to_s)
-        end
+        applyable_resource_entries('external_identities')
       end
 
       def wikipedia_sitelinks

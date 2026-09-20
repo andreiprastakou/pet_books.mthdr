@@ -46,7 +46,13 @@ module Admin
       end
 
       def add_author_identity!(author_key)
-        attach_open_library_author_to!(author, author_key)
+        attach_normalized_identity!(
+          author_key,
+          owner: author,
+          resource: ExternalResources::OPEN_LIBRARY,
+          normalizer: Admin::ExternalLinkBuilders::OpenLibrary::Author.method(:normalize_id),
+          error_message: 'Invalid Open Library author key'
+        )
       end
 
       def normalized_search_entry(entry)
