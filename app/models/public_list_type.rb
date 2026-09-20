@@ -26,4 +26,3 @@ class PublicListType < ApplicationRecord
     true
   end
 end
-

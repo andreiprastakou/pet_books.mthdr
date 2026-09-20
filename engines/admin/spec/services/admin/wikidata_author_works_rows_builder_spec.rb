@@ -52,7 +52,7 @@ RSpec.describe Admin::WikidataAuthorWorksRowsBuilder do
         )
       end
 
-      it 'presets wikidata values and keeps book values as old values for matches' do
+      it 'presets wikidata values and keeps book values as old values for matches', :aggregate_failures do
         id_row = rows.find { |row| row.wikidata_id == 'Q100' }
         expect(id_row.title).to eq('New Title')
         expect(id_row.old_title).to eq('Old Title')

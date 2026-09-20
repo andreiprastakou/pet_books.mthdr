@@ -7,18 +7,28 @@ RSpec.describe Admin::InfoFetchers::Wikidata::Api::AuthorWorksFetcher do
     subject(:result) { described_class.new(entity_id).fetch }
 
     let(:entity_id) { 'Q23434' }
+    let(:sparql_response_bindings) do
+      [
+        binding_for('Q43361', label: 'The Books of Blood', type: 'book series'),
+        binding_for('Q43361', label: 'The Books of Blood', type: 'written work')
+      ]
+    end
 
     def binding_for(qid, label:, type: 'book')
       {
         'work' => { 'type' => 'uri', 'value' => "http://www.wikidata.org/entity/#{qid}" },
         'workLabel' => { 'xml:lang' => 'en', 'type' => 'literal', 'value' => label },
-        'publicationDate' => {
-          'datatype' => 'http://www.w3.org/2001/XMLSchema#dateTime',
-          'type' => 'literal',
-          'value' => '1984-01-01T00:00:00Z'
-        },
+        'publicationDate' => literal_datetime('1984-01-01T00:00:00Z'),
         'typeLabel' => { 'xml:lang' => 'en', 'type' => 'literal', 'value' => type },
         'languageLabel' => { 'xml:lang' => 'en', 'type' => 'literal', 'value' => 'English' }
+      }
+    end
+
+    def literal_datetime(value)
+      {
+        'datatype' => 'http://www.w3.org/2001/XMLSchema#dateTime',
+        'type' => 'literal',
+        'value' => value
       }
     end
 
@@ -27,13 +37,6 @@ RSpec.describe Admin::InfoFetchers::Wikidata::Api::AuthorWorksFetcher do
         'head' => { 'vars' => %w[work workLabel publicationDate typeLabel languageLabel] },
         'results' => { 'bindings' => bindings }
       }.to_json
-    end
-
-    let(:sparql_response_bindings) do
-      [
-        binding_for('Q43361', label: 'The Books of Blood', type: 'book series'),
-        binding_for('Q43361', label: 'The Books of Blood', type: 'written work')
-      ]
     end
 
     before do
@@ -61,18 +64,24 @@ RSpec.describe Admin::InfoFetchers::Wikidata::Api::AuthorWorksFetcher do
           }
         ]
       )
+    end
+
+    it 'requests works for the author with excluded types and pagination' do
+      result
       expect(
-        a_request(:post, described_class::SPARQL_URL).with do |req|
-          body = URI.decode_www_form(req.body.to_s).to_h
-          query = body['query'].to_s
-          body['format'] == 'json' &&
-            query.include?('?work wdt:P50 wd:Q23434') &&
-            described_class::EXCLUDED_TYPES.all? { |type| query.include?("wd:#{type}") } &&
-            query.include?('?work wdt:P629 ?editionOf') &&
-            query.include?('LIMIT 100') &&
-            query.include?('OFFSET 0')
-        end
+        a_request(:post, described_class::SPARQL_URL).with { |req| author_sparql_query?(req) }
       ).to have_been_made
+    end
+
+    def author_sparql_query?(req)
+      body = URI.decode_www_form(req.body.to_s).to_h
+      query = body['query'].to_s
+      body['format'] == 'json' &&
+        query.include?('?work wdt:P50 wd:Q23434') &&
+        described_class::EXCLUDED_TYPES.all? { |type| query.include?("wd:#{type}") } &&
+        query.include?('?work wdt:P629 ?editionOf') &&
+        query.include?('LIMIT 100') &&
+        query.include?('OFFSET 0')
     end
 
     context 'when results span multiple pages' do
@@ -89,7 +98,7 @@ RSpec.describe Admin::InfoFetchers::Wikidata::Api::AuthorWorksFetcher do
       end
 
       it 'fetches iteratively and concatenates pages' do
-        expect(result.map { |row| row['work'] }).to eq(%w[Q1 Q2 Q3])
+        expect(result.pluck('work')).to eq(%w[Q1 Q2 Q3])
         expect(
           a_request(:post, described_class::SPARQL_URL).with do |req|
             URI.decode_www_form(req.body.to_s).to_h['query'].to_s.include?('OFFSET 0')

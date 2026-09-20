@@ -29,4 +29,3 @@ class Series < ApplicationRecord
     true
   end
 end
-

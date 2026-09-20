@@ -35,7 +35,7 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
                                                                 .and change(Admin::Tasks::OpenLibraryAuthorFetch,
                                                                             :count).by(1)
           .and have_enqueued_job(Admin::DataFetchJob)
-          .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
+          .and not_change(Admin::Tasks::OpenLibraryBookFetch, :count)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://openlibrary.org/authors/OL1394865A')
@@ -52,8 +52,8 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
         expect { call }.to change(book.external_links, :count).by(1)
                                                               .and change(Admin::Tasks::WikidataBookFetch, :count).by(1)
                                                               .and have_enqueued_job(Admin::DataFetchJob)
-                                                              .and change(Admin::Tasks::OpenLibraryBookFetch,
-                                                                          :count).by(0)
+                                                              .and not_change(Admin::Tasks::OpenLibraryBookFetch,
+                                                                              :count)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q137179018')
@@ -72,7 +72,7 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
                                                                 .and change(Admin::Tasks::WikidataAuthorFetch,
                                                                             :count).by(1)
           .and have_enqueued_job(Admin::DataFetchJob)
-          .and change(Admin::Tasks::WikidataBookFetch, :count).by(0)
+          .and not_change(Admin::Tasks::WikidataBookFetch, :count)
 
         identity.reload
         expect(identity.external_link.url).to eq('https://www.wikidata.org/wiki/Q892')
@@ -93,8 +93,8 @@ RSpec.describe Admin::ExternalIdentityIntroductor do
       it 'does nothing' do
         expect do
           described_class.call(identity)
-        end.to change(book.external_links, :count).by(0)
-           .and change(Admin::Tasks::OpenLibraryBookFetch, :count).by(0)
+        end.to not_change(book.external_links, :count)
+           .and not_change(Admin::Tasks::OpenLibraryBookFetch, :count)
 
         expect(identity.reload.external_link).to be_nil
       end

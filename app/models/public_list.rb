@@ -35,4 +35,3 @@ class PublicList < ApplicationRecord
     true
   end
 end
-

@@ -44,7 +44,7 @@ RSpec.describe Admin::Tasks::WikidataAuthorWorksFetch do
       )
     end
 
-    it 'creates a task targeting the author with the entity id in input_data' do
+    it 'creates a task targeting the author with the entity id in input_data', :aggregate_failures do
       expect { described_class.setup(external_identity) }.to change(described_class, :count).by(1)
       new_record = described_class.last
       expect(new_record.target).to eq(author)
@@ -146,7 +146,7 @@ RSpec.describe Admin::Tasks::WikidataAuthorWorksFetch do
     let(:author) { create(:author) }
     let(:task) { create(:wikidata_author_works_fetch_task, target: author) }
 
-    it 'creates a book with wikidata identity' do
+    it 'creates a book with wikidata identity', :aggregate_failures do
       book = task.apply_work!(title: 'New Work', year: '1960', entity_id: 'Q200')
       expect(book).to be_persisted
       expect(book.title).to eq('New Work')

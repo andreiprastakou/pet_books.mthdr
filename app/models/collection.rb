@@ -29,4 +29,3 @@ class Collection < ApplicationRecord
     true
   end
 end
-

@@ -55,17 +55,10 @@ module Admin
 
       def perform
         qid = entity_id
-        if qid.blank?
-          save_results!(nil, errors: [StandardError.new('Author has no Wikidata identity')])
-          return
-        end
+        return save_missing_entity_error! if qid.blank?
 
         result = Admin::InfoFetchers::Wikidata::Api::AuthorWorksFetcher.new(qid).fetch
-        if result
-          save_results!(result)
-        else
-          save_results!(nil, errors: [StandardError.new('Failed to fetch Wikidata author works')])
-        end
+        result ? save_results!(result) : save_fetch_failure!
       end
 
       def self.parse_year(date_string)
@@ -73,12 +66,7 @@ module Admin
       end
 
       def apply_work!(title:, year:, book_id: nil, entity_id: nil)
-        book_title = title.to_s.strip
-        raise ArgumentError, 'Title is required' if book_title.blank?
-
-        year_value = self.class.parse_year(year).presence || year.to_s.strip.presence
-        raise ArgumentError, 'Year is required' if year_value.blank?
-
+        book_title, year_value = validated_title_and_year!(title, year)
         qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
 
         book = find_or_build_book!(book_id)
@@ -91,15 +79,31 @@ module Admin
 
       private
 
-      def find_or_build_book!(book_id)
-        if book_id.present?
-          return Admin::Book.for_scope(
-            author.books.where(id: book_id),
-            :external_links, :wiki_links, :external_identities
-          ).first!
-        end
+      def save_missing_entity_error!
+        save_results!(nil, errors: [StandardError.new('Author has no Wikidata identity')])
+      end
 
-        Admin::Book.new(authors: [author])
+      def save_fetch_failure!
+        save_results!(nil, errors: [StandardError.new('Failed to fetch Wikidata author works')])
+      end
+
+      def validated_title_and_year!(title, year)
+        book_title = title.to_s.strip
+        raise ArgumentError, 'Title is required' if book_title.blank?
+
+        year_value = self.class.parse_year(year).presence || year.to_s.strip.presence
+        raise ArgumentError, 'Year is required' if year_value.blank?
+
+        [book_title, year_value]
+      end
+
+      def find_or_build_book!(book_id)
+        return Admin::Book.new(authors: [author]) if book_id.blank?
+
+        Admin::Book.for_scope(
+          author.books.where(id: book_id),
+          :external_links, :wiki_links, :external_identities
+        ).first!
       end
 
       def ensure_wikidata_identity!(book, qid)

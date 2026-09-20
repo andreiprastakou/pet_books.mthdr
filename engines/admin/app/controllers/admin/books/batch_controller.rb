@@ -2,7 +2,8 @@ module Admin
   module Books
     class BatchController < AdminController
       def edit
-        @books = Admin::Book.where(id: params[:book_ids]).preload(authors: :external_links, series: [], external_links: [])
+        @books = Admin::Book.where(id: params[:book_ids]).preload(authors: :external_links, series: [],
+                                                                  external_links: [])
         @authors = @books.flat_map(&:authors).uniq
       end
 

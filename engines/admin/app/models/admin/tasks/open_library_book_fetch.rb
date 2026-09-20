@@ -129,8 +129,7 @@ module Admin
         normalized_book_payload(data)
       end
 
-      # rubocop:disable-next Metrics/AbcSize, Metrics/MethodLength
-      def normalized_book_payload(data)
+      def normalized_book_payload(data) # rubocop:disable Metrics/AbcSize
         {
           'title' => data['title'],
           'description' => fetched_description_text(data['description']),
