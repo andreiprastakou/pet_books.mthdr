@@ -95,5 +95,20 @@ RSpec.describe Admin::BooksHelper do
       expect(result).to include 'AI generate 2 summaries'
       expect(result).to include CGI.escapeHTML(admin_books_batch_generate_summaries_path(book_ids: books.pluck(:id)))
     end
+
+    context 'with a custom label template' do
+      subject(:result) do
+        helper.button_to_generate_books_summaries(
+          books,
+          label: 'AI generate works info (%{count})',
+          class: 'dropdown-item'
+        )
+      end
+
+      it 'interpolates the count and applies custom classes' do
+        expect(result).to include 'AI generate works info (2)'
+        expect(result).to include 'dropdown-item'
+      end
+    end
   end
 end
