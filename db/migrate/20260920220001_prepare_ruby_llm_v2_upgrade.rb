@@ -5,6 +5,7 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
 
   def up
     raise 'This database uses --mode copy' if table_exists?(:ruby_llm_v2_upgrades)
+
     prepare_schema
   end
 
@@ -42,12 +43,11 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
     raise 'Expected the RubyLLM 1.16 tool-call table to exist' unless tool_calls
 
     validate_table_shape(tool_calls, %i[tool_call_id name arguments created_at updated_at], 'tool-call')
-    unless column_exists?(tool_calls, :message_id) || column_exists?(tool_calls, :message_id)
-      raise "#{tool_calls} does not have a message foreign key"
-    end
-    if migration_record(tool_calls).where(tool_call_id: nil).exists?
+    raise "#{tool_calls} does not have a message foreign key" unless column_exists?(tool_calls, :message_id)
+    if migration_record(tool_calls).exists?(tool_call_id: nil)
       raise "#{tool_calls} contains a NULL tool_call_id. Set it before retrying."
     end
+
     validate_unique_tool_results
 
     validate_usage_identities(models)
@@ -75,7 +75,7 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
   # running the backfill again there would invent usage rows.
   def validate_legacy_message_columns
     if table_exists?(:ruby_llm_v2_backfills) &&
-       migration_record(:ruby_llm_v2_backfills).where(task: 'finished', completed: true).exists?
+       migration_record(:ruby_llm_v2_backfills).exists?(task: 'finished', completed: true)
       raise 'The RubyLLM 2.0 upgrade is already finished. Generate --phase cleanup to remove the legacy columns.'
     end
 
@@ -129,7 +129,7 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
     return unless model_column
 
     ensure_reference_types_match(chats, model_column, models)
-    orphan = select_value(<<~SQL)
+    orphan = select_value(<<~SQL.squish)
       SELECT legacy_chats.#{quoted_primary_key(chats)}
         FROM #{quote_table(chats)} legacy_chats
         LEFT JOIN #{quote_table(models)} legacy_models
@@ -149,7 +149,7 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
 
     joins, provider, model = usage_identity_sql(models)
     message_id = "legacy_messages.#{quoted_primary_key(:ai_messages)}"
-    missing = select_value(<<~SQL)
+    missing = select_value(<<~SQL.squish)
       SELECT #{message_id}
         FROM #{quote_table(:ai_messages)} legacy_messages
         #{joins}
@@ -232,9 +232,7 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
   end
 
   def ensure_boolean_column(table, column)
-    unless column_exists?(table, column)
-      with_upgrade_safety { add_column table, column, :boolean, default: false }
-    end
+    with_upgrade_safety { add_column table, column, :boolean, default: false } unless column_exists?(table, column)
     return if ActiveRecord::Type::Boolean.new.cast(column_definition(table, column).default) == false
 
     with_upgrade_safety { change_column_default table, column, false }
@@ -310,7 +308,7 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
     loop do
       suffix = "-migrated-#{record.id}#{"-#{counter}" if counter}"
       candidate = "#{record.tool_call_id.to_s.slice(0, 255 - suffix.length)}#{suffix}"
-      return candidate unless records.where(tool_call_id: candidate).exists?
+      return candidate unless records.exists?(tool_call_id: candidate)
 
       counter = counter.to_i + 1
     end
@@ -339,7 +337,9 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
         table.decimal :thinking_cost, precision: 16, scale: 10
         table.decimal :total_cost, precision: 16, scale: 10
         table.timestamps
-        table.check_constraint "operation IN ('chat', 'embedding', 'moderation', 'image', 'speech', 'transcription', 'ocr', 'rerank')"
+        table.check_constraint(
+          "operation IN ('chat', 'embedding', 'moderation', 'image', 'speech', 'transcription', 'ocr', 'rerank')"
+        )
         table.check_constraint "status IN ('pending', 'succeeded', 'failed', 'cancelled')"
       end
     end
@@ -499,8 +499,8 @@ class PrepareRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
     valid.any?
   end
 
-  def add_upgrade_index(table, columns, **options)
-    add_index table, columns, **options
+  def add_upgrade_index(table, columns, **)
+    add_index(table, columns, **)
   end
 
   def add_upgrade_indexes(table, indexes)

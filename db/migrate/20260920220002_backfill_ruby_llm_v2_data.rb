@@ -10,6 +10,7 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
 
   def up
     raise 'Generate this migration with --mode copy' if table_exists?(:ruby_llm_v2_upgrades)
+
     verify_upgrade_in_progress
     create_progress_table
     backfill_required_defaults
@@ -31,16 +32,16 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
       raise 'The RubyLLM 2.0 schema has already been cleaned. Do not run the backfill again.'
     end
     return unless table_exists?(PROGRESS_TABLE)
-    return unless progress_records.where(task: 'finished', completed: true).exists?
+    return unless progress_records.exists?(task: 'finished', completed: true)
 
     raise 'The RubyLLM 2.0 upgrade is already finished. Do not run the backfill again.'
   end
 
   def backfill_required_defaults
     {
-      ai_chats: {cancelled: false},
-      ai_messages: {cache_until_here: false},
-      ruby_llm_tool_calls: {message_type: 'Admin::Ai::Message'}
+      ai_chats: { cancelled: false },
+      ai_messages: { cache_until_here: false },
+      ruby_llm_tool_calls: { message_type: 'Admin::Ai::Message' }
     }.each do |table, attributes|
       column, value = attributes.first
       migration_record(table).where(column => nil).in_batches(of: BATCH_SIZE) do |batch|
@@ -57,8 +58,9 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
       raw_content = message_value(:raw_content)
       content = message_value(:content)
       structured_content = content_raw
-      rendered_content = RubyLLM::Generators::LegacyContentSQL.new(connection).render(content: content, raw: content_raw)
-      execute <<~SQL
+      rendered_content = RubyLLM::Generators::LegacyContentSQL.new(connection).render(content: content,
+                                                                                      raw: content_raw)
+      execute <<~SQL.squish
         UPDATE #{quote_table(:ai_messages)} AS legacy_messages
            SET #{quote_column(:raw_content)} = COALESCE(#{raw_content}, #{structured_content}),
                #{quote_column(:content)} = #{rendered_content}
@@ -79,7 +81,7 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
       tool_call_id = quoted_primary_key(:ruby_llm_tool_calls)
       result_id = message_value(result_reference)
       result_type = connection.quote('Admin::Ai::Message')
-      execute <<~SQL
+      execute <<~SQL.squish
         UPDATE #{tool_calls}
            SET result_id = (
                  SELECT legacy_messages.#{message_id}
@@ -164,7 +166,7 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
 
     messages = quote_table(:ai_messages)
     tool_calls = quote_table(:ruby_llm_tool_calls)
-    missing = select_value(<<~SQL)
+    missing = select_value(<<~SQL.squish)
       SELECT legacy_messages.#{quoted_primary_key(:ai_messages)}
         FROM #{messages} legacy_messages
         LEFT JOIN #{tool_calls} migrated_tool_calls
@@ -184,7 +186,7 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
     return if conditions.empty?
 
     candidate = usage_candidate_sql(conditions, joins, '1 = 1')
-    missing = select_value(<<~SQL)
+    missing = select_value(<<~SQL.squish)
       SELECT #{message_value(connection.primary_key(:ai_messages))}
         #{candidate}
        LIMIT 1
@@ -248,7 +250,7 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
   def usage_candidate_sql(conditions, joins, range)
     usages = quote_table(:ruby_llm_usages)
     usage_range = range.gsub(message_value(connection.primary_key(:ai_messages)), 'existing_usages.message_id')
-    <<~SQL
+    <<~SQL.squish
       FROM #{quote_table(:ai_messages)} legacy_messages
       #{joins}
       WHERE (#{conditions.join(' OR ')})
@@ -295,7 +297,7 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
       legacy_message_value(:created_at, fallback: 'CURRENT_TIMESTAMP'),
       legacy_message_value(:updated_at, fallback: 'CURRENT_TIMESTAMP')
     ].join(', ')
-    <<~SQL
+    <<~SQL.squish
       INSERT INTO #{quote_table(:ruby_llm_usages)} (#{columns})
       SELECT #{values}
         #{candidate}
@@ -347,7 +349,7 @@ class BackfillRubyLlmV2Data < ActiveRecord::Migration[8.1]
   end
 
   def completed?(task)
-    progress_records.where(task: task, completed: true).exists?
+    progress_records.exists?(task: task, completed: true)
   end
 
   def record_progress(task, last_id)
