@@ -75,9 +75,7 @@ module Admin
       end
 
       def applyable_remote_ids
-        Array(fetched_data_normalized['remote_ids']).select do |entry|
-          Admin::ExternalIdentity.external_resources.key?(entry['external_resource'].to_s)
-        end
+        applyable_resource_entries('remote_ids')
       end
 
       def applyable_links

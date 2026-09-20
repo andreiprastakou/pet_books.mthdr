@@ -23,26 +23,6 @@ module Admin
         create_introduced_identity!(owner, external_resource: resource, external_id: id)
       end
 
-      def attach_open_library_author_to!(owner, author_key)
-        attach_normalized_identity!(
-          author_key,
-          owner: owner,
-          resource: ExternalResources::OPEN_LIBRARY,
-          normalizer: Admin::ExternalLinkBuilders::OpenLibrary::Author.method(:normalize_id),
-          error_message: 'Invalid Open Library author key'
-        )
-      end
-
-      def attach_library_thing_work_to!(owner, work_id)
-        attach_normalized_identity!(
-          work_id,
-          owner: owner,
-          resource: ExternalResources::LIBRARYTHING,
-          normalizer: Admin::ExternalLinkBuilders::LibraryThing::Work.method(:normalize_id),
-          error_message: 'Invalid LibraryThing work id'
-        )
-      end
-
       def attach_normalized_wikidata_identity!(entity_id, owner:)
         attach_normalized_identity!(
           entity_id,
@@ -51,6 +31,12 @@ module Admin
           normalizer: Admin::ExternalLinkBuilders::Wikidata.method(:normalize_id),
           error_message: 'Invalid Wikidata entity id'
         )
+      end
+
+      def applyable_resource_entries(payload_key)
+        Array(fetched_data_normalized[payload_key]).select do |entry|
+          Admin::ExternalIdentity.external_resources.key?(entry['external_resource'].to_s)
+        end
       end
     end
   end
