@@ -5,7 +5,7 @@ RSpec.describe Admin::InfoFetchers::LibraryThing::Api::WorkByTitleFetcher do
     subject(:result) { described_class.new(title).fetch }
 
     let(:title) { 'The Hobbit' }
-    let(:app_token) { ENV['LIBRARYTHING_APP_TOKEN'].presence || 'test-librarything-token' }
+    let(:app_token) { 'test-librarything-token' }
     let(:expected_url) do
       "https://www.librarything.com/api/#{app_token}/thingTitle/#{ERB::Util.url_encode(title)}"
     end
@@ -19,6 +19,12 @@ RSpec.describe Admin::InfoFetchers::LibraryThing::Api::WorkByTitleFetcher do
           <isbn>0345445600</isbn>
         </idlist>
       XML
+    end
+
+    around do |example|
+      ClimateControl.modify LIBRARYTHING_APP_TOKEN: app_token do
+        example.run
+      end
     end
 
     before do

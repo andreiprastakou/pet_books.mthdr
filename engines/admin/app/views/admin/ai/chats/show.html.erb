@@ -29,8 +29,8 @@
   <div class="row mb-3">
     <div class="col-md-3 font-weight-bold text-end">Total Tokens:</div>
     <div class="col-md-9">
-      Input: <%= @chat.messages.sum(:input_tokens) %>,
-      Output: <%= @chat.messages.sum(:output_tokens) %>
+      Input: <%= @chat.tokens.input.to_i %>,
+      Output: <%= @chat.tokens.output.to_i %>
     </div>
   </div>
 </div>
@@ -46,16 +46,16 @@
             <span class="badge bg-<%= message.role == 'user' ? 'primary' : 'success' %>">
               <%= message.role.titleize %>
             </span>
-            <% if message.model_id.present? %>
-              <small class="text-muted">(<%= message.model_id %>)</small>
+            <% if message.model.present? %>
+              <small class="text-muted">(<%= message.model %>)</small>
             <% end %>
           </h5>
           <small class="text-muted"><%= admin_timestamp(message.created_at) %></small>
         </div>
         <p class="mb-1"><%= message.content %></p>
-        <% if message.input_tokens.present? || message.output_tokens.present? %>
+        <% if message.tokens.input.present? || message.tokens.output.present? %>
           <small class="text-muted">
-            Tokens: <%= message.input_tokens || 0 %> in, <%= message.output_tokens || 0 %> out
+            Tokens: <%= message.tokens.input.to_i %> in, <%= message.tokens.output.to_i %> out
           </small>
         <% end %>
       </div>
