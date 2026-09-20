@@ -15,16 +15,6 @@ AllCops:
     - tmp/**/*
     - "**/**/*.gemspec"
 
-Metrics/AbcSize:
-  Exclude:
-    - "**/helpers/**/*"
-
-Metrics/BlockLength:
-  Exclude:
-    - "**/config/**/*"
-    - "**/lib/tasks/**/*"
-    - "**/spec/**/*"
-
 Metrics/MethodLength:
   CountAsOne:
     - array
@@ -34,7 +24,34 @@ Metrics/MethodLength:
     - "**/helpers/**/*"
     - "db/migrate/**/*"
 
+Metrics/AbcSize:
+  Exclude:
+    - "**/helpers/**/*"
+    - "db/migrate/**/*"
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/config/**/*"
+    - "**/lib/tasks/**/*"
+    - "**/spec/**/*"
+
+Metrics/ClassLength:
+  Exclude:
+    - "db/migrate/**/*"
+
+Metrics/CyclomaticComplexity:
+  Exclude:
+    - "db/migrate/**/*"
+
+Metrics/PerceivedComplexity:
+  Exclude:
+    - "db/migrate/**/*"
+
 Rails/SkipsModelValidations:
+  Exclude:
+    - "db/migrate/**/*"
+
+Rails/ThreeStateBooleanColumn:
   Exclude:
     - "db/migrate/**/*"
 

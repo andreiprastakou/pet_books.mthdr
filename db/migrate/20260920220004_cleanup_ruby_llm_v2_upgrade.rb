@@ -7,12 +7,13 @@ class CleanupRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
 
   def up
     raise 'Generate cleanup with --mode copy for this database' if table_exists?(:ruby_llm_v2_upgrades)
+
     unless table_exists?(PROGRESS_TABLE)
       return unless legacy_columns.any?
 
       raise 'RubyLLM 2.0 upgrade progress is missing. Run the finish migration before cleanup.'
     end
-    unless migration_record(PROGRESS_TABLE).where(task: 'finished', completed: true).exists?
+    unless migration_record(PROGRESS_TABLE).exists?(task: 'finished', completed: true)
       raise 'Run FinishRubyLlmV2Upgrade before removing the legacy message columns'
     end
 

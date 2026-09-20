@@ -8,6 +8,7 @@ class FinishRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
 
   def up
     raise 'Generate this migration with --mode copy' if table_exists?(:ruby_llm_v2_upgrades)
+
     verify_completed_backfills
     verify_message_content
     verify_tool_results
@@ -33,16 +34,16 @@ class FinishRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
 
   def mark_finished
     progress = migration_record(PROGRESS_TABLE)
-    return if progress.where(task: 'finished', completed: true).exists?
+    return if progress.exists?(task: 'finished', completed: true)
 
     progress.insert_all!([{ task: 'finished', completed: true }], returning: false)
   end
 
   def enforce_required_defaults
     {
-      ai_chats: {cancelled: false},
-      ai_messages: {cache_until_here: false},
-      ruby_llm_tool_calls: {message_type: 'Admin::Ai::Message'}
+      ai_chats: { cancelled: false },
+      ai_messages: { cache_until_here: false },
+      ruby_llm_tool_calls: { message_type: 'Admin::Ai::Message' }
     }.each do |table, attributes|
       migration_record(table).where(attributes.transform_values { nil }).in_batches(of: 10_000) do |batch|
         batch.update_all(attributes)
@@ -62,7 +63,7 @@ class FinishRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
   end
 
   def verify_completed_backfills
-    raise "Run BackfillRubyLlmV2Data before this migration" unless table_exists?(PROGRESS_TABLE)
+    raise 'Run BackfillRubyLlmV2Data before this migration' unless table_exists?(PROGRESS_TABLE)
 
     completed = migration_record(PROGRESS_TABLE).where(completed: true).pluck(:task)
     missing = BACKFILL_TASKS - completed
@@ -86,7 +87,7 @@ class FinishRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
     result_reference = :tool_call_id
     return unless column_exists?(:ai_messages, result_reference)
 
-    missing = select_value(<<~SQL)
+    missing = select_value(<<~SQL.squish)
       SELECT legacy_messages.#{quoted_primary_key(:ai_messages)}
         FROM #{quote_table(:ai_messages)} legacy_messages
         LEFT JOIN #{quote_table(:ruby_llm_tool_calls)} migrated_tool_calls
@@ -105,7 +106,7 @@ class FinishRubyLlmV2Upgrade < ActiveRecord::Migration[8.1]
     conditions = legacy_usage_conditions
     return if conditions.empty?
 
-    missing = select_value(<<~SQL)
+    missing = select_value(<<~SQL.squish)
       SELECT #{message_value(connection.primary_key(:ai_messages))}
         FROM #{quote_table(:ai_messages)} legacy_messages
         #{joins}
