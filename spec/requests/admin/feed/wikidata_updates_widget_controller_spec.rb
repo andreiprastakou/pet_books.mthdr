@@ -83,17 +83,20 @@ RSpec.describe Admin::Feed::WikidataUpdatesWidgetController do
         )
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::WikidataAuthorSearch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::WikidataAuthorSearch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::WikidataAuthorFetch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::WikidataAuthorFetch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::WikidataAuthorWorksFetch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::WikidataAuthorWorksFetch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
 

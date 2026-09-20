@@ -16,18 +16,8 @@
 #
 module Admin
   class Series < ::Series
+    include Admin::Castable
     include Admin::HasWikipedia
     include Admin::HasExternalIdentities
-
-    def readonly?
-      false
-    end
-
-    def self.cast(series)
-      return series if series.is_a?(self)
-      return new(series.attributes) if series.new_record?
-
-      series.becomes(self)
-    end
   end
 end

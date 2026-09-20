@@ -49,7 +49,6 @@ RSpec.describe Admin::DataFetchTasksController do
     end
   end
 
-
   describe 'GET /admin/data_fetch_tasks/:id' do
     let(:send_request) { get admin_data_fetch_task_path(task), headers: authorization_header }
     let(:task) { create(:book_summary_task) }
@@ -242,11 +241,13 @@ RSpec.describe Admin::DataFetchTasksController do
       let(:task) { create(:library_thing_search_task, status: :fetched, fetched_data: {}) }
 
       before do
+        # rubocop:disable RSpec/AnyInstance -- LookupContext is resolved per render; no clean seam to stub.
         allow_any_instance_of(ActionView::LookupContext).to receive(:exists?)
           .and_call_original
         allow_any_instance_of(ActionView::LookupContext).to receive(:exists?)
           .with('library_thing_book_search', 'admin/data_fetch_tasks/types', true)
           .and_return(false)
+        # rubocop:enable RSpec/AnyInstance
       end
 
       it 'falls back to the shared task info card' do

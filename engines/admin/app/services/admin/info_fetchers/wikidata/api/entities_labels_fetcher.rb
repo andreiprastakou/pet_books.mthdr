@@ -58,29 +58,15 @@ module Admin
           end
 
           def request_action_data(params)
-            url = "#{ACTION_API_URL}?#{params.compact.to_query}"
-            Bench.log("wikidata call #{url}") do
-              response = connection.get(url)
-              break JSON.parse(response.body) if response.success?
-
-              Rails.logger.error("Failed GET #{url}: #{response.status}")
-              nil
-            end
-          rescue Faraday::Error => e
-            Rails.logger.error("Failed GET #{ACTION_API_URL}: #{e.class} #{e.message}")
-            nil
+            request_json("#{ACTION_API_URL}?#{params.compact.to_query}", log_label: 'wikidata call')
           end
 
           def localized_text(localized, language)
-            return if localized.blank? || !localized.is_a?(Hash)
+            Admin::Wikidata::LocalizedText.call(localized, preferred_language: language)
+          end
 
-            entry = localized[language] || localized.values.first
-            case entry
-            when Hash
-              (entry['value'] || entry[:value]).presence
-            else
-              entry.presence
-            end
+          def connection
+            @connection ||= default_api_connection
           end
         end
       end

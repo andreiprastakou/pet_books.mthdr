@@ -33,7 +33,8 @@ RSpec.describe Admin::Feed::LibraryThingUpdatesWidgetController do
 
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::LibraryThingBookSearch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::LibraryThingBookSearch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
 

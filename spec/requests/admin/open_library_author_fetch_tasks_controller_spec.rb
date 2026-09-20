@@ -7,11 +7,9 @@ RSpec.describe Admin::OpenLibraryAuthorFetchTasksController do
   end
   let(:fetched_data) do
     JSON.parse(
-      File.read(
-        Rails.root.join(
-          'engines/admin/spec/fixtures/open_library/author_fetch_dean_koontz.json'
-        )
-      )
+      Rails.root.join(
+        'engines/admin/spec/fixtures/open_library/author_fetch_dean_koontz.json'
+      ).read
     )
   end
   let!(:task) do

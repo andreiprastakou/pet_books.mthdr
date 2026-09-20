@@ -34,20 +34,6 @@ module Admin
         format_date_fields!(result, %w[publication_date])
         result
       end
-
-      private
-
-      def usable_external_identities
-        EXTERNAL_IDENTITY_FIELDS.filter_map do |property_id, resource|
-          values = statement_values(property_id)
-          next if values.empty?
-
-          {
-            'external_resource' => resource,
-            'external_id' => values.first
-          }
-        end
-      end
     end
   end
 end

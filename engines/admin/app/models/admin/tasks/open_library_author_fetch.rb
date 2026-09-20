@@ -28,26 +28,17 @@ module Admin
   module Tasks
     # rubocop:disable-next Metrics/ClassLength
     class OpenLibraryAuthorFetch < BaseTask
-      def self.setup(external_identity)
-        create!(target: external_identity)
-      end
-
-      alias external_identity target
+      include Admin::Tasks::ExternalIdentityFetchable
+      include Admin::Tasks::AuthorYearApplicable
+      include Admin::Tasks::OpenLibraryDetailsFetchable
+      include Admin::Tasks::AppliesDescriptionText
 
       def author
-        owner = external_identity.owner
-        raise ArgumentError, 'Open Library author fetch target must belong to an author' unless owner.is_a?(::Author)
-
-        Admin::Author.cast(owner)
-      end
-
-      def perform
-        result = Admin::InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher.new(external_identity.external_id).fetch
-        if result
-          save_results!(result)
-        else
-          save_results!(nil, errors: [StandardError.new('Failed to fetch Open Library author data')])
-        end
+        cast_identity_owner!(
+          ::Author,
+          Admin::Author,
+          'Open Library author fetch target must belong to an author'
+        )
       end
 
       def apply_birth_year!(year = nil)
@@ -59,36 +50,7 @@ module Admin
       end
 
       def apply_description!(text)
-        summary = text.to_s.strip
-        raise ArgumentError, 'Description is required' if summary.blank?
-
-        author.upsert_description_from_source!(self, text: summary, source_label: nil)
-      end
-
-      def add_identity!(external_resource, external_id)
-        resource = external_resource.to_s
-        unless Admin::ExternalIdentity.external_resources.key?(resource)
-          raise ArgumentError, 'Invalid external resource'
-        end
-
-        id = external_id.to_s.strip
-        raise ArgumentError, 'External ID is required' if id.blank?
-
-        identity = author.external_identities.create!(external_resource: resource, external_id: id)
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def add_link!(url, external_resource:)
-        resource = external_resource.to_s.strip
-        raise ArgumentError, 'External resource is required' if resource.blank?
-
-        link_url = url.to_s.strip
-        raise ArgumentError, 'URL is required' if link_url.blank?
-
-        link = author.external_links.find_or_initialize_by(url: link_url)
-        link.external_resource = resource
-        link.save!
-        link
+        apply_description_text!(text, owner: author, required_label: 'Description')
       end
 
       def fetched_data_normalized
@@ -153,11 +115,12 @@ module Admin
 
       private
 
-      def apply_year!(attribute, year, date_string)
-        value = year.presence || self.class.parse_year(date_string)
-        raise ArgumentError, 'Year is required' if value.blank?
+      def details_fetcher
+        Admin::InfoFetchers::OpenLibrary::Api::AuthorDetailsFetcher.new(external_identity.external_id)
+      end
 
-        author.update!(attribute => value.to_i)
+      def fetch_failure_message
+        'Failed to fetch Open Library author data'
       end
 
       def fetched_text_value(value)

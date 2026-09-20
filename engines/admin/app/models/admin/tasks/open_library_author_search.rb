@@ -27,14 +27,12 @@
 module Admin
   module Tasks
     class OpenLibraryAuthorSearch < BaseTask
+      include Admin::Tasks::UnresolvedSearchable
+      include Admin::Tasks::SearchResultsNormalizable
+      include Admin::Tasks::CreatesExternalIdentity
+
       def self.setup(author)
         create!(target: author)
-      end
-
-      def self.next_unresolved(excluding: nil)
-        scope = where(status: :fetched).order(:id)
-        scope = scope.where.not(id: excluding.id) if excluding
-        scope.first
       end
 
       def author
@@ -48,21 +46,7 @@ module Admin
       end
 
       def add_author_identity!(author_key)
-        olid = Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(author_key)
-        raise ArgumentError, 'Invalid Open Library author key' if olid.blank?
-
-        identity = author.external_identities.create!(
-          external_resource: ExternalResources::OPEN_LIBRARY,
-          external_id: olid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def fetched_data_normalized
-        data = fetched_data
-        return [] unless data.is_a?(Array)
-
-        data.filter_map { |entry| normalized_search_entry(entry) }
+        attach_open_library_author_to!(author, author_key)
       end
 
       def normalized_search_entry(entry)

@@ -13,7 +13,7 @@ RSpec.describe Admin::Books::WikidataFetchesController do
 
     it 'creates a fetch task, enqueues it, and redirects with a notice' do
       expect { send_request }.to change(Admin::Tasks::WikidataBookFetch, :count).by(1)
-        .and have_enqueued_job(Admin::DataFetchJob)
+                                                                                .and have_enqueued_job(Admin::DataFetchJob)
       expect(Admin::Tasks::WikidataBookFetch.last.target).to eq(external_identity)
       expect(response).to redirect_to(admin_book_path(book))
       expect(flash[:notice]).to eq('Wikidata data fetch has been queued.')

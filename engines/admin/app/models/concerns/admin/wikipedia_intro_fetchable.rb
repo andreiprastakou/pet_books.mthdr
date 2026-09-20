@@ -5,6 +5,18 @@ module Admin
   module WikipediaIntroFetchable
     extend ActiveSupport::Concern
 
+    class_methods do
+      def setup(record)
+        create!(target: record)
+      end
+
+      def configure_wikipedia_intro(owner_admin_class, owner_method, apply_method, required_label)
+        define_singleton_method(:owner_admin_class) { owner_admin_class }
+        define_method(owner_method) { wikipedia_owner }
+        define_method(apply_method) { |text| apply_intro!(text, required_label: required_label) }
+      end
+    end
+
     def perform
       title, language = wikipedia_title_and_language
       return save_missing_wikipedia_url_result if title.blank? || language.blank?
@@ -17,7 +29,18 @@ module Admin
       description.present? ? { 'description' => description } : {}
     end
 
+    def apply_intro!(text, required_label:)
+      summary = text.to_s.strip
+      raise ArgumentError, "#{required_label} is required" if summary.blank?
+
+      wikipedia_owner.upsert_description_from_source!(self, text: summary, source_label: nil)
+    end
+
     private
+
+    def wikipedia_owner
+      self.class.owner_admin_class.cast(target)
+    end
 
     def save_missing_wikipedia_url_result
       save_results!(nil, errors: [StandardError.new(missing_wikipedia_url_message)])
@@ -30,10 +53,6 @@ module Admin
       else
         save_results!(nil, errors: [StandardError.new(fetch_failure_message)])
       end
-    end
-
-    def wikipedia_owner
-      raise NotImplementedError
     end
 
     def wikipedia_title_and_language

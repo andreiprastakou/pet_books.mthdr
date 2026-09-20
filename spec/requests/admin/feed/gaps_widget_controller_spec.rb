@@ -19,7 +19,7 @@ RSpec.describe Admin::Feed::GapsWidgetController do
       let(:synced_authors) { create_list(:author, 3, synced_at: Time.current) }
 
       before do
-        books.each { |book| book.authors.update_all(synced_at: Time.current) }
+        books.each { |book| book.authors.find_each { |author| author.update!(synced_at: Time.current) } }
         authors_to_sync
         synced_authors
         create(:book_summary_task, target: books[3], status: :requested)

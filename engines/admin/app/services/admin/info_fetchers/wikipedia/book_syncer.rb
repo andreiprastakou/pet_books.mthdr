@@ -45,20 +45,7 @@ module Admin
         end
 
         def sync_page_stats(links)
-          links.each do |wiki_link|
-            views, views_last_month = fetch_views(wiki_link)
-            next if views.nil? || views_last_month.nil?
-
-            wiki_link.views ||= 0
-            wiki_link.views += views - (wiki_link.views_last_month || 0)
-            wiki_link.update!(views_last_month: views_last_month, views_synced_at: Time.now.utc)
-          end
-        end
-
-        def fetch_views(wiki_link)
-          Admin::InfoFetchers::Wikipedia::ViewsFetcher
-            .new
-            .fetch(wiki_link.name, wiki_link.locale, last_synced_at: wiki_link.views_synced_at)
+          links.each { |wiki_link| ViewsSync.update_link_views!(wiki_link) }
         end
       end
     end

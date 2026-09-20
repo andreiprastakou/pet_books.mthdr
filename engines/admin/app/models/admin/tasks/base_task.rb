@@ -110,16 +110,20 @@ module Admin
       end
 
       def self.review_subject_query_parts(subject)
-        case subject
-        when ::Book, Admin::Book
-          [::Book.name, subject.id, Admin::Book.cast(subject).external_identities.select(:id)]
-        when ::Author, Admin::Author
-          [::Author.name, subject.id, Admin::Author.cast(subject).external_identities.select(:id)]
-        else
-          [nil, nil, nil]
-        end
+        admin_class = review_subject_admin_class(subject)
+        return [nil, nil, nil] unless admin_class
+
+        [admin_class.superclass.name, subject.id, admin_class.cast(subject).external_identities.select(:id)]
       end
       private_class_method :review_subject_query_parts
+
+      def self.review_subject_admin_class(subject)
+        case subject
+        when ::Book, Admin::Book then Admin::Book
+        when ::Author, Admin::Author then Admin::Author
+        end
+      end
+      private_class_method :review_subject_admin_class
 
       def enqueue_for_processing!
         Admin::DataFetchJob.perform_later(id)

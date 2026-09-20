@@ -76,23 +76,11 @@ module Admin
     end
 
     def external_links_to_input_entries(external_links)
-      external_links.map do |external_link|
-        {
-          id: external_link.id,
-          external_resource: external_link.external_resource,
-          url: external_link.url
-        }
-      end
+      map_external_records_to_input_entries(external_links, :url)
     end
 
     def external_identities_to_input_entries(external_identities)
-      external_identities.map do |external_identity|
-        {
-          id: external_identity.id,
-          external_resource: external_identity.external_resource,
-          external_id: external_identity.external_id
-        }
-      end
+      map_external_records_to_input_entries(external_identities, :external_id)
     end
 
     def descriptions_to_input_entries(descriptions)
@@ -105,6 +93,18 @@ module Admin
           priority: description.priority,
           source_type: description.source_type,
           source_id: description.source_id
+        }
+      end
+    end
+
+    private
+
+    def map_external_records_to_input_entries(records, value_key)
+      records.map do |record|
+        {
+          id: record.id,
+          external_resource: record.external_resource,
+          value_key => record.public_send(value_key)
         }
       end
     end

@@ -1,4 +1,3 @@
-# rubocop:disable Rails/SkipsModelValidations
 class LinkBookGenresToGenres < ActiveRecord::Migration[8.0]
   class GenreStub < ApplicationRecord
     self.table_name = 'genres'
@@ -32,4 +31,3 @@ class LinkBookGenresToGenres < ActiveRecord::Migration[8.0]
     remove_reference :book_genres, :genre, foreign_key: true
   end
 end
-# rubocop:enable Rails/SkipsModelValidations

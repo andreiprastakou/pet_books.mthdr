@@ -118,15 +118,7 @@ module Admin
       end
 
       def localized_text(localized)
-        return if localized.blank? || !localized.is_a?(Hash)
-
-        value = localized['en'] || localized[:en] || localized.values.first
-        case value
-        when Hash
-          (value['value'] || value[:value]).presence
-        else
-          value.presence
-        end
+        Admin::Wikidata::LocalizedText.call(localized)
       end
 
       def enrich_node(node, labels, field: nil)

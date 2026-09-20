@@ -8,6 +8,8 @@ module Admin
     class BaseUsableValues
       STATEMENT_FIELDS = {}.freeze
 
+      EXTERNAL_IDENTITY_FIELDS = {}.freeze
+
       def self.call(fetched_data)
         new(fetched_data).call
       end
@@ -29,6 +31,22 @@ module Admin
 
       def statement_fields
         self.class::STATEMENT_FIELDS
+      end
+
+      def external_identity_fields
+        self.class::EXTERNAL_IDENTITY_FIELDS
+      end
+
+      def usable_external_identities
+        external_identity_fields.filter_map do |property_id, resource|
+          values = statement_values(property_id)
+          next if values.empty?
+
+          {
+            'external_resource' => resource,
+            'external_id' => values.first
+          }
+        end
       end
 
       def usable_statements
@@ -116,15 +134,7 @@ module Admin
       end
 
       def extract_localized_text(localized)
-        return if localized.blank? || !localized.is_a?(Hash)
-
-        value = localized['en'] || localized[:en] || localized.values.first
-        case value
-        when Hash
-          (value['value'] || value[:value]).presence
-        else
-          value.presence
-        end
+        Admin::Wikidata::LocalizedText.call(localized)
       end
 
       def format_date_fields!(result, keys)

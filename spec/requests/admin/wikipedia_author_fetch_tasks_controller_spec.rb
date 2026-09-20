@@ -38,7 +38,7 @@ RSpec.describe Admin::WikipediaAuthorFetchTasksController do
       expect(response).to be_successful
       expect(assigns(:author)).to eq(author)
       expect(response.body).to include('Wikipedia fetch results')
-      expect(response.body).to include('Existing description')
+      expect(response.body).to include(description.text)
       expect(response.body).to include('Roman Stoic philosopher')
       expect(assigns(:fetched_data)['description']).to eq('A Roman Stoic philosopher.')
     end

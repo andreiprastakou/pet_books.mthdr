@@ -12,9 +12,7 @@ class RenameExternalIdentityIdentificatorToExternalId < ActiveRecord::Migration[
                  'index_external_identities_on_external_resource_and_external_id'
 
     blank_count = ExternalIdentityStub.where(external_id: [nil, '']).count
-    if blank_count.positive?
-      raise "Cannot make external_identities.external_id NOT NULL: #{blank_count} blank row(s)"
-    end
+    raise "Cannot make external_identities.external_id NOT NULL: #{blank_count} blank row(s)" if blank_count.positive?
 
     change_column_null :external_identities, :external_id, false
   end

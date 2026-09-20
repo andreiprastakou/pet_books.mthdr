@@ -28,98 +28,46 @@ module Admin
   module Tasks
     # rubocop:disable-next Metrics/ClassLength
     class OpenLibraryBookFetch < BaseTask
-      def self.setup(external_identity)
-        create!(target: external_identity)
-      end
+      include Admin::Tasks::ExternalIdentityFetchable
+      include Admin::Tasks::AttachesOpenLibraryAuthorIdentity
+      include Admin::Tasks::UrlHost
+      include Admin::Tasks::OpenLibraryDetailsFetchable
+      include Admin::Tasks::AppliesDescriptionText
 
-      alias external_identity target
+      RELATED_IDENTITY_TYPES = {
+        genre: {
+          cast_class: Admin::Genre,
+          linked: ->(book, genre) { book.genres.exists?(genre_id: genre.id) }
+        },
+        series: {
+          cast_class: Admin::Series,
+          linked: ->(book, series) { book.series.exists?(id: series.id) }
+        }
+      }.freeze
 
       def book
-        owner = external_identity.owner
-        raise ArgumentError, 'Open Library fetch target must belong to a book' unless owner.is_a?(::Book)
-
-        Admin::Book.cast(owner)
+        cast_identity_owner!(
+          ::Book,
+          Admin::Book,
+          'Open Library fetch target must belong to a book'
+        )
       end
 
-      def perform
-        result = Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.new(external_identity.external_id).fetch
-        if result
-          save_results!(result)
-        else
-          save_results!(nil, errors: [StandardError.new('Failed to fetch Open Library work data')])
+      RELATED_IDENTITY_TYPES.each do |label, config|
+        define_method(:"add_#{label}_identity!") do |key, **kwargs|
+          owner = kwargs.fetch(label)
+          add_linked_open_library_identity!(
+            key,
+            owner: owner,
+            cast_class: config[:cast_class],
+            linked: ->(record) { instance_exec(book, record, &config[:linked]) },
+            label: label.to_s
+          )
         end
-      end
-
-      def add_identity!(external_resource, external_id)
-        resource = external_resource.to_s
-        unless Admin::ExternalIdentity.external_resources.key?(resource)
-          raise ArgumentError, 'Invalid external resource'
-        end
-
-        id = external_id.to_s.strip
-        raise ArgumentError, 'External ID is required' if id.blank?
-
-        identity = book.external_identities.create!(external_resource: resource, external_id: id)
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def add_author_identity!(author_key, author:)
-        olid = Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(author_key)
-        raise ArgumentError, 'Invalid Open Library author key' if olid.blank?
-        raise ArgumentError, 'Author is required' if author.blank?
-        raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
-
-        identity = Admin::Author.cast(author).external_identities.create!(
-          external_resource: ExternalResources::OPEN_LIBRARY,
-          external_id: olid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def add_genre_identity!(genre_key, genre:)
-        olid = self.class.normalize_open_library_key(genre_key)
-        raise ArgumentError, 'Invalid Open Library genre key' if olid.blank?
-        raise ArgumentError, 'Genre is required' if genre.blank?
-        raise ArgumentError, 'Genre is not linked to this book' unless book.genres.exists?(genre_id: genre.id)
-
-        identity = Admin::Genre.cast(genre).external_identities.create!(
-          external_resource: ExternalResources::OPEN_LIBRARY,
-          external_id: olid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def add_series_identity!(series_key, series:)
-        olid = self.class.normalize_open_library_key(series_key)
-        raise ArgumentError, 'Invalid Open Library series key' if olid.blank?
-        raise ArgumentError, 'Series is required' if series.blank?
-        raise ArgumentError, 'Series is not linked to this book' unless book.series.exists?(id: series.id)
-
-        identity = Admin::Series.cast(series).external_identities.create!(
-          external_resource: ExternalResources::OPEN_LIBRARY,
-          external_id: olid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
       end
 
       def apply_summary!(text)
-        summary = text.to_s.strip
-        raise ArgumentError, 'Summary is required' if summary.blank?
-
-        book.upsert_description_from_source!(self, text: summary, source_label: nil)
-      end
-
-      def add_link!(url, external_resource:)
-        resource = external_resource.to_s.strip
-        raise ArgumentError, 'External resource is required' if resource.blank?
-
-        link_url = url.to_s.strip
-        raise ArgumentError, 'URL is required' if link_url.blank?
-
-        link = book.external_links.find_or_initialize_by(url: link_url)
-        link.external_resource = resource
-        link.save!
-        link
+        apply_description_text!(text, owner: book, required_label: 'Summary')
       end
 
       def fetched_data_normalized
@@ -164,13 +112,28 @@ module Admin
         "https://openlibrary.org#{path.start_with?('/') ? path : "/#{path}"}"
       end
 
-      def self.host_from_url(url)
-        URI.parse(url.to_s.strip).host.presence
-      rescue URI::InvalidURIError
-        nil
+      private
+
+      def details_fetcher
+        Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.new(external_identity.external_id)
       end
 
-      private
+      def fetch_failure_message
+        'Failed to fetch Open Library work data'
+      end
+
+      def add_linked_open_library_identity!(key, owner:, cast_class:, linked:, label:)
+        olid = self.class.normalize_open_library_key(key)
+        raise ArgumentError, "Invalid Open Library #{label} key" if olid.blank?
+        raise ArgumentError, "#{label.capitalize} is required" if owner.blank?
+        raise ArgumentError, "#{label.capitalize} is not linked to this book" unless linked.call(owner)
+
+        create_introduced_identity!(
+          cast_class.cast(owner),
+          external_resource: ExternalResources::OPEN_LIBRARY,
+          external_id: olid
+        )
+      end
 
       def fetched_description_text(description)
         text = fetched_text_value(description)
@@ -192,23 +155,20 @@ module Admin
       end
 
       def fetched_author_entries(authors)
-        return [] unless authors.is_a?(Array)
-
-        authors.filter_map do |author_entry|
-          next unless author_entry.is_a?(Hash)
-
-          external_id = author_entry.dig('author', 'key').presence
-          { 'external_id' => external_id } if external_id
-        end
+        fetched_nested_key_entries(authors, 'author')
       end
 
       def fetched_series_entries(series)
-        return [] unless series.is_a?(Array)
+        fetched_nested_key_entries(series, 'series')
+      end
 
-        series.filter_map do |series_entry|
-          next unless series_entry.is_a?(Hash)
+      def fetched_nested_key_entries(entries, nested_key)
+        return [] unless entries.is_a?(Array)
 
-          external_id = series_entry.dig('series', 'key').presence
+        entries.filter_map do |entry|
+          next unless entry.is_a?(Hash)
+
+          external_id = entry.dig(nested_key, 'key').presence
           { 'external_id' => external_id } if external_id
         end
       end

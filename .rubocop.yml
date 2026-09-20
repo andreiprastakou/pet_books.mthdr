@@ -32,6 +32,11 @@ Metrics/MethodLength:
     - heredoc
   Exclude:
     - "**/helpers/**/*"
+    - "db/migrate/**/*"
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - "db/migrate/**/*"
 
 Metrics/ModuleLength:
   Exclude:
@@ -45,9 +50,13 @@ RSpec/ChangeByZero:
 
 RSpec/ExampleLength:
   Max: 20
+  Exclude:
+    - "spec/requests/**/*"
 
 RSpec/MultipleExpectations:
   Max: 4
+  Exclude:
+    - "spec/requests/**/*"
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false

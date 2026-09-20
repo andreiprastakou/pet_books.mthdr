@@ -27,14 +27,12 @@
 module Admin
   module Tasks
     class WikidataAuthorSearch < BaseTask
+      include Admin::Tasks::UnresolvedSearchable
+      include Admin::Tasks::CreatesExternalIdentity
+      include Admin::Tasks::WikidataSearchNormalizable
+
       def self.setup(author)
         create!(target: author)
-      end
-
-      def self.next_unresolved(excluding: nil)
-        scope = where(status: :fetched).order(:id)
-        scope = scope.where.not(id: excluding.id) if excluding
-        scope.first
       end
 
       def author
@@ -48,24 +46,11 @@ module Admin
       end
 
       def fetched_data_normalized
-        Array(fetched_data).filter_map do |item|
-          {
-            'external_id' => item['id'],
-            'name' => item.dig('display-label', 'value'),
-            'description' => item.dig('description', 'value')
-          }.compact.presence
-        end
+        normalize_wikidata_search_results('name')
       end
 
       def add_author_identity!(entity_id)
-        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
-        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
-
-        identity = author.external_identities.create!(
-          external_resource: ExternalResources::WIKIDATA,
-          external_id: qid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
+        attach_normalized_wikidata_identity!(entity_id, owner: author)
       end
     end
   end

@@ -186,7 +186,7 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
 
     it 'creates a genre identity, links the genre to the book, and reloads the apply form' do
       expect { send_request }.to change(genre.external_identities, :count).by(1)
-        .and change { book.genres.count }.by(1)
+                                                                          .and change { book.genres.count }.by(1)
       expect(response).to redirect_to(edit_admin_wikidata_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('Wikidata genre identity added.')
     end
@@ -200,7 +200,7 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
 
       it 'creates the genre, identity, and book link' do
         expect { send_request }.to change(Genre, :count).by(1)
-          .and change { book.genres.count }.by(1)
+                                                        .and change { book.genres.count }.by(1)
         created = Admin::Genre.find_by!(name: 'hard_science_fiction')
         expect(created.external_identities.wikidata.find_by!(external_id: 'Q24925')).to be_present
       end
@@ -216,7 +216,7 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
 
     it 'creates a series identity, links the series to the book, and reloads the apply form' do
       expect { send_request }.to change(series.external_identities, :count).by(1)
-        .and change { book.book_series.count }.by(1)
+                                                                           .and change { book.book_series.count }.by(1)
       expect(response).to redirect_to(edit_admin_wikidata_book_fetch_task_path(task))
       expect(flash[:notice]).to eq('Wikidata series identity added.')
     end
@@ -230,7 +230,7 @@ RSpec.describe Admin::WikidataBookFetchTasksController do
 
       it 'creates the series, identity, and book link' do
         expect { send_request }.to change(Series, :count).by(1)
-          .and change { book.book_series.count }.by(1)
+                                                         .and change { book.book_series.count }.by(1)
         created = Admin::Series.find_by!(name: 'Fall Revolution')
         expect(created.external_identities.wikidata.find_by!(external_id: 'Q123456')).to be_present
       end

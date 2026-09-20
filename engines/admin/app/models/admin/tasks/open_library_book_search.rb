@@ -27,14 +27,13 @@
 module Admin
   module Tasks
     class OpenLibraryBookSearch < BaseTask
+      include Admin::Tasks::UnresolvedSearchable
+      include Admin::Tasks::AttachesOpenLibraryAuthorIdentity
+      include Admin::Tasks::SearchResultsNormalizable
+      include Admin::Tasks::CreatesExternalIdentity
+
       def self.setup(book)
         create!(target: book)
-      end
-
-      def self.next_unresolved(excluding: nil)
-        scope = where(status: :fetched).order(:id)
-        scope = scope.where.not(id: excluding.id) if excluding
-        scope.first
       end
 
       def book
@@ -51,31 +50,11 @@ module Admin
         olid = Admin::InfoFetchers::OpenLibrary::Api::BookDetailsFetcher.normalize_work_key(work_key)
         raise ArgumentError, 'Invalid Open Library work key' if olid.blank?
 
-        identity = book.external_identities.create!(
+        create_introduced_identity!(
+          book,
           external_resource: ExternalResources::OPEN_LIBRARY,
           external_id: olid
         )
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def add_author_identity!(author_key, author:)
-        olid = Admin::ExternalLinkBuilders::OpenLibrary::Author.normalize_id(author_key)
-        raise ArgumentError, 'Invalid Open Library author key' if olid.blank?
-        raise ArgumentError, 'Author is required' if author.blank?
-        raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
-
-        identity = Admin::Author.cast(author).external_identities.create!(
-          external_resource: ExternalResources::OPEN_LIBRARY,
-          external_id: olid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def fetched_data_normalized
-        data = fetched_data
-        return [] unless data.is_a?(Array)
-
-        data.filter_map { |entry| normalized_search_entry(entry) }
       end
 
       def normalized_search_entry(entry)

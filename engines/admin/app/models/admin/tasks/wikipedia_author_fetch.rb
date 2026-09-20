@@ -29,26 +29,7 @@ module Admin
     class WikipediaAuthorFetch < BaseTask
       include Admin::WikipediaIntroFetchable
 
-      def self.setup(author)
-        create!(target: author)
-      end
-
-      def author
-        Admin::Author.cast(target)
-      end
-
-      def apply_description!(text)
-        summary = text.to_s.strip
-        raise ArgumentError, 'Description is required' if summary.blank?
-
-        author.upsert_description_from_source!(self, text: summary, source_label: nil)
-      end
-
-      private
-
-      def wikipedia_owner
-        author
-      end
+      configure_wikipedia_intro Admin::Author, :author, :apply_description!, 'Description'
     end
   end
 end

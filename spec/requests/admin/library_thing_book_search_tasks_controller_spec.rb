@@ -4,11 +4,9 @@ RSpec.describe Admin::LibraryThingBookSearchTasksController do
   let(:book) { create(:book, title: 'Some Book') }
   let(:fetched_data) do
     JSON.parse(
-      File.read(
-        Rails.root.join(
-          'engines/admin/spec/fixtures/library_thing/book_search_by_title.json'
-        )
-      )
+      Rails.root.join(
+        'engines/admin/spec/fixtures/library_thing/book_search_by_title.json'
+      ).read
     )
   end
   let(:task) do

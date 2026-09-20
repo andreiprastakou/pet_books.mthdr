@@ -24,8 +24,10 @@
 module Admin
   # rubocop:disable-next Metrics/ClassLength
   class Book < ::Book
+    include Admin::Castable
     include Admin::HasWikipedia
     include Admin::HasExternalIdentities
+    include Admin::HasDataFetchTaskHistory
 
     has_many :authors, through: :book_authors, class_name: 'Admin::Author', inverse_of: :books
     has_many :generative_summary_tasks, class_name: 'Admin::Tasks::AiBookFetch', as: :target, dependent: :destroy
@@ -39,15 +41,8 @@ module Admin
     scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
     scope :form_requires_summary, -> { where(literary_form: FORMS_REQUIRE_SUMMARY) }
 
-    def readonly?
-      false
-    end
-
-    def self.cast(book)
-      return book if book.is_a?(self)
-      return new(book.attributes) if book.new_record?
-
-      book.becomes(self)
+    def self.data_fetch_owner_type
+      ::Book.name
     end
 
     def self.cast_collection(books)
@@ -84,22 +79,6 @@ module Admin
         literary_form.in?(FORMS_REQUIRE_SUMMARY)
     end
 
-    def history_data_fetch_tasks
-      owner_tasks = Admin::Tasks::BaseTask.where(target_type: ::Book.name, target_id: id)
-      identity_tasks = Admin::Tasks::BaseTask.where(
-        target_type: Admin::ExternalIdentity.name, target_id: external_identities.select(:id)
-      )
-      merge_tasks_by_updated_at(owner_tasks, identity_tasks)
-    end
-
-    def merge_tasks_by_updated_at(*scopes)
-      scopes.flat_map(&:to_a).sort_by(&:updated_at).reverse
-    end
-
-    def pending_review_data_fetch_tasks
-      Admin::Tasks::BaseTask.pending_review_tasks_for(self)
-    end
-
     def current_book_genres
       genres.reject(&:marked_for_destruction?)
     end
@@ -109,42 +88,21 @@ module Admin
     end
 
     def genre_names=(new_genre_names)
-      previous_genre_names = current_genre_names
-      new_genre_names = prepare_input_values(new_genre_names) { |name| Genre.normalize_name_value(name) }
-      book_genres_indexed = current_book_genres.index_by(&:genre_name)
-
-      book_genres_indexed.each do |name, book_genre|
-        book_genre.mark_for_destruction unless new_genre_names.include?(name)
-      end
-
-      (new_genre_names - previous_genre_names).each do |name|
-        genres.build(genre: Genre.where(name: name).first_or_create!)
-      end
+      sync_named_associations!(
+        new_values: new_genre_names,
+        previous_names: current_genre_names,
+        normalize: ->(name) { Genre.normalize_name_value(name) },
+        indexed: current_book_genres.index_by(&:genre_name),
+        build: ->(name) { genres.build(genre: Genre.where(name: name).first_or_create!) }
+      )
     end
 
-    def author_ids=(new_author_ids)
-      previous_author_ids = book_authors.map(&:author_id)
-      new_author_ids = prepare_input_values(new_author_ids)
-      book_authors.each do |book_author|
-        book_author.mark_for_destruction unless new_author_ids.include?(book_author.author_id)
-      end
-
-      (new_author_ids - previous_author_ids).each do |id|
-        book_authors.build(author_id: id)
-      end
+    def author_ids=(ids)
+      sync_join_ids!(ids, association: :book_authors, foreign_key: :author_id)
     end
 
-    def series_ids=(new_series_ids)
-      previous_series_ids = book_series.map(&:series_id)
-      new_series_ids = prepare_input_values(new_series_ids)
-
-      book_series.each do |book_series|
-        book_series.mark_for_destruction unless new_series_ids.include?(book_series.series_id)
-      end
-
-      (new_series_ids - previous_series_ids).each do |id|
-        book_series.build(series_id: id)
-      end
+    def series_ids=(ids)
+      sync_join_ids!(ids, association: :book_series, foreign_key: :series_id)
     end
 
     def current_tag_names
@@ -152,18 +110,40 @@ module Admin
     end
 
     def tag_names=(new_tag_names)
-      previous_tag_names = current_tag_names
-      new_tag_names = prepare_input_values(new_tag_names) { |name| Tag.normalize_name_value(name) }
-      tag_connections.each do |tag_connection|
-        tag_connection.mark_for_destruction unless new_tag_names.include?(tag_connection.tag.name)
-      end
-
-      (new_tag_names - previous_tag_names).each do |name|
-        tag_connections.build(tag: Tag.where(name: name).first_or_create!)
-      end
+      sync_named_associations!(
+        new_values: new_tag_names,
+        previous_names: current_tag_names,
+        normalize: ->(name) { Tag.normalize_name_value(name) },
+        indexed: tag_connections.index_by { |tc| tc.tag.name },
+        build: ->(name) { tag_connections.build(tag: Tag.where(name: name).first_or_create!) }
+      )
     end
 
     private
+
+    def sync_join_ids!(ids, association:, foreign_key:)
+      join_records = public_send(association)
+      replace_join_foreign_keys!(ids, join_records: join_records, foreign_key: foreign_key) do |id|
+        join_records.build(foreign_key => id)
+      end
+    end
+
+    def sync_named_associations!(new_values:, previous_names:, normalize:, indexed:, build:)
+      names = prepare_input_values(new_values, &normalize)
+      indexed.each do |name, record|
+        record.mark_for_destruction unless names.include?(name)
+      end
+      (names - previous_names).each(&build)
+    end
+
+    def replace_join_foreign_keys!(new_ids, join_records:, foreign_key:, &)
+      ids = prepare_input_values(new_ids)
+      previous_ids = join_records.map(&foreign_key)
+      join_records.each do |record|
+        record.mark_for_destruction unless ids.include?(record.public_send(foreign_key))
+      end
+      (ids - previous_ids).each(&)
+    end
 
     def prepare_input_values(values, &)
       values = values.map(&) if block_given?
