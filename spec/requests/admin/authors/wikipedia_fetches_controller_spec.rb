@@ -11,7 +11,7 @@ RSpec.describe Admin::Authors::WikipediaFetchesController do
 
     it 'creates a fetch task, enqueues it, and redirects with a notice' do
       expect { send_request }.to change(Admin::Tasks::WikipediaAuthorFetch, :count).by(1)
-        .and have_enqueued_job(Admin::DataFetchJob)
+                                                                                   .and have_enqueued_job(Admin::DataFetchJob)
       expect(Admin::Tasks::WikipediaAuthorFetch.last.target).to eq(author)
       expect(response).to redirect_to(admin_author_path(author))
       expect(flash[:notice]).to eq('Wikipedia intro fetch has been queued.')

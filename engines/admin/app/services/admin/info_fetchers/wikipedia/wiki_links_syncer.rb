@@ -7,10 +7,7 @@ module Admin
         end
 
         def sync!
-          views, views_last_month = fetch_views(wiki_link)
-          return if views.nil? || views_last_month.nil?
-
-          update_wiki_link(views, views_last_month)
+          return unless ViewsSync.update_link_views!(wiki_link)
 
           update_entity
         end
@@ -18,18 +15,6 @@ module Admin
         private
 
         attr_reader :wiki_link
-
-        def update_wiki_link(views, views_last_month)
-          wiki_link.views ||= 0
-          wiki_link.views += views - (wiki_link.views_last_month || 0)
-          wiki_link.update!(views_last_month: views_last_month, views_synced_at: Time.now.utc)
-        end
-
-        def fetch_views(wiki_link)
-          Admin::InfoFetchers::Wikipedia::ViewsFetcher
-            .new
-            .fetch(wiki_link.name, wiki_link.locale, last_synced_at: wiki_link.views_synced_at)
-        end
 
         def update_entity
           return unless wiki_link.entity.is_a?(Book)

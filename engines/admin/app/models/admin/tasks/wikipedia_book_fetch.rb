@@ -29,26 +29,7 @@ module Admin
     class WikipediaBookFetch < BaseTask
       include Admin::WikipediaIntroFetchable
 
-      def self.setup(book)
-        create!(target: book)
-      end
-
-      def book
-        Admin::Book.cast(target)
-      end
-
-      def apply_summary!(text)
-        summary = text.to_s.strip
-        raise ArgumentError, 'Summary is required' if summary.blank?
-
-        book.upsert_description_from_source!(self, text: summary, source_label: nil)
-      end
-
-      private
-
-      def wikipedia_owner
-        book
-      end
+      configure_wikipedia_intro Admin::Book, :book, :apply_summary!, 'Summary'
     end
   end
 end

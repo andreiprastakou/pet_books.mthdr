@@ -27,14 +27,11 @@
 module Admin
   module Tasks
     class LibraryThingBookSearch < BaseTask
+      include Admin::Tasks::UnresolvedSearchable
+      include Admin::Tasks::CreatesExternalIdentity
+
       def self.setup(book)
         create!(target: book)
-      end
-
-      def self.next_unresolved(excluding: nil)
-        scope = where(status: :fetched).order(:id)
-        scope = scope.where.not(id: excluding.id) if excluding
-        scope.first
       end
 
       def book
@@ -65,14 +62,7 @@ module Admin
       end
 
       def add_work_identity!(work_id)
-        id = Admin::ExternalLinkBuilders::LibraryThing::Work.normalize_id(work_id)
-        raise ArgumentError, 'Invalid LibraryThing work id' if id.blank?
-
-        identity = book.external_identities.create!(
-          external_resource: ExternalResources::LIBRARYTHING,
-          external_id: id
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
+        attach_library_thing_work_to!(book, work_id)
       end
     end
   end

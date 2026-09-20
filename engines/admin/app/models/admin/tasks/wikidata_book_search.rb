@@ -27,14 +27,13 @@
 module Admin
   module Tasks
     class WikidataBookSearch < BaseTask
+      include Admin::Tasks::UnresolvedSearchable
+      include Admin::Tasks::AttachesWikidataAuthorIdentity
+      include Admin::Tasks::CreatesExternalIdentity
+      include Admin::Tasks::WikidataSearchNormalizable
+
       def self.setup(book)
         create!(target: book)
-      end
-
-      def self.next_unresolved(excluding: nil)
-        scope = where(status: :fetched).order(:id)
-        scope = scope.where.not(id: excluding.id) if excluding
-        scope.first
       end
 
       def book
@@ -48,37 +47,11 @@ module Admin
       end
 
       def fetched_data_normalized
-        Array(fetched_data).filter_map do |item|
-          {
-            'external_id' => item['id'],
-            'title' => item.dig('display-label', 'value'),
-            'description' => item.dig('description', 'value')
-          }.compact.presence
-        end
+        normalize_wikidata_search_results('title')
       end
 
       def add_work_identity!(entity_id)
-        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
-        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
-
-        identity = book.external_identities.create!(
-          external_resource: ExternalResources::WIKIDATA,
-          external_id: qid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
-      end
-
-      def add_author_identity!(entity_id, author:)
-        qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(entity_id)
-        raise ArgumentError, 'Invalid Wikidata entity id' if qid.blank?
-        raise ArgumentError, 'Author is required' if author.blank?
-        raise ArgumentError, 'Author is not linked to this book' unless book.authors.exists?(id: author.id)
-
-        identity = Admin::Author.cast(author).external_identities.create!(
-          external_resource: ExternalResources::WIKIDATA,
-          external_id: qid
-        )
-        Admin::ExternalIdentityIntroductor.call(identity)
+        attach_normalized_wikidata_identity!(entity_id, owner: book)
       end
     end
   end

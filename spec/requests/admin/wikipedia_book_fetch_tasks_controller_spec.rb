@@ -43,7 +43,7 @@ RSpec.describe Admin::WikipediaBookFetchTasksController do
       expect(response).to be_successful
       expect(assigns(:book)).to eq(book)
       expect(response.body).to include('Wikipedia fetch results')
-      expect(response.body).to include('Existing summary')
+      expect(response.body).to include(description.text)
       expect(response.body).to include('fabula crepidata')
       expect(assigns(:fetched_data)['description']).to eq(
         'Medea is a fabula crepidata written by Seneca the Younger.'

@@ -5,18 +5,23 @@ module Admin
   # (when one is defined for the resource + owner) after an ExternalIdentity is
   # created or its external_id changes.
   class ExternalIdentityIntroductor
-    BOOK_LINK_BUILDERS = {
-      ExternalResources::OPEN_LIBRARY => Admin::ExternalLinkBuilders::OpenLibrary::Work,
-      ExternalResources::WIKIDATA => Admin::ExternalLinkBuilders::Wikidata,
-      ExternalResources::LIBRARYTHING => Admin::ExternalLinkBuilders::LibraryThing::Work,
-      ExternalResources::GOODREADS => Admin::ExternalLinkBuilders::Goodreads::Work
-    }.freeze
-
-    AUTHOR_LINK_BUILDERS = {
-      ExternalResources::OPEN_LIBRARY => Admin::ExternalLinkBuilders::OpenLibrary::Author,
-      ExternalResources::WIKIDATA => Admin::ExternalLinkBuilders::Wikidata,
-      ExternalResources::LIBRARYTHING => Admin::ExternalLinkBuilders::LibraryThing::Author,
-      ExternalResources::GOODREADS => Admin::ExternalLinkBuilders::Goodreads::Author
+    LINK_BUILDERS_BY_RESOURCE = {
+      ExternalResources::OPEN_LIBRARY => {
+        book: Admin::ExternalLinkBuilders::OpenLibrary::Work,
+        author: Admin::ExternalLinkBuilders::OpenLibrary::Author
+      },
+      ExternalResources::WIKIDATA => {
+        book: Admin::ExternalLinkBuilders::Wikidata,
+        author: Admin::ExternalLinkBuilders::Wikidata
+      },
+      ExternalResources::LIBRARYTHING => {
+        book: Admin::ExternalLinkBuilders::LibraryThing::Work,
+        author: Admin::ExternalLinkBuilders::LibraryThing::Author
+      },
+      ExternalResources::GOODREADS => {
+        book: Admin::ExternalLinkBuilders::Goodreads::Work,
+        author: Admin::ExternalLinkBuilders::Goodreads::Author
+      }
     }.freeze
 
     FETCH_TASKS = {
@@ -35,12 +40,10 @@ module Admin
     end
 
     def self.builders_for(owner)
-      case owner_kind(owner)
-      when :book then BOOK_LINK_BUILDERS
-      when :author then AUTHOR_LINK_BUILDERS
-      else
-        {}
-      end
+      kind = owner_kind(owner)
+      return {} unless kind
+
+      LINK_BUILDERS_BY_RESOURCE.transform_values { |by_kind| by_kind[kind] }
     end
 
     def self.owner_kind(owner)

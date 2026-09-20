@@ -22,17 +22,7 @@
 #
 module Admin
   class Genre < ::Genre
+    include Admin::Castable
     include Admin::HasExternalIdentities
-
-    def readonly?
-      false
-    end
-
-    def self.cast(genre)
-      return genre if genre.is_a?(self)
-      return new(genre.attributes) if genre.new_record?
-
-      genre.becomes(self)
-    end
   end
 end

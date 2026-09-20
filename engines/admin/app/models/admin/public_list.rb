@@ -22,6 +22,7 @@
 #
 module Admin
   class PublicList < ::PublicList
+    include Admin::Castable
     include Admin::HasWikipedia
     include Admin::HasExternalIdentities
 
@@ -30,17 +31,6 @@ module Admin
     accepts_nested_attributes_for :book_public_lists, allow_destroy: true
 
     validate :validate_books_uniqueness
-
-    def readonly?
-      false
-    end
-
-    def self.cast(public_list)
-      return public_list if public_list.is_a?(self)
-      return new(public_list.attributes) if public_list.new_record?
-
-      public_list.becomes(self)
-    end
 
     private
 

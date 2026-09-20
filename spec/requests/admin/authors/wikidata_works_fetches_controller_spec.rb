@@ -13,7 +13,7 @@ RSpec.describe Admin::Authors::WikidataWorksFetchesController do
 
     it 'creates a works fetch task, enqueues it, and redirects with a notice' do
       expect { send_request }.to change(Admin::Tasks::WikidataAuthorWorksFetch, :count).by(1)
-        .and have_enqueued_job(Admin::DataFetchJob)
+                                                                                       .and have_enqueued_job(Admin::DataFetchJob)
       task = Admin::Tasks::WikidataAuthorWorksFetch.last
       expect(task.target).to eq(author)
       expect(task.input_data).to eq('entity_id' => 'Q23434')

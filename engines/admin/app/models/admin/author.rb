@@ -21,8 +21,10 @@
 #
 module Admin
   class Author < ::Author
+    include Admin::Castable
     include Admin::HasWikipedia
     include Admin::HasExternalIdentities
+    include Admin::HasDataFetchTaskHistory
 
     has_many :books, class_name: 'Admin::Book', through: :book_authors
     has_many :books_list_tasks, class_name: 'Admin::Tasks::AiAuthorWorksFetch', as: :target, dependent: :destroy
@@ -33,31 +35,8 @@ module Admin
     scope :not_synced, -> { where(synced_at: nil) }
     scope :without_tasks, -> { where.missing(:books_list_tasks).where.missing(:list_parsing_tasks) }
 
-    def readonly?
-      false
-    end
-
-    def self.cast(author)
-      return author if author.is_a?(self)
-      return new(author.attributes) if author.new_record?
-
-      author.becomes(self)
-    end
-
-    def history_data_fetch_tasks
-      owner_tasks = Admin::Tasks::BaseTask.where(target_type: ::Author.name, target_id: id)
-      identity_tasks = Admin::Tasks::BaseTask.where(
-        target_type: Admin::ExternalIdentity.name, target_id: external_identities.select(:id)
-      )
-      merge_tasks_by_updated_at(owner_tasks, identity_tasks)
-    end
-
-    def merge_tasks_by_updated_at(*scopes)
-      scopes.flat_map(&:to_a).sort_by(&:updated_at).reverse
-    end
-
-    def pending_review_data_fetch_tasks
-      Admin::Tasks::BaseTask.pending_review_tasks_for(self)
+    def self.data_fetch_owner_type
+      ::Author.name
     end
   end
 end

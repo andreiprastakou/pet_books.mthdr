@@ -112,13 +112,18 @@ Admin::Engine.routes.draw do
       end
     end
 
-    resources :open_library_author_fetch_tasks, only: %i[edit] do
+    concern :author_fetch_review_actions do
       member do
         post :apply_birth_year
         post :apply_death_year
-        post :apply_description
         post :add_identity
         post :add_link
+      end
+    end
+
+    resources :open_library_author_fetch_tasks, only: %i[edit], concerns: :author_fetch_review_actions do
+      member do
+        post :apply_description
       end
     end
 
@@ -135,12 +140,8 @@ Admin::Engine.routes.draw do
       end
     end
 
-    resources :wikidata_author_fetch_tasks, only: %i[edit] do
+    resources :wikidata_author_fetch_tasks, only: %i[edit], concerns: :author_fetch_review_actions do
       member do
-        post :apply_birth_year
-        post :apply_death_year
-        post :add_identity
-        post :add_link
         post :add_wikipedia_link
       end
     end

@@ -69,22 +69,26 @@ RSpec.describe Admin::Feed::OpenLibraryUpdatesWidgetController do
 
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryBookSearch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryBookSearch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryBookFetch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryBookFetch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryAuthorSearch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryAuthorSearch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
         expect(response.body).to include(
           ERB::Util.html_escape(
-            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryAuthorFetch.name, status: :fetched, commit: 'Filter')
+            admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryAuthorFetch.name, status: :fetched,
+                                        commit: 'Filter')
           )
         )
 

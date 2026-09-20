@@ -5,25 +5,7 @@ module Admin
         # Fetches a Wikidata item by Q-ID.
         # Docs: https://www.wikidata.org/wiki/Wikidata:REST_API
         # Endpoint: GET /entities/items/{QID}
-        class BookDetailsFetcher < BaseCaller
-          def initialize(entity_id) # rubocop:disable Lint/MissingSuper
-            @entity_id = entity_id
-          end
-
-          def fetch
-            qid = self.class.normalize_entity_id(entity_id)
-            return if qid.blank?
-
-            request_data("/entities/items/#{qid}")
-          end
-
-          def self.normalize_entity_id(key)
-            BaseCaller.normalize_entity_id(key)
-          end
-
-          private
-
-          attr_reader :entity_id
+        class BookDetailsFetcher < EntityDetailsFetcher
         end
       end
     end

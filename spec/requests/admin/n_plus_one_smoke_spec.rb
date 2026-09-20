@@ -4,7 +4,7 @@ require 'rails_helper'
 
 # Bullet is enabled with Bullet.raise in the test environment. These requests
 # exercise admin list/show pages that historically had association N+1s.
-RSpec.describe 'Admin N+1 smoke', type: :request do
+RSpec.describe 'Admin N+1 smoke' do
   def get_admin(path)
     get path, headers: authorization_header
   end

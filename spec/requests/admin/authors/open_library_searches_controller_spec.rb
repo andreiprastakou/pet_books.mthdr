@@ -7,7 +7,7 @@ RSpec.describe Admin::Authors::OpenLibrarySearchesController do
 
     it 'creates a search task, enqueues it, and redirects with a notice' do
       expect { send_request }.to change(Admin::Tasks::OpenLibraryAuthorSearch, :count).by(1)
-        .and have_enqueued_job(Admin::DataFetchJob)
+                                                                                      .and have_enqueued_job(Admin::DataFetchJob)
       expect(Admin::Tasks::OpenLibraryAuthorSearch.last.target).to eq(author)
       expect(response).to redirect_to(admin_author_path(author))
       expect(flash[:notice]).to eq('Open Library search has been queued.')

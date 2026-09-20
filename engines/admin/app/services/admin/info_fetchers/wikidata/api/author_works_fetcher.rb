@@ -121,12 +121,10 @@ module Admin
           end
 
           def sparql_connection
-            @sparql_connection ||= Faraday.new do |f|
-              # Application-level retries with randomized cooldown handle transient failures;
-              # keep Faraday's retry middleware for connection-level errors as well.
-              configure_connection(f)
-              f.options.timeout = SPARQL_TIMEOUT
-              f.headers['Accept'] = 'application/sparql-results+json'
+            @sparql_connection ||= begin
+              conn = default_api_connection(accept: 'application/sparql-results+json')
+              conn.options.timeout = SPARQL_TIMEOUT
+              conn
             end
           end
         end

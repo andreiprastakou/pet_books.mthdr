@@ -47,18 +47,6 @@ module Admin
         labels = fetched_data['labels'] || fetched_data[:labels]
         extract_localized_text(labels)
       end
-
-      def usable_external_identities
-        EXTERNAL_IDENTITY_FIELDS.filter_map do |property_id, resource|
-          values = statement_values(property_id)
-          next if values.empty?
-
-          {
-            'external_resource' => resource,
-            'external_id' => values.first
-          }
-        end
-      end
     end
   end
 end
