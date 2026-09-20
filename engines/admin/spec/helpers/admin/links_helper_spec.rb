@@ -8,7 +8,7 @@ RSpec.describe Admin::LinksHelper do
       end
     end
 
-    it 'renders a Bootstrap dropdown labeled actions' do
+    it 'renders a Bootstrap dropdown labeled actions', :aggregate_failures do
       expect(result).to include('b-actions-dropdown-toggle')
       expect(result).to include('actions')
       expect(result).to include('dropdown-menu-end')
@@ -22,7 +22,7 @@ RSpec.describe Admin::LinksHelper do
       helper.admin_dropdown_button_to 'sync wiki views', '/wiki', method: :put, class: 'text-danger'
     end
 
-    it 'wraps a dropdown-item action button in a list item' do
+    it 'wraps a dropdown-item action button in a list item', :aggregate_failures do
       expect(result).to start_with('<li>')
       expect(result).to include('dropdown-item')
       expect(result).to include('b-dropdown-item-action')
@@ -35,7 +35,7 @@ RSpec.describe Admin::LinksHelper do
   describe '#admin_dropdown_link_to' do
     subject(:result) { helper.admin_dropdown_link_to 'AI parse works', '/parse' }
 
-    it 'wraps a dropdown-item link in a list item' do
+    it 'wraps a dropdown-item link in a list item', :aggregate_failures do
       expect(result).to start_with('<li>')
       expect(result).to include('dropdown-item')
       expect(result).to include('b-dropdown-item-link')

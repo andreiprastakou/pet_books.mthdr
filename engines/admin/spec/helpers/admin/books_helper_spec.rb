@@ -100,7 +100,7 @@ RSpec.describe Admin::BooksHelper do
       subject(:result) do
         helper.button_to_generate_books_summaries(
           books,
-          label: 'AI generate works info (%{count})',
+          label: 'AI generate works info (%<count>s)',
           class: 'dropdown-item'
         )
       end

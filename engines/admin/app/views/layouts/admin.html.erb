@@ -13,12 +13,17 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container-fluid">
-        <%= link_to "DISPLAY", main_app.root_path, class: "navbar-brand" %>
-        <%= link_to "ADMIN", admin_root_path, class: "navbar-brand" %>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark b-admin-navbar">
+      <div class="container">
+        <div class="b-admin-navbar-home">
+          <%= link_to main_app.root_path, class: "navbar-brand b-admin-navbar-icon" do %>
+            <%= image_tag "bookshelf-icon.png", alt: "Home", height: 24, width: 24 %>
+          <% end %>
+          <span class="b-admin-navbar-separator" aria-hidden="true">&gt;</span>
+          <%= link_to "ADMIN", admin_root_path, class: "navbar-brand" %>
+        </div>
         <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+          <ul class="navbar-nav b-admin-navbar-links">
             <li class="nav-item">
               <%= link_to "Books", admin_books_path, class: "nav-link" %>
             </li>
@@ -41,16 +46,23 @@
               <%= link_to "Public Lists", admin_public_list_types_path, class: "nav-link" %>
             </li>
             <li class="nav-item">
-              <%= link_to "AI Chats", admin_ai_chats_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
-              <%= link_to "Data Fetch Tasks", admin_data_fetch_tasks_path, class: "nav-link" %>
-            </li>
-            <li class="nav-item">
               <%= link_to "Cover Designs", admin_covers_cover_designs_path, class: "nav-link" %>
             </li>
-            <li class="nav-item">
-              <%= link_to "Mission Control", admin_mission_control_jobs_path, class: "nav-link", target: "_blank" %>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                Tasks
+              </a>
+              <ul class="dropdown-menu dropdown-menu-dark">
+                <li>
+                  <%= link_to "AI Chats", admin_ai_chats_path, class: "dropdown-item" %>
+                </li>
+                <li>
+                  <%= link_to "Data Fetch Tasks", admin_data_fetch_tasks_path, class: "dropdown-item" %>
+                </li>
+                <li>
+                  <%= link_to "Mission Control", admin_mission_control_jobs_path, class: "dropdown-item", target: "_blank" %>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>

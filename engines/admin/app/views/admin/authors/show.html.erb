@@ -16,7 +16,7 @@
       <%= admin_dropdown_button_to "AI find works", admin_author_books_list_index_path(@author), method: :post %>
       <% if (generate_summaries = button_to_generate_books_summaries(
             @author.books,
-            label: "AI generate works info (%{count})",
+            label: "AI generate works info (%<count>s)",
             class: "dropdown-item b-dropdown-item-action",
             form: { class: "b-dropdown-item-form" }
           )) %>
