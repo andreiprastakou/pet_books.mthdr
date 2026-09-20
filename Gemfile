@@ -47,7 +47,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # admin site
 gem 'pagy', '~> 43.5'
-gem 'ruby_llm', '~> 1.6'
+gem 'ruby_llm', '~> 2.0'
 
 # tools
 gem 'benchmark'
@@ -78,6 +78,7 @@ group :test do
   gem 'rspec-rails', '~> 8.0'
 
   gem 'capybara', '>= 3.26'
+  gem 'climate_control'
   gem 'cuprite'
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'

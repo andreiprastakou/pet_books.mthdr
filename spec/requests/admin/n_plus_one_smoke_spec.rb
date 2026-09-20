@@ -37,7 +37,7 @@ RSpec.describe 'Admin N+1 smoke' do
       create_list(:book, 3)
       create_list(:author, 3)
       create_list(:ai_chat, 2).each do |chat|
-        create_list(:ai_message, 2, chat: chat, input_tokens: 10, output_tokens: 5)
+        create_list(:ai_message, 2, chat: chat)
       end
     end
 

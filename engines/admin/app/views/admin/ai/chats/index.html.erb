@@ -8,7 +8,7 @@
           <th><%= sortable_table_column("ID", "id") %></th>
           <th>LINKS</th>
           <th>SIZE</th>
-          <th><%= sortable_table_column("MODEL", "model_id") %></th>
+          <th><%= sortable_table_column("MODEL", "ruby_llm_model_id") %></th>
           <th><%= sortable_table_column("CREATED", "created_at") %></th>
           <th><%= sortable_table_column("UPDATED", "updated_at") %></th>
         </tr>
@@ -23,7 +23,7 @@
             </td>
             <td>
               <% messages = chat.messages %>
-              <%= "#{messages.size} messages | #{messages.sum { |m| m.input_tokens.to_i }} input | #{messages.sum { |m| m.output_tokens.to_i }} output" %>
+              <%= "#{messages.size} messages | #{chat.tokens.input.to_i} input | #{chat.tokens.output.to_i} output" %>
             </td>
             <td><%= chat.model_id %></td>
             <td><%= chat.created_at %></td>
