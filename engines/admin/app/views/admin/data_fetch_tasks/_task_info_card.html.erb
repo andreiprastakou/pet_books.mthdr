@@ -30,7 +30,7 @@
         <div class="col-md-9"><%= admin_timestamp(task.updated_at) %></div>
       </div>
 
-      <%= link_to "toggle details", nil, role: "button", class: "float-end b-task-toggle-details",
+      <%= link_to "toggle details", nil, role: "button", class: "float-end b-local-action b-task-toggle-details",
         data: { bs_toggle: "collapse", bs_target: "#task-more-details" } %>
 
       <div class="collapse" id="task-more-details">

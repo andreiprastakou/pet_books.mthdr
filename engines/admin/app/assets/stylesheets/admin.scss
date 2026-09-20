@@ -29,6 +29,65 @@ a[href^='http'] {
   }
 }
 
+.b-local-action {
+  color: var(--bs-link-color);
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    color: var(--bs-link-hover-color);
+    text-decoration: none;
+  }
+}
+
+.b-actions-dropdown {
+  .b-actions-dropdown-toggle {
+    &:hover,
+    &:focus,
+    &:active,
+    &.show {
+      text-decoration: none;
+    }
+  }
+
+  .dropdown-item {
+    color: var(--bs-link-color);
+
+    &:hover,
+    &:focus,
+    &:active {
+      color: var(--bs-link-hover-color);
+    }
+
+    &.text-danger {
+      color: var(--bs-danger);
+
+      &:hover,
+      &:focus,
+      &:active {
+        color: var(--bs-danger);
+      }
+    }
+  }
+
+  .b-dropdown-item-action {
+    text-decoration: none;
+  }
+
+  .b-dropdown-item-link {
+    text-decoration: underline;
+  }
+}
+
+.b-dropdown-item-form {
+  margin: 0;
+
+  .dropdown-item {
+    width: 100%;
+  }
+}
+
 .d-index-search-input {
   display: inline-block;
   width: 100px;

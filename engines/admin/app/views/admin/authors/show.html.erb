@@ -1,17 +1,30 @@
 <% admin_nav_crumbs admin_nav_authors_link, admin_nav_author_link(@author) %>
 
 <div class="container mt-4">
-  <div class="btn-group" role="group">
-    <%= admin_buttonly_link_to "edit", edit_admin_author_path(@author) %>
-    <%= admin_buttonly_link_to "+book", new_admin_author_book_path(@author) %>
-    <%= admin_buttonly_link_to "edit all books", edit_admin_books_batch_path(book_ids: @author.books.pluck(:id)) %>
-    <%= admin_buttonly_link_to "AI parse list", new_admin_author_list_parsing_path(@author) %>
-    <%= button_to_generate_books_summaries(@author.books) %>
-    <%= button_to "AI find all books", admin_author_books_list_index_path(@author), method: :post, class: 'btn btn-primary me-1' %>
-    <%= button_to "sync wiki views", admin_author_wiki_stats_path(@author), method: :put, class: 'btn btn-primary me-1' %>
-    <%= button_to "synced!", admin_author_sync_status_path(@author), method: :put, class: 'btn btn-primary me-1' %>
-    <%= button_to "delete", admin_author_path(@author), method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>
-    <%= display_link_to "display", author_display_path(@author) %>
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="btn-group" role="group">
+      <%= admin_buttonly_link_to "edit", edit_admin_author_path(@author) %>
+      <%= admin_buttonly_link_to "+book", new_admin_author_book_path(@author) %>
+      <%= admin_buttonly_link_to "edit all books", edit_admin_books_batch_path(book_ids: @author.books.pluck(:id)) %>
+      <%= display_link_to "display", author_display_path(@author) %>
+    </div>
+
+    <%= admin_actions_dropdown do %>
+      <%= admin_dropdown_button_to "sync wikipedia views", admin_author_wiki_stats_path(@author), method: :put %>
+      <%= admin_dropdown_button_to "mark as synced", admin_author_sync_status_path(@author), method: :put %>
+      <%= admin_dropdown_link_to "AI parse works", new_admin_author_list_parsing_path(@author) %>
+      <%= admin_dropdown_button_to "AI find works", admin_author_books_list_index_path(@author), method: :post %>
+      <% if (generate_summaries = button_to_generate_books_summaries(
+            @author.books,
+            label: "AI generate works info (%{count})",
+            class: "dropdown-item b-dropdown-item-action",
+            form: { class: "b-dropdown-item-form" }
+          )) %>
+        <li><%= generate_summaries %></li>
+      <% end %>
+      <%= admin_dropdown_button_to "delete", admin_author_path(@author), method: :delete,
+            class: "text-danger", data: { confirm: "Are you sure?" } %>
+    <% end %>
   </div>
 </div>
 
@@ -83,7 +96,7 @@
         <% if @author.external_links.present? %>
           <div class="row mb-3">
             <div class="col-md-3 font-weight-bold text-end">Links:</div>
-            <div class="col-md-9"><%= admin_external_links_list(@author) %></div>
+            <div class="col-md-9"><%= admin_external_links_list(@author, history_tasks: @history_tasks) %></div>
           </div>
         <% end %>
 
@@ -93,14 +106,18 @@
             <% unless @author.external_identities.open_library.exists? %>
               <div>
                 Open Library:
-                <%= admin_link_to "search", admin_author_open_library_searches_path(@author),
+                <%= admin_action_to admin_repeatable_action_label("search", Admin::Tasks::OpenLibraryAuthorSearch,
+                      tasks: @history_tasks),
+                  admin_author_open_library_searches_path(@author),
                   data: { turbo_method: :post } %>
               </div>
             <% end %>
             <% unless @author.external_identities.wikidata.exists? %>
               <div>
                 Wikidata:
-                <%= admin_link_to "search", admin_author_wikidata_searches_path(@author),
+                <%= admin_action_to admin_repeatable_action_label("search", Admin::Tasks::WikidataAuthorSearch,
+                      tasks: @history_tasks),
+                  admin_author_wikidata_searches_path(@author),
                   data: { turbo_method: :post } %>
               </div>
             <% end %>
@@ -124,14 +141,17 @@
                   <%= identity_label %>
                 <% end %>
                 <% if external_identity.open_library? %>
-                  <%= admin_link_to "fetch data",
+                  <%= admin_action_to admin_repeatable_action_label("fetch data", Admin::Tasks::OpenLibraryAuthorFetch,
+                        tasks: @history_tasks),
                     admin_author_external_identity_open_library_fetches_path(@author, external_identity),
                     data: { turbo_method: :post } %>
                 <% elsif external_identity.wikidata? %>
-                  <%= admin_link_to "fetch data",
+                  <%= admin_action_to admin_repeatable_action_label("fetch data", Admin::Tasks::WikidataAuthorFetch,
+                        tasks: @history_tasks),
                     admin_author_external_identity_wikidata_fetches_path(@author, external_identity),
                     data: { turbo_method: :post } %>
-                  <%= admin_link_to "fetch works",
+                  <%= admin_action_to admin_repeatable_action_label("fetch works", Admin::Tasks::WikidataAuthorWorksFetch,
+                        tasks: @history_tasks),
                     admin_author_external_identity_wikidata_works_fetches_path(@author, external_identity),
                     data: { turbo_method: :post } %>
                 <% end %>

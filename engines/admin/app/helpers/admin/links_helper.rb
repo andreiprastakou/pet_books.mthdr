@@ -25,6 +25,48 @@ module Admin
       admin_link_to text, url, **options.reverse_merge(class: 'btn btn-link')
     end
 
+    # Link-styled control for non-navigation actions (POST/PUT/DELETE, toggles, etc.).
+    # Visually: blue, no underline — distinct from real navigation links.
+    def admin_action_to(text, url, **options)
+      options = options.deep_dup
+      options[:class] = ['b-local-action', options[:class]].compact.join(' ')
+      admin_link_to(text, url, **options)
+    end
+
+    def admin_actions_dropdown(&)
+      content_tag(:div, class: 'dropdown b-actions-dropdown') do
+        safe_join(
+          [
+            tag.button(
+              'actions',
+              type: 'button',
+              class: 'btn btn-link dropdown-toggle b-actions-dropdown-toggle b-local-action',
+              data: { bs_toggle: 'dropdown' },
+              'aria-expanded': 'false'
+            ),
+            content_tag(:ul, class: 'dropdown-menu dropdown-menu-end', &)
+          ]
+        )
+      end
+    end
+
+    def admin_dropdown_button_to(name, options, **html_options, &)
+      html_options = html_options.deep_dup
+      html_options[:class] = ['dropdown-item', 'b-dropdown-item-action', html_options[:class]].compact.join(' ')
+      form_class = ['b-dropdown-item-form', html_options.dig(:form, :class)].compact.join(' ')
+      html_options[:form] = (html_options[:form] || {}).merge(class: form_class)
+
+      content_tag(:li) do
+        button_to(name, options, html_options, &)
+      end
+    end
+
+    def admin_dropdown_link_to(text, url, **options)
+      content_tag(:li) do
+        link_to(text, url, **options.reverse_merge(class: 'dropdown-item b-dropdown-item-link'))
+      end
+    end
+
     def admin_nav_crumbs(*crumbs)
       admin_nav_crumbs_for_header(crumbs)
       admin_nav_crumbs_for_page_title(crumbs)
@@ -168,7 +210,7 @@ module Admin
       public_list.year
     end
 
-    def admin_external_link_to(entity, external_link)
+    def admin_external_link_to(entity, external_link, history_tasks: [])
       label = external_link_to(external_link.external_resource, external_link.url)
       return label unless wikipedia_external_link?(external_link)
 
@@ -176,28 +218,44 @@ module Admin
         safe_join([
                     label,
                     ' ('.html_safe,
-                    wikipedia_intro_fetch_link(entity),
+                    wikipedia_intro_fetch_link(entity, history_tasks:),
                     ')'.html_safe
                   ])
       end
     end
 
-    def admin_external_links_list(entity)
+    def admin_external_links_list(entity, history_tasks: [])
       return if entity.external_links.blank?
 
       safe_join(
-        entity.external_links.map { |external_link| admin_external_link_to(entity, external_link) },
+        entity.external_links.map do |external_link|
+          admin_external_link_to(entity, external_link, history_tasks:)
+        end,
         ' '
       )
     end
 
+    # Prefixes action labels with "re-" when a matching task already exists in history.
+    # e.g. "fetch" → "re-fetch", "fetch data" → "re-fetch data", "search" → "re-search"
+    def admin_repeatable_action_label(label, task_class, tasks: [])
+      return label if tasks.blank? || task_class.blank?
+
+      type_name = task_class.is_a?(String) ? task_class : task_class.name
+      return label unless tasks.any? { |task| task.type == type_name }
+
+      "re-#{label}"
+    end
+
     private
 
-    def wikipedia_intro_fetch_link(entity)
+    def wikipedia_intro_fetch_link(entity, history_tasks: [])
       path = wikipedia_intro_fetch_path(entity)
       return if path.blank?
 
-      admin_link_to('fetch', path, data: { turbo_method: :post })
+      label = admin_repeatable_action_label(
+        'fetch', wikipedia_intro_fetch_task_class(entity), tasks: history_tasks
+      )
+      admin_action_to(label, path, data: { turbo_method: :post })
     end
 
     def wikipedia_intro_fetch_path(entity)
@@ -206,6 +264,13 @@ module Admin
         admin_book_wikipedia_fetches_path(entity)
       when ::Author
         admin_author_wikipedia_fetches_path(entity)
+      end
+    end
+
+    def wikipedia_intro_fetch_task_class(entity)
+      case entity
+      when ::Book then Admin::Tasks::WikipediaBookFetch
+      when ::Author then Admin::Tasks::WikipediaAuthorFetch
       end
     end
 
