@@ -15,7 +15,7 @@ module Admin
 
         def wikipedia_url?(url)
           host = host_from_url(url)
-          host.present? && host.end_with?('wikipedia.org')
+          host.present? && (host == 'wikipedia.org' || host.end_with?('.wikipedia.org'))
         end
       end
 
