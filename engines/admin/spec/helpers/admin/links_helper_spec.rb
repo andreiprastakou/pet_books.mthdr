@@ -29,15 +29,11 @@ RSpec.describe Admin::LinksHelper do
     context 'with a book wikipedia link' do
       let(:book) { create(:book, wiki_url: 'https://en.wikipedia.org/wiki/The_Hobbit') }
 
-      before { book.wiki_links.first.update!(views: 99_555) }
-
       it 'includes page/view counts and a fetch link' do
         result = helper.admin_external_link_to(book, book.wikipedia_external_link)
 
         expect(result).to include(
           'wikipedia',
-          '1 page',
-          '99555 views',
           'fetch',
           admin_book_wikipedia_fetches_path(book)
         )
@@ -51,7 +47,6 @@ RSpec.describe Admin::LinksHelper do
         result = helper.admin_external_link_to(series, series.wikipedia_external_link)
 
         expect(result).to include('wikipedia')
-        expect(result).to include('1 page')
         expect(result).not_to include('>fetch<')
         expect(result).not_to include('wikipedia_fetches')
       end

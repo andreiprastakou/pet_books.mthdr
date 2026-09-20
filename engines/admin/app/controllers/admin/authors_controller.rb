@@ -93,7 +93,11 @@ module Admin
     private
 
     def fetch_record
-      @author = Admin::Author.find(params.expect(:id))
+      @author = Admin::Author.preload(
+        :external_links,
+        :descriptions,
+        external_identities: :external_link
+      ).find(params.expect(:id))
     end
 
     def record_params

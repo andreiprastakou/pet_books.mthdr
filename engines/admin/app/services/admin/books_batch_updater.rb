@@ -2,6 +2,8 @@ module Admin
   class BooksBatchUpdater
     attr_reader :books
 
+    PRELOADS = %i[authors book_authors external_links wiki_links book_series series].freeze
+
     def initialize
       @books = []
     end
@@ -26,11 +28,25 @@ module Admin
     private
 
     def params_to_books(params)
-      params.each_value do |book_params|
-        book = book_params[:id].present? ? Book.find(book_params[:id]) : Book.new
+      values = params.each_value.to_a
+      books_by_id = load_existing_books(values)
+
+      values.each do |book_params|
+        book = if book_params[:id].present?
+                 books_by_id.fetch(book_params[:id].to_s)
+               else
+                 Admin::Book.new
+               end
         book.assign_attributes(params_for_book(book_params))
         yield book
       end
+    end
+
+    def load_existing_books(values)
+      ids = values.filter_map { |book_params| book_params[:id].presence }
+      return {} if ids.empty?
+
+      Admin::Book.where(id: ids).preload(*PRELOADS).index_by { |book| book.id.to_s }
     end
 
     def params_for_book(book_params)

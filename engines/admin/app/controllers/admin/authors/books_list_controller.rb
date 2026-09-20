@@ -55,7 +55,9 @@ module Admin
       end
 
       def prepare_form_data
-        @books = Admin::Book.cast_collection(@author.books.to_a)
+        @books = Admin::Book.for_scope(
+          @author.books, :authors, :external_links, :wiki_links, :book_series, :series
+        ).to_a
         @task.fetched_data.each do |attributes|
           next if apply_to_existing_book(attributes)
 

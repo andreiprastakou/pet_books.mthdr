@@ -21,7 +21,10 @@
             <td>
               <%= admin_link_to "show", admin_ai_chat_path(chat) %>
             </td>
-            <td><%= "#{chat.messages.size} messages | #{chat.messages.sum(:input_tokens)} input | #{chat.messages.sum(:output_tokens)} output" %></td>
+            <td>
+              <% messages = chat.messages %>
+              <%= "#{messages.size} messages | #{messages.sum { |m| m.input_tokens.to_i }} input | #{messages.sum { |m| m.output_tokens.to_i }} output" %>
+            </td>
             <td><%= chat.model_id %></td>
             <td><%= chat.created_at %></td>
             <td><%= chat.updated_at %></td>

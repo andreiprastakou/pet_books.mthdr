@@ -53,6 +53,7 @@ gem 'ruby_llm', '~> 1.6'
 gem 'benchmark'
 
 group :development, :test do
+  gem 'bullet'
   gem 'byebug', platforms: %i[mri mingw x64_mingw]
   gem 'dotenv-rails', '>= 3.1', require: 'dotenv/load'
   gem 'pry-rails'
