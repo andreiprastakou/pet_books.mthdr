@@ -4,19 +4,6 @@ module Admin
   # Combines an author's books with Wikidata works into table rows for apply UI.
   # Match order: Wikidata external_id, then title equality. Each book is claimed at most once.
   class WikidataAuthorWorksRowsBuilder
-    Row = Struct.new(
-      :book,
-      :work,
-      :title,
-      :old_title,
-      :year,
-      :old_year,
-      :work_type,
-      :wikidata_id,
-      :new_wikidata_id,
-      keyword_init: true
-    )
-
     def self.call(author:, works:)
       new(author: author, works: works).call
     end
@@ -34,15 +21,19 @@ module Admin
       claim_by_external_id!(pairs, unmatched_works, reserved_ids)
       claim_by_title!(pairs, unmatched_works, reserved_ids)
 
-      rows = pairs.map { |book, work| matched_row(book, work) }
-      rows.concat(unmatched_books(reserved_ids).map { |book| book_only_row(book) })
-      rows.concat(unmatched_works.map { |work| work_only_row(work) })
-      rows.sort_by { |row| row.year.to_i }
+      build_rows(pairs, unmatched_works, reserved_ids)
     end
 
     private
 
     attr_reader :author, :works
+
+    def build_rows(pairs, unmatched_works, reserved_ids)
+      rows = pairs.map { |book, work| WikidataAuthorWorksRow.matched(book, work) }
+      rows.concat(unmatched_books(reserved_ids).map { |book| WikidataAuthorWorksRow.book_only(book) })
+      rows.concat(unmatched_works.map { |work| WikidataAuthorWorksRow.work_only(work) })
+      rows.sort_by { |row| row.year.to_i }
+    end
 
     def books
       @books ||= Admin::Book.cast_collection(
@@ -60,9 +51,8 @@ module Admin
 
     def claim_by_external_id!(pairs, unmatched_works, reserved_ids)
       works.each do |work|
-        qid = wikidata_id_for(work)
-        book = qid.present? ? books_by_wikidata_id[qid] : nil
-        if book && reserved_ids.exclude?(book.id)
+        book = book_for_work_qid(work, reserved_ids)
+        if book
           reserved_ids.add(book.id)
           pairs << [book, work]
         else
@@ -71,20 +61,28 @@ module Admin
       end
     end
 
+    def book_for_work_qid(work, reserved_ids)
+      qid = Admin::ExternalLinkBuilders::Wikidata.normalize_id(work['work'])
+      return if qid.blank?
+
+      book = books_by_wikidata_id[qid]
+      book if book && reserved_ids.exclude?(book.id)
+    end
+
     def claim_by_title!(pairs, unmatched_works, reserved_ids)
-      still_unmatched = []
-
-      unmatched_works.each do |work|
-        book = find_unreserved_book_by_title(work['work_label'], reserved_ids)
-        if book
-          reserved_ids.add(book.id)
-          pairs << [book, work]
-        else
-          still_unmatched << work
-        end
+      still_unmatched = unmatched_works.filter_map do |work|
+        claim_title_match!(pairs, work, reserved_ids)
       end
-
       unmatched_works.replace(still_unmatched)
+    end
+
+    def claim_title_match!(pairs, work, reserved_ids)
+      book = find_unreserved_book_by_title(work['work_label'], reserved_ids)
+      return work unless book
+
+      reserved_ids.add(book.id)
+      pairs << [book, work]
+      nil
     end
 
     def find_unreserved_book_by_title(title, reserved_ids)
@@ -95,59 +93,6 @@ module Admin
 
     def unmatched_books(reserved_ids)
       books.reject { |book| reserved_ids.include?(book.id) }
-    end
-
-    def matched_row(book, work)
-      wikidata_year = parse_year(work['publication_date'])
-      qid = wikidata_id_for(work)
-      Row.new(
-        book: book,
-        work: work,
-        title: work['work_label'].presence || book.title,
-        old_title: book.title,
-        year: wikidata_year.presence || book.year_published,
-        old_year: book.year_published,
-        work_type: work['type_label'],
-        wikidata_id: qid,
-        new_wikidata_id: qid.present? && book.external_identities.wikidata.none? { |i| i.external_id == qid }
-      )
-    end
-
-    def book_only_row(book)
-      Row.new(
-        book: book,
-        work: nil,
-        title: book.title,
-        old_title: nil,
-        year: book.year_published,
-        old_year: nil,
-        work_type: nil,
-        wikidata_id: nil,
-        new_wikidata_id: false
-      )
-    end
-
-    def work_only_row(work)
-      qid = wikidata_id_for(work)
-      Row.new(
-        book: nil,
-        work: work,
-        title: work['work_label'],
-        old_title: nil,
-        year: parse_year(work['publication_date']),
-        old_year: nil,
-        work_type: work['type_label'],
-        wikidata_id: qid,
-        new_wikidata_id: qid.present?
-      )
-    end
-
-    def wikidata_id_for(work)
-      Admin::ExternalLinkBuilders::Wikidata.normalize_id(work['work'])
-    end
-
-    def parse_year(date_string)
-      Admin::Tasks::WikidataAuthorWorksFetch.parse_year(date_string)
     end
   end
 end

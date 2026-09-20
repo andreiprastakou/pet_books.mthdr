@@ -9,22 +9,30 @@ module Admin
     end
 
     def apply_work
+      apply_work_from_params!
+      redirect_to edit_admin_wikidata_author_works_fetch_task_path(@task),
+                  notice: t('notices.admin.wikidata_author_works_fetch_tasks.apply_work.success')
+    rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid,
+           ActiveRecord::RecordNotFound => e
+      render_apply_work_error(e)
+    end
+
+    private
+
+    def apply_work_from_params!
       @task.apply_work!(
         title: params.require(:title),
         year: params.require(:year),
         book_id: params[:book_id],
         entity_id: params[:entity_id]
       )
-      redirect_to edit_admin_wikidata_author_works_fetch_task_path(@task),
-                  notice: t('notices.admin.wikidata_author_works_fetch_tasks.apply_work.success')
-    rescue ArgumentError, ActionController::ParameterMissing, ActiveRecord::RecordInvalid,
-           ActiveRecord::RecordNotFound => e
-      flash.now[:error] = e.message
+    end
+
+    def render_apply_work_error(error)
+      flash.now[:error] = error.message
       prepare_form_data
       render :edit, status: :unprocessable_content
     end
-
-    private
 
     def fetch_task
       @task = Admin::Tasks::WikidataAuthorWorksFetch.find(params[:id])

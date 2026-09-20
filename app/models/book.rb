@@ -70,7 +70,6 @@ class Book < ApplicationRecord
   end
 
   def tag_ids
-
     tag_connections.map(&:tag_id)
   end
 

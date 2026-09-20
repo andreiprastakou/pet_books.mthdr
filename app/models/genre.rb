@@ -37,4 +37,3 @@ class Genre < ApplicationRecord
     true
   end
 end
-

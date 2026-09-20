@@ -30,16 +30,17 @@ module Admin
     def params_to_books(params)
       values = params.each_value.to_a
       books_by_id = load_existing_books(values)
+      values.each { |book_params| yield book_from_params(book_params, books_by_id) }
+    end
 
-      values.each do |book_params|
-        book = if book_params[:id].present?
-                 books_by_id.fetch(book_params[:id].to_s)
-               else
-                 Admin::Book.new
-               end
-        book.assign_attributes(params_for_book(book_params))
-        yield book
-      end
+    def book_from_params(book_params, books_by_id)
+      book = if book_params[:id].present?
+               books_by_id.fetch(book_params[:id].to_s)
+             else
+               Admin::Book.new
+             end
+      book.assign_attributes(params_for_book(book_params))
+      book
     end
 
     def load_existing_books(values)

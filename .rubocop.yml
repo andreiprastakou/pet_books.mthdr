@@ -26,6 +26,10 @@ Metrics/BlockLength:
     - "**/spec/**/*"
 
 Metrics/MethodLength:
+  CountAsOne:
+    - array
+    - hash
+    - heredoc
   Exclude:
     - "**/helpers/**/*"
 
@@ -35,6 +39,9 @@ Metrics/ModuleLength:
 
 Naming/PredicateMethod:
   Enabled: false
+
+RSpec/ChangeByZero:
+  NegatedMatcher: not_change
 
 RSpec/ExampleLength:
   Max: 20

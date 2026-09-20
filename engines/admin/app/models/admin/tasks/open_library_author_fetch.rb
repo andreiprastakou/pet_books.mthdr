@@ -98,7 +98,6 @@ module Admin
         normalized_author_payload(data)
       end
 
-      # rubocop:disable-next Metrics/MethodLength
       def normalized_author_payload(data)
         {
           'name' => data['name'],

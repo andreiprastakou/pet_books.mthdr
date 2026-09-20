@@ -30,6 +30,18 @@ module Admin
 
     DEFAULT_BOOKS_INDEX_VIEW = 'table'.freeze
 
+    BOOK_PRELOADS = [
+      :authors,
+      :external_links,
+      :descriptions,
+      :series,
+      :tags,
+      :collections,
+      { genres: { genre: :cover_design } },
+      { book_public_lists: { public_list: :public_list_type } },
+      { external_identities: :external_link }
+    ].freeze
+
     helper_method :current_index_view
 
     def index
@@ -90,17 +102,7 @@ module Admin
     private
 
     def fetch_record
-      @book = Admin::Book.preload(
-        :authors,
-        :external_links,
-        :descriptions,
-        :series,
-        :tags,
-        :collections,
-        genres: { genre: :cover_design },
-        book_public_lists: { public_list: :public_list_type },
-        external_identities: :external_link
-      ).find(params[:id])
+      @book = Admin::Book.preload(*BOOK_PRELOADS).find(params[:id])
     end
 
     def record_params
