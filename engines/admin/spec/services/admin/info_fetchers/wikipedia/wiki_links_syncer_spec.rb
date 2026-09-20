@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::InfoFetchers::Wiki::WikiLinksSyncer do
+RSpec.describe Admin::InfoFetchers::Wikipedia::WikiLinksSyncer do
   around do |example|
     Timecop.freeze(Time.current.change(usec: 0)) do
       example.run
@@ -14,10 +14,10 @@ RSpec.describe Admin::InfoFetchers::Wiki::WikiLinksSyncer do
     let(:wiki_link) { create(:wiki_link, entity: entity, views: 11, views_last_month: 7, views_synced_at: 1.day.ago) }
     let(:entity) { create(:author) }
 
-    let(:views_fetcher) { instance_double(Admin::InfoFetchers::Wiki::ViewsFetcher) }
+    let(:views_fetcher) { instance_double(Admin::InfoFetchers::Wikipedia::ViewsFetcher) }
 
     before do
-      allow(Admin::InfoFetchers::Wiki::ViewsFetcher).to receive(:new).and_return(views_fetcher)
+      allow(Admin::InfoFetchers::Wikipedia::ViewsFetcher).to receive(:new).and_return(views_fetcher)
       allow(views_fetcher).to receive(:fetch)
         .with(wiki_link.name, wiki_link.locale, last_synced_at: wiki_link.views_synced_at).and_return([13, 3])
     end

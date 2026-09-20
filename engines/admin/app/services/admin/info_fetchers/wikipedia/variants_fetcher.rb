@@ -1,7 +1,7 @@
 module Admin
   module InfoFetchers
-    module Wiki
-      class VariantsFetcher < ::Admin::InfoFetchers::Wiki::BaseFetcher
+    module Wikipedia
+      class VariantsFetcher < ::Admin::InfoFetchers::Wikipedia::BaseFetcher
         PREFERRED_LANGUAGES = %w[en].freeze
 
         def fetch_variants(page_name, locale)

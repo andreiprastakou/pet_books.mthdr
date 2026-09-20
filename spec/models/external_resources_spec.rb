@@ -8,6 +8,7 @@ RSpec.describe ExternalResources do
       expect(described_class::OFFICIAL).to eq('official')
       expect(described_class::FAN).to eq('fan')
       expect(described_class::GOODREADS).to eq('goodreads')
+      expect(described_class::GUTENBERG).to eq('gutenberg')
       expect(described_class::LIBRARYTHING).to eq('librarything')
       expect(described_class::OPEN_LIBRARY).to eq('open_library')
       expect(described_class::WIKIDATA).to eq('wikidata')
@@ -21,6 +22,7 @@ RSpec.describe ExternalResources do
         described_class::OFFICIAL,
         described_class::FAN,
         described_class::GOODREADS,
+        described_class::GUTENBERG,
         described_class::LIBRARYTHING,
         described_class::OPEN_LIBRARY,
         described_class::WIKIDATA,

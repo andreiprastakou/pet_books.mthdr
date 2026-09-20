@@ -6,10 +6,10 @@ RSpec.describe Admin::Books::WikiStatsController do
   describe 'PUT /admin/books/:id/wiki_stats' do
     let(:send_request) { put admin_book_wiki_stats_path(book), headers: authorization_header }
 
-    let(:syncer) { instance_double(Admin::InfoFetchers::Wiki::BookSyncer) }
+    let(:syncer) { instance_double(Admin::InfoFetchers::Wikipedia::BookSyncer) }
 
     before do
-      allow(Admin::InfoFetchers::Wiki::BookSyncer).to receive(:new) do |book_arg|
+      allow(Admin::InfoFetchers::Wikipedia::BookSyncer).to receive(:new) do |book_arg|
         allow(syncer).to receive(:sync!) do
           book_arg.update!(wiki_popularity: 101)
         end
@@ -31,7 +31,7 @@ RSpec.describe Admin::Books::WikiStatsController do
 
     context 'when the stats dont change' do
       before do
-        allow(Admin::InfoFetchers::Wiki::BookSyncer).to receive(:new).and_return(syncer)
+        allow(Admin::InfoFetchers::Wikipedia::BookSyncer).to receive(:new).and_return(syncer)
         allow(syncer).to receive(:sync!)
       end
 

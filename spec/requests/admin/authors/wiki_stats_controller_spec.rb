@@ -6,7 +6,7 @@ RSpec.describe Admin::Authors::WikiStatsController do
   describe 'PUT /admin/authors/:id/wiki_stats' do
     let(:send_request) { put admin_author_wiki_stats_path(author), headers: authorization_header }
 
-    let(:syncer) { instance_double(Admin::InfoFetchers::Wiki::BookSyncer) }
+    let(:syncer) { instance_double(Admin::InfoFetchers::Wikipedia::BookSyncer) }
     let(:books) do
       [
         create(:book, authors: [author], wiki_popularity: 0),
@@ -16,14 +16,14 @@ RSpec.describe Admin::Authors::WikiStatsController do
     end
 
     before do
-      allow(Admin::InfoFetchers::Wiki::BookSyncer).to receive(:new).and_return(syncer)
+      allow(Admin::InfoFetchers::Wikipedia::BookSyncer).to receive(:new).and_return(syncer)
       allow(syncer).to receive(:sync!)
       books
     end
 
     it 'syncs the author\'s books that had no wiki stats' do
       send_request
-      expect(Admin::InfoFetchers::Wiki::BookSyncer).to have_received(:new).with(books[1])
+      expect(Admin::InfoFetchers::Wikipedia::BookSyncer).to have_received(:new).with(books[1])
       expect(syncer).to have_received(:sync!)
     end
 

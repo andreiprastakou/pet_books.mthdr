@@ -1,6 +1,6 @@
 module Admin
   module InfoFetchers
-    module Wiki
+    module Wikipedia
       class BookSyncer
         def initialize(book)
           @book = book.is_a?(Admin::Book) ? book : Admin::Book.cast(book)
@@ -33,12 +33,12 @@ module Admin
 
         def fetch_variants
           name, locale = fetch_base_page_parts
-          # Admin::InfoFetchers::Wiki::VariantsFetcher.new.fetch_variants(name, locale)
+          # Admin::InfoFetchers::Wikipedia::VariantsFetcher.new.fetch_variants(name, locale)
           { locale => name }
         end
 
         def fetch_base_page_parts
-          name, locale = Admin::InfoFetchers::Wiki::UrlParser.extract_base_name_and_locale(book.wiki_url)
+          name, locale = Admin::InfoFetchers::Wikipedia::UrlParser.extract_base_name_and_locale(book.wiki_url)
           raise "Can't extract base name and locale from #{book.wiki_url}" if name.blank? || locale.blank?
 
           [name, locale]
@@ -56,7 +56,7 @@ module Admin
         end
 
         def fetch_views(wiki_link)
-          Admin::InfoFetchers::Wiki::ViewsFetcher
+          Admin::InfoFetchers::Wikipedia::ViewsFetcher
             .new
             .fetch(wiki_link.name, wiki_link.locale, last_synced_at: wiki_link.views_synced_at)
         end

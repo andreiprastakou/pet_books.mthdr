@@ -4,6 +4,7 @@ module ExternalResources
   OFFICIAL = 'official'
   FAN = 'fan'
   GOODREADS = 'goodreads'
+  GUTENBERG = 'gutenberg'
   LIBRARYTHING = 'librarything'
   OPEN_LIBRARY = 'open_library'
   WIKIDATA = 'wikidata'
@@ -12,6 +13,7 @@ module ExternalResources
   ALL = [
     FAN,
     GOODREADS,
+    GUTENBERG,
     LIBRARYTHING,
     OFFICIAL,
     OPEN_LIBRARY,
@@ -28,6 +30,7 @@ module ExternalResources
   LABELS = {
     FAN => 'Fan',
     GOODREADS => 'Goodreads',
+    GUTENBERG => 'Gutenberg',
     LIBRARYTHING => 'LibraryThing',
     OFFICIAL => 'Official',
     OPEN_LIBRARY => 'Open Library',

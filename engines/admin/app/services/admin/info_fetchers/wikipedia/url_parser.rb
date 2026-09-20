@@ -1,6 +1,6 @@
 module Admin
   module InfoFetchers
-    module Wiki
+    module Wikipedia
       class UrlParser
         def self.extract_base_name_and_locale(url)
           locale = url.match(%r{^https?://([\w-]*)\.wikipedia\.org/})&.[](1)

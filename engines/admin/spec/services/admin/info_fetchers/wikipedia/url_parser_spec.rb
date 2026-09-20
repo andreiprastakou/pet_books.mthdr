@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::InfoFetchers::Wiki::UrlParser do
+RSpec.describe Admin::InfoFetchers::Wikipedia::UrlParser do
   describe '.extract_base_name_and_locale' do
     subject(:call) { described_class.extract_base_name_and_locale(url) }
 
