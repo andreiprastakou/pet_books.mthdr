@@ -1,13 +1,13 @@
 require 'rails_helper'
 
-RSpec.describe Admin::InfoFetchers::Wiki::BookSyncer do
+RSpec.describe Admin::InfoFetchers::Wikipedia::BookSyncer do
   describe '#sync!' do
     subject(:call) { described_class.new(book).sync! }
 
     let(:book) { create(:book, wiki_url: 'https://en.wikipedia.org/wiki/Crime_and_Punishment') }
 
-    let(:variants_fetcher) { instance_double(Admin::InfoFetchers::Wiki::VariantsFetcher) }
-    let(:views_fetcher) { instance_double(Admin::InfoFetchers::Wiki::ViewsFetcher) }
+    let(:variants_fetcher) { instance_double(Admin::InfoFetchers::Wikipedia::VariantsFetcher) }
+    let(:views_fetcher) { instance_double(Admin::InfoFetchers::Wikipedia::ViewsFetcher) }
 
     around do |example|
       Timecop.freeze(Time.current.change(usec: 0)) do
@@ -16,11 +16,11 @@ RSpec.describe Admin::InfoFetchers::Wiki::BookSyncer do
     end
 
     before do
-      allow(Admin::InfoFetchers::Wiki::VariantsFetcher).to receive(:new).and_return(variants_fetcher)
+      allow(Admin::InfoFetchers::Wikipedia::VariantsFetcher).to receive(:new).and_return(variants_fetcher)
       allow(variants_fetcher).to receive(:fetch_variants).with('Crime_and_Punishment', 'en')
                                                          .and_return({ 'en' => 'Crime_and_Punishment',
                                                                        'ru' => 'Преступление_и_наказание' })
-      allow(Admin::InfoFetchers::Wiki::ViewsFetcher).to receive(:new).and_return(views_fetcher)
+      allow(Admin::InfoFetchers::Wikipedia::ViewsFetcher).to receive(:new).and_return(views_fetcher)
       allow(views_fetcher).to receive(:fetch).with('Crime_and_Punishment', 'en', last_synced_at: nil)
                                              .and_return([101, 11])
     end

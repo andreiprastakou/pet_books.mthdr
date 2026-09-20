@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::InfoFetchers::Wiki::ViewsFetcher do
+RSpec.describe Admin::InfoFetchers::Wikipedia::ViewsFetcher do
   describe '#fetch' do
     subject(:call) { described_class.new.fetch(page_name, locale, **options) }
 

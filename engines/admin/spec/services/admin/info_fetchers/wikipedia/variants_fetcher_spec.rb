@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe Admin::InfoFetchers::Wiki::VariantsFetcher do
+RSpec.describe Admin::InfoFetchers::Wikipedia::VariantsFetcher do
   describe '#fetch_variants' do
     subject(:call) { described_class.new.fetch_variants(page_name, locale) }
 

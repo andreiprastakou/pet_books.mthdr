@@ -40,7 +40,7 @@ module Admin
       url = wikipedia_owner.wiki_url
       return [nil, nil] if url.blank?
 
-      Admin::InfoFetchers::Wiki::UrlParser.extract_base_name_and_locale(url)
+      Admin::InfoFetchers::Wikipedia::UrlParser.extract_base_name_and_locale(url)
     end
 
     def extracted_description

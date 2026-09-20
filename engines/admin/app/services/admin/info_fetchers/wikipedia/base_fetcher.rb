@@ -1,6 +1,6 @@
 module Admin
   module InfoFetchers
-    module Wiki
+    module Wikipedia
       class BaseFetcher
         private
 

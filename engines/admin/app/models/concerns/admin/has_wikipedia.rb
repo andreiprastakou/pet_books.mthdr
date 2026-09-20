@@ -61,7 +61,7 @@ module Admin
     def validate_wiki_url_format
       return if wiki_url.blank?
 
-      name, locale = Admin::InfoFetchers::Wiki::UrlParser.extract_base_name_and_locale(wiki_url)
+      name, locale = Admin::InfoFetchers::Wikipedia::UrlParser.extract_base_name_and_locale(wiki_url)
       errors.add(:wiki_url, 'is not a valid wikipedia url') if name.blank? || locale.blank?
     end
   end

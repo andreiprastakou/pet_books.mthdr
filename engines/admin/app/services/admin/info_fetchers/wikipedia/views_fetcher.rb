@@ -1,7 +1,7 @@
 module Admin
   module InfoFetchers
-    module Wiki
-      class ViewsFetcher < ::Admin::InfoFetchers::Wiki::BaseFetcher
+    module Wikipedia
+      class ViewsFetcher < ::Admin::InfoFetchers::Wikipedia::BaseFetcher
         DEFAULT_PERIOD = 1.year
         MIN_PERIOD = 2.months
 

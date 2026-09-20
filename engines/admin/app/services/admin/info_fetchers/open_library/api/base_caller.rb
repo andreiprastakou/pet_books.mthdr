@@ -8,7 +8,10 @@ module Admin
           # See https://openlibrary.org/developers/api
           USER_AGENT = ENV.fetch(
             'OPEN_LIBRARY_USER_AGENT',
-            'books.mthdr (https://books-mthdr.fly.dev)'
+            ENV.fetch(
+              'API_USER_AGENT',
+              'books.mthdr (https://books-mthdr.fly.dev)'
+            )
           ).freeze
           RATE_LIMIT_NAME = 'open_library'.freeze
           RATE_LIMIT_INTERVAL_SECONDS = 1.0 / 3

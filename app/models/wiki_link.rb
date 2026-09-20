@@ -41,7 +41,7 @@ class WikiLink < ApplicationRecord
   end
 
   def self.build_from_url(url:)
-    name, locale = Admin::InfoFetchers::Wiki::UrlParser.extract_base_name_and_locale(url)
+    name, locale = Admin::InfoFetchers::Wikipedia::UrlParser.extract_base_name_and_locale(url)
     raise "Can't extract base name and locale from #{url}" if name.blank? || locale.blank?
 
     new(locale: locale, name: name, url: url)

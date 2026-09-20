@@ -25,7 +25,7 @@ module Admin
             ENV.fetch(
               'WIKIDATA_USER_AGENT',
               ENV.fetch(
-                'OPEN_LIBRARY_USER_AGENT',
+                'API_USER_AGENT',
                 'books.mthdr (https://books-mthdr.fly.dev)'
               )
             )

@@ -1,6 +1,6 @@
 module Admin
   module InfoFetchers
-    module Wiki
+    module Wikipedia
       class WikiLinksSyncer
         def initialize(wiki_link)
           @wiki_link = wiki_link
@@ -26,7 +26,7 @@ module Admin
         end
 
         def fetch_views(wiki_link)
-          Admin::InfoFetchers::Wiki::ViewsFetcher
+          Admin::InfoFetchers::Wikipedia::ViewsFetcher
             .new
             .fetch(wiki_link.name, wiki_link.locale, last_synced_at: wiki_link.views_synced_at)
         end

@@ -70,7 +70,6 @@ module Admin
       @book = Admin::Book.new
       respond_to do |format|
         if @book.update(record_params)
-          schedule_open_library_search!
           format.html { redirect_to admin_book_path(@book), notice: t('notices.admin.books.create.success') }
         else
           format.html { render :new, status: :unprocessable_content }
@@ -110,10 +109,6 @@ module Admin
 
     def current_index_view
       params[:books_index_view] || DEFAULT_BOOKS_INDEX_VIEW
-    end
-
-    def schedule_open_library_search!
-      Admin::Tasks::OpenLibraryBookSearch.setup(@book).enqueue_for_processing!
     end
   end
 end

@@ -40,7 +40,8 @@ RSpec.describe Admin::ExternalIdentity do
         ExternalResources::OPEN_LIBRARY => 1,
         ExternalResources::WIKIDATA => 2,
         ExternalResources::LIBRARYTHING => 3,
-        ExternalResources::GOODREADS => 4
+        ExternalResources::GOODREADS => 4,
+        ExternalResources::GUTENBERG => 5
       )
     end
   end
