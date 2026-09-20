@@ -38,7 +38,14 @@ module Admin
       end
 
       def author
-        Admin::Author.cast(target)
+        return @author if defined?(@author)
+
+        @author = Admin::Author.cast(target)
+        ActiveRecord::Associations::Preloader.new(
+          records: [@author],
+          associations: %i[external_links wiki_links]
+        ).call
+        @author
       end
 
       def entity_id
@@ -86,8 +93,10 @@ module Admin
 
       def find_or_build_book!(book_id)
         if book_id.present?
-          book = Admin::Book.cast(author.books.find(book_id))
-          return book
+          return Admin::Book.for_scope(
+            author.books.where(id: book_id),
+            :external_links, :wiki_links, :external_identities
+          ).first!
         end
 
         Admin::Book.new(authors: [author])

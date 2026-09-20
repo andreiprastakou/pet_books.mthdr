@@ -70,7 +70,7 @@ module Admin
     private
 
     def fetch_record
-      @public_list_type = PublicListType.find(params[:id])
+      @public_list_type = PublicListType.preload(:external_links).find(params[:id])
     end
 
     def record_params

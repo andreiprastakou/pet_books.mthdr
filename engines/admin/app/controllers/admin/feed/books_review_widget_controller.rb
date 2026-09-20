@@ -22,7 +22,7 @@ module Admin
         @books_to_fill_count = books_to_fill_scope.count
 
         summaries_to_verify_scope = Admin::Tasks::AiBookFetch.where(status: :fetched)
-        @summaries_to_verify = summaries_to_verify_scope.first(5)
+        @summaries_to_verify = summaries_to_verify_scope.preload(target: :authors).first(5)
         @summaries_to_verify_count = summaries_to_verify_scope.count
       end
     end

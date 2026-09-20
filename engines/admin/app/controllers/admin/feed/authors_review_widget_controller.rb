@@ -13,11 +13,11 @@ module Admin
         @authors_to_sync_count = authors_scope.count
 
         fetched_lists_to_verify_scope = Admin::Tasks::AiAuthorWorksFetch.where(status: :fetched)
-        @fetched_lists_to_verify = fetched_lists_to_verify_scope.first(5)
+        @fetched_lists_to_verify = fetched_lists_to_verify_scope.preload(:target).first(5)
         @fetched_lists_to_verify_count = fetched_lists_to_verify_scope.count
 
         parsed_lists_to_verify_scope = Admin::Tasks::AiAuthorWorksParse.where(status: :fetched)
-        @parsed_lists_to_verify = parsed_lists_to_verify_scope.first(5)
+        @parsed_lists_to_verify = parsed_lists_to_verify_scope.preload(:target).first(5)
         @parsed_lists_to_verify_count = parsed_lists_to_verify_scope.count
       end
     end
