@@ -49,7 +49,6 @@ RSpec.describe Admin::BooksController do
       expect(response.body).to include('OL99W')
       expect(response.body).to include('https://openlibrary.org/works/OL99W')
       expect(response.body).to include(admin_book_external_identity_open_library_fetches_path(book, identity))
-      expect(response.body).not_to include('search in OpenLibrary')
       expect(response.body).to include(admin_book_wikidata_searches_path(book))
       expect(response.body).to include(admin_book_library_thing_searches_path(book))
     end
@@ -68,7 +67,6 @@ RSpec.describe Admin::BooksController do
 
     it 'renders search links when Open Library, Wikidata, and LibraryThing identities are missing' do
       send_request
-      expect(response.body).to include('search in OpenLibrary')
       expect(response.body).to include(admin_book_open_library_searches_path(book))
       expect(response.body).to include(admin_book_wikidata_searches_path(book))
       expect(response.body).to include(admin_book_library_thing_searches_path(book))

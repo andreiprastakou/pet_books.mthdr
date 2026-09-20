@@ -26,16 +26,16 @@ module Admin
       content_tag(:span, 'i', class: 'badge bg-secondary', title: text)
     end
 
-    def button_to_generate_books_summaries(books, label: nil, **options)
+    def button_to_generate_books_summaries(books, label: nil, **)
       books = Admin::Book.cast_collection(books).select(&:needs_data_fetch?)
       return if books.empty?
 
       label ||= "AI generate #{pluralize(books.count, 'summary')}"
-      label = format(label, count: books.count) if label.include?('%{count}')
+      label = format(label, count: books.count) if label.include?('%<count>s')
 
       button_to label,
                 admin_books_batch_generate_summaries_path(book_ids: books.pluck(:id)),
-                **{ method: :post, class: 'btn btn-primary me-1' }.merge(options)
+                method: :post, class: 'btn btn-primary me-1', **
     end
   end
 end

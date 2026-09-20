@@ -214,11 +214,14 @@ module Admin
       label = external_link_to(external_link.external_resource, external_link.url)
       return label unless wikipedia_external_link?(external_link)
 
+      fetch_link = wikipedia_intro_fetch_link(entity, history_tasks:)
+      return label if fetch_link.blank?
+
       content_tag(:span, class: 'text-muted') do
         safe_join([
                     label,
                     ' ('.html_safe,
-                    wikipedia_intro_fetch_link(entity, history_tasks:),
+                    fetch_link,
                     ')'.html_safe
                   ])
       end

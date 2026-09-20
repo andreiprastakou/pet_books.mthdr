@@ -17,6 +17,59 @@
   --bs-btn-disabled-opacity: 0.9;
 }
 
+.b-admin-navbar {
+  > .container {
+    position: relative;
+  }
+
+  .b-admin-navbar-home {
+    align-items: center;
+    display: flex;
+    gap: 0.35rem;
+    z-index: 1;
+
+    .navbar-brand {
+      margin-right: 0;
+    }
+  }
+
+  .b-admin-navbar-icon {
+    align-items: center;
+    background: #fff;
+    border-radius: 50%;
+    display: inline-flex;
+    justify-content: center;
+    height: 1.75rem;
+    padding: 0.2rem;
+    width: 1.75rem;
+
+    img {
+      display: block;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .b-admin-navbar-separator {
+    color: rgba(255, 255, 255, 0.55);
+    font-size: 0.9rem;
+    line-height: 1;
+    user-select: none;
+  }
+
+  .b-admin-navbar-links {
+    .nav-link {
+      white-space: nowrap;
+    }
+
+    @media (min-width: 992px) {
+      left: 50%;
+      position: absolute;
+      transform: translateX(-50%);
+    }
+  }
+}
+
 a[href^='http'] {
   color: $orange-600;
 }
