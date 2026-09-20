@@ -8,7 +8,7 @@ const RESOURCE_LINK_TEXT = {
   official: 'Official',
   goodreads: 'Goodreads',
   librarything: 'LibraryThing',
-  open_library: 'Open Library',
+  'open_library': 'Open Library',
   wikipedia: 'Wikipedia',
 }
 

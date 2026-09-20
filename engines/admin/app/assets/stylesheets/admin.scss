@@ -94,6 +94,14 @@ a[href^='http'] {
   }
 }
 
+.b-dropdown-item-form {
+  margin: 0;
+
+  .dropdown-item {
+    width: 100%;
+  }
+}
+
 .b-actions-dropdown {
   .b-actions-dropdown-toggle {
     &:hover,
@@ -130,14 +138,6 @@ a[href^='http'] {
 
   .b-dropdown-item-link {
     text-decoration: underline;
-  }
-}
-
-.b-dropdown-item-form {
-  margin: 0;
-
-  .dropdown-item {
-    width: 100%;
   }
 }
 

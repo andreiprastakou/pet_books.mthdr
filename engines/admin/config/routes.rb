@@ -57,15 +57,12 @@ Admin::Engine.routes.draw do
     end
 
     namespace :feed do
-      resource :books_review_widget, only: %i[show], controller: 'books_review_widget' do
-        post :request_summary
-      end
-      resource :authors_review_widget, only: %i[show], controller: 'authors_review_widget' do
-        post :request_books_list
-        post :fill_books_list
-      end
+      resource :ai_works_widget, only: %i[show], controller: 'ai_works_widget'
+      resource :gaps_widget, only: %i[show], controller: 'gaps_widget'
+      resource :wikipedia_updates_widget, only: %i[show], controller: 'wikipedia_updates_widget'
       resource :wikidata_updates_widget, only: %i[show], controller: 'wikidata_updates_widget'
       resource :open_library_updates_widget, only: %i[show], controller: 'open_library_updates_widget'
+      resource :library_thing_updates_widget, only: %i[show], controller: 'library_thing_updates_widget'
     end
 
     resources :data_fetch_tasks, only: %i[index show] do

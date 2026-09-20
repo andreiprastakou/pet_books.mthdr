@@ -1,0 +1,55 @@
+<%= turbo_frame_tag "ai_works_widget", target: "_top" do %>
+  <div class="container mt-4">
+    <h3>AI works</h3>
+    <table class="table b-external-updates-table">
+      <thead>
+        <tr>
+          <th>
+            Book data generated
+            (<%= admin_link_to "#{@summaries_to_verify_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::AiBookFetch.name, status: :fetched, commit: 'Filter') %>)
+          </th>
+          <th>
+            Author works fetches
+            (<%= admin_link_to "#{@fetched_lists_to_verify_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::AiAuthorWorksFetch.name, status: :fetched, commit: 'Filter') %>)
+          </th>
+          <th>
+            Author works parses
+            (<%= admin_link_to "#{@parsed_lists_to_verify_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::AiAuthorWorksParse.name, status: :fetched, commit: 'Filter') %>)
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% row_count = [@summaries_to_verify, @fetched_lists_to_verify, @parsed_lists_to_verify].map(&:size).max %>
+        <% if row_count.zero? %>
+          <tr>
+            <td colspan="3">No AI works to review</td>
+          </tr>
+        <% else %>
+          <% row_count.times do |i| %>
+            <tr>
+              <td>
+                <% if (task = @summaries_to_verify[i]) %>
+                  <% title = "#{task.book.title} (#{task.book.year_published}) by #{task.book.author_names_label}" %>
+                  <%= admin_link_to title, admin_data_fetch_task_path(task), title: title %>
+                <% end %>
+              </td>
+              <td>
+                <% if (task = @fetched_lists_to_verify[i]) %>
+                  <%= admin_link_to task.author.fullname, admin_data_fetch_task_path(task) %>
+                <% end %>
+              </td>
+              <td>
+                <% if (task = @parsed_lists_to_verify[i]) %>
+                  <%= admin_link_to task.author.fullname, admin_data_fetch_task_path(task) %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

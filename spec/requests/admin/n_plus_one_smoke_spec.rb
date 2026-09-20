@@ -21,13 +21,13 @@ RSpec.describe 'Admin N+1 smoke', type: :request do
       end
     end
 
-    it 'renders books review widget without N+1' do
-      get_admin admin_feed_books_review_widget_path
+    it 'renders AI works widget without N+1' do
+      get_admin admin_feed_ai_works_widget_path
       expect(response).to be_successful
     end
 
-    it 'renders authors review widget without N+1' do
-      get_admin admin_feed_authors_review_widget_path
+    it 'renders gaps widget without N+1' do
+      get_admin admin_feed_gaps_widget_path
       expect(response).to be_successful
     end
   end

@@ -19,7 +19,7 @@ export default class extends Controller {
 
   renderDescription(description = {}) {
     const template = this.descriptionTemplateTarget.content.cloneNode(true)
-    const priority = description.priority == null ? this.nextPriority() : description.priority
+    const priority = this.descriptionPriority(description)
 
     const tempWorkbench = document.createElement('div')
     tempWorkbench.appendChild(template)
@@ -27,36 +27,60 @@ export default class extends Controller {
     tempWorkbench.innerHTML = tempWorkbench.innerHTML.replaceAll('ENTRY_ID', index)
 
     const newEntry = this.descriptionsListTarget.appendChild(tempWorkbench.firstElementChild)
-    newEntry.querySelector('[data-name="idInput"]').value = description.id || ''
-    newEntry.querySelector('[data-name="textInput"]').value = description.text || ''
-    newEntry.querySelector('[data-name="sourceLabelInput"]').value =
-      description.display_source_label || description.source_label || ''
-    newEntry.querySelector('[data-name="priorityInput"]').value = priority
+    this.populateDescriptionFields(newEntry, description, priority)
+  }
 
-    this.fillSourceFields(newEntry, description)
+  descriptionPriority(description) {
+    if (typeof description.priority === 'undefined' || description.priority === null)
+      return this.nextPriority()
+
+    return description.priority
+  }
+
+  populateDescriptionFields(entry, description, priority) {
+    entry.querySelector('[data-name="idInput"]').value = description.id || ''
+    entry.querySelector('[data-name="textInput"]').value = description.text || ''
+    entry.querySelector('[data-name="sourceLabelInput"]').value =
+      description.display_source_label || description.source_label || ''
+    entry.querySelector('[data-name="priorityInput"]').value = priority
+    this.fillSourceFields(entry, description)
   }
 
   fillSourceFields(entry, description) {
-    const sourceFields = entry.querySelector('[data-name="sourceFields"]')
-    const sourceLabelInput = entry.querySelector('[data-name="sourceLabelInput"]')
     const sourceType = description.source_type
     const sourceId = description.source_id
-    if (!sourceType || sourceId == null || sourceId === '') {
-      sourceFields.hidden = true
-      sourceLabelInput.disabled = false
+
+    if (!this.hasLinkedSource(sourceType, sourceId)) {
+      this.hideSourceFields(entry)
       return
     }
 
-    sourceFields.hidden = false
-    sourceLabelInput.disabled = true
+    this.showSourceFields(entry, sourceType, sourceId)
+  }
+
+  hasLinkedSource(sourceType, sourceId) {
+    return Boolean(sourceType) &&
+      typeof sourceId !== 'undefined' &&
+      sourceId !== null &&
+      sourceId !== ''
+  }
+
+  hideSourceFields(entry) {
+    entry.querySelector('[data-name="sourceFields"]').hidden = true
+    entry.querySelector('[data-name="sourceLabelInput"]').disabled = false
+  }
+
+  showSourceFields(entry, sourceType, sourceId) {
+    entry.querySelector('[data-name="sourceFields"]').hidden = false
+    entry.querySelector('[data-name="sourceLabelInput"]').disabled = true
     entry.querySelector('[data-name="sourceTypeInput"]').value = sourceType
     entry.querySelector('[data-name="sourceIdInput"]').value = sourceId
   }
 
   nextPriority() {
-    const priorities = this.visibleDescriptions().map(entry => {
-      return Number(entry.querySelector('[data-name="priorityInput"]').value) || 0
-    })
+    const priorities = this.visibleDescriptions().map(
+      entry => Number(entry.querySelector('[data-name="priorityInput"]').value) || 0
+    )
     if (priorities.length === 0) return 0
 
     return Math.max(...priorities) + 1
