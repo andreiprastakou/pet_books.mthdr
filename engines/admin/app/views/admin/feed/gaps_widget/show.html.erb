@@ -1,0 +1,37 @@
+<%= turbo_frame_tag "gaps_widget", target: "_top" do %>
+  <div class="container mt-4">
+    <h3>Gaps</h3>
+    <table class="table b-external-updates-table">
+      <thead>
+        <tr>
+          <th>Books (<%= @books_count %> total)</th>
+          <th>Authors (<%= @authors_count %> total)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% row_count = [@books, @authors].map(&:size).max %>
+        <% if row_count.zero? %>
+          <tr>
+            <td colspan="2">No gaps to fill</td>
+          </tr>
+        <% else %>
+          <% row_count.times do |i| %>
+            <tr>
+              <td>
+                <% if (book = @books[i]) %>
+                  <% title = "#{book.title} (#{book.year_published}) by #{book.author_names_label}" %>
+                  <%= admin_link_to title, admin_book_path(book), title: title %>
+                <% end %>
+              </td>
+              <td>
+                <% if (author = @authors[i]) %>
+                  <%= admin_link_to author.fullname, admin_author_path(author), target: "_blank" %>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

@@ -4,10 +4,26 @@
     <table class="table b-external-updates-table">
       <thead>
         <tr>
-          <th>Book searches</th>
-          <th>Book fetches</th>
-          <th>Author searches</th>
-          <th>Author fetches</th>
+          <th>
+            Book searches
+            (<%= admin_link_to "#{@book_searches_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryBookSearch.name, status: :fetched, commit: 'Filter') %>)
+          </th>
+          <th>
+            Book fetches
+            (<%= admin_link_to "#{@book_fetches_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryBookFetch.name, status: :fetched, commit: 'Filter') %>)
+          </th>
+          <th>
+            Author searches
+            (<%= admin_link_to "#{@author_searches_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryAuthorSearch.name, status: :fetched, commit: 'Filter') %>)
+          </th>
+          <th>
+            Author fetches
+            (<%= admin_link_to "#{@author_fetches_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::OpenLibraryAuthorFetch.name, status: :fetched, commit: 'Filter') %>)
+          </th>
         </tr>
       </thead>
       <tbody>

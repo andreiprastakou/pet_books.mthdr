@@ -11,20 +11,30 @@ module Admin
       private
 
       def load_book_samples
-        @book_searches = sample_tasks(Admin::Tasks::WikidataBookSearch, preload: { target: :authors })
-        @book_fetches = sample_tasks(Admin::Tasks::WikidataBookFetch, preload: { target: { owner: :authors } })
+        @book_searches, @book_searches_count = sample_tasks(
+          Admin::Tasks::WikidataBookSearch, preload: { target: :authors }
+        )
+        @book_fetches, @book_fetches_count = sample_tasks(
+          Admin::Tasks::WikidataBookFetch, preload: { target: { owner: :authors } }
+        )
       end
 
       def load_author_samples
-        @author_searches = sample_tasks(Admin::Tasks::WikidataAuthorSearch, preload: :target)
-        @author_fetches = sample_tasks(Admin::Tasks::WikidataAuthorFetch, preload: { target: :owner })
+        @author_searches, @author_searches_count = sample_tasks(
+          Admin::Tasks::WikidataAuthorSearch, preload: :target
+        )
+        @author_fetches, @author_fetches_count = sample_tasks(
+          Admin::Tasks::WikidataAuthorFetch, preload: { target: :owner }
+        )
+        @author_works_fetches, @author_works_fetches_count = sample_tasks(
+          Admin::Tasks::WikidataAuthorWorksFetch, preload: :target
+        )
       end
 
       def sample_tasks(klass, preload:)
-        klass.where(status: :fetched)
-             .order(Arel.sql('RANDOM()'))
-             .preload(preload)
-             .limit(SAMPLE_SIZE)
+        scope = klass.where(status: :fetched)
+        samples = scope.order(Arel.sql('RANDOM()')).preload(preload).limit(SAMPLE_SIZE).to_a
+        [samples, scope.count]
       end
     end
   end

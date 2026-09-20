@@ -1,0 +1,32 @@
+<%= turbo_frame_tag "library_thing_updates_widget", target: "_top" do %>
+  <div class="container mt-4">
+    <h3>LibraryThing updates for review</h3>
+    <table class="table b-external-updates-table">
+      <thead>
+        <tr>
+          <th>
+            Book searches
+            (<%= admin_link_to "#{@book_searches_count} total",
+                  admin_data_fetch_tasks_path(type: Admin::Tasks::LibraryThingBookSearch.name, status: :fetched, commit: 'Filter') %>)
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if @book_searches.empty? %>
+          <tr>
+            <td>No LibraryThing updates to review</td>
+          </tr>
+        <% else %>
+          <% @book_searches.each do |task| %>
+            <tr>
+              <td>
+                <% title = "#{task.book.title} (#{task.book.year_published}) by #{task.book.author_names_label}" %>
+                <%= admin_link_to title, admin_data_fetch_task_path(task), title: title %>
+              </td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

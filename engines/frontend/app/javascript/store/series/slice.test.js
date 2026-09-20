@@ -31,7 +31,7 @@ describe('series slice', () => {
     state = reducer(state, addSeriesIndexEntry({
       id: 1,
       name: 'Earthsea',
-      externalLinks: [{ external_resource: 'wikipedia', url: 'https://wiki' }],
+      externalLinks: [{ 'external_resource': 'wikipedia', url: 'https://wiki' }],
     }))
     state = reducer(state, assignSeriesRefs([
       { id: 1, name: 'Earthsea' },
