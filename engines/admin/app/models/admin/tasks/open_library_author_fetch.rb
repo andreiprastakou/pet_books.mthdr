@@ -26,7 +26,6 @@
 #
 module Admin
   module Tasks
-    # rubocop:disable-next Metrics/ClassLength
     class OpenLibraryAuthorFetch < BaseTask
       include Admin::Tasks::ExternalIdentityFetchable
       include Admin::Tasks::AuthorYearApplicable
