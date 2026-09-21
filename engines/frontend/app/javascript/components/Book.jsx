@@ -46,7 +46,6 @@ const Book = ({
         <BookSmall
           authorRefs={authorRefs}
           bookIndexEntry={bookIndexEntry}
-          coverDesign={coverDesign}
         />
       ) : (
         <BookStandard
@@ -117,16 +116,11 @@ BookStandard.propTypes = {
   coverDesign: PropTypes.object.isRequired,
 }
 
-const BookSmall = ({ authorRefs, coverDesign, bookIndexEntry }) => (
+const BookSmall = ({ authorRefs, bookIndexEntry }) => (
   <div
     className='b-cover-standard b-standard-cover-small'
-    data-cover-image={coverDesign.coverImage}
-    style={coverDesign.coverImage === 'default'
-      ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id))
-      : null}
+    style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { small: true }))}
   >
-    { coverDesign.coverImage === 'default' ? <div className='b-cover-texture' /> : null }
-
     <div className="b-standard-cover-small-text-container">
       <div
         className='b-standard-cover-author'
@@ -150,7 +144,6 @@ const BookSmall = ({ authorRefs, coverDesign, bookIndexEntry }) => (
 BookSmall.propTypes = {
   authorRefs: PropTypes.array.isRequired,
   bookIndexEntry: PropTypes.object.isRequired,
-  coverDesign: PropTypes.object.isRequired,
 }
 
 export default Book

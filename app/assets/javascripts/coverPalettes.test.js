@@ -20,6 +20,18 @@ describe('coverPalettes', () => {
     expect(coverPaletteForId(9).base).toBe('#283838')
   })
 
+  it('returns a stable pastel palette for small covers', () => {
+    const palette = coverPaletteForId(0, { small: true })
+    expect(palette).toEqual({
+      base: '#e8c4c8',
+      mid: '#f2d8dc',
+      shadow: '#d4a8ae',
+      edge: '#c4989e',
+    })
+    expect(coverPaletteForId(10, { small: true })).toEqual(palette)
+    expect(coverPaletteForId(1, { small: true }).base).toBe('#b8cce0')
+  })
+
   it('builds a vertical cloth gradient from a palette', () => {
     const palette = coverPaletteForId(0)
     const style = coverBackgroundStyle(palette)
@@ -28,5 +40,12 @@ describe('coverPalettes', () => {
     expect(style.background).toContain(palette.base)
     expect(style.background).toContain(palette.mid)
     expect(style.background).toContain('linear-gradient')
+  })
+
+  it('builds a flat matte fill when requested', () => {
+    const palette = coverPaletteForId(0, { small: true })
+    expect(coverBackgroundStyle(palette, { flat: true })).toEqual({
+      background: palette.base,
+    })
   })
 })

@@ -69,5 +69,11 @@ RSpec.describe BooksHelper do
     it 'returns the shared cover palette CSS' do
       expect(result).to eq(CoverPalettes.background_css_for_id(0))
     end
+
+    it 'returns the small pastel palette CSS when requested' do
+      expect(helper.cover_background_style(0, small: true)).to eq(
+        CoverPalettes.background_css_for_id(0, small: true)
+      )
+    end
   end
 end
