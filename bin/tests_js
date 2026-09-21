@@ -2,3 +2,6 @@
 set -euo pipefail
 
 yarn vitest run "$@"
+
+# One-shot webpack compile smoke (catches loader/config breaks; not the HMR/dev-server path).
+RAILS_ENV=development bin/shakapacker
