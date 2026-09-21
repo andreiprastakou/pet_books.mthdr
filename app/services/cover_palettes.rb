@@ -16,10 +16,25 @@ module CoverPalettes
     { base: '#283838', mid: '#334848', shadow: '#182020', edge: '#101818' }
   ].freeze
 
+  # Pastel paper colours for small pamphlets — same shape, lighter palette.
+  SMALL_COVER_PALETTES = [
+    { base: '#e8c4c8', mid: '#f2d8dc', shadow: '#d4a8ae', edge: '#c4989e' },
+    { base: '#b8cce0', mid: '#cce0f0', shadow: '#98b0c8', edge: '#88a0b8' },
+    { base: '#c8d4c0', mid: '#dce8d4', shadow: '#a8bca0', edge: '#98ac90' },
+    { base: '#d4c8e0', mid: '#e4daf0', shadow: '#b8a8c8', edge: '#a898b8' },
+    { base: '#edd4c0', mid: '#f6e4d4', shadow: '#d8b8a0', edge: '#c8a890' },
+    { base: '#c0dcd4', mid: '#d4ece4', shadow: '#a0c4b8', edge: '#90b4a8' },
+    { base: '#ebe0c0', mid: '#f4ecd4', shadow: '#d4c8a0', edge: '#c4b890' },
+    { base: '#e0c8d8', mid: '#eedae8', shadow: '#c8a8c0', edge: '#b898b0' },
+    { base: '#c8c8e0', mid: '#dcdcf0', shadow: '#a8a8c8', edge: '#9898b8' },
+    { base: '#d8d0c8', mid: '#e8e0d8', shadow: '#c0b8b0', edge: '#b0a8a0' }
+  ].freeze
+
   module_function
 
-  def for_id(id)
-    COVER_PALETTES[id.to_i.abs % COVER_PALETTES.length]
+  def for_id(id, small: false)
+    palettes = small ? SMALL_COVER_PALETTES : COVER_PALETTES
+    palettes[id.to_i.abs % palettes.length]
   end
 
   def background_css(palette)
@@ -35,7 +50,7 @@ module CoverPalettes
     CSS
   end
 
-  def background_css_for_id(id)
-    background_css(for_id(id))
+  def background_css_for_id(id, small: false)
+    background_css(for_id(id, small:))
   end
 end

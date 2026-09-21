@@ -15,7 +15,8 @@ const BookSpine = ({ id }) => {
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
 
   const isCurrent = bookIndexEntry?.id === currentBookId
-  const palette = coverPaletteForId(id)
+  const isSmall = Boolean(bookIndexEntry?.small)
+  const palette = coverPaletteForId(id, { small: isSmall })
 
   useEffect(() => {
     if (!isCurrent) return
@@ -39,10 +40,13 @@ const BookSpine = ({ id }) => {
 
   return (
     <div
-      className={classnames('book-spine', { selected: isCurrent })}
+      className={classnames('book-spine', {
+        selected: isCurrent,
+        'book-spine--small': isSmall,
+      })}
       onClick={handleClick}
       ref={ref}
-      style={coverBackgroundStyle(palette)}
+      style={coverBackgroundStyle(palette, { flat: isSmall })}
       tabIndex={-1}
       title={bookIndexEntry.title}
     >

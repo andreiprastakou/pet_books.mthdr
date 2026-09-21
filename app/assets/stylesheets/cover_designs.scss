@@ -161,10 +161,21 @@ $b-cover-default-size: 'lg';
     text-transform: uppercase;
   }
 
+  // Small pamphlets — structural look; colour from coverPalettes via inline style
+  &.b-standard-cover-small {
+    border-radius: 1px;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.45),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+      0 1px 2px rgba(0, 0, 0, 0.08),
+      0 2px 4px rgba(0, 0, 0, 0.06);
+    color: rgba(45, 38, 32, 0.82);
+  }
+
   .b-standard-cover-small-text-container {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 3px;
+    background-color: rgba(255, 252, 245, 0.92);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 1px;
     text-align: center;
     width: 100%;
     word-wrap: break-word;
@@ -172,7 +183,7 @@ $b-cover-default-size: 'lg';
     .b-standard-cover-author,
     .b-standard-cover-title {
       align-content: normal;
-      color: black;
+      color: rgba(45, 38, 32, 0.9);
       font-style: italic;
       text-shadow: none;
     }
@@ -180,7 +191,7 @@ $b-cover-default-size: 'lg';
     .b-small-cover-separator {
       height: 0;
       width: 40px;
-      border-bottom: 1px solid #ccc;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.15);
       margin: 6px auto 0;
     }
   }

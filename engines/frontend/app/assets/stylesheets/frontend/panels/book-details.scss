@@ -126,12 +126,43 @@
       &::after {
         content: none;
       }
+
+      &.book-back-cover--small {
+        border-radius: 1px;
+        box-shadow:
+          1px 2px 4px rgba(0, 0, 0, 0.1),
+          0 1px 2px rgba(0, 0, 0, 0.06);
+        filter: brightness(0.94);
+        right: 5px;
+      }
     }
 
     .b-standard-cover-small {
+      box-shadow:
+        inset 4px 0 4px -4px rgba(0, 0, 0, 0.1),
+        2px 2px 4px rgba(0, 0, 0, 0.1);
+
+      // Thin pamphlet page edge
       &::before {
-        height: calc(100% - 6px);
-        top: 3px;
+        background:
+          repeating-linear-gradient(
+            to right,
+            #f3ead0 0,
+            #f3ead0 1px,
+            #d9ceb0 1.5px,
+            #faf6ea 2px
+          );
+        border-radius: 0 1px 1px 0;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.12);
+        height: calc(100% - 4px);
+        right: -3px;
+        top: 2px;
+        transform: none;
+        width: 3px;
+      }
+
+      &::after {
+        opacity: 0.25;
       }
     }
   }
