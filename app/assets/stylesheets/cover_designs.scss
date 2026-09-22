@@ -135,6 +135,12 @@ $b-cover-default-size: 'lg';
 
   .b-cover-texture {
     @include b-cover-texture(3px);
+
+    // Soft weave over photo covers — image stays visible, cloth adds material grain
+    &.b-cover-texture--on-image {
+      mix-blend-mode: soft-light;
+      opacity: 0.55;
+    }
   }
 
   .b-standard-cover-title,

@@ -82,33 +82,41 @@ Book.propTypes = {
   style: PropTypes.object,
 }
 
-const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => (
-  <div
-    className='b-cover-standard'
-    data-cover-image={coverDesign.coverImage}
-    style={coverDesign.coverImage === 'default'
-      ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id))
-      : null}
-  >
-    { coverDesign.coverImage === 'default' ? <div className='b-cover-texture' /> : null }
+const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => {
+  const isDefaultCover = coverDesign.coverImage === 'default'
 
+  return (
     <div
-      className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
-      data-font={coverDesign.titleFont}
-      data-text-color={coverDesign.titleColor}
+      className='b-cover-standard'
+      data-cover-image={coverDesign.coverImage}
+      style={isDefaultCover
+        ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id))
+        : null}
     >
-      { bookIndexEntry.title }
-    </div>
+      <div
+        className={classnames('b-cover-texture', {
+          'b-cover-texture--on-image': !isDefaultCover,
+        })}
+      />
 
-    <div
-      className='b-standard-cover-author'
-      data-font={coverDesign.authorNameFont}
-      data-text-color={coverDesign.authorNameColor}
-    >
-      { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
+      <div
+        className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
+        data-font={coverDesign.titleFont}
+        data-text-color={coverDesign.titleColor}
+      >
+        { bookIndexEntry.title }
+      </div>
+
+      <div
+        className='b-standard-cover-author'
+        data-font={coverDesign.authorNameFont}
+        data-text-color={coverDesign.authorNameColor}
+      >
+        { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 BookStandard.propTypes = {
   authorRefs: PropTypes.array.isRequired,
