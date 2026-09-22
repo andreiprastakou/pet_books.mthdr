@@ -17,7 +17,7 @@ const BookBackCover = ({ bookId, coverImage, small }) => {
       })}
       data-cover-image={small ? undefined : coverImage}
       style={usePalette
-        ? coverBackgroundStyle(coverPaletteForId(bookId, { small }))
+        ? coverBackgroundStyle(coverPaletteForId(bookId, { small }), { flat: small })
         : null}
     >
       { !small && coverImage === 'default' ? <div className='b-cover-texture' /> : null }

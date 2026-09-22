@@ -37,20 +37,24 @@ module CoverPalettes
     palettes[id.to_i.abs % palettes.length]
   end
 
-  def background_css(palette)
-    <<~CSS.squish
-      background: linear-gradient(
-        180deg,
-        #{palette[:shadow]} 0%,
-        #{palette[:base]} 18%,
-        #{palette[:mid]} 50%,
-        #{palette[:base]} 82%,
-        #{palette[:shadow]} 100%
-      );
-    CSS
+  def background_css(palette, flat: false)
+    if flat
+      "background: #{palette[:base]};"
+    else
+      <<~CSS.squish
+        background: linear-gradient(
+          180deg,
+          #{palette[:shadow]} 0%,
+          #{palette[:base]} 18%,
+          #{palette[:mid]} 50%,
+          #{palette[:base]} 82%,
+          #{palette[:shadow]} 100%
+        );
+      CSS
+    end
   end
 
   def background_css_for_id(id, small: false)
-    background_css(for_id(id, small:))
+    background_css(for_id(id, small:), flat: small)
   end
 end

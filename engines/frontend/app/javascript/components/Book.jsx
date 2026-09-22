@@ -119,7 +119,7 @@ BookStandard.propTypes = {
 const BookSmall = ({ authorRefs, bookIndexEntry }) => (
   <div
     className='b-cover-standard b-standard-cover-small'
-    style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { small: true }))}
+    style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { small: true }), { flat: true })}
   >
     <div className="b-standard-cover-small-text-container">
       <div
