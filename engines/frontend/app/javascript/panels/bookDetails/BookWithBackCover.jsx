@@ -9,6 +9,7 @@ import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
 
 const BookBackCover = ({ bookId, coverImage, small }) => {
   const usePalette = small || coverImage === 'default'
+  const isDefaultCover = coverImage === 'default'
 
   return (
     <div
@@ -20,7 +21,13 @@ const BookBackCover = ({ bookId, coverImage, small }) => {
         ? coverBackgroundStyle(coverPaletteForId(bookId, { small }), { flat: small })
         : null}
     >
-      { !small && coverImage === 'default' ? <div className='b-cover-texture' /> : null }
+      { !small ? (
+        <div
+          className={classnames('b-cover-texture', {
+            'b-cover-texture--on-image': !isDefaultCover,
+          })}
+        />
+      ) : null }
     </div>
   )
 }
