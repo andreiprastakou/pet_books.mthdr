@@ -129,6 +129,8 @@ const BookSmall = ({ authorRefs, bookIndexEntry }) => (
     className='b-cover-standard b-standard-cover-small'
     style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { small: true }), { flat: true })}
   >
+    <div className='b-cover-texture' />
+
     <div className="b-standard-cover-small-text-container">
       <div
         className='b-standard-cover-author'

@@ -165,8 +165,11 @@
     margin-bottom: -1px;
 
     &::after {
-      background-image: none;
-      opacity: 0;
+      @include b-cover-texture(1px, 'paperback_paper_v3_300.png');
+
+      background-size: contain;
+      content: '';
+      opacity: 0.30;
     }
 
     .book-spine-body {
