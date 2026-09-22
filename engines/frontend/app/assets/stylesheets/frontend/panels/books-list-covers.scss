@@ -109,8 +109,23 @@
 
         .b-cover-standard {
           box-shadow:
+            #{$b-cover-shadow},
             0 0 0 3px rgba(70, 145, 255, 0.85),
             0 0 24px 6px rgba(70, 145, 255, 0.85);
+
+          &[data-cover-image='default'] {
+            box-shadow:
+              #{$b-cover-shadow-default},
+              0 0 0 3px rgba(70, 145, 255, 0.85),
+              0 0 24px 6px rgba(70, 145, 255, 0.85);
+          }
+
+          &.b-standard-cover-small {
+            box-shadow:
+              #{$b-cover-shadow-small},
+              0 0 0 3px rgba(70, 145, 255, 0.85),
+              0 0 24px 6px rgba(70, 145, 255, 0.85);
+          }
         }
       }
 

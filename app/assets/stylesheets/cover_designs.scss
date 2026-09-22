@@ -119,6 +119,23 @@ $b-cover-default-size: 'lg';
   border-radius: 3px;
 }
 
+// Drop shadow + spine inset shared with list selection glows so they can layer.
+$b-cover-shadow: (
+  inset 8px 0 8px -7px rgba(0, 0, 0, 0.45),
+  4px 5px 8px rgba(0, 0, 0, 0.22),
+);
+$b-cover-shadow-default: (
+  inset 8px 0 8px -7px rgba(0, 0, 0, 0.2),
+  4px 5px 8px rgba(0, 0, 0, 0.22),
+);
+$b-cover-shadow-small: (
+  inset 1px 0 0 rgba(255, 255, 255, 0.5),
+  inset 7px 0 12px -7px rgba(0, 0, 0, 0.18),
+  inset 0 1px 0 rgba(255, 255, 255, 0.25),
+  inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+  2px 2px 4px rgba(0, 0, 0, 0.1),
+);
+
 .b-cover-standard {
   color: white;
   border-radius: 3px;
@@ -131,8 +148,38 @@ $b-cover-default-size: 'lg';
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  box-shadow: $b-cover-shadow;
+  overflow: visible;
   position: relative;
   white-space: normal;
+
+  // The joint where the hardcover meets the spine.
+  &::after {
+    background:
+      linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.1) 0,
+        transparent 4px,
+        rgba(0, 0, 0, 0.28) 7px,
+        rgba(0, 0, 0, 0.2) 8px,
+        rgba(0, 0, 0, 0.06) 14px,
+        transparent 20px
+      );
+    border-radius: inherit;
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 2;
+  }
+
+  &[data-cover-image='default'] {
+    box-shadow: $b-cover-shadow-default;
+
+    &::after {
+      opacity: 0.55;
+    }
+  }
 
   .b-cover-texture {
     @include b-cover-texture(3px);
@@ -171,14 +218,22 @@ $b-cover-default-size: 'lg';
   // Small pamphlets — flat pastel fill; soft edge near the spine bend
   &.b-standard-cover-small {
     border-radius: 1px;
-    box-shadow:
-      inset 1px 0 0 rgba(255, 255, 255, 0.45),
-      inset 6px 0 10px -6px rgba(0, 0, 0, 0.16),
-      inset 0 1px 0 rgba(255, 255, 255, 0.28),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.08),
-      0 1px 2px rgba(0, 0, 0, 0.08),
-      0 2px 4px rgba(0, 0, 0, 0.06);
+    box-shadow: $b-cover-shadow-small;
     color: rgba(45, 38, 32, 0.82);
+
+    // Soft hinge highlight near the left bend — no glossy mid-panel wash
+    &::after {
+      background:
+        linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.1) 0,
+          rgba(0, 0, 0, 0.05) 3px,
+          rgba(255, 255, 255, 0.4) 5px,
+          rgba(255, 255, 255, 0.12) 8px,
+          transparent 16px
+        );
+      opacity: 1;
+    }
 
     .b-cover-texture {
       @include b-cover-texture(1px, 'paperback_paper_v3_300.png');
