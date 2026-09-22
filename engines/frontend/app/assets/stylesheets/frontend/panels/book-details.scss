@@ -139,7 +139,10 @@
 
     .b-standard-cover-small {
       box-shadow:
-        inset 4px 0 4px -4px rgba(0, 0, 0, 0.1),
+        inset 1px 0 0 rgba(255, 255, 255, 0.5),
+        inset 7px 0 12px -7px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.25),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
         2px 2px 4px rgba(0, 0, 0, 0.1);
 
       // Thin pamphlet page edge
@@ -161,8 +164,18 @@
         width: 3px;
       }
 
+      // Soft hinge highlight near the left bend — no glossy mid-panel wash
       &::after {
-        opacity: 0.25;
+        background:
+          linear-gradient(
+            to right,
+            rgba(0, 0, 0, 0.1) 0,
+            rgba(0, 0, 0, 0.05) 3px,
+            rgba(255, 255, 255, 0.4) 5px,
+            rgba(255, 255, 255, 0.12) 8px,
+            transparent 16px
+          );
+        opacity: 1;
       }
     }
   }

@@ -45,13 +45,11 @@ RSpec.describe CoverPalettes do
       expect(css).to include('linear-gradient')
     end
 
-    it 'builds a gradient from the small pastel palette' do
+    it 'builds a flat fill from the small pastel palette' do
       palette = described_class.for_id(0, small: true)
       css = described_class.background_css_for_id(0, small: true)
 
-      expect(css).to include(palette[:shadow])
-      expect(css).to include(palette[:base])
-      expect(css).to include(palette[:mid])
+      expect(css).to eq("background: #{palette[:base]};")
     end
   end
 end
