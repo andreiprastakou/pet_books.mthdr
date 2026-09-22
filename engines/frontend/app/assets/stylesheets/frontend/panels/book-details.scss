@@ -35,7 +35,6 @@
     display: flex;
     flex: 0 0 178px;
     justify-content: center;
-    perspective: 900px;
     align-self: flex-start;
     position: relative;
 
@@ -47,14 +46,9 @@
     }
 
     .b-cover-standard {
-      box-shadow:
-        inset 8px 0 8px -7px rgba(0, 0, 0, 0.45),
-        4px 5px 8px rgba(0, 0, 0, 0.22);
       margin: 0;
-      overflow: visible;
-      position: relative;
 
-      // The book's page block, visible behind the front cover.
+      // Page block only in the details cover view (with back board / depth).
       &::before {
         background:
           repeating-linear-gradient(
@@ -76,34 +70,22 @@
         z-index: -1;
       }
 
-      // The joint where the hardcover meets the spine and page block.
-      &::after {
+      &.b-standard-cover-small::before {
         background:
-          linear-gradient(
+          repeating-linear-gradient(
             to right,
-            rgba(0, 0, 0, 0.1) 0,
-            transparent 4px,
-            rgba(0, 0, 0, 0.28) 7px,
-            rgba(0, 0, 0, 0.2) 8px,
-            rgba(0, 0, 0, 0.06) 14px,
-            transparent 20px
+            #f3ead0 0,
+            #f3ead0 1px,
+            #d9ceb0 1.5px,
+            #faf6ea 2px
           );
-        border-radius: inherit;
-        content: '';
-        inset: 0;
-        pointer-events: none;
-        position: absolute;
-        z-index: 2;
-      }
-
-      &[data-cover-image='default'] {
-        box-shadow:
-          inset 8px 0 8px -7px rgba(0, 0, 0, 0.2),
-          4px 5px 8px rgba(0, 0, 0, 0.22);
-
-        &::after {
-          opacity: 0.55;
-        }
+        border-radius: 0 1px 1px 0;
+        box-shadow: 0 0 1px rgba(0, 0, 0, 0.12);
+        height: calc(100% - 4px);
+        right: -3px;
+        top: 2px;
+        transform: none;
+        width: 3px;
       }
     }
 
@@ -134,48 +116,6 @@
           0 1px 2px rgba(0, 0, 0, 0.06);
         filter: brightness(0.94);
         right: 5px;
-      }
-    }
-
-    .b-standard-cover-small {
-      box-shadow:
-        inset 1px 0 0 rgba(255, 255, 255, 0.5),
-        inset 7px 0 12px -7px rgba(0, 0, 0, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.25),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
-        2px 2px 4px rgba(0, 0, 0, 0.1);
-
-      // Thin pamphlet page edge
-      &::before {
-        background:
-          repeating-linear-gradient(
-            to right,
-            #f3ead0 0,
-            #f3ead0 1px,
-            #d9ceb0 1.5px,
-            #faf6ea 2px
-          );
-        border-radius: 0 1px 1px 0;
-        box-shadow: 0 0 1px rgba(0, 0, 0, 0.12);
-        height: calc(100% - 4px);
-        right: -3px;
-        top: 2px;
-        transform: none;
-        width: 3px;
-      }
-
-      // Soft hinge highlight near the left bend — no glossy mid-panel wash
-      &::after {
-        background:
-          linear-gradient(
-            to right,
-            rgba(0, 0, 0, 0.1) 0,
-            rgba(0, 0, 0, 0.05) 3px,
-            rgba(255, 255, 255, 0.4) 5px,
-            rgba(255, 255, 255, 0.12) 8px,
-            transparent 16px
-          );
-        opacity: 1;
       }
     }
   }
