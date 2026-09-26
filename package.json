@@ -65,7 +65,7 @@
     "style-loader": "^4.0.0",
     "swc-loader": "^0.2.0",
     "terser-webpack-plugin": "^5.3.1",
-    "webpack": "^5.101.0",
+    "webpack": "^5.111.1",
     "webpack-assets-manifest": "^6.0.0",
     "webpack-cli": "^6.0.0",
     "webpack-merge": "^6.0.0",
