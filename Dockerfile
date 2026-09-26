@@ -1,5 +1,5 @@
 # syntax=docker/dockerfile:1
-FROM ruby:4.0.6
+FROM ruby:4.0.7
 RUN apt-get update -qq && apt-get install -y curl gnupg
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash
 RUN curl -fsSL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor -o /usr/share/keyrings/yarn-keyring.gpg
