@@ -17,7 +17,7 @@ gem 'httparty'
 
 # background jobs
 gem 'mission_control-jobs'
-gem 'solid_queue', '~> 1.2.4'
+gem 'solid_queue', '~> 1.7.0'
 
 # views
 gem 'jbuilder', '~> 2.7'
