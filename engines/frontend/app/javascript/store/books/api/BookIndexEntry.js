@@ -7,7 +7,7 @@ class BookIndexEntry {
       popularity: data['popularity'],
       globalRank: data['global_rank'],
       coverDesignId: data['cover_design_id'],
-      small: data['small'],
+      format: data['format'],
     }
   }
 }

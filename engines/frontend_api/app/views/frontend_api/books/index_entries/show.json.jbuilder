@@ -8,4 +8,4 @@ json.tag_ids @book.tag_ids
 json.popularity @book.popularity
 json.global_rank 0
 json.cover_design_id book_cover_design(@book).id
-json.small @book.small?
+json.format @book.format

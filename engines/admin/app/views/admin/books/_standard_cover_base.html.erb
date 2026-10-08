@@ -1,11 +1,13 @@
 <% default_cover = design.cover_image == 'default' %>
-<% apply_palette = default_cover && local_assigns[:palette_id].present? %>
-<div class="b-cover-standard"
-  data-cover-image="<%= design.cover_image %>"
-  <% if apply_palette %>style="<%= cover_background_style(palette_id) %>"<% end %>
+<% cover_format = local_assigns.fetch(:format, 'normal') %>
+<% collection_cover = cover_format == 'collection' %>
+<% apply_palette = local_assigns[:palette_id].present? && (default_cover || collection_cover) %>
+<div class="b-cover-standard b-standard-cover--<%= cover_format %>"
+  data-cover-image="<%= collection_cover ? 'default' : design.cover_image %>"
+  <% if apply_palette %>style="<%= cover_background_style(palette_id, collection: collection_cover) %>"<% end %>
   title="<%= "\"#{title}\" by #{author_name}" %>">
 
-  <div class="b-cover-texture<%= ' b-cover-texture--on-image' unless default_cover %>"></div>
+  <div class="b-cover-texture<%= ' b-cover-texture--on-image' unless default_cover || collection_cover %>"></div>
 
   <div class="b-standard-cover-title"
     data-text-color="<%= design.title_color %>"

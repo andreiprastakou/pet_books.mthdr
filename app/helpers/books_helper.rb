@@ -9,7 +9,7 @@ module BooksHelper
     @default_book_cover_design ||= CoverDesign.default
   end
 
-  def cover_background_style(palette_id, small: false)
-    CoverPalettes.background_css_for_id(palette_id, small:)
+  def cover_background_style(palette_id, small: false, collection: false)
+    CoverPalettes.background_css_for_id(palette_id, small:, collection:)
   end
 end

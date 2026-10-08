@@ -111,40 +111,18 @@
 }
 
 .book-spine {
-  border-radius: 4px;
-  box-shadow:
-    inset 2px 0 4px rgba(255, 255, 255, 0.08),
-    inset -3px 0 6px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.12),
-    inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-    0 2px 3px rgba(0, 0, 0, 0.28),
-    0 4px 8px rgba(0, 0, 0, 0.12);
   cursor: pointer;
-  height: 42px;
   margin-bottom: -1px;
   position: relative;
   transition: transform 0.25s ease, box-shadow 0.25s ease;
   user-select: none;
   width: calc(100% - 20px);
 
-  &::after {
-    @include b-cover-texture(4px);
-
-    content: '';
-  }
-
   &:hover:not(.selected) {
     transform: translateX(4px);
   }
 
   &.selected {
-    box-shadow:
-      inset 2px 0 4px rgba(255, 255, 255, 0.1),
-      inset -3px 0 6px rgba(0, 0, 0, 0.35),
-      inset 0 1px 0 rgba(255, 255, 255, 0.14),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.25),
-      0 3px 6px rgba(0, 0, 0, 0.35),
-      0 8px 16px rgba(0, 0, 0, 0.18);
     transform: translateX(14px);
     z-index: 2;
   }
@@ -152,17 +130,89 @@
   &.book-spine-placeholder {
     animation: spine-shimmer 1.4s ease-in-out infinite;
     background: linear-gradient(180deg, #ccc 0%, #ddd 50%, #ccc 100%);
+    border-radius: 4px;
+    height: 30px;
     opacity: 0.55;
   }
 
-  // Small pamphlets — thin flat pastel spines (colour from coverPalettes)
+  // Format: big (novels), collection, and normal — hardcover spines
+  &.book-spine--big,
+  &.book-spine--collection,
+  &.book-spine--normal {
+    border-radius: 4px;
+    box-shadow:
+      inset 2px 0 4px rgba(255, 255, 255, 0.08),
+      inset -3px 0 6px rgba(0, 0, 0, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+      0 2px 3px rgba(0, 0, 0, 0.28),
+      0 4px 8px rgba(0, 0, 0, 0.12);
+    height: 42px;
+
+    &::after {
+      @include b-cover-texture(4px);
+
+      content: '';
+    }
+
+    &.selected {
+      box-shadow:
+        inset 2px 0 4px rgba(255, 255, 255, 0.1),
+        inset -3px 0 6px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.14),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.25),
+        0 3px 6px rgba(0, 0, 0, 0.35),
+        0 8px 16px rgba(0, 0, 0, 0.18);
+    }
+  }
+
+  // Format: normal — like big, thinner spine
+  &.book-spine--normal {
+    height: 30px;
+  }
+
+  // Format: collection — novel thickness, near-white board, near-black type
+  &.book-spine--collection {
+    box-shadow:
+      inset 2px 0 3px rgba(255, 255, 255, 0.7),
+      inset -3px 0 5px rgba(0, 0, 0, 0.12),
+      inset 0 1px 0 rgba(255, 255, 255, 0.85),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.06),
+      0 2px 3px rgba(0, 0, 0, 0.12),
+      0 4px 8px rgba(0, 0, 0, 0.06);
+
+    .book-spine-body {
+      color: #161412;
+      text-shadow: none;
+    }
+
+    .book-spine-year {
+      opacity: 0.8;
+    }
+
+    .book-spine-dot {
+      background-color: #161412;
+      box-shadow: none;
+    }
+
+    &.selected {
+      box-shadow:
+        inset 2px 0 3px rgba(255, 255, 255, 0.75),
+        inset -3px 0 5px rgba(0, 0, 0, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.08),
+        0 3px 6px rgba(0, 0, 0, 0.16),
+        0 8px 16px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  // Format: small — thin flat oxide spines (colour from coverPalettes)
   &.book-spine--small {
     border-radius: 1px;
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.4),
       inset 0 -1px 0 rgba(0, 0, 0, 0.1);
     height: 16px;
-    margin-bottom: -1px;
 
     &::after {
       @include b-cover-texture(1px, 'paperback_paper_v3_300.png');

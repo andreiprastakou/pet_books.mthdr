@@ -49,7 +49,8 @@
       margin: 0;
 
       // Page block only in the details cover view (with back board / depth).
-      &::before {
+      &.b-standard-cover--big::before,
+      &.b-standard-cover--collection::before {
         background:
           repeating-linear-gradient(
             to right,
@@ -70,7 +71,29 @@
         z-index: -1;
       }
 
-      &.b-standard-cover-small::before {
+      // Format: normal — ~40% thinner page block than big
+      &.b-standard-cover--normal::before {
+        background:
+          repeating-linear-gradient(
+            to right,
+            #e8e3d6 0,
+            #e8e3d6 1.5px,
+            #c9c2b4 2px,
+            #f7f3e9 3px
+          );
+        border-radius: 0 3px 3px 0;
+        box-shadow: 1px 0 2px rgba(0, 0, 0, 0.25);
+        content: '';
+        height: calc(100% - 8px);
+        position: absolute;
+        right: -7px;
+        top: 4px;
+        transform: skewY(-1deg);
+        width: 8px;
+        z-index: -1;
+      }
+
+      &.b-standard-cover--small::before {
         background:
           repeating-linear-gradient(
             to right,
@@ -81,11 +104,14 @@
           );
         border-radius: 0 1px 1px 0;
         box-shadow: 0 0 1px rgba(0, 0, 0, 0.12);
+        content: '';
         height: calc(100% - 4px);
+        position: absolute;
         right: -3px;
         top: 2px;
         transform: none;
         width: 3px;
+        z-index: -1;
       }
     }
 
@@ -116,6 +142,10 @@
           0 1px 2px rgba(0, 0, 0, 0.06);
         filter: brightness(0.94);
         right: 5px;
+      }
+
+      &.book-back-cover--collection {
+        filter: brightness(0.97);
       }
     }
   }

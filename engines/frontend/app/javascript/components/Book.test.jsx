@@ -21,6 +21,7 @@ const bookIndexEntry = {
   authorIds: [1],
   coverDesignId: 9,
   year: 1965,
+  format: 'normal',
 }
 
 const preloadedState = {
@@ -56,13 +57,14 @@ describe('Book', () => {
     expect(screen.getByTitle('Dune')).toBeInTheDocument()
     expect(screen.getByText('Dune')).toBeInTheDocument()
     expect(screen.getByText('Frank Herbert')).toBeInTheDocument()
-    expect(document.querySelector('.b-cover-standard')).not.toHaveClass('b-standard-cover-small')
+    expect(document.querySelector('.b-cover-standard')).not.toHaveClass('b-standard-cover--small')
+    expect(document.querySelector('.b-cover-standard')).toHaveClass('b-standard-cover--normal')
   })
 
   it('renders the small cover variant with year or label', () => {
     const { rerender } = renderWithProviders(
       <Book
-        bookIndexEntry={{ ...bookIndexEntry, small: true }}
+        bookIndexEntry={{ ...bookIndexEntry, format: 'small' }}
         label={null}
         scrollIntoView={false}
         showYear
@@ -70,12 +72,12 @@ describe('Book', () => {
       { preloadedState }
     )
 
-    expect(document.querySelector('.b-standard-cover-small')).toBeInTheDocument()
+    expect(document.querySelector('.b-standard-cover--small')).toBeInTheDocument()
     expect(screen.getByText('1965')).toBeInTheDocument()
 
     rerender(
       <Book
-        bookIndexEntry={{ ...bookIndexEntry, small: true }}
+        bookIndexEntry={{ ...bookIndexEntry, format: 'small' }}
         label='#1'
         scrollIntoView={false}
         showYear
@@ -84,6 +86,32 @@ describe('Book', () => {
 
     expect(screen.getByTitle('#1')).toHaveTextContent('#1')
     expect(screen.queryByText('1965')).not.toBeInTheDocument()
+  })
+
+  it('renders a collection cover on the near-white palette at novel size', () => {
+    renderWithProviders(
+      <Book
+        bookIndexEntry={{ ...bookIndexEntry, format: 'collection' }}
+        scrollIntoView={false}
+      />,
+      {
+        preloadedState: {
+          ...preloadedState,
+          storeCoverDesigns: {
+            coverDesigns: {
+              9: { ...coverDesign, coverImage: 'parchment', titleColor: 'white' },
+            },
+            coverDesignsLoaded: true,
+          },
+        },
+      }
+    )
+
+    const cover = document.querySelector('.b-cover-standard')
+    expect(cover).toHaveClass('b-standard-cover--collection')
+    expect(cover).not.toHaveClass('b-standard-cover--small')
+    expect(cover).toHaveAttribute('data-cover-image', 'default')
+    expect(cover.style.background).toContain('#e9f1f0')
   })
 
   it('marks the current book and navigates on click', async() => {

@@ -42,7 +42,7 @@ const Book = ({
       style={style}
       title={bookIndexEntry.title}
     >
-      { bookIndexEntry.small ? (
+      { bookIndexEntry.format === 'small' ? (
         <BookSmall
           authorRefs={authorRefs}
           bookIndexEntry={bookIndexEntry}
@@ -83,14 +83,16 @@ Book.propTypes = {
 }
 
 const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => {
-  const isDefaultCover = coverDesign.coverImage === 'default'
+  const format = bookIndexEntry.format || 'normal'
+  const isCollection = format === 'collection'
+  const isDefaultCover = isCollection || coverDesign.coverImage === 'default'
 
   return (
     <div
-      className='b-cover-standard'
-      data-cover-image={coverDesign.coverImage}
+      className={classnames('b-cover-standard', `b-standard-cover--${format}`)}
+      data-cover-image={isCollection ? 'default' : coverDesign.coverImage}
       style={isDefaultCover
-        ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id))
+        ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { collection: isCollection }))
         : null}
     >
       <div
@@ -126,7 +128,7 @@ BookStandard.propTypes = {
 
 const BookSmall = ({ authorRefs, bookIndexEntry }) => (
   <div
-    className='b-cover-standard b-standard-cover-small'
+    className='b-cover-standard b-standard-cover--small'
     style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { small: true }), { flat: true })}
   >
     <div className='b-cover-texture' />

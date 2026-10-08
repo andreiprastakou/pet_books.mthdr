@@ -60,7 +60,7 @@ $b-cover-default-size: 'lg';
 }
 
 // Material grain over a generated cover colour, on covers and stack spines alike.
-// Default is woven buckram; small paperbacks swap in a pulp paper tile.
+// Default is woven buckram; small-format paperbacks swap in a pulp paper tile.
 // The radius has to be repeated here because a clip path does not follow `border-radius`.
 @mixin b-cover-texture($radius, $image: 'linen_buckram_300.png') {
   background-image: image-url('covers/#{$image}');
@@ -99,7 +99,7 @@ $b-cover-default-size: 'lg';
     font-size: b-cover-value($size, author-font);
   }
 
-  &.b-standard-cover-small {
+  &.b-standard-cover--small {
     padding: b-cover-value($size, small-padding) $padding;
   }
 
@@ -215,8 +215,8 @@ $b-cover-shadow-small: (
     text-transform: uppercase;
   }
 
-  // Small pamphlets — flat pastel fill; soft edge near the spine bend
-  &.b-standard-cover-small {
+  // Format: small — pamphlets; flat oxide fill; soft edge near the spine bend
+  &.b-standard-cover--small {
     border-radius: 1px;
     box-shadow: $b-cover-shadow-small;
     color: rgba(45, 38, 32, 0.82);
@@ -453,6 +453,19 @@ $b-cover-shadow-small: (
 
   [data-font='special_elite'] {
     font-family: SpecialElite, sans-serif;
+  }
+
+  // Format: collection — near-white board (inline palette) and near-black type.
+  // Novel page-block width comes from the details panel.
+  &.b-standard-cover--collection {
+    color: #161412;
+
+    .b-standard-cover-title,
+    .b-standard-cover-author,
+    [data-text-color] {
+      color: #161412;
+      text-shadow: none;
+    }
   }
 }
 

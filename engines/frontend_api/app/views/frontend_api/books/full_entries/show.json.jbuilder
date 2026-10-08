@@ -8,7 +8,7 @@ json.author_ids book.author_ids
 json.year_published book.year_published
 json.tag_ids book.tag_ids
 json.series_ids book.series_ids
-json.small book.small?
+json.format book.format
 json.form_label Books::FormLabel.call(book)
 json.summary book.primary_description&.text
 json.summary_source book.primary_description&.display_source_label
