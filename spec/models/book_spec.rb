@@ -232,26 +232,43 @@ RSpec.describe Book do
     end
   end
 
-  describe '#small?' do
-    subject(:result) { book.small? }
+  describe '#format' do
+    subject(:result) { book.format }
 
-    let(:book) { build(:book, literary_form: short_forms.sample) }
-    let(:short_forms) { %w[short short_story poem comics] }
+    context 'when the literary form is small' do
+      let(:book) { build(:book, literary_form: %w[short short_story poem comics].sample) }
 
-    context 'when the literary form is short' do
-      it { is_expected.to be true }
+      it { is_expected.to eq('small') }
     end
 
-    context 'when the literary form is not short' do
+    context 'when the literary form is a novel' do
       let(:book) { build(:book, literary_form: 'novel') }
 
-      it { is_expected.to be false }
+      it { is_expected.to eq('big') }
+    end
+
+    context 'when the literary form is a collection' do
+      let(:book) { build(:book, literary_form: 'collection') }
+
+      it { is_expected.to eq('collection') }
+    end
+
+    context 'when the literary form is a novella' do
+      let(:book) { build(:book, literary_form: 'novella') }
+
+      it { is_expected.to eq('normal') }
+    end
+
+    context 'when the literary form is non-fiction' do
+      let(:book) { build(:book, literary_form: 'non_fiction') }
+
+      it { is_expected.to eq('normal') }
     end
 
     context 'when the literary form is nil' do
       let(:book) { build(:book, literary_form: nil) }
 
-      it { is_expected.to be false }
+      it { is_expected.to eq('normal') }
     end
   end
 

@@ -86,7 +86,7 @@ RSpec.describe '/api/books/full_entries' do
         tag_ids: tags.map(&:id),
         series_ids: series.map(&:id),
         year_published: book.year_published,
-        small: false,
+        format: 'big',
         form_label: 'a fantasy novel',
         summary: description.text,
         summary_source: 'AI: Claude',

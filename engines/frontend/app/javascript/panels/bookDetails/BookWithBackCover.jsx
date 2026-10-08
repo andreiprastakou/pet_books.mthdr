@@ -7,21 +7,21 @@ import Book from 'components/Book'
 import { selectCoverDesign } from 'store/coverDesigns/selectors'
 import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
 
-const BookBackCover = ({ bookId, coverImage, small }) => {
-  const usePalette = small || coverImage === 'default'
-  const isDefaultCover = coverImage === 'default'
+const BookBackCover = ({ bookId, coverImage, format }) => {
+  const isSmall = format === 'small'
+  const isCollection = format === 'collection'
+  const usePalette = isSmall || isCollection || coverImage === 'default'
+  const isDefaultCover = isCollection || coverImage === 'default'
+  const shownCoverImage = isCollection ? 'default' : coverImage
+  const palette = coverPaletteForId(bookId, { small: isSmall, collection: isCollection })
 
   return (
     <div
-      className={classnames('b-cover-standard book-back-cover', {
-        'book-back-cover--small': small,
-      })}
-      data-cover-image={small ? undefined : coverImage}
-      style={usePalette
-        ? coverBackgroundStyle(coverPaletteForId(bookId, { small }), { flat: small })
-        : null}
+      className={classnames('b-cover-standard book-back-cover', `book-back-cover--${format}`)}
+      data-cover-image={isSmall ? undefined : shownCoverImage}
+      style={usePalette ? coverBackgroundStyle(palette, { flat: isSmall }) : null}
     >
-      { !small ? (
+      { !isSmall ? (
         <div
           className={classnames('b-cover-texture', {
             'b-cover-texture--on-image': !isDefaultCover,
@@ -35,20 +35,21 @@ const BookBackCover = ({ bookId, coverImage, small }) => {
 BookBackCover.propTypes = {
   bookId: PropTypes.number.isRequired,
   coverImage: PropTypes.string.isRequired,
-  small: PropTypes.bool,
+  format: PropTypes.string.isRequired,
 }
 
 const BookWithBackCover = ({ bookIndexEntry }) => {
   const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
-  const small = Boolean(bookIndexEntry.small)
+  const format = bookIndexEntry.format || 'normal'
+  const isSmall = format === 'small'
 
   return (
     <>
-      { coverDesign || small ? (
+      { coverDesign || isSmall ? (
         <BookBackCover
           bookId={bookIndexEntry.id}
           coverImage={coverDesign?.coverImage || 'default'}
-          small={small}
+          format={format}
         />
       ) : null }
 

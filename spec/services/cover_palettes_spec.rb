@@ -21,16 +21,28 @@ RSpec.describe CoverPalettes do
       expect(described_class.for_id(9)[:base]).to eq('#283838')
     end
 
-    it 'returns a stable pastel palette for small covers' do
+    it 'returns a stable oxide palette for small covers' do
       palette = described_class.for_id(0, small: true)
       expect(palette).to eq(
-        base: '#e8c4c8',
-        mid: '#f2d8dc',
-        shadow: '#d4a8ae',
-        edge: '#c4989e'
+        base: '#703329',
+        mid: '#8a3a2e',
+        shadow: '#47241f',
+        edge: '#311a17'
       )
       expect(described_class.for_id(10, small: true)).to eq(palette)
-      expect(described_class.for_id(1, small: true)[:base]).to eq('#b8cce0')
+      expect(described_class.for_id(1, small: true)[:base]).to eq('#26375e')
+    end
+
+    it 'returns a stable near-white palette for collections' do
+      palette = described_class.for_id(0, collection: true)
+      expect(palette).to eq(
+        base: '#f6efea',
+        mid: '#f9f4f1',
+        shadow: '#e8dcd4',
+        edge: '#dfd1c8'
+      )
+      expect(described_class.for_id(10, collection: true)).to eq(palette)
+      expect(described_class.for_id(1, collection: true)[:base]).to eq('#e7eef3')
     end
   end
 
@@ -45,11 +57,19 @@ RSpec.describe CoverPalettes do
       expect(css).to include('linear-gradient')
     end
 
-    it 'builds a flat fill from the small pastel palette' do
+    it 'builds a flat fill from the small cover palette' do
       palette = described_class.for_id(0, small: true)
       css = described_class.background_css_for_id(0, small: true)
 
       expect(css).to eq("background: #{palette[:base]};")
+    end
+
+    it 'builds a cloth gradient from the collection palette' do
+      palette = described_class.for_id(0, collection: true)
+      css = described_class.background_css_for_id(0, collection: true)
+
+      expect(css).to include(palette[:base])
+      expect(css).to include('linear-gradient')
     end
   end
 end

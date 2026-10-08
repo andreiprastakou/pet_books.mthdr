@@ -26,7 +26,7 @@ describe('books apiClient', () => {
         popularity: 1,
         global_rank: 1,
         cover_design_id: null,
-        small: false,
+        format: 'normal',
       }])
 
     const years = await apiClient.getBooksYears({ authorId: 2, tagIds: [3] })
@@ -89,7 +89,7 @@ describe('books apiClient', () => {
       popularity: 0,
       global_rank: 8,
       cover_design_id: null,
-      small: false,
+      format: 'normal',
     })
 
     const entry = await apiClient.getBooksIndexEntry(8)

@@ -30,9 +30,14 @@ class Book < ApplicationRecord
     play
     comics
     non_fiction
+    collection
   ].freeze
   FORMS_REQUIRE_SUMMARY = (%w[novel novella non_fiction play] + [nil]).freeze
-  FORMS_SMALL = %w[short short_story poem comics].freeze
+  # Visual format derived from literary_form (not stored).
+  FORMATS = %w[normal small big collection].freeze
+  FORMS_FORMAT_SMALL = %w[short short_story poem comics].freeze
+  FORMS_FORMAT_BIG = %w[novel].freeze
+  FORMS_FORMAT_COLLECTION = %w[collection].freeze
 
   include EqualByPersistedId
   include HasExternalLinks
@@ -77,8 +82,13 @@ class Book < ApplicationRecord
     original_title.present? && original_title != title
   end
 
-  def small?
-    literary_form.in?(FORMS_SMALL)
+  # Cover/spine size class: normal (default), small, big (novels), collection.
+  def format
+    return 'small' if literary_form.in?(FORMS_FORMAT_SMALL)
+    return 'big' if literary_form.in?(FORMS_FORMAT_BIG)
+    return 'collection' if literary_form.in?(FORMS_FORMAT_COLLECTION)
+
+    'normal'
   end
 
   def primary_description

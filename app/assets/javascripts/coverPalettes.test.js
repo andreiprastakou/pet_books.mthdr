@@ -20,16 +20,28 @@ describe('coverPalettes', () => {
     expect(coverPaletteForId(9).base).toBe('#283838')
   })
 
-  it('returns a stable pastel palette for small covers', () => {
+  it('returns a stable oxide palette for small covers', () => {
     const palette = coverPaletteForId(0, { small: true })
     expect(palette).toEqual({
-      base: '#e8c4c8',
-      mid: '#f2d8dc',
-      shadow: '#d4a8ae',
-      edge: '#c4989e',
+      base: '#703329',
+      mid: '#8a3a2e',
+      shadow: '#47241f',
+      edge: '#311a17',
     })
     expect(coverPaletteForId(10, { small: true })).toEqual(palette)
-    expect(coverPaletteForId(1, { small: true }).base).toBe('#b8cce0')
+    expect(coverPaletteForId(1, { small: true }).base).toBe('#26375e')
+  })
+
+  it('returns a stable near-white palette for collections', () => {
+    const palette = coverPaletteForId(0, { collection: true })
+    expect(palette).toEqual({
+      base: '#f6efea',
+      mid: '#f9f4f1',
+      shadow: '#e8dcd4',
+      edge: '#dfd1c8',
+    })
+    expect(coverPaletteForId(10, { collection: true })).toEqual(palette)
+    expect(coverPaletteForId(1, { collection: true }).base).toBe('#e7eef3')
   })
 
   it('builds a vertical cloth gradient from a palette', () => {
