@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
@@ -14,33 +14,44 @@ import UrlStoreContext from 'store/urlStore/Context'
 
 const PANEL_ID = 'books-stack'
 
-const StackHeader = ({ compactStack, nestedWorksShown, toggleCompactStack, worksCount }) => (
-  <Card.Header className='panel--header'>
-    <span>
-      { 'All Works' }
-    </span>
+const StackHeader = ({ compactStack, nestedWorksShown, toggleCompactStack, worksCount }) => {
+  const [toggleHovered, setToggleHovered] = useState(false)
+  const toggleTitle = compactStack ? 'Show all works' : 'Compact view'
+  const showCollapsedIcon = compactStack !== toggleHovered
+  const handleToggleMouseEnter = useCallback(() => setToggleHovered(true), [])
+  const handleToggleMouseLeave = useCallback(() => setToggleHovered(false), [])
 
-    { worksCount > 0 ? (
-      <span className='books-spine-count-badge'>
-        { worksCount }
+  return (
+    <Card.Header className='panel--header'>
+      <span>
+        { 'All Works' }
       </span>
-    ) : null }
 
-    { nestedWorksShown ? (
-      <button
-        aria-label={compactStack ? 'Show books in collections' : 'Hide books in collections'}
-        aria-pressed={compactStack}
-        className='books-spine-compact-toggle'
-        onClick={toggleCompactStack}
-        type='button'
-      >
-        <FontAwesomeIcon icon={compactStack ? faEyeSlash : faEye} />
-      </button>
-    ) : null }
+      { worksCount > 0 ? (
+        <span className='books-spine-count-badge'>
+          { worksCount }
+        </span>
+      ) : null }
 
-    <SortingDropdown />
-  </Card.Header>
-)
+      { nestedWorksShown ? (
+        <button
+          aria-label={toggleTitle}
+          aria-pressed={compactStack}
+          className='books-spine-compact-toggle'
+          onClick={toggleCompactStack}
+          onMouseEnter={handleToggleMouseEnter}
+          onMouseLeave={handleToggleMouseLeave}
+          title={toggleTitle}
+          type='button'
+        >
+          <FontAwesomeIcon icon={showCollapsedIcon ? faEyeSlash : faEye} />
+        </button>
+      ) : null }
+
+      <SortingDropdown />
+    </Card.Header>
+  )
+}
 
 StackHeader.propTypes = {
   compactStack: PropTypes.bool.isRequired,
