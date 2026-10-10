@@ -50,8 +50,18 @@ class Book < ApplicationRecord
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
   has_many :book_series, class_name: 'Joins::BookSeries', dependent: :destroy, inverse_of: :book
   has_many :series, through: :book_series, class_name: 'Series'
-  has_many :book_collections, class_name: 'Joins::BookCollection', dependent: :destroy, inverse_of: :book
+  has_many :book_collections, class_name: 'Joins::BookCollectionLegacy', dependent: :destroy, inverse_of: :book
   has_many :collections, through: :book_collections, class_name: 'Collection'
+  has_many :book_collections_as_work,
+           class_name: 'Joins::BookCollection',
+           inverse_of: :book,
+           dependent: :destroy
+  has_many :book_collections_as_collection,
+           class_name: 'Joins::BookCollection',
+           foreign_key: :collection_id,
+           inverse_of: :collection,
+           dependent: :destroy
+  has_many :collected_works, class_name: 'Book', through: :book_collections_as_collection, source: :book
   has_many :book_public_lists, class_name: 'Joins::BookPublicList', dependent: :destroy, inverse_of: :book
   has_many :public_lists, through: :book_public_lists, class_name: 'PublicList'
   has_many :external_links, class_name: 'ExternalLink', as: :owner, dependent: :destroy, inverse_of: :owner

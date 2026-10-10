@@ -19,7 +19,7 @@ require 'rails_helper'
 
 RSpec.describe Collection do
   describe 'associations' do
-    it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollection.name) }
+    it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollectionLegacy.name) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_collections) }
   end
 

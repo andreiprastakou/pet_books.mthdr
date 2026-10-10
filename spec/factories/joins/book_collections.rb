@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: book_collections
@@ -12,14 +14,16 @@
 # Indexes
 #
 #  index_book_collections_on_book_id                    (book_id)
-#  index_book_collections_on_collection_id              (collection_id)
 #  index_book_collections_on_collection_id_and_book_id  (collection_id,book_id) UNIQUE
 #
 # Foreign Keys
 #
 #  book_id        (book_id => books.id)
-#  collection_id  (collection_id => collections.id)
+#  collection_id  (collection_id => books.id)
 #
 FactoryBot.define do
-  factory :book_collection, class: 'Joins::BookCollection'
+  factory :book_collection, class: 'Joins::BookCollection' do
+    book { association :book, literary_form: 'novel' }
+    collection { association :book, literary_form: 'collection' }
+  end
 end

@@ -31,10 +31,29 @@ RSpec.describe Book do
     it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
     it { is_expected.to have_many(:book_series).class_name(Joins::BookSeries.name) }
     it { is_expected.to have_many(:series).class_name(Series.name).through(:book_series) }
-    it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollection.name) }
+    it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollectionLegacy.name) }
     it { is_expected.to have_many(:collections).class_name(Collection.name).through(:book_collections) }
+    it { is_expected.to have_many(:book_collections_as_work).class_name(Joins::BookCollection.name) }
+    it { is_expected.to have_many(:book_collections_as_collection).class_name(Joins::BookCollection.name) }
+
+    it do
+      expect(described_class.new).to have_many(:collected_works)
+        .class_name(described_class.name)
+        .through(:book_collections_as_collection)
+    end
+
     it { is_expected.to have_many(:book_public_lists).class_name(Joins::BookPublicList.name) }
     it { is_expected.to have_many(:public_lists).class_name(PublicList.name).through(:book_public_lists) }
+  end
+
+  describe '#collected_works' do
+    it 'returns books linked through book_collections_as_collection' do
+      collection = create(:book, literary_form: 'collection')
+      works = create_list(:book, 2, literary_form: 'novel')
+      works.each { |work| create(:book_collection, collection: collection, book: work) }
+
+      expect(described_class.find(collection.id).collected_works).to match_array(works)
+    end
   end
 
   describe 'validation' do

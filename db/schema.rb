@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_09_20_220004) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_10_101500) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -71,6 +71,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_220004) do
     t.index ["book_id"], name: "index_book_authors_on_book_id"
   end
 
+  create_table "book_collection_legacies", force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.integer "collection_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["book_id"], name: "index_book_collection_legacies_on_book_id"
+    t.index ["collection_id", "book_id"], name: "index_book_collection_legacies_on_collection_id_and_book_id", unique: true
+    t.index ["collection_id"], name: "index_book_collection_legacies_on_collection_id"
+  end
+
   create_table "book_collections", force: :cascade do |t|
     t.integer "book_id", null: false
     t.integer "collection_id", null: false
@@ -78,7 +88,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_220004) do
     t.datetime "updated_at", null: false
     t.index ["book_id"], name: "index_book_collections_on_book_id"
     t.index ["collection_id", "book_id"], name: "index_book_collections_on_collection_id_and_book_id", unique: true
-    t.index ["collection_id"], name: "index_book_collections_on_collection_id"
   end
 
   create_table "book_genres", force: :cascade do |t|
@@ -358,8 +367,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_09_20_220004) do
   add_foreign_key "ai_messages", "ai_chats", column: "chat_id"
   add_foreign_key "book_authors", "authors"
   add_foreign_key "book_authors", "books"
+  add_foreign_key "book_collection_legacies", "books"
+  add_foreign_key "book_collection_legacies", "collections"
   add_foreign_key "book_collections", "books"
-  add_foreign_key "book_collections", "collections"
+  add_foreign_key "book_collections", "books", column: "collection_id"
   add_foreign_key "book_genres", "books"
   add_foreign_key "book_genres", "genres"
   add_foreign_key "book_public_lists", "books"
