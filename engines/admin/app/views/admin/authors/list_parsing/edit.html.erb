@@ -12,23 +12,7 @@
     </div>
   <% end %>
 
-  <div class="card mt-2">
-    <div class="card-header">
-      References:
-    </div>
-
-    <div class="card-body">
-      <% author = @task.author %>
-      <div class="container mt-4">
-        <% if author.external_links.present? %>
-          <div class="row mb-3">
-            <div class="col-md-3 font-weight-bold text-end">Links:</div>
-            <div class="col-md-9"><%= admin_external_links_list(author) %></div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
+  <%= render 'admin/common/parental_references', record: @task.author, card_class: 'mt-2' %>
 
   <div class="card mt-2">
     <div class="card-header">

@@ -2,7 +2,7 @@ module Admin
   module Books
     class BatchRowsController < AdminController
       def show
-        book = Admin::Book.preload(authors: :external_links, series: [], external_links: []).find(params[:id])
+        book = Admin::Book.preload(:authors, :series, :external_links).find(params[:id])
         render partial: 'admin/books/batch_row',
                locals: {
                  book: book,

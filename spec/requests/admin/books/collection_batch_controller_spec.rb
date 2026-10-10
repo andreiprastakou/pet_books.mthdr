@@ -24,10 +24,10 @@ RSpec.describe Admin::Books::CollectionBatchController do
       expect(response.body).to include('Collection Batch Edit')
       expect(response.body).to include('title="Skip"')
 
-      collection_panel = response.body.split('Books to update:').first
-      expect(collection_panel).to include('Collected Stories')
-      expect(collection_panel).to include('https://example.com/collection')
-      expect(collection_panel).not_to include('Included Work')
+      references = response.body[/Parental references.*?Books to update:/m]
+      expect(references).to include('https://example.com/collection')
+      expect(references).not_to include('Collected Stories')
+      expect(references).not_to include('Included Work')
 
       expect(response.body).to include('Included Work')
       expect(response.body).not_to include('Unrelated Work')

@@ -1,17 +1,6 @@
 <% admin_nav_crumbs admin_nav_authors_link, admin_nav_author_link(@author), "Books Batch Edit" %>
 
-<div class="card">
-  <div class="card-header">
-    Author:
-  </div>
-
-  <div class="card-body">
-    <div class="row mb-3">
-      <div class="col-md-3 font-weight-bold text-end"><%= @author.fullname %></div>
-      <div class="col-md-9"><%= admin_external_links_list(@author) %></div>
-    </div>
-  </div>
-</div>
+<%= render 'admin/common/parental_references', record: @author %>
 
 <div class="card mt-2">
   <div class="card-header">

@@ -20,10 +20,10 @@ RSpec.describe Admin::Authors::BooksBatchController do
       expect(response.body).to include('Books Batch Edit')
       expect(response.body).to include('title="Skip"')
 
-      authors_panel = response.body.split('Books to update:').first
-      expect(authors_panel).to include('Title Author')
-      expect(authors_panel).to include('https://example.com/title-author')
-      expect(authors_panel).not_to include('Other Author')
+      references = response.body[/Parental references.*?Books to update:/m]
+      expect(references).to include('https://example.com/title-author')
+      expect(references).not_to include('Title Author')
+      expect(references).not_to include('Other Author')
     end
 
     it 'prefills new rows with the title author' do

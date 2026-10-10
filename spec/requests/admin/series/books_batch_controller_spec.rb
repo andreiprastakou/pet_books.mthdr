@@ -22,10 +22,10 @@ RSpec.describe Admin::Series::BooksBatchController do
       expect(response.body).to include('Books Batch Edit')
       expect(response.body).to include('title="Skip"')
 
-      series_panel = response.body.split('Books to update:').first
-      expect(series_panel).to include('Discworld')
-      expect(series_panel).to include('https://example.com/series')
-      expect(series_panel).not_to include('Included Work')
+      references = response.body[/Parental references.*?Books to update:/m]
+      expect(references).to include('https://example.com/series')
+      expect(references).not_to include('Discworld')
+      expect(references).not_to include('Included Work')
 
       expect(response.body).to include('Included Work')
       expect(response.body).not_to include('Unrelated Work')

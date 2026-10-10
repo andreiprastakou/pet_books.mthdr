@@ -26,11 +26,11 @@ RSpec.describe Admin::PublicLists::BooksBatchController do
       expect(response.body).to include('Books Batch Edit')
       expect(response.body).to include('title="Skip"')
 
-      list_panel = response.body.split('Books to update:').first
-      expect(list_panel).to include('Hugo Award')
-      expect(list_panel).to include('1984')
-      expect(list_panel).to include('https://example.com/list')
-      expect(list_panel).not_to include('Included Work')
+      references = response.body[/Parental references.*?Books to update:/m]
+      expect(references).to include('https://example.com/list')
+      expect(references).not_to include('Hugo Award')
+      expect(references).not_to include('1984')
+      expect(references).not_to include('Included Work')
 
       expect(response.body).to include('Included Work')
       expect(response.body).not_to include('Unrelated Work')

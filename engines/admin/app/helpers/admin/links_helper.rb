@@ -252,6 +252,8 @@ module Admin
     private
 
     def wikipedia_intro_fetch_link(entity, history_tasks: [])
+      return unless on_title_owner_page?(entity)
+
       path = wikipedia_intro_fetch_path(entity)
       return if path.blank?
 
@@ -259,6 +261,23 @@ module Admin
         'fetch', wikipedia_intro_fetch_task_class(entity), tasks: history_tasks
       )
       admin_action_to(label, path, data: { turbo_method: :post })
+    end
+
+    # The "(fetch)" action belongs on the record's own admin page only.
+    def on_title_owner_page?(entity)
+      owner_controller = wikipedia_intro_owner_controller(entity)
+      return false if owner_controller.blank?
+
+      controller.controller_path == owner_controller &&
+        controller.action_name == 'show' &&
+        controller.params[:id].to_s == entity.id.to_s
+    end
+
+    def wikipedia_intro_owner_controller(entity)
+      case entity
+      when ::Book then 'admin/books'
+      when ::Author then 'admin/authors'
+      end
     end
 
     def wikipedia_intro_fetch_path(entity)
