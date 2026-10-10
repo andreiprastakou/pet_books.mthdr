@@ -49,7 +49,7 @@
                 <% end %>
 
                 <datalist id="literary-form-suggestions">
-                  <% Book::STANDARD_FORMS.each do |form| %>
+                  <% LiteraryForm::DEFAULTS.each do |form| %>
                     <option value="<%= form %>"></option>
                   <% end %>
                 </datalist>

@@ -7,7 +7,7 @@ RSpec.describe Admin::InfoFetchers::Chats::AuthorBooksListExpert do
     subject(:result) { described_class.instructions }
 
     it 'returns configured instructions' do
-      expect(result).to include(Book::STANDARD_FORMS.join(', '))
+      expect(result).to include(LiteraryForm::DEFAULTS.join(', '))
     end
   end
 

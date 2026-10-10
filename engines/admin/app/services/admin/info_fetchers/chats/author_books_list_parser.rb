@@ -3,7 +3,7 @@ module Admin
     module Chats
       class AuthorBooksListParser < Admin::InfoFetchers::Chats::BaseChat
         has_instructions 'author_books_list_parser.md',
-                         '<FORMS>' => Book::STANDARD_FORMS.join(', ')
+                         '<FORMS>' => LiteraryForm::DEFAULTS.join(', ')
 
         def parse_books_list(text)
           last_response = chat.ask(text)

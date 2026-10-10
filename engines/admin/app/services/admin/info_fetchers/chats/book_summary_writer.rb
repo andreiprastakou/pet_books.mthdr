@@ -3,7 +3,7 @@ module Admin
     module Chats
       class BookSummaryWriter < Admin::InfoFetchers::Chats::BaseChat
         has_instructions 'book_summary_writer.md',
-                         '<STANDARD_FORMS>' => Book::STANDARD_FORMS.join(', ')
+                         '<STANDARD_FORMS>' => LiteraryForm::DEFAULTS.join(', ')
 
         def ask(book)
           last_response = ask_chat(book)

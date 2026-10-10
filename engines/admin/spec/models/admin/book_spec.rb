@@ -141,7 +141,7 @@ RSpec.describe Admin::Book do
 
       context 'when book literary form does not require a summary' do
         before do
-          book.literary_form = (Book::STANDARD_FORMS - Book::FORMS_REQUIRE_SUMMARY).sample
+          book.literary_form = (LiteraryForm::DEFAULTS - Book::FORMS_REQUIRE_SUMMARY).sample
         end
 
         it { is_expected.to be false }

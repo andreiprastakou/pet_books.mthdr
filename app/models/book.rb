@@ -22,16 +22,6 @@
 #  index_books_on_year_published  (year_published)
 #
 class Book < ApplicationRecord
-  STANDARD_FORMS = %w[
-    novel
-    novella
-    short
-    poem
-    play
-    comics
-    non_fiction
-    collection
-  ].freeze
   FORMS_REQUIRE_SUMMARY = (%w[novel novella non_fiction play] + [nil]).freeze
   # Visual format derived from literary_form (not stored).
   FORMATS = %w[normal small big collection].freeze
