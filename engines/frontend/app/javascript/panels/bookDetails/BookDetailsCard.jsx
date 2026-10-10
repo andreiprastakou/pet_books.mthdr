@@ -226,7 +226,7 @@ const BookDetailsCard = ({
   const links = bookDetailsLinks(book)
 
   return (
-    <Card className='panel--book-details panel--widget'>
+    <Card className={`panel--book-details panel--widget${book.format === 'collection' ? ' panel--book-details--collection' : ''}`}>
       <Card.Header className='panel--header'>
         <BookDetailsHeader
           booksPagePath={booksPagePath}

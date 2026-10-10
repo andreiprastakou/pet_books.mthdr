@@ -31,6 +31,20 @@ module Admin
 
     DEFAULT_BOOKS_INDEX_VIEW = 'table'.freeze
 
+    COLLECTED_WORKS_SORTING_MAP = %i[
+      id
+      title
+      year_published
+      wiki_popularity
+      literary_form
+    ].index_by(&:to_s).merge(
+      'synced' => :data_filled
+    ).freeze
+
+    COLLECTED_WORKS_PRELOADS = %i[
+      genres
+    ].freeze
+
     BOOK_PRELOADS = [
       :authors,
       :external_links,
@@ -60,6 +74,7 @@ module Admin
     def show
       @next_book = @book.next_author_book
       @history_tasks = @book.history_data_fetch_tasks
+      @collected_works = load_collected_works if @book.collection?
     end
 
     def new
@@ -103,6 +118,14 @@ module Admin
 
     def fetch_record
       @book = Admin::Book.preload(*BOOK_PRELOADS).find(params[:id])
+    end
+
+    def load_collected_works
+      apply_sort(
+        Admin::Book.for_scope(@book.collected_works, *COLLECTED_WORKS_PRELOADS),
+        COLLECTED_WORKS_SORTING_MAP,
+        defaults: { sort_by: 'year_published', sort_order: 'desc' }
+      ).order(id: :desc)
     end
 
     def record_params

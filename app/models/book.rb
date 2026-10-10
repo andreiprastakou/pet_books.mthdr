@@ -82,11 +82,15 @@ class Book < ApplicationRecord
     original_title.present? && original_title != title
   end
 
+  def collection?
+    literary_form.in?(FORMS_FORMAT_COLLECTION)
+  end
+
   # Cover/spine size class: normal (default), small, big (novels), collection.
   def format
     return 'small' if literary_form.in?(FORMS_FORMAT_SMALL)
     return 'big' if literary_form.in?(FORMS_FORMAT_BIG)
-    return 'collection' if literary_form.in?(FORMS_FORMAT_COLLECTION)
+    return 'collection' if collection?
 
     'normal'
   end

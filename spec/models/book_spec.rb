@@ -251,6 +251,22 @@ RSpec.describe Book do
     end
   end
 
+  describe '#collection?' do
+    subject(:result) { book.collection? }
+
+    context 'when the literary form is a collection' do
+      let(:book) { build(:book, literary_form: 'collection') }
+
+      it { is_expected.to be true }
+    end
+
+    context 'when the literary form is not a collection' do
+      let(:book) { build(:book, literary_form: 'novel') }
+
+      it { is_expected.to be false }
+    end
+  end
+
   describe '#format' do
     subject(:result) { book.format }
 

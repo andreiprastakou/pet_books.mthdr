@@ -73,6 +73,31 @@ RSpec.describe Admin::BooksController do
       expect(response.body).to include('>search</a>')
     end
 
+    it 'does not list collected works when the book is not a collection' do
+      send_request
+      expect(response.body).not_to include('>FORM</a>')
+    end
+
+    context 'when the book is a collection' do
+      let(:older_work) { create(:book, title: 'Older Work', year_published: 1990, authors: [author]) }
+      let(:newer_work) { create(:book, title: 'Newer Work', year_published: 2001, authors: [author]) }
+      let(:book) do
+        create(:book, literary_form: 'collection', authors: [author]).tap do |collection|
+          create(:book_collection, collection: collection, book: older_work)
+          create(:book_collection, collection: collection, book: newer_work)
+        end
+      end
+
+      it 'lists collected works newest first' do
+        send_request
+        expect(response.body).to include('>FORM</a>')
+        expect(response.body).to include('Older Work')
+        expect(response.body).to include('Newer Work')
+        expect(response.body.index('Newer Work')).to be < response.body.index('Older Work')
+        expect(response.body).to include(admin_book_path(newer_work))
+      end
+    end
+
     it 'hides the LibraryThing search link when a LibraryThing identity exists' do
       create(:external_identity, owner: book, external_resource: :librarything, external_id: '33363109')
       send_request

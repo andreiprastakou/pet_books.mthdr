@@ -67,7 +67,7 @@
     <% end %>
   </div>
 
-  <% collection_selected = book.literary_form.in?(Book::FORMS_FORMAT_COLLECTION) %>
+  <% collection_selected = book.collection? %>
   <% collected_work_joins = book.book_collections_as_collection %>
   <% current_collected_works = collected_work_joins.reject(&:marked_for_destruction?).map(&:book) %>
   <% saved_collected_works = collected_work_joins.reject(&:new_record?).map(&:book) %>

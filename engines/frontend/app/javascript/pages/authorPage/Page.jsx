@@ -5,6 +5,7 @@ import Layout from 'pages/Layout'
 import AuthorCard from 'panels/authorCard/AuthorCard'
 import BooksStack from 'panels/booksStack/BooksStack'
 import BookDetails from 'panels/bookDetails/BookDetails'
+import IncludedWorks from 'panels/IncludedWorks'
 import PageStoreConfigurer from 'pages/authorPage/PageStoreConfigurer'
 
 const AuthorPage = () => (
@@ -20,6 +21,8 @@ const AuthorPage = () => (
 
       <Col xs={8}>
         <BookDetails header='Selected Work' />
+
+        <IncludedWorks />
       </Col>
     </Layout>
   </>

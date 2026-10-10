@@ -260,4 +260,8 @@
       <% end %>
     </div>
   </div>
+
+  <% if @collected_works %>
+    <%= render "admin/books/works_table", books: @collected_works %>
+  <% end %>
 </div>

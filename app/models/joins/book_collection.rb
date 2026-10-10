@@ -43,14 +43,14 @@ module Joins
 
     def collection_must_be_a_collection
       return if collection.nil?
-      return if collection.literary_form.in?(Book::FORMS_FORMAT_COLLECTION)
+      return if collection.collection?
 
       errors.add(:collection, 'must have literary form collection')
     end
 
     def book_must_not_be_a_collection
       return if book.nil?
-      return unless book.literary_form.in?(Book::FORMS_FORMAT_COLLECTION)
+      return unless book.collection?
 
       errors.add(:book, 'must not have literary form collection')
     end

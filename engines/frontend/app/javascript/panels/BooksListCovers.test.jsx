@@ -100,4 +100,40 @@ describe('BooksListCovers', () => {
 
     expect(store.getState().storeBooks.requestedBookId).toBe(2)
   })
+
+  it('renders a provided book list instead of the page list', () => {
+    const { store } = renderWithProviders(
+      <BooksListCovers
+        bookIds={[8, 9]}
+        header='Included works'
+        showControls={false}
+      />,
+      {
+        preloadedState: {
+          axis: {
+            currentAuthorId: null,
+            currentBookId: 1,
+            currentTagId: null,
+            seed: null,
+          },
+          booksList: {
+            bookIds: [1, 2],
+            booksTotal: 2,
+            listFilter: {},
+            page: 1,
+            perPage: 16,
+            sortBy: 'name',
+          },
+        },
+        urlStore: panelUrlStore(),
+      }
+    )
+
+    expect(screen.getByText('Included works')).toBeInTheDocument()
+    expect(screen.getByTestId('book-8')).toBeInTheDocument()
+    expect(screen.getByTestId('book-9')).toBeInTheDocument()
+    expect(screen.queryByTestId('book-1')).not.toBeInTheDocument()
+    expect(store.getState().axis.currentBookId).toBe(1)
+    expect(store.getState().storeBooks.requestedBookId).toBeNull()
+  })
 })
