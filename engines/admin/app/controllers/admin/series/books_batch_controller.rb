@@ -25,7 +25,7 @@ module Admin
       end
 
       def books_scope
-        Admin::Book.for_scope(@series.books, { authors: :external_links }, :series, :external_links)
+        Admin::Book.for_scope(@series.books, :authors, :series, :external_links)
       end
 
       def apply_via_updater(updater)
@@ -37,7 +37,7 @@ module Admin
       def prepare_form_books
         ActiveRecord::Associations::Preloader.new(
           records: @books,
-          associations: { authors: :external_links, series: [], external_links: [] }
+          associations: %i[authors series external_links]
         ).call
       end
     end

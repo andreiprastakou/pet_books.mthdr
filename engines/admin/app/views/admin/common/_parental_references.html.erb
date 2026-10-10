@@ -1,0 +1,11 @@
+<% if record.external_links.present? %>
+<div class="<%= ['card', local_assigns[:card_class]].compact.join(' ') %>">
+  <div class="card-header">
+    Parental references
+  </div>
+
+  <div class="card-body">
+    <%= admin_external_links_list(record) %>
+  </div>
+</div>
+<% end %>

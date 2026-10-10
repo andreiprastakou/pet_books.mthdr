@@ -28,7 +28,7 @@ module Admin
       end
 
       def books_scope
-        Admin::Book.for_scope(@public_list.books, { authors: :external_links }, :series, :external_links)
+        Admin::Book.for_scope(@public_list.books, :authors, :series, :external_links)
       end
 
       def apply_via_updater(updater)
@@ -74,7 +74,7 @@ module Admin
         @books.each { |book| detach_unsaved_new_record(book) }
         ActiveRecord::Associations::Preloader.new(
           records: @books,
-          associations: { authors: :external_links, series: [], external_links: [] }
+          associations: %i[authors series external_links]
         ).call
       end
 
