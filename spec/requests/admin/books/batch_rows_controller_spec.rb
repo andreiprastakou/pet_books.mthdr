@@ -68,6 +68,26 @@ RSpec.describe Admin::Books::BatchRowsController do
       expect(Joins::BookAuthor.where(book: book, author: extra)).not_to exist
     end
 
+    it 'adds an empty list role field when the membership column is requested' do
+      get admin_books_batch_row_path(book),
+          params: { index: '171000', membership_column: 'public_list_role' },
+          headers: authorization_header
+
+      expect(response).to be_successful
+      expect(response.body).to include('name="batch[171000][membership][role]"')
+      expect(response.body).to include('data-name="membership-role"')
+      expect(response.body).to include('b-books-batch-membership')
+    end
+
+    it 'ignores an unknown membership column' do
+      get admin_books_batch_row_path(book),
+          params: { index: '171000', membership_column: 'other' },
+          headers: authorization_header
+
+      expect(response).to be_successful
+      expect(response.body).not_to include('membership')
+    end
+
     it 'ignores a non-numeric index' do
       get admin_books_batch_row_path(book), params: { index: '1][title]' }, headers: authorization_header
 

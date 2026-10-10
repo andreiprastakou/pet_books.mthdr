@@ -5,6 +5,7 @@ module Admin
 
       def edit
         @books = books_scope
+        @membership_roles = stored_membership_roles(@books)
       end
 
       def update
@@ -31,18 +32,42 @@ module Admin
       end
 
       def apply_via_updater(updater)
-        updater.update(params.fetch(:batch), on_save: method(:include_book)).tap do
+        batch = params.fetch(:batch)
+        updater.update(batch, on_save: method(:sync_membership)).tap do
           @books = updater.books
+          @membership_roles = submitted_membership_roles(batch)
         end
       end
 
-      def include_book(book)
-        return if Joins::BookPublicList.exists?(public_list_id: @public_list.id, book_id: book.id)
-
-        join = Joins::BookPublicList.new(public_list: @public_list, book: book)
+      def sync_membership(book, book_params = nil)
+        join = Joins::BookPublicList.find_or_initialize_by(public_list_id: @public_list.id, book_id: book.id)
+        assign_membership_role(join, book_params)
         return if join.save
 
         join.errors.each { |error| book.errors.add(:base, error.full_message) }
+      end
+
+      def assign_membership_role(join, book_params)
+        return unless membership_submitted?(book_params)
+
+        join.role = book_params.dig(:membership, :role).presence
+      end
+
+      def stored_membership_roles(books)
+        book_ids = books.filter_map(&:id)
+        roles_by_book_id = @public_list.book_public_lists.where(book_id: book_ids).pluck(:book_id, :role).to_h
+        books.index_with { |book| roles_by_book_id[book.id] }
+      end
+
+      def submitted_membership_roles(batch)
+        @books.zip(batch.each_value).to_h do |book, book_params|
+          role = book_params.dig(:membership, :role) if membership_submitted?(book_params)
+          [book, role.presence]
+        end
+      end
+
+      def membership_submitted?(book_params)
+        book_params.respond_to?(:key?) && book_params.key?(:membership)
       end
 
       def prepare_form_books

@@ -48,6 +48,13 @@ RSpec.describe Admin::BooksBatchUpdater do
       expect(update).to be true
     end
 
+    it 'passes each row params to on_save' do
+      seen = []
+      updater.update(batch_params, on_save: ->(book, book_params) { seen << [book.title, book_params[:title]] })
+
+      expect(seen).to eq [%w[TITLE_A_UPDATED TITLE_A_UPDATED], %w[TITLE_B TITLE_B]]
+    end
+
     it 'exposes updated books' do
       update
       expect(updater.books).to contain_exactly(book_a, kind_of(Book))

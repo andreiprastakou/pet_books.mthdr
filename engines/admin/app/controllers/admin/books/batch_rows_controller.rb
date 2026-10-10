@@ -8,7 +8,8 @@ module Admin
                  book: book,
                  index: row_index,
                  ensure_series: series_to_ensure,
-                 ensure_authors: authors_to_ensure
+                 ensure_authors: authors_to_ensure,
+                 membership_column: membership_column
                }
       end
 
@@ -29,6 +30,10 @@ module Admin
         return if params[:ensure_author_id].blank?
 
         Admin::Author.find_by(id: params[:ensure_author_id])
+      end
+
+      def membership_column
+        params[:membership_column].to_s == 'public_list_role' ? 'public_list_role' : nil
       end
     end
   end

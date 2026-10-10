@@ -12,8 +12,8 @@ module Admin
       @books = []
       all_successful = true
       Book.transaction do
-        params_to_books(updates_params) do |book|
-          all_successful = save_book(book, on_save) && all_successful
+        params_to_books(updates_params) do |book, book_params|
+          all_successful = save_book(book, book_params, on_save) && all_successful
           @books << book
         end
         raise ActiveRecord::Rollback unless all_successful
@@ -30,13 +30,13 @@ module Admin
     def params_to_books(params)
       values = params.each_value.to_a
       books_by_id = load_existing_books(values)
-      values.each { |book_params| yield book_from_params(book_params, books_by_id) }
+      values.each { |book_params| yield book_from_params(book_params, books_by_id), book_params }
     end
 
-    def save_book(book, on_save)
+    def save_book(book, book_params, on_save)
       return false unless book.valid? && book.save
 
-      on_save&.call(book)
+      on_save&.call(book, book_params)
       book.errors.empty?
     end
 

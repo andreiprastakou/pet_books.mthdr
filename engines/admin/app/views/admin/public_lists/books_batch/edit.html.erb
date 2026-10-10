@@ -25,6 +25,8 @@
     <%= render 'admin/books/batch_edit',
       books: @books,
       target: admin_public_list_type_public_list_books_batch_path(@public_list_type, @public_list),
-      initial_year_published: @public_list.year - 1 %>
+      initial_year_published: @public_list.year - 1,
+      membership_column: 'public_list_role',
+      membership_roles: @membership_roles %>
   </div>
 </div>
