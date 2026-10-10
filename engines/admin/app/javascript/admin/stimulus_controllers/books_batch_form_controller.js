@@ -62,7 +62,16 @@ export default class extends Controller {
 
     this.clearError()
     this.nullifyRedundantOriginalTitle(rendered)
+    this.preserveMembershipRole(row, rendered)
     row.replaceWith(rendered)
+  }
+
+  preserveMembershipRole(fromRow, toRow) {
+    const source = fromRow.querySelector('[data-name="membership-role"]')
+    const target = toRow.querySelector('[data-name="membership-role"]')
+    if (!source || !target) return
+
+    target.value = source.value
   }
 
   bookAlreadyListed(bookId, currentRow) {

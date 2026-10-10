@@ -1,9 +1,14 @@
 <% initial_series = Array(local_assigns[:initial_series]) %>
 <% initial_series_entries = series_to_badges_entries(initial_series) %>
 <% ensure_authors = Array(local_assigns[:ensure_authors]) %>
+<% membership_column = local_assigns[:membership_column].to_s.presence %>
+<% show_list_role = membership_column == 'public_list_role' %>
+<% series_column_class = show_list_role ? 'col-1' : 'col-2' %>
+<% membership_roles = local_assigns.fetch(:membership_roles, {}) %>
 <% row_url_params = {} %>
 <% row_url_params[:ensure_series_id] = initial_series.first.id if initial_series.one? %>
 <% row_url_params[:ensure_author_id] = ensure_authors.first.id if ensure_authors.one? %>
+<% row_url_params[:membership_column] = membership_column if show_list_role %>
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form"
   data-books-batch-form-batch-row-url-value="<%= admin_books_batch_row_path('BOOK_ID', row_url_params) %>">
   <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
@@ -20,15 +25,22 @@
       <div class="col-1">Original</div>
       <div class="col-1">Form</div>
       <div class="col-2">Author</div>
-      <div class="col-2">Series</div>
+      <div class="<%= series_column_class %>">Series</div>
       <div class="col-1">Year</div>
       <div class="col-1">Wiki</div>
+      <% if show_list_role %>
+        <div class="col-1 b-books-batch-membership" title="Role on this list">Role</div>
+      <% end %>
       <div class="col-1"></div>
     </div>
 
     <div data-books-batch-form-target="booksList">
       <% books.sort_by { |b| b.year_published.to_i }.each_with_index do |book, index| %>
-        <%= render 'admin/books/batch_row', book: book, index: index %>
+        <%= render 'admin/books/batch_row',
+          book: book,
+          index: index,
+          membership_column: (membership_column if show_list_role),
+          membership_role: membership_roles[book] %>
       <% end %>
     </div>
 
@@ -67,7 +79,7 @@
             values: initial_author_entries %>
         </div>
         <!-- Series input -->
-        <div class="col-2" data-controller="association-input">
+        <div class="<%= series_column_class %>" data-controller="association-input">
           <%= render "admin/books/form/association_badges_input_mini",
             name: "batch[#{index}][series_ids][]",
             autocomplete_url: admin_api_series_search_path(format: :json),
@@ -87,6 +99,9 @@
             <%= link_to "L", nil, target: "_blank", data: { external_link_preview_target: "link" } %>
           </div>
         </div>
+        <% if show_list_role %>
+          <%= render 'admin/books/batch_membership_field', index: index, role: nil %>
+        <% end %>
         <!-- Remove book button -->
         <div class="col-1">
           <%= button_tag '-', class: 'btn btn-danger btn-sm', title: 'Skip',

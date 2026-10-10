@@ -39,7 +39,7 @@ module Admin
         end
       end
 
-      def include_book(book)
+      def include_book(book, _book_params = nil)
         return if Joins::BookCollection.exists?(collection_id: @book.id, book_id: book.id)
 
         join = Joins::BookCollection.new(collection: @book, book: book)
