@@ -43,7 +43,9 @@ const BooksListCovers = ({
   className = '',
   header = null,
   label = 'Books',
+  onSelectBook = null,
   panelId = PANEL_ID,
+  selectedBookId = null,
   showControls = true,
 }) => {
   const usesStoreList = bookIdsProp === null
@@ -217,6 +219,8 @@ const BooksListCovers = ({
             bookLabels={bookLabels}
             coverSize={coverSize}
             gridRef={gridRef}
+            onSelectBook={onSelectBook}
+            selectedBookId={selectedBookId}
           />
         </div>
       </Card.Body>
@@ -230,11 +234,13 @@ BooksListCovers.propTypes = {
   className: PropTypes.string,
   header: PropTypes.node,
   label: PropTypes.string,
+  onSelectBook: PropTypes.func,
   panelId: PropTypes.string,
+  selectedBookId: PropTypes.number,
   showControls: PropTypes.bool,
 }
 
-const BooksGrid = ({ bookIds, bookLabels, coverSize, gridRef }) => {
+const BooksGrid = ({ bookIds, bookLabels, coverSize, gridRef, onSelectBook, selectedBookId }) => {
   const rows = [...Array(Math.ceil(bookIds.length / GRID_ROW_SIZE)).keys()]
     .map(index => bookIds.slice(index * GRID_ROW_SIZE, (index + 1) * GRID_ROW_SIZE))
 
@@ -257,6 +263,8 @@ const BooksGrid = ({ bookIds, bookLabels, coverSize, gridRef }) => {
               id={bookId}
               key={bookId}
               label={bookLabels ? bookLabels[bookId] || '' : null}
+              onSelect={onSelectBook}
+              selectedId={onSelectBook ? selectedBookId : null}
               showYear={!bookLabels}
               size={coverSize}
             />
@@ -272,6 +280,8 @@ BooksGrid.propTypes = {
   bookLabels: PropTypes.object,
   coverSize: coverSizeType.isRequired,
   gridRef: PropTypes.object.isRequired,
+  onSelectBook: PropTypes.func,
+  selectedBookId: PropTypes.number,
 }
 
 export default BooksListCovers

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Col } from 'react-bootstrap'
 
-import BookDetails from 'panels/bookDetails/BookDetails'
-import IncludedWorks from 'panels/IncludedWorks'
+import CollectionWorks from 'panels/CollectionWorks'
+import SelectedWork from 'panels/SelectedWork'
 import Layout from 'pages/Layout'
 import PageConfigurer from 'pages/bookPage/PageConfigurer'
 
@@ -12,9 +12,9 @@ const BookPage = () => (
 
     <Layout classes='panels-page page--book'>
       <Col xs={12}>
-        <BookDetails />
+        <SelectedWork />
 
-        <IncludedWorks />
+        <CollectionWorks />
       </Col>
     </Layout>
   </>

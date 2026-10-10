@@ -1,23 +1,30 @@
-import React, { useEffect } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import useIncludedWorkSelection from 'panels/includedWorkSelection'
 import BooksListCovers from 'panels/BooksListCovers'
 import { fetchMissingBookIndexEntries } from 'store/books/actions'
 import {
   selectCurrentBookDetails,
   selectCurrentBookIndexEntry,
 } from 'store/books/selectors'
+import UrlStoreContext from 'store/urlStore/Context'
 
 export const PANEL_ID = 'included-works'
 
-const IncludedWorks = () => {
+const CollectionWorks = () => {
   const dispatch = useDispatch()
   const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
   const bookDetails = useSelector(selectCurrentBookDetails())
+  const { actions: { showIncludedWork } } = useContext(UrlStoreContext)
   const book = bookIndexEntry && bookDetails.id === bookIndexEntry.id
     ? bookDetails
     : null
+  const includedWorkId = useIncludedWorkSelection(book)
   const workIds = book?.format === 'collection' ? book.collectedWorkIds || [] : null
+  const selectIncludedWork = useCallback(id => {
+    if (showIncludedWork) showIncludedWork(id)
+  }, [showIncludedWork])
 
   useEffect(() => {
     if (!workIds?.length) return
@@ -33,10 +40,12 @@ const IncludedWorks = () => {
       className='panel--included-works'
       header='Included works'
       label='Included works'
+      onSelectBook={selectIncludedWork}
       panelId={PANEL_ID}
+      selectedBookId={includedWorkId}
       showControls={false}
     />
   )
 }
 
-export default IncludedWorks
+export default CollectionWorks

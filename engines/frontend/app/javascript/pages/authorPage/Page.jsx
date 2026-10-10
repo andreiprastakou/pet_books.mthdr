@@ -4,8 +4,8 @@ import { Col } from 'react-bootstrap'
 import Layout from 'pages/Layout'
 import AuthorCard from 'panels/authorCard/AuthorCard'
 import BooksStack from 'panels/booksStack/BooksStack'
-import BookDetails from 'panels/bookDetails/BookDetails'
-import IncludedWorks from 'panels/IncludedWorks'
+import CollectionWorks from 'panels/CollectionWorks'
+import SelectedWork from 'panels/SelectedWork'
 import PageStoreConfigurer from 'pages/authorPage/PageStoreConfigurer'
 
 const AuthorPage = () => (
@@ -20,9 +20,9 @@ const AuthorPage = () => (
       </Col>
 
       <Col xs={8}>
-        <BookDetails header='Selected Work' />
+        <SelectedWork header='Selected Work' />
 
-        <IncludedWorks />
+        <CollectionWorks />
       </Col>
     </Layout>
   </>

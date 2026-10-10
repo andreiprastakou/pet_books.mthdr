@@ -112,7 +112,8 @@
         "**/pages/authorPage/Route.jsx",
         "**/pages/authorsPage/Route.jsx",
         "**/pages/publicListsPage/Route.jsx",
-        "**/store/urlStore/BooksListConfigurer.jsx"
+        "**/store/urlStore/BooksListConfigurer.jsx",
+        "**/panels/includedWorkSelection.js"
       ],
       "rules": {
         "camelcase": ["off"]

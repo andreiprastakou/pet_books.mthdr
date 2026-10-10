@@ -4,8 +4,10 @@ import PropTypes from 'prop-types'
 
 import BookDetailsCard from 'panels/bookDetails/BookDetailsCard'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
-import { fetchCurrentBookDetails } from 'store/books/actions'
+import { fetchBookDetails, fetchCurrentBookDetails } from 'store/books/actions'
 import {
+  selectBookDetails,
+  selectBooksIndexEntry,
   selectCurrentBookDetails,
   selectCurrentBookIndexEntry,
 } from 'store/books/selectors'
@@ -13,13 +15,44 @@ import { selectSeriesRefsByIds } from 'store/series/selectors'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const BookDetails = ({ header = null, showCover = true, showPublicLists = true }) => {
+const useDisplayedBook = bookId => {
   const dispatch = useDispatch()
-  const bookIndexEntry = useSelector(selectCurrentBookIndexEntry())
-  const bookDetails = useSelector(selectCurrentBookDetails())
+  const currentIndexEntry = useSelector(selectCurrentBookIndexEntry())
+  const indexedEntry = useSelector(selectBooksIndexEntry(bookId))
+  const currentDetails = useSelector(selectCurrentBookDetails())
+  const storedDetails = useSelector(selectBookDetails(bookId))
+  const bookIndexEntry = bookId ? indexedEntry : currentIndexEntry
+  const bookDetails = (bookId ? storedDetails : currentDetails) || {}
+
+  useEffect(() => {
+    if (bookId) {
+      if (bookDetails.id !== bookId) dispatch(fetchBookDetails(bookId))
+      return
+    }
+
+    if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
+      dispatch(fetchCurrentBookDetails())
+  }, [bookDetails.id, bookId, bookIndexEntry, dispatch])
+
+  const book = bookIndexEntry && bookDetails.id === bookIndexEntry.id
+    ? bookDetails
+    : null
+
+  return { book, bookIndexEntry }
+}
+
+const BookDetails = ({
+  bookId = null,
+  header = null,
+  onClose = null,
+  reducedHeight = false,
+  showCover = true,
+  showPublicLists = true,
+}) => {
+  const { book, bookIndexEntry } = useDisplayedBook(bookId)
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
-  const seriesRefs = useSelector(selectSeriesRefsByIds(bookDetails.seriesIds || []), shallowEqual)
-  const tags = useSelector(selectTagsRefsByIds(bookDetails.tagIds || []), shallowEqual)
+  const seriesRefs = useSelector(selectSeriesRefsByIds(book?.seriesIds || []), shallowEqual)
+  const tags = useSelector(selectTagsRefsByIds(book?.tagIds || []), shallowEqual)
   const {
     routes: {
       authorPagePath,
@@ -31,16 +64,7 @@ const BookDetails = ({ header = null, showCover = true, showPublicLists = true }
     routesReady,
   } = useContext(UrlStoreContext)
 
-  useEffect(() => {
-    if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
-      dispatch(fetchCurrentBookDetails())
-  }, [bookIndexEntry?.id, bookDetails.id])
-
-  const book = bookIndexEntry && bookDetails.id === bookIndexEntry.id
-    ? bookDetails
-    : null
-
-  if (!book || !routesReady) return null
+  if (!book || !bookIndexEntry || !routesReady) return null
 
   return (
     <BookDetailsCard
@@ -52,6 +76,8 @@ const BookDetails = ({ header = null, showCover = true, showPublicLists = true }
       booksPagePath={booksPagePath}
       header={header}
       listPagePath={listPagePath}
+      onClose={onClose}
+      reducedHeight={reducedHeight}
       seriesPagePath={seriesPagePath}
       seriesRefs={seriesRefs}
       showCover={showCover}
@@ -62,7 +88,10 @@ const BookDetails = ({ header = null, showCover = true, showPublicLists = true }
 }
 
 BookDetails.propTypes = {
+  bookId: PropTypes.number,
   header: PropTypes.node,
+  onClose: PropTypes.func,
+  reducedHeight: PropTypes.bool,
   showCover: PropTypes.bool,
   showPublicLists: PropTypes.bool,
 }

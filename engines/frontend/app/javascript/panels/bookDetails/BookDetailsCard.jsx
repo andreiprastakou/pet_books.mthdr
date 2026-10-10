@@ -6,6 +6,11 @@ import BookToolbar from 'components/BookToolbar'
 import ExternalTextLink from 'components/ExternalTextLink'
 import InternalLink from 'components/InternalLink'
 import TagBadge from 'components/TagBadge'
+import {
+  BookDetailsClose,
+  BookDetailsHeader,
+  bookDetailsClassName,
+} from 'panels/bookDetails/BookDetailsChrome'
 import BookWithBackCover from 'panels/bookDetails/BookWithBackCover'
 
 const LinkedNames = ({ entries, buildHref }) => (
@@ -60,29 +65,6 @@ BookPublicLists.propTypes = {
   bookId: PropTypes.number.isRequired,
   listPagePath: PropTypes.func.isRequired,
   publicLists: PropTypes.arrayOf(PropTypes.object).isRequired,
-}
-
-const BookDetailsHeader = ({ booksPagePath, header, title }) => header || (
-  <>
-    <InternalLink href={booksPagePath()}>
-      { 'Books' }
-    </InternalLink>
-
-    { '/' }
-
-    <span
-      className='book-details-panel-title'
-      title={title}
-    >
-      { title }
-    </span>
-  </>
-)
-
-BookDetailsHeader.propTypes = {
-  booksPagePath: PropTypes.func.isRequired,
-  header: PropTypes.node,
-  title: PropTypes.string.isRequired,
 }
 
 const BookDetailsHeading = ({ book, booksPagePath }) => (
@@ -217,6 +199,8 @@ const BookDetailsCard = ({
   booksPagePath,
   header,
   listPagePath,
+  onClose,
+  reducedHeight,
   seriesPagePath,
   seriesRefs,
   showCover,
@@ -226,13 +210,15 @@ const BookDetailsCard = ({
   const links = bookDetailsLinks(book)
 
   return (
-    <Card className={`panel--book-details panel--widget${book.format === 'collection' ? ' panel--book-details--collection' : ''}`}>
+    <Card className={bookDetailsClassName(book, reducedHeight)}>
       <Card.Header className='panel--header'>
         <BookDetailsHeader
           booksPagePath={booksPagePath}
           header={header}
           title={book.title}
         />
+
+        { onClose ? <BookDetailsClose onClose={onClose} /> : null }
       </Card.Header>
 
       <Card.Body className='panel--body'>
@@ -282,6 +268,8 @@ BookDetailsCard.propTypes = {
   booksPagePath: PropTypes.func.isRequired,
   header: PropTypes.node,
   listPagePath: PropTypes.func.isRequired,
+  onClose: PropTypes.func,
+  reducedHeight: PropTypes.bool.isRequired,
   seriesPagePath: PropTypes.func.isRequired,
   seriesRefs: PropTypes.arrayOf(PropTypes.object).isRequired,
   showCover: PropTypes.bool.isRequired,

@@ -8,7 +8,14 @@ import BookPlaceholder from 'components/BookPlaceholder'
 import { DEFAULT_COVER_SIZE, coverSizeType } from 'utils/coverSizes'
 
 const BookIndexEntry = ({
-  id, label = null, scrollIntoView = true, showYear = false, size = DEFAULT_COVER_SIZE, style,
+  id,
+  label = null,
+  onSelect = null,
+  scrollIntoView = true,
+  selectedId = null,
+  showYear = false,
+  size = DEFAULT_COVER_SIZE,
+  style,
 }) => {
   const bookIndexEntry = useSelector(selectBooksIndexEntry(id))
 
@@ -24,7 +31,9 @@ const BookIndexEntry = ({
     <Book
       bookIndexEntry={bookIndexEntry}
       label={label}
+      onSelect={onSelect}
       scrollIntoView={scrollIntoView}
+      selectedId={selectedId}
       showYear={showYear}
       size={size}
       style={style}
@@ -35,7 +44,9 @@ const BookIndexEntry = ({
 BookIndexEntry.propTypes = {
   id: PropTypes.number.isRequired,
   label: PropTypes.string,
+  onSelect: PropTypes.func,
   scrollIntoView: PropTypes.bool,
+  selectedId: PropTypes.number,
   showYear: PropTypes.bool,
   size: coverSizeType,
   style: PropTypes.object,

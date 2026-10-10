@@ -5,6 +5,7 @@ import axisReducer from 'store/axis/slice'
 import { setCurrentBookId } from 'store/axis/actions'
 import booksReducer from 'store/books/slice'
 import {
+  fetchBookDetails,
   fetchCurrentBookDetails,
   fetchMissingBookIndexEntries,
   showBook,
@@ -49,6 +50,17 @@ describe('books actions', () => {
 
     expect(apiClient.getBookFull).toHaveBeenCalledWith(7)
     expect(store.getState().storeBooks.bookDetailsCurrent).toEqual(details)
+  })
+
+  it('fetches and stores details for a specific book', async() => {
+    const details = { id: 4, title: 'Sharp Ends' }
+    apiClient.getBookFull.mockResolvedValue(details)
+
+    const store = makeStore()
+    await store.dispatch(fetchBookDetails(4))
+
+    expect(apiClient.getBookFull).toHaveBeenCalledWith(4)
+    expect(store.getState().storeBooks.bookDetailsById[4]).toEqual(details)
   })
 
   it('requests a different book when showing a known ref', () => {

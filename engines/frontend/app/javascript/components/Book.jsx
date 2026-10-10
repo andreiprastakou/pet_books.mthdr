@@ -13,13 +13,22 @@ import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
 const TITLE_LENGTH_LONG = 25
 
 const Book = ({
-  bookIndexEntry, label, showYear = false, size = DEFAULT_COVER_SIZE, style, scrollIntoView = true,
+  bookIndexEntry,
+  label,
+  onSelect = null,
+  scrollIntoView = true,
+  selectedId = null,
+  showYear = false,
+  size = DEFAULT_COVER_SIZE,
+  style,
 }) => {
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
 
-  const isCurrent = bookIndexEntry.id === currentBookId
+  const isCurrent = onSelect
+    ? bookIndexEntry.id === selectedId
+    : bookIndexEntry.id === currentBookId
   const classNames = classnames('book-case', coverSizeClass(size), { 'selected': isCurrent })
 
   const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
@@ -31,8 +40,9 @@ const Book = ({
   }, [isCurrent, scrollIntoView])
 
   const handleClick = useCallback(() => {
-    if (showBooksIndexEntry) showBooksIndexEntry(bookIndexEntry.id)
-  }, [bookIndexEntry.id, showBooksIndexEntry])
+    if (onSelect) onSelect(bookIndexEntry.id)
+    else if (showBooksIndexEntry) showBooksIndexEntry(bookIndexEntry.id)
+  }, [bookIndexEntry.id, onSelect, showBooksIndexEntry])
 
   return (
     <div
@@ -76,7 +86,9 @@ const Book = ({
 Book.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
   label: PropTypes.string,
+  onSelect: PropTypes.func,
   scrollIntoView: PropTypes.bool,
+  selectedId: PropTypes.number,
   showYear: PropTypes.bool,
   size: coverSizeType,
   style: PropTypes.object,
