@@ -2,6 +2,8 @@
   <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
   <% method = local_assigns.fetch(:method, :put) %>
   <% initial_author_entries = authors_to_badges_entries(Array(local_assigns[:initial_authors])) %>
+  <% initial_literary_form = local_assigns[:initial_literary_form] %>
+  <% initial_year_published = local_assigns[:initial_year_published] %>
   <%= form_tag target, method: method do %>
     <div class="row b-books-batch-row b-books-batch-header fw-bold text-muted">
       <div class="col-1">ID</div>
@@ -107,7 +109,7 @@
           <%= text_field_tag "batch[#{index}][original_title]", nil, class: 'form-control form-control-sm' %>
         </div>
         <div class="col-1">
-          <%= text_field_tag "batch[#{index}][literary_form]", nil, class: 'form-control form-control-sm' %>
+          <%= text_field_tag "batch[#{index}][literary_form]", initial_literary_form, class: 'form-control form-control-sm' %>
         </div>
         <!-- Author input -->
         <div class="col-2" data-controller="association-input">
@@ -127,7 +129,8 @@
         </div>
         <!-- Year input -->
         <div class="col-1">
-          <%= text_field_tag "batch[#{index}][year_published]", nil, class: 'form-control form-control-sm' %>
+          <%= text_field_tag "batch[#{index}][year_published]", initial_year_published,
+            class: 'form-control form-control-sm' %>
         </div>
         <!-- Wiki input -->
         <div class="col-1">

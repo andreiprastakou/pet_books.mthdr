@@ -76,6 +76,7 @@ RSpec.describe Admin::BooksController do
     it 'does not list collected works when the book is not a collection' do
       send_request
       expect(response.body).not_to include('>FORM</a>')
+      expect(response.body).not_to include('edit included works')
     end
 
     context 'when the book is a collection' do
@@ -95,6 +96,8 @@ RSpec.describe Admin::BooksController do
         expect(response.body).to include('Newer Work')
         expect(response.body.index('Newer Work')).to be < response.body.index('Older Work')
         expect(response.body).to include(admin_book_path(newer_work))
+        expect(response.body).to include('edit included works')
+        expect(response.body).to include(edit_admin_book_collection_batch_path(book))
       end
     end
 

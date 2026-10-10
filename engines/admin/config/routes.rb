@@ -37,6 +37,7 @@ Admin::Engine.routes.draw do
     resources :books do
       scope module: :books do
         resource :wiki_stats, only: %i[update], controller: 'wiki_stats'
+        resource :collection_batch, only: %i[edit update], controller: 'collection_batch'
         resources :generative_summaries, only: %i[create edit update] do
           post :apply, on: :member
         end

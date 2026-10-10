@@ -1,0 +1,29 @@
+<% admin_nav_crumbs admin_nav_books_link, admin_nav_book_link(@book), "Collection Batch Edit" %>
+
+<div class="card">
+  <div class="card-header">
+    Collection:
+  </div>
+
+  <div class="card-body">
+    <div class="row mb-3">
+      <div class="col-md-3 font-weight-bold text-end"><%= @book.title %></div>
+      <div class="col-md-9"><%= admin_external_links_list(@book) %></div>
+    </div>
+  </div>
+</div>
+
+<div class="card mt-2">
+  <div class="card-header">
+    Books to update:
+  </div>
+
+  <div class="card-body">
+    <%= render 'admin/books/batch_edit',
+      books: @books,
+      target: admin_book_collection_batch_path(@book),
+      initial_authors: @book.authors,
+      initial_literary_form: 'short',
+      initial_year_published: @book.year_published %>
+  </div>
+</div>

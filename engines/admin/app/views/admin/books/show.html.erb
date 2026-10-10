@@ -5,6 +5,9 @@
     <div class="btn-group" role="group">
       <%= display_link_to "show", book_display_path(@book) %>
       <%= admin_buttonly_link_to "edit", edit_admin_book_path(@book) %>
+      <% if @book.collection? %>
+        <%= admin_buttonly_link_to "edit included works", edit_admin_book_collection_batch_path(@book) %>
+      <% end %>
 
       <% if (next_book = @book.next_author_book).present? %>
         <%= admin_buttonly_link_to "next: #{truncate(next_book.title, length: 20, escape: false)} (#{next_book.year_published})",
