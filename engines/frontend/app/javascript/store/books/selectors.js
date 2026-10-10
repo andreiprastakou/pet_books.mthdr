@@ -4,6 +4,10 @@ const localState = state => state.storeBooks
 
 export const selectCurrentBookDetails = () => state => localState(state).bookDetailsCurrent
 
+export const selectBookDetails = id => state => (
+  id ? localState(state).bookDetailsById?.[id] || null : null
+)
+
 export const selectBooksIndexEntry = id => state => localState(state).booksIndex[id]
 
 export const selectBooksIndexIds = () => state => Object.keys(localState(state).booksIndex).map(k => parseInt(k))

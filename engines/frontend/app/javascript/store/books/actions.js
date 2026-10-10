@@ -10,6 +10,7 @@ export const {
   addBooks,
   addBooksRefs,
   clearBooksRefs,
+  setBookDetails,
   setCurrentBookDetails,
   setRequestedBookId,
 } = slice.actions
@@ -22,6 +23,11 @@ export const fetchCurrentBookDetails = () => async(dispatch, getState) => {
 
   const details = await apiClient.getBookFull(currentId)
   dispatch(setCurrentBookDetails(details))
+}
+
+export const fetchBookDetails = bookId => async dispatch => {
+  const details = await apiClient.getBookFull(bookId)
+  dispatch(setBookDetails(details))
 }
 
 export const showBook = bookId => (dispatch, getState) => {

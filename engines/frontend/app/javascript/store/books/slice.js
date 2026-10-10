@@ -5,6 +5,7 @@ export const slice = createSlice({
   initialState: {
     booksIndex: {},
     booksRefs: {},
+    bookDetailsById: {},
     bookDetailsCurrent: {},
     requestedBookId: null,
   },
@@ -30,6 +31,11 @@ export const slice = createSlice({
 
     clearBooksRefs: state => {
       state.booksRefs = {}
+    },
+
+    setBookDetails: (state, action) => {
+      const details = action.payload
+      state.bookDetailsById[details.id] = details
     },
 
     setCurrentBookDetails: (state, action) => {

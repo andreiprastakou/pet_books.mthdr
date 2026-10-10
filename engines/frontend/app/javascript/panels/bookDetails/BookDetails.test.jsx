@@ -1,8 +1,10 @@
 import React from 'react'
 import { screen } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import BookDetails from 'panels/bookDetails/BookDetails'
+import { fetchBookDetails } from 'store/books/actions'
 import { renderWithProviders } from 'test/renderWithProviders'
 import { buildPath } from 'store/urlStore/RootStoreProvider'
 
@@ -10,6 +12,7 @@ vi.mock('store/books/actions', async() => {
   const actual = await vi.importActual('store/books/actions')
   return {
     ...actual,
+    fetchBookDetails: vi.fn(() => () => undefined),
     fetchCurrentBookDetails: vi.fn(() => () => undefined),
   }
 })
@@ -176,5 +179,74 @@ describe('BookDetails', () => {
     })
 
     expect(document.querySelector('.panel--book-details--collection')).toBeInTheDocument()
+  })
+
+  it('shows another book in a compact panel and clears it from the header', async() => {
+    const user = userEvent.setup()
+    const onClose = vi.fn()
+    const included = {
+      ...bookDetails,
+      id: 8,
+      title: 'Hell',
+      yearPublished: 2016,
+    }
+
+    renderWithProviders(
+      <BookDetails
+        bookId={8}
+        header='Selected included work'
+        onClose={onClose}
+        reducedHeight
+        showCover={false}
+      />,
+      {
+        preloadedState: {
+          ...baseState,
+          storeBooks: {
+            ...baseState.storeBooks,
+            bookDetailsById: { 8: included },
+            booksIndex: {
+              ...baseState.storeBooks.booksIndex,
+              8: { ...bookIndexEntry, id: 8, title: 'Hell', year: 2016 },
+            },
+          },
+        },
+        urlStore: {
+          routes: {
+            authorPagePath: id => `/authors/${id}`,
+            booksPagePath: () => '/books',
+            bookPagePath: id => `/books/${id}`,
+            listPagePath: id => `/public-lists/${id}`,
+            seriesPagePath: id => `/series/${id}`,
+          },
+        },
+      }
+    )
+
+    expect(screen.getByRole('heading', { name: 'Hell' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Dune' })).not.toBeInTheDocument()
+    expect(screen.queryByTestId('book-cover')).not.toBeInTheDocument()
+    expect(document.querySelector('.book-details-panel--compact')).toBeInTheDocument()
+    expect(fetchBookDetails).not.toHaveBeenCalled()
+
+    await user.click(screen.getByRole('button', { name: 'Clear selected included work' }))
+    expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('loads details for the requested book', () => {
+    renderWithProviders(<BookDetails bookId={8} />, {
+      preloadedState: {
+        ...baseState,
+        storeBooks: {
+          ...baseState.storeBooks,
+          booksIndex: {
+            ...baseState.storeBooks.booksIndex,
+            8: { ...bookIndexEntry, id: 8, title: 'Hell' },
+          },
+        },
+      },
+    })
+
+    expect(fetchBookDetails).toHaveBeenCalledWith(8)
   })
 })

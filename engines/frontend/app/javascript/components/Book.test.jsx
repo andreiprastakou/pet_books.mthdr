@@ -138,4 +138,33 @@ describe('Book', () => {
     await user.click(cover)
     expect(showBooksIndexEntry).toHaveBeenCalledWith(5)
   })
+
+  it('uses a custom selection instead of the current book', async() => {
+    const user = userEvent.setup()
+    const onSelect = vi.fn()
+    const showBooksIndexEntry = vi.fn()
+
+    renderWithProviders(
+      <Book
+        bookIndexEntry={bookIndexEntry}
+        onSelect={onSelect}
+        scrollIntoView={false}
+        selectedId={4}
+      />,
+      {
+        preloadedState: {
+          ...preloadedState,
+          axis: { ...preloadedState.axis, currentBookId: 5 },
+        },
+        urlStore: { actions: { showBooksIndexEntry } },
+      }
+    )
+
+    const cover = screen.getByTitle('Dune')
+    expect(cover).not.toHaveClass('selected')
+
+    await user.click(cover)
+    expect(onSelect).toHaveBeenCalledWith(5)
+    expect(showBooksIndexEntry).not.toHaveBeenCalled()
+  })
 })

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import reducer, { slice } from 'store/books/slice'
 import {
+  selectBookDetails,
   selectBookRef,
   selectBooksIndexEntry,
   selectBooksIndexIds,
@@ -16,6 +17,7 @@ const {
   addBooks,
   addBooksRefs,
   clearBooksRefs,
+  setBookDetails,
   setCurrentBookDetails,
   setRequestedBookId,
 } = slice.actions
@@ -25,6 +27,7 @@ describe('books slice', () => {
     expect(reducer(undefined, { type: 'unknown' })).toEqual({
       booksIndex: {},
       booksRefs: {},
+      bookDetailsById: {},
       bookDetailsCurrent: {},
       requestedBookId: null,
     })
@@ -58,8 +61,10 @@ describe('books slice', () => {
   it('sets current details and requested book id', () => {
     let state = reducer(undefined, setCurrentBookDetails({ id: 9, title: 'Now' }))
     state = reducer(state, setRequestedBookId(9))
+    state = reducer(state, setBookDetails({ id: 4, title: 'Stored' }))
 
     expect(state.bookDetailsCurrent).toEqual({ id: 9, title: 'Now' })
+    expect(state.bookDetailsById[4]).toEqual({ id: 4, title: 'Stored' })
     expect(state.requestedBookId).toBe(9)
   })
 })
@@ -70,6 +75,7 @@ describe('books selectors', () => {
     storeBooks: {
       booksIndex: { 1: { id: 1 }, 2: { id: 2, title: 'Current' } },
       booksRefs: { 2: { id: 2, year: 1999 } },
+      bookDetailsById: { 4: { id: 4, title: 'Stored' } },
       bookDetailsCurrent: { id: 2, title: 'Details' },
       requestedBookId: 5,
     },
@@ -77,6 +83,8 @@ describe('books selectors', () => {
 
   it('selects index entries, refs, details, and request id', () => {
     expect(selectCurrentBookDetails()(state)).toEqual({ id: 2, title: 'Details' })
+    expect(selectBookDetails(4)(state)).toEqual({ id: 4, title: 'Stored' })
+    expect(selectBookDetails(null)(state)).toBeNull()
     expect(selectBooksIndexEntry(1)(state)).toEqual({ id: 1 })
     expect(selectBooksIndexIds()(state)).toEqual([1, 2])
     expect(selectCurrentBookIndexEntry()(state)).toEqual({ id: 2, title: 'Current' })
