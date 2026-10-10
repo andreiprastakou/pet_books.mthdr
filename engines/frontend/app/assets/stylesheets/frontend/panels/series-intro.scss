@@ -1,14 +1,17 @@
 .panel--series-intro {
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
 
   .panel--header {
     align-items: center;
     display: flex;
   }
-}
 
-.series-page {
-  .panel--books-list-covers {
-    height: calc(100vh - 56px - 180px);
+  .panel--body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
 }

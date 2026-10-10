@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Col } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
-import Layout from 'pages/Layout'
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import BooksListCovers from 'panels/BooksListCovers'
 import PublicListIntro from 'panels/publicListIntro/ListIntro'
@@ -64,34 +63,38 @@ const PublicListsPage = () => {
     <>
       { isNullish(listId) ? null : <PageConfigurer bookIds={bookIds} /> }
 
-      <Layout classes='panels-page public-lists-page'>
-        <Col xs={8}>
-          <PublicListIntro
-            listType={listType}
-            selectedList={selectedList}
-            selectedListId={listId}
-            setSelectedListId={selectPublicList}
-          />
-
-          { isNullish(listId) ? null : (
-            <BooksListCovers
-              bookLabels={bookLabels}
-              header='Noted Works'
-              showControls={false}
+      <PageFrame className='public-lists-page'>
+        <Column span={2}>
+          <Slot grow={0}>
+            <PublicListIntro
+              listType={listType}
+              selectedList={selectedList}
+              selectedListId={listId}
+              setSelectedListId={selectPublicList}
             />
-          ) }
-        </Col>
+          </Slot>
 
-        <Col xs={4}>
-          <div className='panel--selected-book--narrow'>
+          <Slot>
+            { isNullish(listId) ? null : (
+              <BooksListCovers
+                bookLabels={bookLabels}
+                header='Noted Works'
+                showControls={false}
+              />
+            ) }
+          </Slot>
+        </Column>
+
+        <Column span={1}>
+          <Slot>
             <BookDetails
               header='Selected book'
               showCover={false}
               showPublicLists={false}
             />
-          </div>
-        </Col>
-      </Layout>
+          </Slot>
+        </Column>
+      </PageFrame>
     </>
   )
 }

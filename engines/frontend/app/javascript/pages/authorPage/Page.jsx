@@ -1,7 +1,6 @@
 import React from 'react'
-import { Col } from 'react-bootstrap'
 
-import Layout from 'pages/Layout'
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import AuthorCard from 'panels/authorCard/AuthorCard'
 import BooksStack from 'panels/booksStack/BooksStack'
 import CollectionWorks from 'panels/CollectionWorks'
@@ -12,19 +11,31 @@ const AuthorPage = () => (
   <>
     <PageStoreConfigurer />
 
-    <Layout classes='panels-page page--author'>
-      <Col xs={4}>
-        <AuthorCard linkToAuthorPage={false} />
+    <PageFrame className='page--author'>
+      <Column span={1}>
+        <Slot
+          grow={0}
+          maxHeight='45%'
+          minHeight='220px'
+        >
+          <AuthorCard linkToAuthorPage={false} />
+        </Slot>
 
-        <BooksStack />
-      </Col>
+        <Slot>
+          <BooksStack />
+        </Slot>
+      </Column>
 
-      <Col xs={8}>
-        <SelectedWork header='Selected Work' />
+      <Column span={2}>
+        <Slot>
+          <SelectedWork header='Selected Work' />
+        </Slot>
 
-        <CollectionWorks />
-      </Col>
-    </Layout>
+        <Slot>
+          <CollectionWorks />
+        </Slot>
+      </Column>
+    </PageFrame>
   </>
 )
 

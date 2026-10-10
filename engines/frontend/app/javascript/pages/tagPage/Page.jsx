@@ -1,9 +1,8 @@
 import React, { useContext } from 'react'
-import { Col } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import InternalLink from 'components/InternalLink'
-import Layout from 'pages/Layout'
 import BooksListCovers from 'panels/BooksListCovers'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import PageConfigurer from 'pages/tagPage/PageConfigurer'
@@ -18,35 +17,37 @@ const TagPage = () => {
     <>
       <PageConfigurer />
 
-      <Layout classes='panels-page tag-page'>
-        <Col xs={8}>
-          <BooksListCovers
-            header={routesReady ? (
-              <>
-                <InternalLink href={tagsPagePath()}>
-                  { 'Tags' }
-                </InternalLink>
+      <PageFrame className='tag-page'>
+        <Column span={2}>
+          <Slot>
+            <BooksListCovers
+              header={routesReady ? (
+                <>
+                  <InternalLink href={tagsPagePath()}>
+                    { 'Tags' }
+                  </InternalLink>
 
-                { '/' }
-                &nbsp;
+                  { '/' }
+                  &nbsp;
 
-                <span title={tag?.name}>
-                  { `#${tag?.name || ''}` }
-                </span>
-              </>
-            ) : null}
-          />
-        </Col>
+                  <span title={tag?.name}>
+                    { `#${tag?.name || ''}` }
+                  </span>
+                </>
+              ) : null}
+            />
+          </Slot>
+        </Column>
 
-        <Col xs={4}>
-          <div className='tag-selected-book'>
+        <Column span={1}>
+          <Slot>
             <BookDetails
               header='Selected book'
               showCover={false}
             />
-          </div>
-        </Col>
-      </Layout>
+          </Slot>
+        </Column>
+      </PageFrame>
     </>
   )
 }

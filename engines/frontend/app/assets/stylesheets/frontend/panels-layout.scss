@@ -1,0 +1,131 @@
+// Viewport budget lives here. Panels inside a slot only fill that slot.
+.page:has(.page-frame) {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.page-frame {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 10px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-height: 0;
+  min-width: 0;
+  padding: 10px;
+}
+
+.page-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.page-column-span-1 {
+  grid-column: span 1;
+}
+
+.page-column-span-2 {
+  grid-column: span 2;
+}
+
+.page-column-span-3 {
+  grid-column: span 3;
+}
+
+.panel-slot {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+
+  &:empty {
+    display: none;
+  }
+
+  // Size to content. min() keeps the floor from exceeding the ceiling on a
+  // short window, so the sibling slot still receives the leftover height.
+  &[data-grow='0'] {
+    --slot-max-height: 45%;
+    --slot-min-height: 0px;
+
+    flex: 0 1 auto;
+    max-height: var(--slot-max-height);
+    // Quoted so SassC does not treat CSS min() as its own function.
+    min-height: #{"min(var(--slot-min-height), var(--slot-max-height))"};
+
+    > * {
+      flex: 1 1 auto;
+      height: auto;
+      max-height: 100%;
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
+
+  > * {
+    flex: 1 1 auto;
+    height: 100%;
+    margin: 0;
+    max-height: 100%;
+    min-height: 0;
+    min-width: 0;
+  }
+}
+
+.page-frame {
+  .selected-works-split {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .selected-works-split-pane {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    min-width: 0;
+
+    > * {
+      flex: 1 1 auto;
+      height: 100%;
+      max-height: 100%;
+      min-height: 0;
+      min-width: 0;
+    }
+  }
+
+  .panel--books-stack .panel--body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .books-spine-stack-wrap {
+    flex: 1 1 auto;
+    height: auto;
+    max-height: none;
+    min-height: 0;
+  }
+
+  .books-spine-stack {
+    height: 100%;
+    max-height: none;
+  }
+
+  .panel--author-card,
+  .panel--authors-list,
+  .panel--book-details,
+  .panel--books-list-covers,
+  .panel--books-stack,
+  .panel--books-year,
+  .panel--included-works,
+  .panel--series-list,
+  .panel--tags-list {
+    height: 100%;
+    max-height: 100%;
+  }
+}

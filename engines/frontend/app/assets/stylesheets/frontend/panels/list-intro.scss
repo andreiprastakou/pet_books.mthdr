@@ -1,4 +1,15 @@
 .panel--public-list-intro {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+
+  .panel--body {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
   .panel--header {
     align-items: center;
     display: flex;

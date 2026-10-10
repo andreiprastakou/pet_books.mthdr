@@ -1,7 +1,6 @@
 import React from 'react'
-import { Col } from 'react-bootstrap'
 
-import Layout from 'pages/Layout'
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import PageConfigurer from 'pages/seriesIndexPage/PageConfigurer'
 import SeriesList from 'panels/seriesList/SeriesList'
 
@@ -9,11 +8,13 @@ const SeriesIndexPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='panels-page page--series-index'>
-      <Col xs={12}>
-        <SeriesList />
-      </Col>
-    </Layout>
+    <PageFrame className='page--series-index'>
+      <Column span={3}>
+        <Slot>
+          <SeriesList />
+        </Slot>
+      </Column>
+    </PageFrame>
   </>
 )
 

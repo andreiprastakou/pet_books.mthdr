@@ -1,7 +1,6 @@
 import React from 'react'
-import { Col } from 'react-bootstrap'
 
-import Layout from 'pages/Layout'
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import BooksYear from 'panels/booksYear/BooksYear'
 import PageConfigurer from 'pages/booksPage/PageConfigurer'
@@ -10,20 +9,22 @@ const BooksPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='panels-page page--books'>
-      <Col xs={8}>
-        <BooksYear />
-      </Col>
+    <PageFrame className='page--books'>
+      <Column span={2}>
+        <Slot>
+          <BooksYear />
+        </Slot>
+      </Column>
 
-      <Col xs={4}>
-        <div className='panel--selected-book--narrow'>
+      <Column span={1}>
+        <Slot>
           <BookDetails
             header='Selected book'
             showCover={false}
           />
-        </div>
-      </Col>
-    </Layout>
+        </Slot>
+      </Column>
+    </PageFrame>
   </>
 )
 

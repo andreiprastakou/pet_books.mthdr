@@ -1,8 +1,7 @@
 import React from 'react'
-import { Col } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
-import Layout from 'pages/Layout'
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import BooksListCovers from 'panels/BooksListCovers'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import SeriesIntro from 'panels/seriesIntro/SeriesIntro'
@@ -16,25 +15,29 @@ const SeriesPage = () => {
     <>
       <PageConfigurer />
 
-      <Layout classes='panels-page series-page'>
-        <Col xs={8}>
-          <SeriesIntro series={series} />
+      <PageFrame className='series-page'>
+        <Column span={2}>
+          <Slot grow={0}>
+            <SeriesIntro series={series} />
+          </Slot>
 
-          <BooksListCovers
-            header='Books'
-            showControls={false}
-          />
-        </Col>
+          <Slot>
+            <BooksListCovers
+              header='Books'
+              showControls={false}
+            />
+          </Slot>
+        </Column>
 
-        <Col xs={4}>
-          <div className='panel--selected-book--narrow'>
+        <Column span={1}>
+          <Slot>
             <BookDetails
               header='Selected Book'
               showCover={false}
             />
-          </div>
-        </Col>
-      </Layout>
+          </Slot>
+        </Column>
+      </PageFrame>
     </>
   )
 }
