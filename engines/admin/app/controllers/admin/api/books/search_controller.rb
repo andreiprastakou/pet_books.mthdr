@@ -6,13 +6,17 @@ module Admin
 
         def show
           query = params[:q].to_s.strip
-          @books = if query.present?
-                     ::Book.preload(:authors).where('title LIKE ? or original_title LIKE ?', "%#{query}%", "%#{query}%")
-                           .order(:title)
-                           .limit(10)
-                   else
-                     []
-                   end
+          @books = query.present? ? search_scope(query) : []
+        end
+
+        private
+
+        def search_scope(query)
+          scope = ::Book.preload(:authors)
+                        .where('title LIKE ? or original_title LIKE ?', "%#{query}%", "%#{query}%")
+          author_ids = Array(params[:author_ids]).compact_blank
+          scope = scope.by_author(author_ids).distinct if author_ids.present?
+          scope.order(:title).limit(10)
         end
       end
     end

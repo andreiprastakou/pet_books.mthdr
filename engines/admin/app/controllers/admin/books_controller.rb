@@ -23,6 +23,7 @@ module Admin
       genre_names: [],
       author_ids: [],
       series_ids: [],
+      collected_work_ids: [],
       external_links_attributes: {},
       external_identities_attributes: {},
       descriptions_attributes: {}
@@ -36,6 +37,7 @@ module Admin
       :descriptions,
       :series,
       :tags,
+      { book_collections_as_collection: { book: :authors } },
       :collections,
       { genres: { genre: :cover_design } },
       { book_public_lists: { public_list: :public_list_type } },
