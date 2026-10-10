@@ -116,6 +116,17 @@
     max-height: none;
   }
 
+  &.page--author-with-description {
+    .author-page-rest {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      height: 100%;
+      min-height: 0;
+      min-width: 0;
+    }
+  }
+
   .panel--author-card,
   .panel--authors-list,
   .panel--book-details,

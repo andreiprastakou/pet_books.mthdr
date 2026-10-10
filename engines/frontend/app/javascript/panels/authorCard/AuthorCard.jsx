@@ -35,7 +35,7 @@ const AuthorCardHeader = ({ authorsPagePath, header, name }) => header || (
   </>
 )
 
-const AuthorCardWrap = ({ linkToAuthorPage, showPicture, header }) => {
+const AuthorCardWrap = ({ linkToAuthorPage, showDescription, showPicture, header }) => {
   const authorId = useSelector(selectCurrentAuthorId())
   const authorFull = useSelector(selectAuthorFull(authorId))
   const dispatch = useDispatch()
@@ -49,6 +49,7 @@ const AuthorCardWrap = ({ linkToAuthorPage, showPicture, header }) => {
       authorFull={authorFull}
       header={header}
       linkToAuthorPage={linkToAuthorPage}
+      showDescription={showDescription}
       showPicture={showPicture}
     />
   )
@@ -57,6 +58,7 @@ const AuthorCardWrap = ({ linkToAuthorPage, showPicture, header }) => {
 const AuthorCard = ({
   authorFull,
   linkToAuthorPage = true,
+  showDescription = false,
   showPicture = true,
   header = null,
 }) => {
@@ -72,11 +74,53 @@ const AuthorCard = ({
 
   if (!routesReady) return null
 
+  const description = showDescription ? authorFull.description : null
+  const identity = (
+    <>
+      { showPicture ? (
+        <ImageContainer
+          classes='author-image'
+          onClick={handleImageClick}
+          url={authorFull.thumbUrl || defaultPhotoUrl}
+        />
+      ) : null }
+
+      <div className='details-right'>
+        <div className='author-name'>
+          { authorFull.fullname }
+        </div>
+
+        <div className='author-card-text'>
+          { authorFull.birthYear ? (
+            <div>
+              { renderLifetime(authorFull) }
+            </div>
+          ) : null}
+        </div>
+
+        <div className='author-tags'>
+          { sortedTags.map(tag =>
+            (<TagBadge
+              id={tag.id}
+              key={tag.id}
+              text={tag.name}
+             />)
+          ) }
+        </div>
+
+        <Toolbar
+          authorFull={authorFull}
+          linkToAuthorPage={linkToAuthorPage}
+        />
+      </div>
+    </>
+  )
+
   return (
     <Card
       className={`panel--author-card panel--widget ${
         showPicture ? '' : 'author-card-without-picture'
-      }`}
+      } ${description ? 'author-card--with-description' : ''}`}
     >
       <Card.Header className='panel--header'>
         <AuthorCardHeader
@@ -87,42 +131,19 @@ const AuthorCard = ({
       </Card.Header>
 
       <Card.Body className='panel--body'>
-        { showPicture ? (
-          <ImageContainer
-            classes='author-image'
-            onClick={handleImageClick}
-            url={authorFull.thumbUrl || defaultPhotoUrl}
-          />
+        { description ? (
+          <div className='author-card-main'>
+            { identity }
+          </div>
+        ) : identity }
+
+        { description ? (
+          <div className='author-card-description'>
+            <p>
+              { description }
+            </p>
+          </div>
         ) : null }
-
-        <div className='details-right'>
-          <div className='author-name'>
-            { authorFull.fullname }
-          </div>
-
-          <div className='author-card-text'>
-            { authorFull.birthYear ? (
-              <div>
-                { renderLifetime(authorFull) }
-              </div>
-            ) : null}
-          </div>
-
-          <div className='author-tags'>
-            { sortedTags.map(tag =>
-              (<TagBadge
-                id={tag.id}
-                key={tag.id}
-                text={tag.name}
-               />)
-            ) }
-          </div>
-
-          <Toolbar
-            authorFull={authorFull}
-            linkToAuthorPage={linkToAuthorPage}
-          />
-        </div>
       </Card.Body>
     </Card>
   )
@@ -131,6 +152,7 @@ const AuthorCard = ({
 AuthorCardWrap.propTypes = {
   header: PropTypes.node,
   linkToAuthorPage: PropTypes.bool,
+  showDescription: PropTypes.bool,
   showPicture: PropTypes.bool,
 }
 
@@ -144,6 +166,7 @@ AuthorCard.propTypes = {
   authorFull: PropTypes.object.isRequired,
   header: PropTypes.node,
   linkToAuthorPage: PropTypes.bool,
+  showDescription: PropTypes.bool,
   showPicture: PropTypes.bool,
 }
 

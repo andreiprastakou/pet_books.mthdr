@@ -30,6 +30,7 @@ RSpec.describe '/api/authors/full_entries' do
         }],
         birth_year: 1900,
         death_year: 2000,
+        description: nil,
         tag_ids: [tag.id],
         books_count: 1,
         popularity: 10_000,
@@ -51,6 +52,20 @@ RSpec.describe '/api/authors/full_entries' do
       send_request
       expect(response).to be_successful
       expect(response.body).to eq(expected_response.to_json)
+    end
+
+    context 'when the author has descriptions' do
+      before do
+        create(:description, owner: author, text: 'Later bio', priority: 2)
+        create(:description, owner: author, text: 'First bio', priority: 0)
+      end
+
+      it 'returns the first description by priority' do
+        send_request
+
+        expect(response).to be_successful
+        expect(json_response[:description]).to eq('First bio')
+      end
     end
   end
 end
