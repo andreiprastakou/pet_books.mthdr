@@ -23,7 +23,6 @@ module Admin
       genre_names: [],
       author_ids: [],
       series_ids: [],
-      collected_work_ids: [],
       external_links_attributes: {},
       external_identities_attributes: {},
       descriptions_attributes: {}

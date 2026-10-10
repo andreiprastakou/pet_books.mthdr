@@ -148,42 +148,6 @@ RSpec.describe Admin::BooksController do
       expect(response.body).to include("Current value 'audio_drama' will be replaced!")
       expect(response.body).not_to include('<option value="audio_drama"')
     end
-
-    it 'hides collected works when the book has none and is not a collection' do
-      send_request
-      expect(response.body).to match(/data-book-form-target="collectedWorksSection"\s+hidden/)
-    end
-
-    context 'when the book has collected works' do
-      let(:work) { create(:book, title: 'Inner Work', literary_form: 'novel', authors: [author]) }
-      let(:book) do
-        create(:book, literary_form: 'collection', authors: [author]).tap do |collection|
-          create(:book_collection, collection: collection, book: work)
-        end
-      end
-
-      it 'lists the works and shows the add input' do
-        send_request
-        expect(response.body).to include('Collected works')
-        expect(response.body).to include('Inner Work')
-        expect(response.body).to include(%(data-autocomplete-author-ids-value="#{book.author_ids.to_json}"))
-        input = response.body[/class="col-md-6 b-collected-works-input"[^>]*/]
-        expect(input).to be_present
-        expect(input).not_to include('hidden')
-      end
-
-      context 'when the saved form is not collection' do
-        before { book.update!(literary_form: 'novel') }
-
-        it 'lists the works and hides the add input' do
-          send_request
-          expect(response.body).to include('Inner Work')
-          expect(response.body).not_to match(/data-book-form-target="collectedWorksSection"\s+hidden/)
-          input = response.body[/class="col-md-6 b-collected-works-input"[^>]*/]
-          expect(input).to include('hidden')
-        end
-      end
-    end
   end
 
   describe 'POST /admin/books' do
@@ -259,21 +223,6 @@ RSpec.describe Admin::BooksController do
       send_request
       expect(response).to redirect_to(admin_book_path(book))
       expect(flash[:notice]).to eq('Book was successfully updated.')
-    end
-
-    it 'replaces collected works' do
-      collection = create(:book, literary_form: 'collection', authors: [author])
-      kept = create(:book, literary_form: 'novel', title: 'Kept Work')
-      removed = create(:book, literary_form: 'novel', title: 'Removed Work')
-      added = create(:book, literary_form: 'novel', title: 'Added Work')
-      create(:book_collection, collection: collection, book: kept)
-      create(:book_collection, collection: collection, book: removed)
-
-      patch admin_book_path(collection),
-            params: { book: { collected_work_ids: [kept.id.to_s, added.id.to_s, ''] } },
-            headers: authorization_header
-
-      expect(collection.reload.collected_works).to contain_exactly(kept, added)
     end
 
     context 'with invalid parameters' do
