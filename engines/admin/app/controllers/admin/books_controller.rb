@@ -42,7 +42,10 @@ module Admin
     ).freeze
 
     COLLECTED_WORKS_PRELOADS = %i[
+      descriptions
+      external_links
       genres
+      generative_summary_tasks
     ].freeze
 
     BOOK_PRELOADS = [
