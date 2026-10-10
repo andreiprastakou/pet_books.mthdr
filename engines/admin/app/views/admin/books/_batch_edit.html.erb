@@ -11,7 +11,7 @@
 <% row_url_params[:membership_column] = membership_column if show_list_role %>
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form"
   data-books-batch-form-batch-row-url-value="<%= admin_books_batch_row_path('BOOK_ID', row_url_params) %>">
-  <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
+  <% target = local_assigns.fetch(:target) %>
   <% method = local_assigns.fetch(:method, :put) %>
   <% initial_author_entries = authors_to_badges_entries(Array(local_assigns[:initial_authors])) %>
   <% initial_literary_form = local_assigns[:initial_literary_form] %>

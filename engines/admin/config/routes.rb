@@ -30,7 +30,6 @@ Admin::Engine.routes.draw do
     end
 
     namespace :books do
-      resource :batch, only: %i[edit update], controller: 'batch'
       resources :batch_rows, only: :show, controller: 'batch_rows'
       resource :search, only: %i[create show], controller: 'search'
       resource :batch_generate_summaries, only: :create, controller: 'batch_generate_summaries'
