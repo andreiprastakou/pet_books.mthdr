@@ -1,7 +1,11 @@
 <div class="row b-books-batch-row align-items-center" data-name="book-row" data-books-batch-form-target="bookEntry">
   <div class="col-1">
-    <%= text_field_tag "batch[#{index}][id]", book.id, class: 'form-control form-control-sm', disabled: true %>
-    <%= hidden_field_tag "batch[#{index}][id]", book.id %>
+    <% if book.persisted? %>
+      <%= admin_link_to book.id, admin_book_path(book), target: '_blank' %>
+      <%= hidden_field_tag "batch[#{index}][id]", book.id %>
+    <% else %>
+      <%= text_field_tag "batch[#{index}][id]", nil, class: 'form-control form-control-sm', disabled: true %>
+    <% end %>
   </div>
   <!-- Title input -->
   <div class="col-2">
@@ -29,20 +33,26 @@
   <!-- Author input -->
   <div class="col-2" data-controller="association-input">
     <% entries = authors_to_badges_entries(book.authors) %>
+    <% ensured_entries = authors_to_badges_entries(
+         Array(local_assigns[:ensure_authors]).reject { |item| book.authors.any? { |existing| existing.id == item.id } }
+       ) %>
     <%= render "admin/books/form/association_badges_input_mini",
       name: "batch[#{index}][author_ids][]",
       autocomplete_url: admin_api_authors_search_path(format: :json),
       old_values: entries,
-      values: entries %>
+      values: entries + ensured_entries %>
   </div>
   <!-- Series input -->
   <div class="col-2" data-controller="association-input">
     <% entries = series_to_badges_entries(book.series) %>
+    <% ensured_entries = series_to_badges_entries(
+         Array(local_assigns[:ensure_series]).reject { |item| book.series.any? { |existing| existing.id == item.id } }
+       ) %>
     <%= render "admin/books/form/association_badges_input_mini",
       name: "batch[#{index}][series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),
       old_values: entries,
-      values: entries %>
+      values: entries + ensured_entries %>
   </div>
   <!-- Year input -->
   <div class="col-1">

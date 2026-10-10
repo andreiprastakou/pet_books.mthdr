@@ -3,6 +3,7 @@
 <div class="container mt-4">
   <div class="btn-group" role="group">
     <%= admin_buttonly_link_to "edit", edit_admin_series_path(@series) %>
+    <%= admin_buttonly_link_to "edit all books", edit_admin_series_books_batch_path(@series) %>
     <%= button_to_generate_books_summaries(@series.books) %>
     <%= button_to "delete", [:admin, @series], method: :delete, class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>
   </div>

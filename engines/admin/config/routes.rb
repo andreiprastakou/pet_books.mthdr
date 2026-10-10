@@ -170,10 +170,18 @@ Admin::Engine.routes.draw do
     resources :genres
 
     resources :public_list_types do
-      resources :public_lists, except: %i[index]
+      resources :public_lists, except: %i[index] do
+        scope module: :public_lists do
+          resource :books_batch, only: %i[edit update], controller: 'books_batch'
+        end
+      end
     end
 
-    resources :series
+    resources :series do
+      scope module: :series do
+        resource :books_batch, only: %i[edit update], controller: 'books_batch'
+      end
+    end
 
     resources :tags
 

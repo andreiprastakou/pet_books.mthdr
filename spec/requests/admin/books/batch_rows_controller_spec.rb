@@ -36,6 +36,36 @@ RSpec.describe Admin::Books::BatchRowsController do
       expect(response.body).to include('Row Series')
       expect(response.body).to include('https://en.wikipedia.org/wiki/Persisted_Story')
       expect(response.body).to include('data-books-batch-form-target="bookEntry"')
+      expect(response.body).to include("href=\"#{admin_book_path(book)}\"")
+      expect(response.body).to include('target="_blank"')
+      expect(response.body).to include(">#{book.id}</a>")
+      expect(response.body).not_to include('disabled="disabled"')
+    end
+
+    it 'includes an ensured series the book does not have yet' do
+      extra = create(:series, name: 'Ensured Series')
+
+      get admin_books_batch_row_path(book),
+          params: { index: '171000', ensure_series_id: extra.id },
+          headers: authorization_header
+
+      expect(response).to be_successful
+      expect(response.body).to include('Row Series')
+      expect(response.body.scan('Ensured Series').size).to eq(1)
+      expect(Joins::BookSeries.where(book: book, series: extra)).not_to exist
+    end
+
+    it 'includes an ensured author the book does not have yet' do
+      extra = create(:author, fullname: 'Ensured Author')
+
+      get admin_books_batch_row_path(book),
+          params: { index: '171000', ensure_author_id: extra.id },
+          headers: authorization_header
+
+      expect(response).to be_successful
+      expect(response.body).to include('Row Author')
+      expect(response.body.scan('Ensured Author').size).to eq(1)
+      expect(Joins::BookAuthor.where(book: book, author: extra)).not_to exist
     end
 
     it 'ignores a non-numeric index' do

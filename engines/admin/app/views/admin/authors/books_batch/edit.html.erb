@@ -22,6 +22,7 @@
     <%= render 'admin/books/batch_edit',
       books: @books,
       target: admin_author_books_batch_path(@author),
-      initial_authors: [@author] %>
+      initial_authors: [@author],
+      ensure_authors: [@author] %>
   </div>
 </div>

@@ -1,11 +1,19 @@
+<% initial_series = Array(local_assigns[:initial_series]) %>
+<% initial_series_entries = series_to_badges_entries(initial_series) %>
+<% ensure_authors = Array(local_assigns[:ensure_authors]) %>
+<% row_url_params = {} %>
+<% row_url_params[:ensure_series_id] = initial_series.first.id if initial_series.one? %>
+<% row_url_params[:ensure_author_id] = ensure_authors.first.id if ensure_authors.one? %>
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form"
-  data-books-batch-form-batch-row-url-value="<%= admin_books_batch_row_path('BOOK_ID') %>">
+  data-books-batch-form-batch-row-url-value="<%= admin_books_batch_row_path('BOOK_ID', row_url_params) %>">
   <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
   <% method = local_assigns.fetch(:method, :put) %>
   <% initial_author_entries = authors_to_badges_entries(Array(local_assigns[:initial_authors])) %>
   <% initial_literary_form = local_assigns[:initial_literary_form] %>
   <% initial_year_published = local_assigns[:initial_year_published] %>
   <%= form_tag target, method: method do %>
+    <div data-books-batch-form-target="notices"></div>
+
     <div class="row b-books-batch-row b-books-batch-header fw-bold text-muted">
       <div class="col-1">ID</div>
       <div class="col-2">Title</div>
@@ -64,7 +72,7 @@
             name: "batch[#{index}][series_ids][]",
             autocomplete_url: admin_api_series_search_path(format: :json),
             old_values: [],
-            values: [] %>
+            values: initial_series_entries %>
         </div>
         <!-- Year input -->
         <div class="col-1">
