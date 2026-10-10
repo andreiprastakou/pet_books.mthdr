@@ -87,6 +87,35 @@ RSpec.describe Admin::Books::CollectionBatchController do
       end
     end
 
+    context 'when adding an existing work that is not in the collection' do
+      let(:existing_work) { create(:book, title: 'Fetched Work', authors: [author], literary_form: 'novel') }
+      let(:params) do
+        {
+          batch: {
+            0 => {
+              id: included_work.id,
+              title: included_work.title,
+              year_published: included_work.year_published,
+              author_ids: [author.id]
+            },
+            1 => {
+              id: existing_work.id,
+              title: existing_work.title,
+              year_published: existing_work.year_published,
+              author_ids: [author.id]
+            }
+          }
+        }
+      end
+
+      it 'includes the existing book in the collection' do
+        expect { send_request }.to change(Joins::BookCollection, :count).by(1)
+
+        expect(collection.reload.collected_works).to contain_exactly(included_work, existing_work)
+        expect(response).to redirect_to admin_book_path(collection)
+      end
+    end
+
     context 'when updating an included work' do
       let(:params) do
         {
