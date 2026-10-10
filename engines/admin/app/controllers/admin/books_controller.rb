@@ -1,4 +1,5 @@
 module Admin
+  # rubocop:disable-next Metrics/ClassLength
   class BooksController < AdminController
     before_action :fetch_record, only: %i[show edit update destroy]
 

@@ -36,13 +36,15 @@ RSpec.describe Admin::Books::CollectionBatchController do
     it 'prefills new rows with the collection authors' do
       send_request
 
-      template = response.body[/<template[^>]*bookTemplate[\s\S]*?<\/template>/]
+      template = response.body[%r{<template[^>]*bookTemplate[\s\S]*?</template>}]
       expect(template).to include(author.id.to_s)
       expect(template).to include('Title Author')
       expect(template).to include('value="short"')
       expect(template).to include(admin_api_books_search_path(format: :json))
       expect(template).to include('books-batch-form#onExistingBookSelected')
-      expect(response.body).to include('name="batch[ENTRY_INDEX][year_published]" id="batch_ENTRY_INDEX_year_published" value="1984"')
+      expect(response.body).to include(
+        'name="batch[ENTRY_INDEX][year_published]" id="batch_ENTRY_INDEX_year_published" value="1984"'
+      )
       expect(response.body).not_to include('ensure_author_id')
     end
 
@@ -54,7 +56,9 @@ RSpec.describe Admin::Books::CollectionBatchController do
   end
 
   describe 'PUT /admin/books/:book_id/collection_batch' do
-    let(:send_request) { put admin_book_collection_batch_path(collection), params: params, headers: authorization_header }
+    let(:send_request) do
+      put admin_book_collection_batch_path(collection), params: params, headers: authorization_header
+    end
 
     before { create(:book_collection, collection: collection, book: included_work) }
 

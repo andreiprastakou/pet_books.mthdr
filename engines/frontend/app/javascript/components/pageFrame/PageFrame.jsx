@@ -40,7 +40,7 @@ const Slot = ({ children, grow = 1, maxHeight = null, minHeight = null }) => {
     <div
       className='panel-slot'
       data-grow={grow}
-      style={Object.keys(style).length ? style : undefined}
+      style={Object.keys(style).length ? style : null}
     >
       { children }
     </div>

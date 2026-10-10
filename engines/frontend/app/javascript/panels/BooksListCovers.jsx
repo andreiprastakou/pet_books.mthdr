@@ -78,10 +78,11 @@ const BooksListCovers = ({
   const pendingPageSelection = useRef(null)
 
   useEffect(() => {
-    if (!usesStoreList) return undefined
+    if (usesStoreList) registerPanel(panelId)
 
-    registerPanel(panelId)
-    return () => unregisterPanel(panelId)
+    return () => {
+      if (usesStoreList) unregisterPanel(panelId)
+    }
   }, [panelId, registerPanel, unregisterPanel, usesStoreList])
 
   useEffect(() => {
@@ -112,14 +113,15 @@ const BooksListCovers = ({
   }, [activatePanel, panelId, registeredPanelIds, usesStoreList])
 
   useEffect(() => {
-    if (!usesStoreList) return undefined
-
     const handleOutsideInteraction = event => {
       if (!ref.current?.contains(event.target)) deactivatePanel(panelId)
     }
 
-    document.addEventListener('focusin', handleOutsideInteraction)
-    document.addEventListener('click', handleOutsideInteraction)
+    if (usesStoreList) {
+      document.addEventListener('focusin', handleOutsideInteraction)
+      document.addEventListener('click', handleOutsideInteraction)
+    }
+
     return () => {
       document.removeEventListener('focusin', handleOutsideInteraction)
       document.removeEventListener('click', handleOutsideInteraction)
