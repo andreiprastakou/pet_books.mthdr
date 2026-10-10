@@ -7,17 +7,20 @@ export default class extends Controller {
     'bookTemplate',
   ]
 
-  connect() {
-    this.nullifyRedundantOriginalTitles()
+  static values = {
+    batchRowUrl: String,
   }
 
-  nullifyRedundantOriginalTitles() {
-    this.bookEntryTargets.forEach(bookEntry => {
-      const title = bookEntry.querySelector('[data-name="title"]')
-      const originalTitle = bookEntry.querySelector('[data-name="original_title"]')
-      if (title.value === originalTitle.value)
-        originalTitle.value = null
-    })
+  connect() {
+    this.bookEntryTargets.forEach(bookEntry => this.nullifyRedundantOriginalTitle(bookEntry))
+  }
+
+  nullifyRedundantOriginalTitle(bookEntry) {
+    const title = bookEntry.querySelector('[data-name="title"]')
+    const originalTitle = bookEntry.querySelector('[data-name="original_title"]')
+    if (!title || !originalTitle) return
+    if (title.value === originalTitle.value)
+      originalTitle.value = null
   }
 
   removeBook(event) {
@@ -35,5 +38,42 @@ export default class extends Controller {
     const index = Date.now()
     tempWorkbench.innerHTML = tempWorkbench.innerHTML.replaceAll('ENTRY_INDEX', index)
     booksList.appendChild(tempWorkbench.firstElementChild)
+  }
+
+  // ACTION
+  async onExistingBookSelected(event) {
+    const entry = event.detail?.entry
+    const row = event.currentTarget.closest('[data-name="book-row"]')
+    if (!entry?.id || !row) return
+
+    const rendered = await this.fetchBookRow(entry.id, this.rowIndex(row))
+    if (!rendered) return
+
+    this.nullifyRedundantOriginalTitle(rendered)
+    row.replaceWith(rendered)
+  }
+
+  async fetchBookRow(bookId, index) {
+    const url = new URL(this.batchRowUrlValue.replace('BOOK_ID', bookId), window.location.origin)
+    url.searchParams.set('index', index)
+
+    try {
+      const response = await fetch(url, { headers: { Accept: 'text/html' } })
+      if (!response.ok) return null
+
+      const holder = document.createElement('div')
+      holder.innerHTML = (await response.text()).trim()
+      return holder.firstElementChild
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error('Error rendering selected book:', error)
+      return null
+    }
+  }
+
+  rowIndex(row) {
+    const named = row.querySelector('[name^="batch["]')
+    const match = named?.name.match(/^batch\[(\d+)\]/)
+    return match ? match[1] : String(Date.now())
   }
 }
