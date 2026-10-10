@@ -38,11 +38,20 @@ const GRID_CELL_INSET = 10
 
 // eslint-disable-next-line max-lines-per-function, max-statements
 const BooksListCovers = ({
-  bookLabels = null, header = null, showControls = true,
+  bookIds: bookIdsProp = null,
+  bookLabels = null,
+  className = '',
+  header = null,
+  label = 'Books',
+  panelId = PANEL_ID,
+  showControls = true,
 }) => {
+  const usesStoreList = bookIdsProp === null
   const dispatch = useDispatch()
-  const bookIds = useSelector(selectBookIds())
-  const totalCount = useSelector(selectBooksTotal())
+  const storeBookIds = useSelector(selectBookIds())
+  const storeTotalCount = useSelector(selectBooksTotal())
+  const bookIds = usesStoreList ? storeBookIds : bookIdsProp
+  const totalCount = usesStoreList ? storeTotalCount : bookIdsProp.length
   const page = useSelector(selectPage())
   const perPage = useSelector(selectPerPage())
   const currentBookId = useSelector(selectCurrentBookId())
@@ -61,17 +70,21 @@ const BooksListCovers = ({
       unregisterPanel,
     },
   } = useContext(UrlStoreContext)
-  const isActive = activePanelId === PANEL_ID
+  const isActive = activePanelId === panelId
   const booksKey = bookIds.join(',')
   const previousBooksKey = useRef(booksKey)
   const pendingPageSelection = useRef(null)
 
   useEffect(() => {
-    registerPanel(PANEL_ID)
-    return () => unregisterPanel(PANEL_ID)
-  }, [])
+    if (!usesStoreList) return undefined
+
+    registerPanel(panelId)
+    return () => unregisterPanel(panelId)
+  }, [panelId, registerPanel, unregisterPanel, usesStoreList])
 
   useEffect(() => {
+    if (!usesStoreList) return
+
     const pending = pendingPageSelection.current
     const booksChanged = previousBooksKey.current !== booksKey
     if (!booksChanged || bookIds.length === 0) return
@@ -87,18 +100,20 @@ const BooksListCovers = ({
         dispatch(setRequestedBookId(bookIds[0]))
     }
     previousBooksKey.current = booksKey
-  }, [bookIds, booksKey, currentBookId, dispatch, page])
+  }, [bookIds, booksKey, currentBookId, dispatch, page, usesStoreList])
 
   useEffect(() => {
-    if (hasActivated.current || !registeredPanelIds.includes(PANEL_ID)) return
+    if (!usesStoreList || hasActivated.current || !registeredPanelIds.includes(panelId)) return
     hasActivated.current = true
-    activatePanel(PANEL_ID)
+    activatePanel(panelId)
     ref.current?.focus()
-  }, [activatePanel, registeredPanelIds])
+  }, [activatePanel, panelId, registeredPanelIds, usesStoreList])
 
   useEffect(() => {
+    if (!usesStoreList) return undefined
+
     const handleOutsideInteraction = event => {
-      if (!ref.current?.contains(event.target)) deactivatePanel(PANEL_ID)
+      if (!ref.current?.contains(event.target)) deactivatePanel(panelId)
     }
 
     document.addEventListener('focusin', handleOutsideInteraction)
@@ -107,23 +122,27 @@ const BooksListCovers = ({
       document.removeEventListener('focusin', handleOutsideInteraction)
       document.removeEventListener('click', handleOutsideInteraction)
     }
-  }, [])
+  }, [deactivatePanel, panelId, usesStoreList])
 
   const handleClick = useCallback(event => {
-    activatePanel(PANEL_ID)
+    if (!usesStoreList) return
+
+    activatePanel(panelId)
     const clickedInteractiveControl = event.target.closest(
       'button, a, input, select, textarea, [role="menuitem"]'
     )
     if (!clickedInteractiveControl) ref.current?.focus()
-  }, [activatePanel])
-  const handleFocus = useCallback(() => activatePanel(PANEL_ID), [activatePanel])
+  }, [activatePanel, panelId, usesStoreList])
+  const handleFocus = useCallback(() => {
+    if (usesStoreList) activatePanel(panelId)
+  }, [activatePanel, panelId, usesStoreList])
 
   const handleKeyDown = useCallback(event => {
     const type = keyType(event.key)
     const index = bookIds.indexOf(currentBookId)
     const lastIndex = bookIds.length - 1
     const lastPage = Math.ceil(totalCount / perPage)
-    if (!isActive || index < 0 || !type ||
+    if (!usesStoreList || !isActive || index < 0 || !type ||
       isBlocked({ type, index, lastIndex, page, lastPage })) return
 
     event.preventDefault()
@@ -151,13 +170,13 @@ const BooksListCovers = ({
     dispatch(setRequestedBookId(bookIds[target.index]))
   }, [
     bookIds, booksKey, currentBookId, dispatch, isActive, page, perPage,
-    switchToIndexPage, totalCount,
+    switchToIndexPage, totalCount, usesStoreList,
   ])
 
   return (
     <Card
-      aria-label='Books'
-      className={`panel--books-list-covers panel--widget ${isActive ? 'active' : ''}`}
+      aria-label={label}
+      className={`panel--books-list-covers panel--widget ${className} ${isActive ? 'active' : ''}`}
       onClick={handleClick}
       onFocusCapture={handleFocus}
       onKeyDown={handleKeyDown}
@@ -206,8 +225,12 @@ const BooksListCovers = ({
 }
 
 BooksListCovers.propTypes = {
+  bookIds: PropTypes.arrayOf(PropTypes.number),
   bookLabels: PropTypes.object,
+  className: PropTypes.string,
   header: PropTypes.node,
+  label: PropTypes.string,
+  panelId: PropTypes.string,
   showControls: PropTypes.bool,
 }
 

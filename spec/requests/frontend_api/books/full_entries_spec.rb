@@ -88,6 +88,7 @@ RSpec.describe '/api/books/full_entries' do
         year_published: book.year_published,
         format: 'big',
         form_label: 'a fantasy novel',
+        collected_work_ids: [],
         summary: description.text,
         summary_source: 'AI: Claude',
         external_links: frontend_external_links.map { |link|
@@ -117,6 +118,24 @@ RSpec.describe '/api/books/full_entries' do
 
         expect(response).to be_successful
         expect(json_response[:summary_source]).to eq('Open Library')
+      end
+    end
+
+    context 'when the book collects other works' do
+      let(:older_work) { create(:book, title: 'Older Work', year_published: 1990) }
+      let(:newer_work) { create(:book, title: 'Newer Work', year_published: 2001) }
+
+      before do
+        book.update!(literary_form: 'collection')
+        create(:book_collection, collection: book, book: older_work)
+        create(:book_collection, collection: book, book: newer_work)
+      end
+
+      it 'returns collected work ids newest first' do
+        send_request
+
+        expect(json_response[:format]).to eq('collection')
+        expect(json_response[:collected_work_ids]).to eq([newer_work.id, older_work.id])
       end
     end
   end

@@ -151,5 +151,30 @@ describe('BookDetails', () => {
     expect(publicLists).toHaveTextContent('1966: Hugo - winner')
     expect(publicLists).toHaveTextContent('1966: Nebula - nominee')
     expect(publicLists.textContent).toMatch(/1966: Hugo - winner.*1966: Nebula - nominee/u)
+    expect(document.querySelector('.panel--book-details--collection')).not.toBeInTheDocument()
+  })
+
+  it('marks a collection so its details panel can share the page with included works', () => {
+    renderWithProviders(<BookDetails />, {
+      preloadedState: {
+        ...baseState,
+        storeBooks: {
+          ...baseState.storeBooks,
+          bookDetailsCurrent: { ...bookDetails, format: 'collection' },
+          booksIndex: { 5: { ...bookIndexEntry, format: 'collection' } },
+        },
+      },
+      urlStore: {
+        routes: {
+          authorPagePath: id => `/authors/${id}`,
+          booksPagePath: () => '/books',
+          bookPagePath: id => `/books/${id}`,
+          listPagePath: id => `/public-lists/${id}`,
+          seriesPagePath: id => `/series/${id}`,
+        },
+      },
+    })
+
+    expect(document.querySelector('.panel--book-details--collection')).toBeInTheDocument()
   })
 })
