@@ -10,7 +10,7 @@ import {
   BookDetailsClose,
   BookDetailsHeader,
   bookDetailsClassName,
-} from 'panels/bookDetails/BookDetailsChrome'
+} from 'panels/bookDetails/BookDetailsFrame'
 import BookWithBackCover from 'panels/bookDetails/BookWithBackCover'
 
 const LinkedNames = ({ entries, buildHref }) => (
