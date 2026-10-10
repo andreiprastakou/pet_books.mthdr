@@ -10,7 +10,8 @@ export default class extends Controller {
 
   static values = {
     url: String,
-    keepInput: Boolean
+    keepInput: Boolean,
+    authorIds: Array
   }
 
   connect() {
@@ -42,7 +43,7 @@ export default class extends Controller {
     }
 
     try {
-      const response = await fetch(`${this.urlValue}?q=${encodeURIComponent(query)}`)
+      const response = await fetch(this.searchUrl(query))
       const entries = await response.json()
       this.displayResults(entries)
     } catch (error) {
@@ -50,6 +51,17 @@ export default class extends Controller {
       console.error('Error fetching autocomplete results:', error)
       this.resultsTarget.hidden = true
     }
+  }
+
+  searchUrl(query) {
+    const url = new URL(this.urlValue, window.location.origin)
+    url.searchParams.set('q', query)
+    this.authorIdsValue.forEach(id => {
+      if (id === '' || id == null) return
+
+      url.searchParams.append('author_ids[]', id)
+    })
+    return url
   }
 
   displayResults(entries) {

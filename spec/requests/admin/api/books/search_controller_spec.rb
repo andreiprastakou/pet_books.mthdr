@@ -53,6 +53,29 @@ RSpec.describe Admin::Api::Books::SearchController do
       end
     end
 
+    context 'when author_ids are given' do
+      let(:author) { create(:author) }
+      let(:other_author) { create(:author) }
+      let(:params) { { q: 'Fantasy', author_ids: [author.id] } }
+      let(:books) do
+        [
+          create(:book, title: 'Fantasy Book One', authors: [author]),
+          create(:book, title: 'Fantasy Book Two', authors: [other_author]),
+          create(:book, title: 'Fantasy Shared', authors: [author, other_author])
+        ]
+      end
+
+      it 'returns matching books by those authors once' do
+        books
+        send_request
+        expect(response).to be_successful
+        expect(json_response).to contain_exactly(
+          { id: books[0].id, label: match(/Fantasy Book One/i) },
+          { id: books[2].id, label: match(/Fantasy Shared/i) }
+        )
+      end
+    end
+
     context 'when query has no matches' do
       let(:params) { { q: 'NonExistent' } }
       let(:books) { [create(:book, title: 'Fantasy Book')] }

@@ -239,6 +239,27 @@ RSpec.describe Admin::Book do
     end
   end
 
+  describe '#collected_work_ids=' do
+    subject(:call) { book.collected_work_ids = collected_work_ids }
+
+    let(:book) { create(:admin_book, literary_form: 'collection') }
+    let(:works) { create_list(:book, 3, literary_form: 'novel') }
+    let(:collected_work_ids) { [works[1].id, works[2].id, sentinel] }
+
+    before do
+      create(:book_collection, collection: book, book: works[0])
+      create(:book_collection, collection: book, book: works[1])
+      book.reload
+    end
+
+    it 'assigns collected works by given ids' do
+      expect { call }.not_to change(Joins::BookCollection, :count)
+      expect(book.book_collections_as_collection.map(&:book_id)).to eq(works[0..2].map(&:id))
+      expect(book.book_collections_as_collection.map(&:marked_for_destruction?)).to eq([true, false, false])
+      expect(book.book_collections_as_collection.map(&:new_record?)).to eq([false, false, true])
+    end
+  end
+
   describe '#series_ids=' do
     subject(:call) { book.series_ids = series_ids }
 

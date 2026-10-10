@@ -36,6 +36,7 @@ module Admin
     accepts_nested_attributes_for :genres, allow_destroy: true
     accepts_nested_attributes_for :book_authors, allow_destroy: true
     accepts_nested_attributes_for :book_series, allow_destroy: true
+    accepts_nested_attributes_for :book_collections_as_collection, allow_destroy: true
 
     scope :not_filled, -> { where(data_filled: false) }
     scope :without_tasks, -> { where.missing(:generative_summary_tasks) }
@@ -103,6 +104,11 @@ module Admin
 
     def series_ids=(ids)
       sync_join_ids!(ids, association: :book_series, foreign_key: :series_id)
+    end
+
+    def collected_work_ids=(ids)
+      ids = Array(ids).filter_map { |id| Integer(id, exception: false) if id.present? }
+      sync_join_ids!(ids, association: :book_collections_as_collection, foreign_key: :book_id)
     end
 
     def current_tag_names

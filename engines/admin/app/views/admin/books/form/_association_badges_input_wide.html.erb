@@ -1,3 +1,8 @@
+<% input_class = local_assigns[:input_class] %>
+<% input_hidden = local_assigns[:input_hidden] %>
+<% input_target = local_assigns[:input_target] %>
+<% autocomplete_target = local_assigns[:autocomplete_target] %>
+
 <div class="col-md-6" data-association-input-target="badges" data-values="<%= values.to_json %>"
   data-old-values="<%= old_values.to_json %>">
   <template data-association-input-target="badgeTemplate">
@@ -14,9 +19,17 @@
   </template>
 </div>
 
-<div class="col-md-6">
+<div class="col-md-6<%= " #{input_class}" if input_class.present? %>"
+  <% if input_hidden %>hidden<% end %>
+  <% if input_target.present? %>data-book-form-target="<%= input_target %>"<% end %>>
   <div class="col-12 b-autocomplete-container" data-controller="autocomplete"
     data-autocomplete-url-value="<%= autocomplete_url %>"
+    <% if local_assigns.key?(:author_ids) %>
+    data-autocomplete-author-ids-value="<%= Array(local_assigns[:author_ids]).to_json %>"
+    <% end %>
+    <% if autocomplete_target.present? %>
+    data-book-form-target="<%= autocomplete_target %>"
+    <% end %>
     data-action="autocomplete:selected->association-input#onEntrySelected">
     <%= text_field_tag nil, nil,
       class: 'form-control', autocomplete: 'off',

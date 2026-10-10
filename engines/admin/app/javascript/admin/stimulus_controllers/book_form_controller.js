@@ -11,10 +11,14 @@ export default class extends Controller {
     'descriptionSourceLabelInput',
     'titleInput',
     'wikiQueryLink',
+    'collectedWorksSection',
+    'collectedWorksInput',
+    'collectedWorksAutocomplete',
   ]
 
   connect() {
     this.currentAuthors = []
+    this.toggleCollectedWorks()
   }
 
   // ACTION
@@ -59,8 +63,14 @@ export default class extends Controller {
     this.descriptionTextInputTarget.value = summary
     this.descriptionSourceLabelInputTarget.value = src
     this.literaryFormInputTarget.value = form
+    this.toggleCollectedWorks()
 
     this.submitButtonTarget.scrollIntoView()
+  }
+
+  // ACTION
+  onLiteraryFormChanged() {
+    this.toggleCollectedWorks()
   }
 
   // ACTION
@@ -75,6 +85,38 @@ export default class extends Controller {
     if (association === 'authors') {
       this.currentAuthors = entries
       this.syncQueries()
+      this.syncCollectedWorksAuthorIds()
     }
+    if (association === 'collectedWorks')
+      this.toggleCollectedWorks()
+  }
+
+  toggleCollectedWorks() {
+    if (!this.hasCollectedWorksSectionTarget || !this.hasLiteraryFormInputTarget) return
+
+    const isCollection = this.literaryFormInputTarget.value === 'collection'
+    this.collectedWorksSectionTarget.hidden = !isCollection && !this.collectedWorksPresent()
+    if (this.hasCollectedWorksInputTarget)
+      this.collectedWorksInputTarget.hidden = !isCollection
+  }
+
+  collectedWorksPresent() {
+    const badges = this.collectedWorksSectionTarget.querySelector('[data-association-input-target="badges"]')
+    if (!badges) return false
+    if (badges.querySelector('[data-name="badge"]')) return true
+
+    return JSON.parse(badges.dataset.values || '[]').length > 0
+  }
+
+  syncCollectedWorksAuthorIds() {
+    if (!this.hasCollectedWorksAutocompleteTarget) return
+
+    const ids = this.currentAuthors.map(author => author.id).filter(id => id)
+    const element = this.collectedWorksAutocompleteTarget
+    const controller = this.application.getControllerForElementAndIdentifier(element, 'autocomplete')
+    if (controller)
+      controller.authorIdsValue = ids
+    else
+      element.dataset.autocompleteAuthorIdsValue = JSON.stringify(ids)
   }
 }
