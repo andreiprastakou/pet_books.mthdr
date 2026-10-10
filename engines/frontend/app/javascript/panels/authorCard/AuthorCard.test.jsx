@@ -76,6 +76,28 @@ describe('AuthorCard', () => {
     expect(screen.getByRole('link', { name: '#math' })).toBeInTheDocument()
     expect(document.querySelector('.author-image')).not.toBeInTheDocument()
     expect(document.querySelector('.author-card-without-picture')).toBeInTheDocument()
+    expect(document.querySelector('.author-card-description')).not.toBeInTheDocument()
+  })
+
+  it('renders the description across the appended part of the card', () => {
+    const withDescription = { ...authorFull, description: 'First bio.\nSecond line.' }
+
+    renderWithProviders(
+      <AuthorCardWrap showDescription />,
+      {
+        preloadedState: {
+          ...baseState,
+          storeAuthors: {
+            ...baseState.storeAuthors,
+            authorsFull: { 7: withDescription },
+          },
+        },
+      }
+    )
+
+    expect(document.querySelector('.author-card--with-description')).toBeInTheDocument()
+    expect(document.querySelector('.author-card-description')).toHaveTextContent('First bio.')
+    expect(document.querySelector('.author-card-main .author-name')).toHaveTextContent('Ada Lovelace')
   })
 
   it('shows living age and opens the image modal on click', async() => {

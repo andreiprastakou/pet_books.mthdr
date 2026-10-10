@@ -8,6 +8,7 @@ class AuthorFull {
       imageUrl: data['photo_full_url'],
       birthYear: data['birth_year'],
       deathYear: data['death_year'],
+      description: data['description'] || null,
       tagIds: data['tag_ids'],
       popularity: data['popularity'],
       rank: data['rank'],

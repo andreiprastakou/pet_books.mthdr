@@ -79,4 +79,40 @@
       white-space: normal;
     }
   }
+
+  &.author-card--with-description {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .panel--body {
+      column-gap: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      min-height: 0;
+      overflow-y: auto;
+    }
+
+    .author-card-main {
+      align-items: flex-start;
+      display: flex;
+      gap: 12px;
+      grid-column: span 1;
+      min-width: 0;
+    }
+
+    .author-card-description {
+      font-style: italic;
+      grid-column: span 2;
+      min-width: 0;
+      padding: 18px 0;
+      white-space: pre-line;
+
+      p {
+        font-size: 13px;
+        line-height: 1.5;
+        margin: 0;
+      }
+    }
+  }
 }
