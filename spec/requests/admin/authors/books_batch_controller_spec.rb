@@ -29,7 +29,7 @@ RSpec.describe Admin::Authors::BooksBatchController do
     it 'prefills new rows with the title author' do
       send_request
 
-      template = response.body[/<template[^>]*bookTemplate[\s\S]*?<\/template>/]
+      template = response.body[%r{<template[^>]*bookTemplate[\s\S]*?</template>}]
       expect(template).to include(author.id.to_s)
       expect(template).to include('Title Author')
       expect(template).not_to include('Other Author')

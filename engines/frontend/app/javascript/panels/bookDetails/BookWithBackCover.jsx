@@ -18,16 +18,16 @@ const BookBackCover = ({ bookId, coverImage, format }) => {
   return (
     <div
       className={classnames('b-cover-standard book-back-cover', `book-back-cover--${format}`)}
-      data-cover-image={isSmall ? undefined : shownCoverImage}
+      data-cover-image={isSmall ? null : shownCoverImage}
       style={usePalette ? coverBackgroundStyle(palette, { flat: isSmall }) : null}
     >
-      { !isSmall ? (
+      { isSmall ? null : (
         <div
           className={classnames('b-cover-texture', {
             'b-cover-texture--on-image': !isDefaultCover,
           })}
         />
-      ) : null }
+      ) }
     </div>
   )
 }

@@ -22,6 +22,59 @@ const WorksColumn = () => (
   </Column>
 )
 
+const AuthorStackColumn = () => (
+  <Column span={1}>
+    <Slot>
+      <BooksStack />
+    </Slot>
+  </Column>
+)
+
+const AuthorWithDescription = () => (
+  <PageFrame className='page--author page--author-with-description'>
+    <Column span={3}>
+      <Slot
+        grow={0}
+        maxHeight='30%'
+        minHeight='220px'
+      >
+        <AuthorCard
+          linkToAuthorPage={false}
+          showDescription
+        />
+      </Slot>
+
+      <Slot>
+        <div className='author-page-rest'>
+          <AuthorStackColumn />
+
+          <WorksColumn />
+        </div>
+      </Slot>
+    </Column>
+  </PageFrame>
+)
+
+const AuthorWithoutDescription = () => (
+  <PageFrame className='page--author'>
+    <Column span={1}>
+      <Slot
+        grow={0}
+        maxHeight='45%'
+        minHeight='220px'
+      >
+        <AuthorCard linkToAuthorPage={false} />
+      </Slot>
+
+      <Slot>
+        <BooksStack />
+      </Slot>
+    </Column>
+
+    <WorksColumn />
+  </PageFrame>
+)
+
 const AuthorPage = () => {
   const authorId = useSelector(selectCurrentAuthorId())
   const authorFull = useSelector(selectAuthorFull(authorId))
@@ -31,52 +84,7 @@ const AuthorPage = () => {
     <>
       <PageStoreConfigurer />
 
-      { description ? (
-        <PageFrame className='page--author page--author-with-description'>
-          <Column span={3}>
-            <Slot
-              grow={0}
-              maxHeight='30%'
-              minHeight='220px'
-            >
-              <AuthorCard
-                linkToAuthorPage={false}
-                showDescription
-              />
-            </Slot>
-
-            <Slot>
-              <div className='author-page-rest'>
-                <Column span={1}>
-                  <Slot>
-                    <BooksStack />
-                  </Slot>
-                </Column>
-
-                <WorksColumn />
-              </div>
-            </Slot>
-          </Column>
-        </PageFrame>
-      ) : (
-        <PageFrame className='page--author'>
-          <Column span={1}>
-            <Slot
-              grow={0}
-              maxHeight='45%'
-              minHeight='220px'
-            >
-              <AuthorCard linkToAuthorPage={false} />
-            </Slot>
-
-            <Slot>
-              <BooksStack />
-            </Slot>
-          </Column>
-
-          <WorksColumn />
-        </PageFrame>
-      ) }
+      { description ? <AuthorWithDescription /> : <AuthorWithoutDescription /> }
     </>
   )
 }

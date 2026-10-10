@@ -57,7 +57,7 @@ export default class extends Controller {
     const url = new URL(this.urlValue, window.location.origin)
     url.searchParams.set('q', query)
     this.authorIdsValue.forEach(id => {
-      if (id === '' || id == null) return
+      if (id === '' || id === null || typeof id === 'undefined') return
 
       url.searchParams.append('author_ids[]', id)
     })

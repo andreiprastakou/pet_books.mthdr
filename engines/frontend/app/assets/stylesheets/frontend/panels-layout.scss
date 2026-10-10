@@ -1,4 +1,47 @@
 // Viewport budget lives here. Panels inside a slot only fill that slot.
+.panel-slot {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+
+  &:empty {
+    display: none;
+  }
+
+  > * {
+    flex: 1 1 auto;
+    height: 100%;
+    margin: 0;
+    max-height: 100%;
+    min-height: 0;
+    min-width: 0;
+  }
+
+  // Size to content. min() keeps the floor from exceeding the ceiling on a
+  // short window, so the sibling slot still receives the leftover height.
+  // Capital M: libsass treats lowercase min() as its own function and rejects variables.
+  &[data-grow='0'] {
+    --slot-max-height: 45%;
+    --slot-min-height: 0;
+
+    flex: 0 1 auto;
+    max-height: var(--slot-max-height);
+
+    /* stylelint-disable-next-line function-name-case */
+    min-height: Min(var(--slot-min-height), var(--slot-max-height));
+
+    > * {
+      flex: 1 1 auto;
+      height: auto;
+      max-height: 100%;
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
+}
+
 .page:has(.page-frame) {
   display: flex;
   flex-direction: column;
@@ -14,71 +57,7 @@
   min-height: 0;
   min-width: 0;
   padding: 10px;
-}
 
-.page-column {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  height: 100%;
-  min-height: 0;
-  min-width: 0;
-}
-
-.page-column-span-1 {
-  grid-column: span 1;
-}
-
-.page-column-span-2 {
-  grid-column: span 2;
-}
-
-.page-column-span-3 {
-  grid-column: span 3;
-}
-
-.panel-slot {
-  display: flex;
-  flex: 1 1 0;
-  flex-direction: column;
-  min-height: 0;
-  min-width: 0;
-
-  &:empty {
-    display: none;
-  }
-
-  // Size to content. min() keeps the floor from exceeding the ceiling on a
-  // short window, so the sibling slot still receives the leftover height.
-  &[data-grow='0'] {
-    --slot-max-height: 45%;
-    --slot-min-height: 0px;
-
-    flex: 0 1 auto;
-    max-height: var(--slot-max-height);
-    // Quoted so SassC does not treat CSS min() as its own function.
-    min-height: #{"min(var(--slot-min-height), var(--slot-max-height))"};
-
-    > * {
-      flex: 1 1 auto;
-      height: auto;
-      max-height: 100%;
-      min-height: 0;
-      overflow: hidden;
-    }
-  }
-
-  > * {
-    flex: 1 1 auto;
-    height: 100%;
-    margin: 0;
-    max-height: 100%;
-    min-height: 0;
-    min-width: 0;
-  }
-}
-
-.page-frame {
   .selected-works-split {
     height: 100%;
     min-height: 0;
@@ -139,4 +118,25 @@
     height: 100%;
     max-height: 100%;
   }
+}
+
+.page-column {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+
+.page-column-span-1 {
+  grid-column: span 1;
+}
+
+.page-column-span-2 {
+  grid-column: span 2;
+}
+
+.page-column-span-3 {
+  grid-column: span 3;
 }

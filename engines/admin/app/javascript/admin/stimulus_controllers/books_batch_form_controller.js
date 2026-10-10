@@ -45,25 +45,22 @@ export default class extends Controller {
   async onExistingBookSelected(event) {
     const entry = event.detail?.entry
     const row = event.currentTarget.closest('[data-name="book-row"]')
-    if (!entry?.id || !row) return
-
-    if (this.bookAlreadyListed(entry.id, row)) {
-      this.showError(this.duplicateBookMessage(entry))
-      return
-    }
+    if (!entry?.id || !row || this.rejectDuplicate(entry, row)) return
 
     const rendered = await this.fetchBookRow(entry.id, this.rowIndex(row))
-    if (!rendered) return
-
-    if (this.bookAlreadyListed(entry.id, row)) {
-      this.showError(this.duplicateBookMessage(entry))
-      return
-    }
+    if (!rendered || this.rejectDuplicate(entry, row)) return
 
     this.clearError()
     this.nullifyRedundantOriginalTitle(rendered)
     this.preserveMembershipRole(row, rendered)
     row.replaceWith(rendered)
+  }
+
+  rejectDuplicate(entry, row) {
+    if (!this.bookAlreadyListed(entry.id, row)) return false
+
+    this.showError(this.duplicateBookMessage(entry))
+    return true
   }
 
   preserveMembershipRole(fromRow, toRow) {
@@ -90,17 +87,23 @@ export default class extends Controller {
 
   showError(message) {
     this.noticesTarget.replaceChildren()
+    this.noticesTarget.append(this.errorAlert(message))
+  }
+
+  errorAlert(message) {
     const alert = document.createElement('div')
     alert.className = 'alert alert-danger alert-dismissible fade show'
     alert.setAttribute('role', 'alert')
-    alert.append(document.createTextNode(message))
+    alert.append(document.createTextNode(message), this.dismissButton())
+    return alert
+  }
 
+  dismissButton() {
     const close = document.createElement('button')
     close.type = 'button'
     close.className = 'btn-close'
     close.dataset.bsDismiss = 'alert'
-    alert.append(close)
-    this.noticesTarget.append(alert)
+    return close
   }
 
   clearError() {
@@ -127,7 +130,7 @@ export default class extends Controller {
 
   rowIndex(row) {
     const named = row.querySelector('[name^="batch["]')
-    const match = named?.name.match(/^batch\[(\d+)\]/)
-    return match ? match[1] : String(Date.now())
+    const match = named?.name.match(/^batch\[(?<index>\d+)\]/u)
+    return match ? match.groups.index : String(Date.now())
   }
 }
