@@ -8,7 +8,6 @@ module FrontendApi
       def index
         @books = Book.where(id: params[:ids]).preload(
           :authors,
-          :collected_works,
           :genres,
           :tag_connections
         )
