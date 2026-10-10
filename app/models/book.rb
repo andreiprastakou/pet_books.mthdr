@@ -86,6 +86,14 @@ class Book < ApplicationRecord
     literary_form.in?(FORMS_FORMAT_COLLECTION)
   end
 
+  def collected_work_ids_newest_first
+    if collected_works.loaded?
+      collected_works.sort_by { |work| [-work.year_published, -work.id] }.map(&:id)
+    else
+      collected_works.order(year_published: :desc, id: :desc).ids
+    end
+  end
+
   # Cover/spine size class: normal (default), small, big (novels), collection.
   def format
     return 'small' if literary_form.in?(FORMS_FORMAT_SMALL)

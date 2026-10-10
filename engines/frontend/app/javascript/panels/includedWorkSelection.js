@@ -14,6 +14,19 @@ const includedWorkIsValid = (book, includedWorkId) => (
   book.format === 'collection' && (book.collectedWorkIds || []).includes(includedWorkId)
 )
 
+export const shouldClearIncludedWork = ({
+  book,
+  bookChanged,
+  includedWorkChanged,
+  includedWorkId,
+}) => {
+  if (!includedWorkId) return false
+
+  const staleSelection = Boolean(book) && !includedWorkIsValid(book, includedWorkId)
+  const bookChangedWithoutIncludedWork = bookChanged && !includedWorkChanged
+  return bookChangedWithoutIncludedWork || staleSelection
+}
+
 const useRegisterIncludedWorkUrl = () => {
   const {
     actions: { addUrlAction, addUrlState },
@@ -43,16 +56,18 @@ const useSyncIncludedWorkSelection = book => {
     pageState: { includedWorkId = null },
   } = useContext(UrlStoreContext)
   const previousBookId = useRef(null)
+  const previousIncludedWorkId = useRef(null)
 
   useEffect(() => {
     const bookChanged = Boolean(previousBookId.current) && previousBookId.current !== currentBookId
+    const includedWorkChanged = previousIncludedWorkId.current !== includedWorkId
     previousBookId.current = currentBookId
+    previousIncludedWorkId.current = includedWorkId
 
     const { showIncludedWork } = getActions()
-    if (!showIncludedWork || !includedWorkId) return
-
-    const staleSelection = book && !includedWorkIsValid(book, includedWorkId)
-    if (bookChanged || staleSelection) showIncludedWork(null)
+    if (!showIncludedWork) return
+    if (shouldClearIncludedWork({ book, bookChanged, includedWorkChanged, includedWorkId }))
+      showIncludedWork(null)
   }, [book, currentBookId, getActions, includedWorkId])
 
   return includedWorkId

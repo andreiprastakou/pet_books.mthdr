@@ -53,6 +53,7 @@ describe('books API models', () => {
       popularity: 8,
       global_rank: 4,
       cover_design_id: 7,
+      collected_work_ids: [3, 4],
       format: 'small',
     })).toMatchObject({
       id: 2,
@@ -61,6 +62,7 @@ describe('books API models', () => {
       popularity: 8,
       globalRank: 4,
       coverDesignId: 7,
+      collectedWorkIds: [3, 4],
       format: 'small',
     })
   })
