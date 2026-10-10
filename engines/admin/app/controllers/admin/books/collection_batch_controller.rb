@@ -34,13 +34,13 @@ module Admin
       end
 
       def apply_via_updater(updater)
-        updater.update(params.fetch(:batch), on_save: method(:include_new_book)).tap do
+        updater.update(params.fetch(:batch), on_save: method(:include_book)).tap do
           @books = updater.books
         end
       end
 
-      def include_new_book(book)
-        return unless book.previously_new_record?
+      def include_book(book)
+        return if Joins::BookCollection.exists?(collection_id: @book.id, book_id: book.id)
 
         join = Joins::BookCollection.new(collection: @book, book: book)
         return if join.save

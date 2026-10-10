@@ -2,7 +2,7 @@ module Admin
   class BooksBatchUpdater
     attr_reader :books
 
-    PRELOADS = %i[authors book_authors external_links wiki_links book_series series].freeze
+    PRELOADS = %i[authors book_authors external_links external_identities wiki_links book_series series].freeze
 
     def initialize
       @books = []
