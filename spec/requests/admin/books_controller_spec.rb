@@ -103,6 +103,23 @@ RSpec.describe Admin::BooksController do
       expect(response.body).to include('External Identities')
       expect(response.body).to include('add identity')
     end
+
+    it 'renders literary form as a single-select dropdown of predefined forms' do
+      send_request
+      expect(response.body).to include('name="book[literary_form]"')
+      expect(response.body).to include('<option value=""')
+      LiteraryForm::DEFAULTS.each do |form|
+        expect(response.body).to include(%(<option value="#{form}">#{form.humanize}</option>))
+      end
+      expect(response.body).not_to include('will be replaced!')
+    end
+
+    it 'warns when the saved literary form is not a predefined option' do
+      book.update!(literary_form: 'audio_drama')
+      send_request
+      expect(response.body).to include("Current value 'audio_drama' will be replaced!")
+      expect(response.body).not_to include('<option value="audio_drama"')
+    end
   end
 
   describe 'POST /admin/books' do

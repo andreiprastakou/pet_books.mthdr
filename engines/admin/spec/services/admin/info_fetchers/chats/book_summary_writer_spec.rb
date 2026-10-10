@@ -9,7 +9,7 @@ RSpec.describe Admin::InfoFetchers::Chats::BookSummaryWriter do
     let(:overrides) { {} }
 
     it 'returns configured instructions' do
-      expect(result).to include(Book::STANDARD_FORMS.join(', '))
+      expect(result).to include(LiteraryForm::DEFAULTS.join(', '))
       expect(result).to include('<GENRES>')
     end
 
