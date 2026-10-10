@@ -1,14 +1,10 @@
 import React from 'react'
 import classnames from 'classnames'
 import PropTypes from 'prop-types'
-import { useSelector } from 'react-redux'
 
-import { selectBookIds } from 'store/booksList/selectors'
 import BookSpine from 'panels/booksStack/BookSpine'
 
-const BooksSpineStack = ({ isActive }) => {
-  const bookIds = useSelector(selectBookIds())
-
+const BooksSpineStack = ({ bookIds, isActive, scrollEpoch }) => {
   if (bookIds.length === 0) return null
 
   return (
@@ -22,6 +18,7 @@ const BooksSpineStack = ({ isActive }) => {
           <BookSpine
             id={id}
             key={id}
+            scrollEpoch={scrollEpoch}
           />
         )) }
       </div>
@@ -30,7 +27,9 @@ const BooksSpineStack = ({ isActive }) => {
 }
 
 BooksSpineStack.propTypes = {
+  bookIds: PropTypes.arrayOf(PropTypes.number).isRequired,
   isActive: PropTypes.bool.isRequired,
+  scrollEpoch: PropTypes.number.isRequired,
 }
 
 export default BooksSpineStack

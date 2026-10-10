@@ -8,7 +8,7 @@ import { selectBooksIndexEntry } from 'store/books/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
 
-const BookSpine = ({ id }) => {
+const BookSpine = ({ id, scrollEpoch = 0 }) => {
   const bookIndexEntry = useSelector(selectBooksIndexEntry(id))
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
@@ -25,7 +25,7 @@ const BookSpine = ({ id }) => {
 
     ref.current?.focus({ preventScroll: true })
     ref.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
-  }, [isCurrent])
+  }, [isCurrent, scrollEpoch])
 
   const handleClick = useCallback(() => {
     if (!bookIndexEntry) return
@@ -68,6 +68,7 @@ const BookSpine = ({ id }) => {
 
 BookSpine.propTypes = {
   id: PropTypes.number.isRequired,
+  scrollEpoch: PropTypes.number,
 }
 
 export default BookSpine

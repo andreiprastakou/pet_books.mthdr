@@ -18,6 +18,24 @@
     text-align: center;
   }
 
+  .books-spine-compact-toggle {
+    align-items: center;
+    background-color: #e8e8e8;
+    border: 0;
+    border-radius: 50%;
+    color: #555;
+    display: inline-flex;
+    flex: 0 0 auto;
+    height: 26px;
+    justify-content: center;
+    padding: 0;
+    width: 26px;
+
+    &:hover {
+      background-color: #dedede;
+    }
+  }
+
   .panel--body {
     flex: 1 1 auto;
     min-height: 0;
