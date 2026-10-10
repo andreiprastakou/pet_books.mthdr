@@ -327,7 +327,7 @@ GEM
     path_expander (2.0.1)
     pp (0.6.4)
       prettyprint
-    prettyprint (0.2.0)
+    prettyprint (0.2.1)
     prism (1.9.0)
     pronto (0.11.5)
       gitlab (>= 4.4.0, < 5.0)
@@ -356,8 +356,8 @@ GEM
     raabro (1.5.0)
     racc (1.8.1)
     rack (3.2.7)
-    rack-proxy (0.8.3)
-      rack
+    rack-proxy (2.0.1)
+      rack (>= 2.0, < 4)
     rack-session (2.1.2)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
@@ -408,7 +408,7 @@ GEM
       logger
       prism (>= 1.6.0)
       tsort
-    rdoc (8.0.0)
+    rdoc (8.1.0)
       erb
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
@@ -503,7 +503,7 @@ GEM
     securerandom (0.4.1)
     semantic_range (3.1.1)
     sexp_processor (4.17.6)
-    shakapacker (10.0.0)
+    shakapacker (10.3.1)
       activesupport (>= 5.2)
       package_json
       rack-proxy (>= 0.6.1)
@@ -552,7 +552,7 @@ GEM
       unicode-emoji (~> 4.3)
     unicode-emoji (4.3.0)
     uniform_notifier (1.18.0)
-    uri (1.1.1)
+    uri (1.1.2)
     useragent (0.16.11)
     web-console (4.3.0)
       actionview (>= 8.0.0)
@@ -606,7 +606,7 @@ DEPENDENCIES
   pronto-rubocop
   pry-rails
   puma (~> 7.2)
-  rack-proxy (< 1.0)
+  rack-proxy (>= 1.0.3)
   rails (~> 8.1)
   rails-controller-testing
   react_on_rails
@@ -618,7 +618,7 @@ DEPENDENCIES
   ruby_llm (~> 2.0)
   rugged
   sassc-rails
-  shakapacker (= 10.0)
+  shakapacker (= 10.3.1)
   shoulda-matchers (~> 7.0)
   simplecov
   slim
