@@ -19,7 +19,7 @@ class Collection < ApplicationRecord
   include EqualByPersistedId
   include HasExternalLinks
 
-  has_many :book_collections, class_name: 'Joins::BookCollection', dependent: :destroy
+  has_many :book_collections, class_name: 'Joins::BookCollectionLegacy', dependent: :destroy
   has_many :books, through: :book_collections
 
   validates :name, presence: true, uniqueness: { case_sensitive: false }

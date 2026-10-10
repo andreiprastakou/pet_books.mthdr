@@ -14,19 +14,45 @@
 # Indexes
 #
 #  index_book_collections_on_book_id                    (book_id)
-#  index_book_collections_on_collection_id              (collection_id)
 #  index_book_collections_on_collection_id_and_book_id  (collection_id,book_id) UNIQUE
 #
 # Foreign Keys
 #
 #  book_id        (book_id => books.id)
-#  collection_id  (collection_id => collections.id)
+#  collection_id  (collection_id => books.id)
 #
 module Joins
   class BookCollection < ApplicationRecord
     self.table_name = 'book_collections'
 
-    belongs_to :book
-    belongs_to :collection
+    belongs_to :book, class_name: 'Book', inverse_of: :book_collections_as_work
+    belongs_to :collection, class_name: 'Book', inverse_of: :book_collections_as_collection
+
+    validate :book_and_collection_must_differ
+    validate :collection_must_be_a_collection
+    validate :book_must_not_be_a_collection
+
+    protected
+
+    def book_and_collection_must_differ
+      return if book_id.blank? || collection_id.blank?
+      return unless book_id == collection_id
+
+      errors.add(:book, 'must be different from the collection')
+    end
+
+    def collection_must_be_a_collection
+      return if collection.nil?
+      return if collection.literary_form.in?(Book::FORMS_FORMAT_COLLECTION)
+
+      errors.add(:collection, 'must have literary form collection')
+    end
+
+    def book_must_not_be_a_collection
+      return if book.nil?
+      return unless book.literary_form.in?(Book::FORMS_FORMAT_COLLECTION)
+
+      errors.add(:book, 'must not have literary form collection')
+    end
   end
 end

@@ -39,13 +39,13 @@ RSpec.describe Admin::Collection do
     let(:collection) { create(:admin_collection, book_collections: initial_book_collections) }
     let(:books) { create_list(:book, 3) }
     let(:initial_book_collections) do
-      [build(:book_collection, book: books[0]), build(:book_collection, book: books[1])]
+      [build(:book_collection_legacy, book: books[0]), build(:book_collection_legacy, book: books[1])]
     end
     let(:book_ids) { [books[1].id, books[2].id, ''] }
 
     it 'assigns the books by given ids' do
       collection
-      expect { call }.not_to change(Joins::BookCollection, :count)
+      expect { call }.not_to change(Joins::BookCollectionLegacy, :count)
       expect(collection.book_collections.map(&:book_id)).to eq(books[0..2].map(&:id))
       expect(collection.book_collections.map(&:marked_for_destruction?)).to eq([true, false, false])
       expect(collection.book_collections.map(&:new_record?)).to eq([false, false, true])
