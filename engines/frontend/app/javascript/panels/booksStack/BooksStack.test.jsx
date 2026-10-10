@@ -1,5 +1,5 @@
 import React from 'react'
-import { screen } from '@testing-library/react'
+import { cleanup, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
@@ -123,12 +123,34 @@ describe('BooksStack', () => {
     },
   })
 
+  it('previews the other compact icon and labels the action', async() => {
+    const user = userEvent.setup()
+    renderWithProviders(<BooksListControls />, stackState())
+    const collapsedToggle = screen.getByRole('button', { name: 'Show all works' })
+
+    expect(collapsedToggle).toHaveAttribute('title', 'Show all works')
+    expect(collapsedToggle.querySelector('svg')).toHaveAttribute('data-icon', 'eye-slash')
+
+    await user.hover(collapsedToggle)
+    expect(collapsedToggle.querySelector('svg')).toHaveAttribute('data-icon', 'eye')
+
+    cleanup()
+    renderWithProviders(<BooksListControls />, stackState({ compactStack: false }))
+    const expandedToggle = screen.getByRole('button', { name: 'Compact view' })
+
+    expect(expandedToggle).toHaveAttribute('title', 'Compact view')
+    expect(expandedToggle.querySelector('svg')).toHaveAttribute('data-icon', 'eye')
+
+    await user.hover(expandedToggle)
+    expect(expandedToggle.querySelector('svg')).toHaveAttribute('data-icon', 'eye-slash')
+  })
+
   it('excludes collections from the count and hides nested books while compact', () => {
     renderWithProviders(<BooksListControls />, stackState())
 
     expect(screen.getByText('2')).toBeInTheDocument()
     expect(screen.getByTestId('spine-stack')).toHaveTextContent('1,3')
-    expect(screen.getByRole('button', { name: 'Show books in collections' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Show all works' })).toHaveAttribute(
       'aria-pressed',
       'true'
     )
@@ -138,7 +160,7 @@ describe('BooksStack', () => {
     renderWithProviders(<BooksListControls />, stackState({ compactStack: false }))
 
     expect(screen.getByTestId('spine-stack')).toHaveTextContent('1,2,3')
-    expect(screen.getByRole('button', { name: 'Hide books in collections' })).toHaveAttribute(
+    expect(screen.getByRole('button', { name: 'Compact view' })).toHaveAttribute(
       'aria-pressed',
       'false'
     )
@@ -148,7 +170,7 @@ describe('BooksStack', () => {
     const user = userEvent.setup()
     const { urlStore } = renderWithProviders(<BooksListControls />, stackState())
 
-    await user.click(screen.getByRole('button', { name: 'Show books in collections' }))
+    await user.click(screen.getByRole('button', { name: 'Show all works' }))
 
     expect(urlStore.actions.setCompactStack).toHaveBeenCalledWith(false, {})
   })
@@ -160,7 +182,7 @@ describe('BooksStack', () => {
       stackState({ compactStack: false, currentBookId: 2 })
     )
 
-    await user.click(screen.getByRole('button', { name: 'Hide books in collections' }))
+    await user.click(screen.getByRole('button', { name: 'Compact view' }))
 
     expect(urlStore.actions.setCompactStack).toHaveBeenCalledWith(true, {
       'book_id': 1,
