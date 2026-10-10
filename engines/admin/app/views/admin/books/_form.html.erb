@@ -56,8 +56,7 @@
         LiteraryForm::DEFAULTS.map { |form| [form.humanize, form] },
         { include_blank: true },
         class: "form-select",
-        data: { book_form_target: "literaryFormInput", input_changes_target: "input",
-          action: "change->book-form#onLiteraryFormChanged" } %>
+        data: { book_form_target: "literaryFormInput", input_changes_target: "input" } %>
     <% end %>
     <% saved_form = book.literary_form_in_database %>
     <% if saved_form.present? && LiteraryForm::DEFAULTS.exclude?(saved_form) %>
@@ -65,29 +64,6 @@
         Current value '<%= saved_form %>' will be replaced!
       </div>
     <% end %>
-  </div>
-
-  <% collection_selected = book.collection? %>
-  <% collected_work_joins = book.book_collections_as_collection %>
-  <% current_collected_works = collected_work_joins.reject(&:marked_for_destruction?).map(&:book) %>
-  <% saved_collected_works = collected_work_joins.reject(&:new_record?).map(&:book) %>
-  <div class="row mb-3" data-controller="association-input"
-    data-association-input-association-value="collectedWorks"
-    data-action="association-input:association-changed->book-form#onAssociationChanged"
-    data-book-form-target="collectedWorksSection"
-    <% if !collection_selected && collected_work_joins.empty? %>hidden<% end %>>
-    <%= label_tag nil, "Collected works", class: "form-label" %>
-    <%= hidden_field_tag "book[collected_work_ids][]", "" %>
-    <%= render "admin/books/form/association_badges_input_wide",
-      name: "book[collected_work_ids][]",
-      autocomplete_url: admin_api_books_search_path(format: :json),
-      old_values: books_to_badges_entries(saved_collected_works),
-      values: books_to_badges_entries(current_collected_works),
-      author_ids: book.author_ids,
-      input_hidden: !collection_selected,
-      input_class: "b-collected-works-input",
-      input_target: "collectedWorksInput",
-      autocomplete_target: "collectedWorksAutocomplete" %>
   </div>
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addGenres@window->badges-input#onNamesAdded">
