@@ -33,6 +33,7 @@
     data-action="autocomplete:selected->association-input#onEntrySelected">
     <%= text_field_tag nil, nil,
       class: 'form-control', autocomplete: 'off',
+      placeholder: 'search...',
       data: {
         autocomplete_target: "input",
         action: "input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus"
