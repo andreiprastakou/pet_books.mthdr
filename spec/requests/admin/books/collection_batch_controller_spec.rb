@@ -40,6 +40,8 @@ RSpec.describe Admin::Books::CollectionBatchController do
       expect(template).to include(author.id.to_s)
       expect(template).to include('Title Author')
       expect(template).to include('value="short"')
+      expect(template).to include(admin_api_books_search_path(format: :json))
+      expect(template).to include('books-batch-form#onExistingBookSelected')
       expect(response.body).to include('name="batch[ENTRY_INDEX][year_published]" id="batch_ENTRY_INDEX_year_published" value="1984"')
     end
 

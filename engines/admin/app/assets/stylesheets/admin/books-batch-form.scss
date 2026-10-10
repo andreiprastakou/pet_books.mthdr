@@ -6,11 +6,24 @@
     padding-top: 0.75rem;
   }
 
-  .b-books-batch-row:not(.b-books-batch-header):hover {
+  .b-books-batch-row:not(.b-books-batch-header):hover,
+  .b-books-batch-row:has(.b-autocomplete-results:not([hidden])) {
     background-color: rgba(0, 0, 0, 0.04);
     box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.08);
     position: relative;
-    z-index: 1;
+    z-index: 2;
+  }
+
+  .b-book-title-autocomplete {
+    position: relative;
+
+    .b-autocomplete-results {
+      max-height: 16rem;
+      min-width: 28rem;
+      overflow-y: auto;
+      position: absolute;
+      z-index: 3;
+    }
   }
 
   .b-external-link-input {
