@@ -5,6 +5,7 @@ export default class extends Controller {
     'booksList',
     'bookEntry',
     'bookTemplate',
+    'notices',
   ]
 
   static values = {
@@ -46,11 +47,55 @@ export default class extends Controller {
     const row = event.currentTarget.closest('[data-name="book-row"]')
     if (!entry?.id || !row) return
 
+    if (this.bookAlreadyListed(entry.id, row)) {
+      this.showError(this.duplicateBookMessage(entry))
+      return
+    }
+
     const rendered = await this.fetchBookRow(entry.id, this.rowIndex(row))
     if (!rendered) return
 
+    if (this.bookAlreadyListed(entry.id, row)) {
+      this.showError(this.duplicateBookMessage(entry))
+      return
+    }
+
+    this.clearError()
     this.nullifyRedundantOriginalTitle(rendered)
     row.replaceWith(rendered)
+  }
+
+  bookAlreadyListed(bookId, currentRow) {
+    const id = String(bookId)
+    return [...this.element.querySelectorAll('input[name$="[id]"]')].some(input => {
+      if (!input.value || input.value !== id) return false
+
+      const row = input.closest('[data-name="book-row"]')
+      return row && row !== currentRow
+    })
+  }
+
+  duplicateBookMessage(entry) {
+    return entry.label ? `${entry.label} is already in the list.` : 'This book is already in the list.'
+  }
+
+  showError(message) {
+    this.noticesTarget.replaceChildren()
+    const alert = document.createElement('div')
+    alert.className = 'alert alert-danger alert-dismissible fade show'
+    alert.setAttribute('role', 'alert')
+    alert.append(document.createTextNode(message))
+
+    const close = document.createElement('button')
+    close.type = 'button'
+    close.className = 'btn-close'
+    close.dataset.bsDismiss = 'alert'
+    alert.append(close)
+    this.noticesTarget.append(alert)
+  }
+
+  clearError() {
+    this.noticesTarget.replaceChildren()
   }
 
   async fetchBookRow(bookId, index) {

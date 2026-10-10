@@ -3,6 +3,8 @@
 <div class="container mt-4">
   <div class="btn-group" role="group">
     <%= admin_buttonly_link_to "edit", edit_admin_public_list_type_public_list_path(@public_list_type, @public_list) %>
+    <%= admin_buttonly_link_to "edit all books",
+      edit_admin_public_list_type_public_list_books_batch_path(@public_list_type, @public_list) %>
     <%= button_to_generate_books_summaries(@public_list.books) %>
     <%= button_to "delete", admin_public_list_type_public_list_path(@public_list_type, @public_list), method: :delete,
       class: 'btn btn-danger', data: { confirm: "Are you sure?" } %>

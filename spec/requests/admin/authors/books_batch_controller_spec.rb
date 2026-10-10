@@ -33,6 +33,7 @@ RSpec.describe Admin::Authors::BooksBatchController do
       expect(template).to include(author.id.to_s)
       expect(template).to include('Title Author')
       expect(template).not_to include('Other Author')
+      expect(response.body).to include("ensure_author_id=#{author.id}")
     end
   end
 
