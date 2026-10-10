@@ -5,3 +5,4 @@
 **/*.gemspec
 
 engines/admin/app/models/admin/book_form.rb
+app/services/cover_palettes.rb
