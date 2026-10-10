@@ -8,6 +8,7 @@ Admin::Engine.routes.draw do
     resources :authors do
       scope module: :authors do
         resources :books, only: %i[new]
+        resource :books_batch, only: %i[edit update], controller: 'books_batch'
         resource :sync_status, only: %i[update], controller: 'sync_status'
         resource :wiki_stats, only: %i[update]
         resources :open_library_searches, only: %i[create]
