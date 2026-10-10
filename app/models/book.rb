@@ -87,6 +87,8 @@ class Book < ApplicationRecord
   end
 
   def collected_work_ids_newest_first
+    return [] unless collection?
+
     if collected_works.loaded?
       collected_works.sort_by { |work| [-work.year_published, -work.id] }.map(&:id)
     else
