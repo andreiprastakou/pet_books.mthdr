@@ -1,8 +1,9 @@
 <div class="b-books-batch-form container mt-4" data-controller="books-batch-form">
   <% target = local_assigns.fetch(:target, admin_books_batch_path) %>
-  <% method = local_assigns.fetch(:target, :put) %>
+  <% method = local_assigns.fetch(:method, :put) %>
+  <% initial_author_entries = authors_to_badges_entries(Array(local_assigns[:initial_authors])) %>
   <%= form_tag target, method: method do %>
-    <div class="row mb-3 fw-bold text-muted">
+    <div class="row b-books-batch-row b-books-batch-header fw-bold text-muted">
       <div class="col-1">ID</div>
       <div class="col-2">Title</div>
       <div class="col-1">Original</div>
@@ -17,7 +18,7 @@
     <div data-books-batch-form-target="booksList">
       <% books = books.sort_by { |b| b.year_published.to_i } %>
       <% books.each_with_index do |book, index| %>
-        <div class="row mb-3 align-items-center" data-name="book-row" data-books-batch-form-target="bookEntry">
+        <div class="row b-books-batch-row align-items-center" data-name="book-row" data-books-batch-form-target="bookEntry">
           <div class="col-1">
             <%= text_field_tag "batch[#{index}][id]", book.id, class: 'form-control form-control-sm', disabled: true %>
             <%= hidden_field_tag "batch[#{index}][id]", book.id %>
@@ -86,7 +87,7 @@
           </div>
           <!-- Remove book button -->
           <div class="col-1">
-            <%= button_tag '-', class: 'btn btn-danger btn-sm', data: {
+            <%= button_tag '-', class: 'btn btn-danger btn-sm', title: 'Skip', data: {
               action: 'click->books-batch-form#removeBook' } %>
           </div>
         </div>
@@ -95,7 +96,7 @@
 
     <template data-books-batch-form-target="bookTemplate">
       <% index = "ENTRY_INDEX" %>
-      <div class="row mb-3 align-items-center" data-name="book-row">
+      <div class="row b-books-batch-row align-items-center" data-name="book-row">
         <div class="col-1">
           <%= text_field_tag "batch[#{index}][id]", nil, class: 'form-control form-control-sm', disabled: true %>
         </div>
@@ -114,7 +115,7 @@
             name: "batch[#{index}][author_ids][]",
             autocomplete_url: admin_api_authors_search_path(format: :json),
             old_values: [],
-            values: [] %>
+            values: initial_author_entries %>
         </div>
         <!-- Series input -->
         <div class="col-2" data-controller="association-input">
@@ -138,7 +139,8 @@
         </div>
         <!-- Remove book button -->
         <div class="col-1">
-          <%= button_tag '-', class: 'btn btn-danger btn-sm', data: { action: 'click->books-batch-form#removeBook' } %>
+          <%= button_tag '-', class: 'btn btn-danger btn-sm', title: 'Skip',
+            data: { action: 'click->books-batch-form#removeBook' } %>
         </div>
       </div>
     </template>

@@ -37,6 +37,7 @@
 
     <div class="card-body">
       <%= render 'admin/books/batch_edit', books: @books, target: apply_admin_author_books_list_path(@author, @task),
+        method: :post,
         actions: [
           button_to('Reject', reject_admin_data_fetch_task_path(@task), method: :put, type: 'button',
             class: 'btn btn-danger btn-lg', form: { data: { turbo_frame: '_top' } })

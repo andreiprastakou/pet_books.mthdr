@@ -1,4 +1,18 @@
 .b-books-batch-form {
+  .b-books-batch-row {
+    border-bottom: 1px solid var(--bs-border-color);
+    margin-bottom: 0;
+    padding-bottom: 0.75rem;
+    padding-top: 0.75rem;
+  }
+
+  .b-books-batch-row:not(.b-books-batch-header):hover {
+    background-color: rgba(0, 0, 0, 0.04);
+    box-shadow: 0 0.2rem 0.6rem rgba(0, 0, 0, 0.08);
+    position: relative;
+    z-index: 1;
+  }
+
   .b-external-link-input {
     white-space: nowrap;
 

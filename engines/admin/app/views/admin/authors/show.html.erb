@@ -5,7 +5,7 @@
     <div class="btn-group" role="group">
       <%= admin_buttonly_link_to "edit", edit_admin_author_path(@author) %>
       <%= admin_buttonly_link_to "+book", new_admin_author_book_path(@author) %>
-      <%= admin_buttonly_link_to "edit all books", edit_admin_books_batch_path(book_ids: @author.books.pluck(:id)) %>
+      <%= admin_buttonly_link_to "edit all books", edit_admin_author_books_batch_path(@author) %>
       <%= display_link_to "display", author_display_path(@author) %>
     </div>
 
