@@ -210,11 +210,11 @@ module Admin
       public_list.year
     end
 
-    def admin_external_link_to(entity, external_link, history_tasks: [])
+    def admin_external_link_to(entity, external_link, history_tasks: [], show_actions: false)
       label = external_link_to(external_link.external_resource, external_link.url)
       return label unless wikipedia_external_link?(external_link)
 
-      fetch_link = wikipedia_intro_fetch_link(entity, history_tasks:)
+      fetch_link = wikipedia_intro_fetch_link(entity, history_tasks:, show_actions:)
       return label if fetch_link.blank?
 
       content_tag(:span, class: 'text-muted') do
@@ -227,12 +227,12 @@ module Admin
       end
     end
 
-    def admin_external_links_list(entity, history_tasks: [])
+    def admin_external_links_list(entity, history_tasks: [], show_actions: false)
       return if entity.external_links.blank?
 
       safe_join(
         entity.external_links.map do |external_link|
-          admin_external_link_to(entity, external_link, history_tasks:)
+          admin_external_link_to(entity, external_link, history_tasks:, show_actions:)
         end,
         ' '
       )
@@ -251,8 +251,8 @@ module Admin
 
     private
 
-    def wikipedia_intro_fetch_link(entity, history_tasks: [])
-      return unless on_title_owner_page?(entity)
+    def wikipedia_intro_fetch_link(entity, history_tasks: [], show_actions: false)
+      return unless show_actions
 
       path = wikipedia_intro_fetch_path(entity)
       return if path.blank?
@@ -261,23 +261,6 @@ module Admin
         'fetch', wikipedia_intro_fetch_task_class(entity), tasks: history_tasks
       )
       admin_action_to(label, path, data: { turbo_method: :post })
-    end
-
-    # The "(fetch)" action belongs on the record's own admin page only.
-    def on_title_owner_page?(entity)
-      owner_controller = wikipedia_intro_owner_controller(entity)
-      return false if owner_controller.blank?
-
-      controller.controller_path == owner_controller &&
-        controller.action_name == 'show' &&
-        controller.params[:id].to_s == entity.id.to_s
-    end
-
-    def wikipedia_intro_owner_controller(entity)
-      case entity
-      when ::Book then 'admin/books'
-      when ::Author then 'admin/authors'
-      end
     end
 
     def wikipedia_intro_fetch_path(entity)

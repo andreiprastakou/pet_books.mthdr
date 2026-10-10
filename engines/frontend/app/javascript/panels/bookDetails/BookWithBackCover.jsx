@@ -5,15 +5,21 @@ import classnames from 'classnames'
 
 import Book from 'components/Book'
 import { selectCoverDesign } from 'store/coverDesigns/selectors'
-import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
+import {
+  FORMAT_COLLECTION,
+  FORMAT_NORMAL,
+  FORMAT_SMALL,
+  coverBackgroundStyle,
+  coverPaletteForId,
+} from 'utils/coverPalettes'
 
 const BookBackCover = ({ bookId, coverImage, format }) => {
-  const isSmall = format === 'small'
-  const isCollection = format === 'collection'
+  const isSmall = format === FORMAT_SMALL
+  const isCollection = format === FORMAT_COLLECTION
   const usePalette = isSmall || isCollection || coverImage === 'default'
   const isDefaultCover = isCollection || coverImage === 'default'
   const shownCoverImage = isCollection ? 'default' : coverImage
-  const palette = coverPaletteForId(bookId, { small: isSmall, collection: isCollection })
+  const palette = coverPaletteForId(bookId, format)
 
   return (
     <div
@@ -40,8 +46,8 @@ BookBackCover.propTypes = {
 
 const BookWithBackCover = ({ bookIndexEntry }) => {
   const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
-  const format = bookIndexEntry.format || 'normal'
-  const isSmall = format === 'small'
+  const format = bookIndexEntry.format || FORMAT_NORMAL
+  const isSmall = format === FORMAT_SMALL
 
   return (
     <>

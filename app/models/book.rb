@@ -24,7 +24,11 @@
 class Book < ApplicationRecord
   FORMS_REQUIRE_SUMMARY = (%w[novel novella non_fiction play] + [nil]).freeze
   # Visual format derived from literary_form (not stored).
-  FORMATS = %w[normal small big collection].freeze
+  FORMAT_NORMAL = 'normal'
+  FORMAT_SMALL = 'small'
+  FORMAT_BIG = 'big'
+  FORMAT_COLLECTION = 'collection'
+  FORMATS = [FORMAT_NORMAL, FORMAT_SMALL, FORMAT_BIG, FORMAT_COLLECTION].freeze
   FORMS_FORMAT_SMALL = %w[short short_story poem comics].freeze
   FORMS_FORMAT_BIG = %w[novel].freeze
   FORMS_FORMAT_COLLECTION = %w[collection].freeze
@@ -98,11 +102,11 @@ class Book < ApplicationRecord
 
   # Cover/spine size class: normal (default), small, big (novels), collection.
   def format
-    return 'small' if literary_form.in?(FORMS_FORMAT_SMALL)
-    return 'big' if literary_form.in?(FORMS_FORMAT_BIG)
-    return 'collection' if collection?
+    return FORMAT_SMALL if literary_form.in?(FORMS_FORMAT_SMALL)
+    return FORMAT_BIG if literary_form.in?(FORMS_FORMAT_BIG)
+    return FORMAT_COLLECTION if collection?
 
-    'normal'
+    FORMAT_NORMAL
   end
 
   def primary_description

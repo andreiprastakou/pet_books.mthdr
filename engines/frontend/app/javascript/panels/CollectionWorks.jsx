@@ -9,6 +9,7 @@ import {
   selectCurrentBookIndexEntry,
 } from 'store/books/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { FORMAT_COLLECTION } from 'utils/coverPalettes'
 
 export const PANEL_ID = 'included-works'
 
@@ -21,7 +22,7 @@ const CollectionWorks = () => {
     ? bookDetails
     : null
   const includedWorkId = useIncludedWorkSelection(book)
-  const workIds = book?.format === 'collection' ? book.collectedWorkIds || [] : null
+  const workIds = book?.format === FORMAT_COLLECTION ? book.collectedWorkIds || [] : null
   const selectIncludedWork = useCallback(id => {
     if (showIncludedWork) showIncludedWork(id)
   }, [showIncludedWork])

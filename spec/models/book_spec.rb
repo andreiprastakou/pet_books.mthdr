@@ -273,37 +273,37 @@ RSpec.describe Book do
     context 'when the literary form is small' do
       let(:book) { build(:book, literary_form: %w[short short_story poem comics].sample) }
 
-      it { is_expected.to eq('small') }
+      it { is_expected.to eq(Book::FORMAT_SMALL) }
     end
 
     context 'when the literary form is a novel' do
       let(:book) { build(:book, literary_form: 'novel') }
 
-      it { is_expected.to eq('big') }
+      it { is_expected.to eq(Book::FORMAT_BIG) }
     end
 
     context 'when the literary form is a collection' do
       let(:book) { build(:book, literary_form: 'collection') }
 
-      it { is_expected.to eq('collection') }
+      it { is_expected.to eq(Book::FORMAT_COLLECTION) }
     end
 
     context 'when the literary form is a novella' do
       let(:book) { build(:book, literary_form: 'novella') }
 
-      it { is_expected.to eq('normal') }
+      it { is_expected.to eq(Book::FORMAT_NORMAL) }
     end
 
     context 'when the literary form is non-fiction' do
       let(:book) { build(:book, literary_form: 'non_fiction') }
 
-      it { is_expected.to eq('normal') }
+      it { is_expected.to eq(Book::FORMAT_NORMAL) }
     end
 
     context 'when the literary form is nil' do
       let(:book) { build(:book, literary_form: nil) }
 
-      it { is_expected.to eq('normal') }
+      it { is_expected.to eq(Book::FORMAT_NORMAL) }
     end
   end
 

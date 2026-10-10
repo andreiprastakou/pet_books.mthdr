@@ -71,14 +71,14 @@ RSpec.describe BooksHelper do
     end
 
     it 'returns the small cover palette CSS when requested' do
-      expect(helper.cover_background_style(0, small: true)).to eq(
-        CoverPalettes.background_css_for_id(0, small: true)
+      expect(helper.cover_background_style(0, Book::FORMAT_SMALL)).to eq(
+        CoverPalettes.background_css_for_id(0, Book::FORMAT_SMALL)
       )
     end
 
     it 'returns the collection palette CSS when requested' do
-      expect(helper.cover_background_style(0, collection: true)).to eq(
-        CoverPalettes.background_css_for_id(0, collection: true)
+      expect(helper.cover_background_style(0, Book::FORMAT_COLLECTION)).to eq(
+        CoverPalettes.background_css_for_id(0, Book::FORMAT_COLLECTION)
       )
     end
   end

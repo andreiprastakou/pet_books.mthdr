@@ -1,7 +1,7 @@
 <% default_cover = design.cover_image == 'default' %>
 <% apply_palette = default_cover && local_assigns[:palette_id].present? %>
-<div class="b-cover-standard b-standard-cover--small"
-  <% if apply_palette %>style="<%= cover_background_style(palette_id, small: true) %>"<% end %>
+<div class="b-cover-standard b-standard-cover--<%= Book::FORMAT_SMALL %>"
+  <% if apply_palette %>style="<%= cover_background_style(palette_id, Book::FORMAT_SMALL) %>"<% end %>
   title="<%= "\"#{title}\" by #{author_name}" %>">
 
   <div class="b-cover-texture"></div>

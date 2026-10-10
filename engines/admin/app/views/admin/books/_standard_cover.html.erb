@@ -1,4 +1,4 @@
-<%= render book.format == 'small' ? "admin/books/standard_cover_small" : "admin/books/standard_cover_base",
+<%= render book.format == Book::FORMAT_SMALL ? "admin/books/standard_cover_small" : "admin/books/standard_cover_base",
       design: book_cover_design(book),
       format: book.format,
       title: truncate(book.title, length: 70, separator: ' '),

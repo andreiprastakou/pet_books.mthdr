@@ -4,10 +4,11 @@ import { faCircleXmark } from '@fortawesome/free-solid-svg-icons/faCircleXmark'
 import PropTypes from 'prop-types'
 
 import InternalLink from 'components/InternalLink'
+import { FORMAT_COLLECTION } from 'utils/coverPalettes'
 
 export const bookDetailsClassName = (book, reducedHeight) => {
   const classes = ['panel--book-details', 'panel--widget']
-  if (book.format === 'collection') classes.push('panel--book-details--collection')
+  if (book.format === FORMAT_COLLECTION) classes.push(`panel--book-details--${FORMAT_COLLECTION}`)
   if (reducedHeight) classes.push('book-details-panel--compact')
   return classes.join(' ')
 }
