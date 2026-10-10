@@ -1,7 +1,6 @@
 import React from 'react'
-import { Col } from 'react-bootstrap'
 
-import Layout from 'pages/Layout'
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import AuthorsList from 'panels/authorsList/AuthorsList'
 import AuthorCard from 'panels/authorCard/AuthorCard'
 import PageConfigurer from 'pages/authorsPage/PageConfigurer'
@@ -10,18 +9,22 @@ const AuthorsPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='panels-page authors-list-page'>
-      <Col xs={8}>
-        <AuthorsList />
-      </Col>
+    <PageFrame className='authors-list-page'>
+      <Column span={2}>
+        <Slot>
+          <AuthorsList />
+        </Slot>
+      </Column>
 
-      <Col xs={4}>
-        <AuthorCard
-          header='Selected Author'
-          showPicture={false}
-        />
-      </Col>
-    </Layout>
+      <Column span={1}>
+        <Slot>
+          <AuthorCard
+            header='Selected Author'
+            showPicture={false}
+          />
+        </Slot>
+      </Column>
+    </PageFrame>
   </>
 )
 

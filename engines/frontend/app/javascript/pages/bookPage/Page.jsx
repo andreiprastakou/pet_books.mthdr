@@ -1,22 +1,25 @@
 import React from 'react'
-import { Col } from 'react-bootstrap'
 
+import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
 import CollectionWorks from 'panels/CollectionWorks'
 import SelectedWork from 'panels/SelectedWork'
-import Layout from 'pages/Layout'
 import PageConfigurer from 'pages/bookPage/PageConfigurer'
 
 const BookPage = () => (
   <>
     <PageConfigurer />
 
-    <Layout classes='panels-page page--book'>
-      <Col xs={12}>
-        <SelectedWork />
+    <PageFrame className='page--book'>
+      <Column span={3}>
+        <Slot>
+          <SelectedWork />
+        </Slot>
 
-        <CollectionWorks />
-      </Col>
-    </Layout>
+        <Slot>
+          <CollectionWorks />
+        </Slot>
+      </Column>
+    </PageFrame>
   </>
 )
 
