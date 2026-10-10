@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 
-import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
+import {
+  FORMAT_COLLECTION,
+  FORMAT_SMALL,
+  coverBackgroundStyle,
+  coverPaletteForId,
+} from 'utils/coverPalettes'
 
 describe('coverPalettes', () => {
   it('returns a stable palette for a given id', () => {
@@ -21,27 +26,27 @@ describe('coverPalettes', () => {
   })
 
   it('returns a stable oxide palette for small covers', () => {
-    const palette = coverPaletteForId(0, { small: true })
+    const palette = coverPaletteForId(0, FORMAT_SMALL)
     expect(palette).toEqual({
       base: '#703329',
       mid: '#8a3a2e',
       shadow: '#47241f',
       edge: '#311a17',
     })
-    expect(coverPaletteForId(10, { small: true })).toEqual(palette)
-    expect(coverPaletteForId(1, { small: true }).base).toBe('#26375e')
+    expect(coverPaletteForId(10, FORMAT_SMALL)).toEqual(palette)
+    expect(coverPaletteForId(1, FORMAT_SMALL).base).toBe('#26375e')
   })
 
   it('returns a stable near-white palette for collections', () => {
-    const palette = coverPaletteForId(0, { collection: true })
+    const palette = coverPaletteForId(0, FORMAT_COLLECTION)
     expect(palette).toEqual({
       base: '#f6efea',
       mid: '#f9f4f1',
       shadow: '#e8dcd4',
       edge: '#dfd1c8',
     })
-    expect(coverPaletteForId(10, { collection: true })).toEqual(palette)
-    expect(coverPaletteForId(1, { collection: true }).base).toBe('#e7eef3')
+    expect(coverPaletteForId(10, FORMAT_COLLECTION)).toEqual(palette)
+    expect(coverPaletteForId(1, FORMAT_COLLECTION).base).toBe('#e7eef3')
   })
 
   it('builds a vertical cloth gradient from a palette', () => {
@@ -55,7 +60,7 @@ describe('coverPalettes', () => {
   })
 
   it('builds a flat matte fill when requested', () => {
-    const palette = coverPaletteForId(0, { small: true })
+    const palette = coverPaletteForId(0, FORMAT_SMALL)
     expect(coverBackgroundStyle(palette, { flat: true })).toEqual({
       background: palette.base,
     })

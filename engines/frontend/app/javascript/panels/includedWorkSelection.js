@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 
 import { selectCurrentBookId } from 'store/axis/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { FORMAT_COLLECTION } from 'utils/coverPalettes'
 
 export const includedWorkIdFromUrl = url => {
   const raw = url.queryParameter('included_work_id')
@@ -11,7 +12,7 @@ export const includedWorkIdFromUrl = url => {
 }
 
 const includedWorkIsValid = (book, includedWorkId) => (
-  book.format === 'collection' && (book.collectedWorkIds || []).includes(includedWorkId)
+  book.format === FORMAT_COLLECTION && (book.collectedWorkIds || []).includes(includedWorkId)
 )
 
 export const shouldClearIncludedWork = ({

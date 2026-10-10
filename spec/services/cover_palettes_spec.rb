@@ -22,27 +22,31 @@ RSpec.describe CoverPalettes do
     end
 
     it 'returns a stable oxide palette for small covers' do
-      palette = described_class.for_id(0, small: true)
+      palette = described_class.for_id(0, Book::FORMAT_SMALL)
       expect(palette).to eq(
         base: '#703329',
         mid: '#8a3a2e',
         shadow: '#47241f',
         edge: '#311a17'
       )
-      expect(described_class.for_id(10, small: true)).to eq(palette)
-      expect(described_class.for_id(1, small: true)[:base]).to eq('#26375e')
+      expect(described_class.for_id(10, Book::FORMAT_SMALL)).to eq(palette)
+      expect(described_class.for_id(1, Book::FORMAT_SMALL)[:base]).to eq('#26375e')
     end
 
     it 'returns a stable near-white palette for collections' do
-      palette = described_class.for_id(0, collection: true)
+      palette = described_class.for_id(0, Book::FORMAT_COLLECTION)
       expect(palette).to eq(
         base: '#f6efea',
         mid: '#f9f4f1',
         shadow: '#e8dcd4',
         edge: '#dfd1c8'
       )
-      expect(described_class.for_id(10, collection: true)).to eq(palette)
-      expect(described_class.for_id(1, collection: true)[:base]).to eq('#e7eef3')
+      expect(described_class.for_id(10, Book::FORMAT_COLLECTION)).to eq(palette)
+      expect(described_class.for_id(1, Book::FORMAT_COLLECTION)[:base]).to eq('#e7eef3')
+    end
+
+    it 'uses the novel palette for big covers' do
+      expect(described_class.for_id(1, Book::FORMAT_BIG)).to eq(described_class.for_id(1, Book::FORMAT_NORMAL))
     end
   end
 
@@ -58,15 +62,15 @@ RSpec.describe CoverPalettes do
     end
 
     it 'builds a flat fill from the small cover palette' do
-      palette = described_class.for_id(0, small: true)
-      css = described_class.background_css_for_id(0, small: true)
+      palette = described_class.for_id(0, Book::FORMAT_SMALL)
+      css = described_class.background_css_for_id(0, Book::FORMAT_SMALL)
 
       expect(css).to eq("background: #{palette[:base]};")
     end
 
     it 'builds a cloth gradient from the collection palette' do
-      palette = described_class.for_id(0, collection: true)
-      css = described_class.background_css_for_id(0, collection: true)
+      palette = described_class.for_id(0, Book::FORMAT_COLLECTION)
+      css = described_class.background_css_for_id(0, Book::FORMAT_COLLECTION)
 
       expect(css).to include(palette[:base])
       expect(css).to include('linear-gradient')

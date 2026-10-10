@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux'
 import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectBooksIndexEntry } from 'store/books/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
-import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
+import { FORMAT_NORMAL, FORMAT_SMALL, coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
 
 const BookSpine = ({ id, scrollEpoch = 0 }) => {
   const bookIndexEntry = useSelector(selectBooksIndexEntry(id))
@@ -15,10 +15,8 @@ const BookSpine = ({ id, scrollEpoch = 0 }) => {
   const { actions: { showBooksIndexEntry } } = useContext(UrlStoreContext)
 
   const isCurrent = bookIndexEntry?.id === currentBookId
-  const format = bookIndexEntry?.format || 'normal'
-  const isSmall = format === 'small'
-  const isCollection = format === 'collection'
-  const palette = coverPaletteForId(id, { small: isSmall, collection: isCollection })
+  const format = bookIndexEntry?.format || FORMAT_NORMAL
+  const palette = coverPaletteForId(id, format)
 
   useEffect(() => {
     if (!isCurrent) return
@@ -47,7 +45,7 @@ const BookSpine = ({ id, scrollEpoch = 0 }) => {
       })}
       onClick={handleClick}
       ref={ref}
-      style={coverBackgroundStyle(palette, { flat: isSmall })}
+      style={coverBackgroundStyle(palette, { flat: format === FORMAT_SMALL })}
       tabIndex={-1}
       title={bookIndexEntry.title}
     >

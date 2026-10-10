@@ -106,7 +106,7 @@ RSpec.describe Admin::LinksHelper do
     context 'with a book wikipedia link' do
       let(:book) { create(:book, wiki_url: 'https://en.wikipedia.org/wiki/The_Hobbit') }
 
-      it 'omits the fetch link away from the book page' do
+      it 'omits the fetch link unless actions are requested' do
         result = helper.admin_external_link_to(book, book.wikipedia_external_link)
 
         expect(result).to include('wikipedia')
@@ -114,11 +114,9 @@ RSpec.describe Admin::LinksHelper do
         expect(result).not_to include('wikipedia_fetches')
       end
 
-      context 'when rendered on the book page' do
-        before { stub_title_owner_page('admin/books', book) }
-
+      context 'when show_actions is true' do
         it 'includes a fetch link' do
-          result = helper.admin_external_link_to(book, book.wikipedia_external_link)
+          result = helper.admin_external_link_to(book, book.wikipedia_external_link, show_actions: true)
 
           expect(result).to include(
             'wikipedia',
@@ -133,7 +131,8 @@ RSpec.describe Admin::LinksHelper do
             result = helper.admin_external_link_to(
               book,
               book.wikipedia_external_link,
-              history_tasks: [build_stubbed(:wikipedia_book_fetch_task, target: book)]
+              history_tasks: [build_stubbed(:wikipedia_book_fetch_task, target: book)],
+              show_actions: true
             )
 
             expect(result).to include('re-fetch')
@@ -153,11 +152,6 @@ RSpec.describe Admin::LinksHelper do
         expect(result).not_to include('>fetch<')
         expect(result).not_to include('wikipedia_fetches')
       end
-    end
-
-    def stub_title_owner_page(controller_path, record)
-      allow(helper.controller).to receive_messages(controller_path:, action_name: 'show')
-      allow(helper.controller).to receive(:params).and_return(ActionController::Parameters.new(id: record.id.to_s))
     end
   end
 end

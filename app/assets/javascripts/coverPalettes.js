@@ -1,6 +1,11 @@
 // Cloth colours shared by every generated cover surface: stack spines, default
 // front covers and the back board behind them.
-// Keep in sync with CoverPalettes (app/services/cover_palettes.rb).
+// Keep in sync with CoverPalettes (app/services/cover_palettes.rb)
+// and Book format constants (app/models/book.rb).
+export const FORMAT_NORMAL = 'normal'
+export const FORMAT_SMALL = 'small'
+export const FORMAT_BIG = 'big'
+export const FORMAT_COLLECTION = 'collection'
 const COVER_PALETTES = [
   { base: '#6b2222', mid: '#7a2a2a', shadow: '#4a1414', edge: '#3a1010' },
   { base: '#1f2f4f', mid: '#2a3d63', shadow: '#121f35', edge: '#0d1628' },
@@ -44,15 +49,13 @@ const COLLECTION_COVER_PALETTES = [
   { base: '#eeeae7', mid: '#f3efed', shadow: '#dcd9d6', edge: '#d1cecc' },
 ]
 
-const paletteList = ({ small, collection }) => {
-  if (collection) return COLLECTION_COVER_PALETTES
-  if (small) return SMALL_COVER_PALETTES
-
-  return COVER_PALETTES
+const PALETTES_BY_FORMAT = {
+  [FORMAT_SMALL]: SMALL_COVER_PALETTES,
+  [FORMAT_COLLECTION]: COLLECTION_COVER_PALETTES,
 }
 
-export const coverPaletteForId = (id, { small = false, collection = false } = {}) => {
-  const palettes = paletteList({ small, collection })
+export const coverPaletteForId = (id, format = FORMAT_NORMAL) => {
+  const palettes = PALETTES_BY_FORMAT[format] || COVER_PALETTES
   return palettes[Math.abs(id) % palettes.length]
 }
 

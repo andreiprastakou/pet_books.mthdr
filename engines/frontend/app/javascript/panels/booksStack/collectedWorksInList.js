@@ -1,8 +1,10 @@
+import { FORMAT_COLLECTION } from 'utils/coverPalettes'
+
 export const collectionIdsByWorkId = (bookIds, booksIndex) => {
   const map = new Map()
   bookIds.forEach(collectionId => {
     const entry = booksIndex[collectionId]
-    if (!entry || entry.format !== 'collection') return
+    if (!entry || entry.format !== FORMAT_COLLECTION) return
 
     const workIds = entry.collectedWorkIds || []
     workIds.forEach(workId => {
@@ -15,7 +17,7 @@ export const collectionIdsByWorkId = (bookIds, booksIndex) => {
 }
 
 export const displayedWorksCount = (bookIds, booksTotal, booksIndex) => {
-  const collectionCount = bookIds.filter(id => booksIndex[id]?.format === 'collection').length
+  const collectionCount = bookIds.filter(id => booksIndex[id]?.format === FORMAT_COLLECTION).length
   return Math.max(0, booksTotal - collectionCount)
 }
 

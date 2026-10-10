@@ -44,16 +44,15 @@ module CoverPalettes
     { base: '#eeeae7', mid: '#f3efed', shadow: '#dcd9d6', edge: '#d1cecc' }
   ].freeze
 
+  PALETTES_BY_FORMAT = {
+    Book::FORMAT_SMALL => SMALL_COVER_PALETTES,
+    Book::FORMAT_COLLECTION => COLLECTION_COVER_PALETTES
+  }.freeze
+
   module_function
 
-  def for_id(id, small: false, collection: false)
-    palettes = if collection
-                 COLLECTION_COVER_PALETTES
-               elsif small
-                 SMALL_COVER_PALETTES
-               else
-                 COVER_PALETTES
-               end
+  def for_id(id, format = Book::FORMAT_NORMAL)
+    palettes = PALETTES_BY_FORMAT.fetch(format.to_s, COVER_PALETTES)
     palettes[id.to_i.abs % palettes.length]
   end
 
@@ -74,7 +73,7 @@ module CoverPalettes
     end
   end
 
-  def background_css_for_id(id, small: false, collection: false)
-    background_css(for_id(id, small:, collection:), flat: small)
+  def background_css_for_id(id, format = Book::FORMAT_NORMAL)
+    background_css(for_id(id, format), flat: format.to_s == Book::FORMAT_SMALL)
   end
 end

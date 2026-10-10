@@ -8,7 +8,13 @@ import { selectCoverDesign } from 'store/coverDesigns/selectors'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 import { DEFAULT_COVER_SIZE, coverSizeClass, coverSizeType } from 'utils/coverSizes'
-import { coverBackgroundStyle, coverPaletteForId } from 'utils/coverPalettes'
+import {
+  FORMAT_COLLECTION,
+  FORMAT_NORMAL,
+  FORMAT_SMALL,
+  coverBackgroundStyle,
+  coverPaletteForId,
+} from 'utils/coverPalettes'
 
 const TITLE_LENGTH_LONG = 25
 
@@ -52,7 +58,7 @@ const Book = ({
       style={style}
       title={bookIndexEntry.title}
     >
-      { bookIndexEntry.format === 'small' ? (
+      { bookIndexEntry.format === FORMAT_SMALL ? (
         <BookSmall
           authorRefs={authorRefs}
           bookIndexEntry={bookIndexEntry}
@@ -95,8 +101,8 @@ Book.propTypes = {
 }
 
 const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => {
-  const format = bookIndexEntry.format || 'normal'
-  const isCollection = format === 'collection'
+  const format = bookIndexEntry.format || FORMAT_NORMAL
+  const isCollection = format === FORMAT_COLLECTION
   const isDefaultCover = isCollection || coverDesign.coverImage === 'default'
 
   return (
@@ -104,7 +110,7 @@ const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => {
       className={classnames('b-cover-standard', `b-standard-cover--${format}`)}
       data-cover-image={isCollection ? 'default' : coverDesign.coverImage}
       style={isDefaultCover
-        ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { collection: isCollection }))
+        ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, format))
         : null}
     >
       <div
@@ -140,8 +146,8 @@ BookStandard.propTypes = {
 
 const BookSmall = ({ authorRefs, bookIndexEntry }) => (
   <div
-    className='b-cover-standard b-standard-cover--small'
-    style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, { small: true }), { flat: true })}
+    className={`b-cover-standard b-standard-cover--${FORMAT_SMALL}`}
+    style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, FORMAT_SMALL), { flat: true })}
   >
     <div className='b-cover-texture' />
 

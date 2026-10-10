@@ -96,7 +96,7 @@
         <% if @author.external_links.present? %>
           <div class="row mb-3">
             <div class="col-md-3 font-weight-bold text-end">Links:</div>
-            <div class="col-md-9"><%= admin_external_links_list(@author, history_tasks: @history_tasks) %></div>
+            <div class="col-md-9"><%= admin_external_links_list(@author, history_tasks: @history_tasks, show_actions: true) %></div>
           </div>
         <% end %>
 
