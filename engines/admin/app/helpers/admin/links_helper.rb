@@ -120,6 +120,18 @@ module Admin
       "/tags/#{tag.id}"
     end
 
+    def series_display_path(series)
+      "/series/#{series.id}"
+    end
+
+    def public_list_type_display_path(public_list_type)
+      "/public-lists/#{public_list_type.id}"
+    end
+
+    def public_list_display_path(public_list)
+      "/public-lists/#{public_list.public_list_type_id}?list_id=#{public_list.id}"
+    end
+
     def admin_nav_cover_designs_link
       ['Cover Designs', admin_covers_cover_designs_path]
     end
