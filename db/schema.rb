@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_10_101500) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_11_134500) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -71,16 +71,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_101500) do
     t.index ["book_id"], name: "index_book_authors_on_book_id"
   end
 
-  create_table "book_collection_legacies", force: :cascade do |t|
-    t.integer "book_id", null: false
-    t.integer "collection_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["book_id"], name: "index_book_collection_legacies_on_book_id"
-    t.index ["collection_id", "book_id"], name: "index_book_collection_legacies_on_collection_id_and_book_id", unique: true
-    t.index ["collection_id"], name: "index_book_collection_legacies_on_collection_id"
-  end
-
   create_table "book_collections", force: :cascade do |t|
     t.integer "book_id", null: false
     t.integer "collection_id", null: false
@@ -133,14 +123,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_101500) do
     t.integer "year_published", null: false
     t.index ["data_filled"], name: "index_books_on_data_filled"
     t.index ["year_published"], name: "index_books_on_year_published"
-  end
-
-  create_table "collections", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.string "name", null: false
-    t.datetime "updated_at", null: false
-    t.integer "year_published", null: false
-    t.index ["name"], name: "index_collections_on_name", unique: true
   end
 
   create_table "cover_designs", force: :cascade do |t|
@@ -367,8 +349,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_10_101500) do
   add_foreign_key "ai_messages", "ai_chats", column: "chat_id"
   add_foreign_key "book_authors", "authors"
   add_foreign_key "book_authors", "books"
-  add_foreign_key "book_collection_legacies", "books"
-  add_foreign_key "book_collection_legacies", "collections"
   add_foreign_key "book_collections", "books"
   add_foreign_key "book_collections", "books", column: "collection_id"
   add_foreign_key "book_genres", "books"

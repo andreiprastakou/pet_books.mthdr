@@ -186,14 +186,6 @@ module Admin
       "\"#{truncate_crumb(series.name)}\""
     end
 
-    def admin_nav_collections_link
-      ['Collections', admin_collections_path]
-    end
-
-    def admin_nav_collection_link(collection)
-      "\"#{truncate_crumb(collection.name)}\""
-    end
-
     def admin_nav_public_list_types_link
       ['Public List Types', admin_public_list_types_path]
     end

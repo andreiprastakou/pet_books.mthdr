@@ -31,9 +31,8 @@ RSpec.describe Book do
     it { is_expected.to have_many(:authors).class_name(Author.name).through(:book_authors) }
     it { is_expected.to have_many(:book_series).class_name(Joins::BookSeries.name) }
     it { is_expected.to have_many(:series).class_name(Series.name).through(:book_series) }
-    it { is_expected.to have_many(:book_collections).class_name(Joins::BookCollectionLegacy.name) }
-    it { is_expected.to have_many(:collections).class_name(Collection.name).through(:book_collections) }
     it { is_expected.to have_many(:book_collections_as_work).class_name(Joins::BookCollection.name) }
+    it { is_expected.to have_many(:collections).through(:book_collections_as_work).source(:collection) }
     it { is_expected.to have_many(:book_collections_as_collection).class_name(Joins::BookCollection.name) }
 
     it do
