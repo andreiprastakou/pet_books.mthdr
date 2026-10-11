@@ -1,7 +1,7 @@
 module Admin
   module Api
     module Books
-      class SearchController < ::ApplicationController
+      class SearchController < Admin::ApplicationController
         helper Admin::BooksHelper
 
         def show

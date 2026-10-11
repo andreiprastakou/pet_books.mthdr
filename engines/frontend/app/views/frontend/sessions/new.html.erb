@@ -1,0 +1,25 @@
+<div class="login-page">
+  <header class="login-page-bar">Artspace | Literature</header>
+
+  <main class="login-page-panel">
+    <h1>Log in</h1>
+
+    <% if flash[:alert] %>
+      <div class="alert alert-danger" role="alert"><%= flash[:alert] %></div>
+    <% end %>
+
+    <%= form_with url: login_path, data: { turbo: false } do |form| %>
+      <div class="mb-3">
+        <%= form.label :email, 'Email', class: 'form-label' %>
+        <%= form.email_field :email, autocomplete: 'username', autofocus: true, class: 'form-control', required: true, value: @email %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :password, 'Password', class: 'form-label' %>
+        <%= form.password_field :password, autocomplete: 'current-password', class: 'form-control', required: true %>
+      </div>
+
+      <%= form.submit 'Log in', class: 'btn btn-dark' %>
+    <% end %>
+  </main>
+</div>

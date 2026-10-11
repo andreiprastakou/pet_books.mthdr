@@ -19,6 +19,9 @@ en:
               invalid: "allows only alphanums and dashes"
 
   notices:
+    frontend:
+      sessions:
+        invalid: "Invalid email or password."
     admin:
       authors:
         create:

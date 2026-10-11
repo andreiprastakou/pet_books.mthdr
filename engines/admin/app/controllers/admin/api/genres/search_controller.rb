@@ -1,7 +1,7 @@
 module Admin
   module Api
     module Genres
-      class SearchController < ::ApplicationController
+      class SearchController < Admin::ApplicationController
         def show
           query = params[:q].to_s.strip
           @genres = if query.present?

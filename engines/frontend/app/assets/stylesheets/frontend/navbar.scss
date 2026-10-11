@@ -1,4 +1,44 @@
 .navbar {
+  .page-navbar-account {
+    .nav-link {
+      align-items: center;
+      display: inline-flex;
+    }
+
+    .page-navbar-account-icon {
+      display: inline-flex;
+      height: 20px;
+      width: 20px;
+    }
+
+    .page-navbar-account-label {
+      border: 0;
+      clip: rect(0, 0, 0, 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      padding: 0;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+
+    .dropdown-menu {
+      min-width: 220px;
+    }
+
+    .dropdown-item-text {
+      color: #333;
+      cursor: default;
+      white-space: normal;
+    }
+
+    .dropdown-item {
+      text-align: left;
+      width: 100%;
+    }
+  }
+
   .search-spinner {
     position: absolute;
     right: 18px;

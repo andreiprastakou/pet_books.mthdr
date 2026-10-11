@@ -14,7 +14,7 @@ import RootUrlStoreProvider from 'store/urlStore/RootStoreProvider'
 import EventsProvider from 'store/events/Provider'
 import { setDefaultAuthorImageUrl } from 'store/authors/actions'
 
-const Page = ({ default_author_image_url }) => {
+const Page = ({ current_user_email, default_author_image_url }) => {
   store.dispatch(setDefaultAuthorImageUrl(default_author_image_url))
 
   return (
@@ -29,7 +29,7 @@ const Page = ({ default_author_image_url }) => {
             <Notifications />
 
             <Container className='page f-page-content-container'>
-              <Navbar />
+              <Navbar currentUserEmail={ current_user_email } />
 
               <PageContent />
             </Container>
@@ -41,6 +41,7 @@ const Page = ({ default_author_image_url }) => {
 }
 
 Page.propTypes = {
+  current_user_email: PropTypes.string.isRequired,
   default_author_image_url: PropTypes.string.isRequired,
 }
 

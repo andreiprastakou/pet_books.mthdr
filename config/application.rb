@@ -37,8 +37,8 @@ module InfospaceBooks
     # Add node_modules to asset paths for Bootstrap
     config.assets.paths << Rails.root.join('node_modules')
 
-    # Admin view for solid queuejobs
-    config.mission_control.jobs.base_controller_class = 'ApplicationController'
+    # Admin view for solid queue jobs. Its own basic auth stays off; Admin::ApplicationController supplies it.
+    config.mission_control.jobs.base_controller_class = 'Admin::ApplicationController'
     config.mission_control.jobs.http_basic_auth_enabled = false
   end
 end

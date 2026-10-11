@@ -1,0 +1,35 @@
+.login-page {
+  min-height: 100vh;
+
+  .login-page-bar {
+    align-items: center;
+    background-color: #343a40;
+    color: #fff;
+    display: flex;
+    font-weight: 700;
+    justify-content: center;
+    height: 56px;
+    padding: 0 16px;
+  }
+
+  .login-page-panel {
+    margin: 48px auto 0;
+    max-width: 360px;
+    padding: 0 16px;
+
+    h1 {
+      font-size: 20px;
+      margin: 0 0 16px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .btn {
+      margin-top: 8px;
+      width: 100%;
+    }
+  }
+}
