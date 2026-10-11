@@ -17,6 +17,11 @@
 }
 
 .b-admin-navbar {
+  // Centering the links with transform creates a stacking context, so dropdowns
+  // would otherwise paint under later content such as flash alerts.
+  position: relative;
+  z-index: $zindex-fixed;
+
   > .container {
     position: relative;
   }
