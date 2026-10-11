@@ -21,8 +21,7 @@
 
     <div class="row b-books-batch-row b-books-batch-header fw-bold text-muted">
       <div class="col-1">ID</div>
-      <div class="col-2">Title</div>
-      <div class="col-1">Original</div>
+      <div class="col-3">Title</div>
       <div class="col-1">Form</div>
       <div class="col-2">Author</div>
       <div class="<%= series_column_class %>">Series</div>
@@ -50,7 +49,7 @@
         <div class="col-1">
           <%= text_field_tag "batch[#{index}][id]", nil, class: 'form-control form-control-sm', disabled: true %>
         </div>
-        <div class="col-2">
+        <div class="col-3">
           <div class="b-autocomplete-container b-book-title-autocomplete" data-controller="autocomplete"
             data-autocomplete-url-value="<%= admin_api_books_search_path(format: :json) %>"
             data-action="autocomplete:selected->books-batch-form#onExistingBookSelected">
@@ -63,9 +62,6 @@
               } %>
             <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
           </div>
-        </div>
-        <div class="col-1">
-          <%= text_field_tag "batch[#{index}][original_title]", nil, class: 'form-control form-control-sm' %>
         </div>
         <div class="col-1">
           <%= text_field_tag "batch[#{index}][literary_form]", initial_literary_form, class: 'form-control form-control-sm' %>

@@ -3,25 +3,12 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static targets = [
     'booksList',
-    'bookEntry',
     'bookTemplate',
     'notices',
   ]
 
   static values = {
     batchRowUrl: String,
-  }
-
-  connect() {
-    this.bookEntryTargets.forEach(bookEntry => this.nullifyRedundantOriginalTitle(bookEntry))
-  }
-
-  nullifyRedundantOriginalTitle(bookEntry) {
-    const title = bookEntry.querySelector('[data-name="title"]')
-    const originalTitle = bookEntry.querySelector('[data-name="original_title"]')
-    if (!title || !originalTitle) return
-    if (title.value === originalTitle.value)
-      originalTitle.value = null
   }
 
   removeBook(event) {
@@ -51,7 +38,6 @@ export default class extends Controller {
     if (!rendered || this.rejectDuplicate(entry, row)) return
 
     this.clearError()
-    this.nullifyRedundantOriginalTitle(rendered)
     this.preserveMembershipRole(row, rendered)
     row.replaceWith(rendered)
   }
