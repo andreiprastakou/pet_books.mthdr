@@ -32,6 +32,10 @@ module Admin
     has_many :authors, through: :book_authors, class_name: 'Admin::Author', inverse_of: :books
     has_many :generative_summary_tasks, class_name: 'Admin::Tasks::AiBookFetch', as: :target, dependent: :destroy
 
+    # Series chosen on a batch form that are not yet saved on the book.
+    # Persisted records are selected by id; unsaved records are submitted by name.
+    attr_accessor :preselected_series
+
     accepts_nested_attributes_for :tag_connections, allow_destroy: true
     accepts_nested_attributes_for :genres, allow_destroy: true
     accepts_nested_attributes_for :book_authors, allow_destroy: true
