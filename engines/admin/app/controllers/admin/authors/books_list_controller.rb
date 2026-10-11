@@ -44,7 +44,6 @@ module Admin
 
       def apply_failure(updater)
         flash.now[:error] = t('notices.admin.books_batch.failed', errors: updater.collect_errors)
-        prepare_form_data
         render :edit, status: :unprocessable_content
       end
 
