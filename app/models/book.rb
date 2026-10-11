@@ -44,12 +44,11 @@ class Book < ApplicationRecord
   has_many :authors, through: :book_authors, class_name: 'Author', inverse_of: :books
   has_many :book_series, class_name: 'Joins::BookSeries', dependent: :destroy, inverse_of: :book
   has_many :series, through: :book_series, class_name: 'Series'
-  has_many :book_collections, class_name: 'Joins::BookCollectionLegacy', dependent: :destroy, inverse_of: :book
-  has_many :collections, through: :book_collections, class_name: 'Collection'
   has_many :book_collections_as_work,
            class_name: 'Joins::BookCollection',
            inverse_of: :book,
            dependent: :destroy
+  has_many :collections, through: :book_collections_as_work, source: :collection
   has_many :book_collections_as_collection,
            class_name: 'Joins::BookCollection',
            foreign_key: :collection_id,
