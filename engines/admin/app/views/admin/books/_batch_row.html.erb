@@ -42,11 +42,12 @@
     <% ensured_entries = series_to_badges_entries(
          Array(local_assigns[:ensure_series]).reject { |item| book.series.any? { |existing| existing.id == item.id } }
        ) %>
+    <% preselected_entries = series_to_badges_entries(Array(book.preselected_series)) %>
     <%= render "admin/books/form/association_badges_input_mini",
       name: "batch[#{index}][series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),
       old_values: entries,
-      values: entries + ensured_entries %>
+      values: entries + ensured_entries + preselected_entries %>
   </div>
   <!-- Year input -->
   <div class="col-1">

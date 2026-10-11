@@ -64,10 +64,10 @@ module Admin
 
         prepared_attributes = attributes.slice(:original_title)
         prepared_attributes.merge!(
-          year_published: attributes[:year], literary_form: attributes[:type],
-          series_ids: existing_book.series_ids | series_ids_for_book(attributes[:series])
+          year_published: attributes[:year], literary_form: attributes[:type]
         ).compact
         existing_book.assign_attributes(prepared_attributes.compact)
+        preselect_series(existing_book, attributes[:series])
         true
       end
 
@@ -77,17 +77,23 @@ module Admin
             .merge(
               year_published: attributes[:year],
               authors: [@author],
-              literary_form: attributes[:type],
-              series_ids: series_ids_for_book(attributes[:series])
+              literary_form: attributes[:type]
             ).compact
-        )
+        ).tap { |book| preselect_series(book, attributes[:series]) }
       end
 
-      def series_ids_for_book(parsed_series_name)
-        series_name = parsed_series_name&.strip
-        return [] if series_name.blank?
+      def preselect_series(book, parsed_series_name)
+        series_name = parsed_series_name.to_s.strip
+        return if series_name.blank?
+        return if book.series.any? { |series| series.name == series_name }
 
-        [Series.find_or_create_by!(name: series_name).id]
+        book.preselected_series = Array(book.preselected_series) + [series_for_name(series_name)]
+      end
+
+      def series_for_name(series_name)
+        @series_for_name ||= {}
+        @series_for_name[series_name] ||= Admin::Series.find_by(name: series_name) ||
+                                          Admin::Series.new(name: series_name)
       end
     end
   end

@@ -74,6 +74,39 @@ RSpec.describe Admin::Authors::ListParsingController do
       expect(response.body).to include('<option value="novel">Novel</option>')
       expect(response.body).not_to include('<option value="TYPE_1"')
     end
+
+    context 'when parsed books name series' do
+      let(:fetched_data) do
+        [
+          { 'title' => 'TITLE_1', 'year' => '2021', 'type' => 'novel', 'series' => 'KNOWN_SERIES' },
+          { 'title' => 'TITLE_NEW', 'year' => '2024', 'type' => 'novel', 'series' => 'NEW_SERIES' },
+          { 'title' => 'TITLE_KNOWN', 'year' => '2024', 'type' => 'novel', 'series' => known_series.name }
+        ]
+      end
+      let(:known_series) { create(:series, name: 'KNOWN_SERIES') }
+      let(:books) { [create(:book, authors: [author], title: 'TITLE_1', series: [known_series])] }
+
+      it 'preselects series without creating missing ones' do
+        known_series
+        expect { send_request }.not_to change(Series, :count)
+
+        existing_book = assigns(:books).find { |book| book.title == 'TITLE_1' }
+        new_book = assigns(:books).find { |book| book.title == 'TITLE_NEW' }
+        known_book = assigns(:books).find { |book| book.title == 'TITLE_KNOWN' }
+
+        expect(existing_book.preselected_series).to be_blank
+        expect(new_book.preselected_series.map { |series| [series.name, series.id] }).to eq([['NEW_SERIES', nil]])
+        expect(known_book.preselected_series.map { |series| [series.name, series.id] }).to eq(
+          [[known_series.name, known_series.id]]
+        )
+
+        new_series_json = ERB::Util.html_escape([{ label: 'NEW_SERIES', id: nil }].to_json)
+        known_series_json = ERB::Util.html_escape([{ label: known_series.name, id: known_series.id }].to_json)
+        expect(response.body).to include(%(data-values="#{new_series_json}"))
+        expect(response.body).to include(%(data-values="#{known_series_json}"))
+        expect(response.body).to include(%(data-old-values="#{known_series_json}"))
+      end
+    end
   end
 
   describe 'POST /admin/authors/:author_id/list_parsing/:(task_)id/apply' do
