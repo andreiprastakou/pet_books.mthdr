@@ -11,6 +11,7 @@ FrontendApi::Engine.routes.draw do
       resources :full_entries, only: %i[show]
       resources :index_entries, only: %i[show index]
       resources :ref_entries, only: %i[show index]
+      resources :reads, only: %i[update destroy]
       resources :years, only: :index
       resource :search, only: :show, controller: 'search'
     end

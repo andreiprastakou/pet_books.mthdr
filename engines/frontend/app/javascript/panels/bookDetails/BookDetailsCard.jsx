@@ -244,7 +244,11 @@ const BookDetailsCard = ({
           />
 
           <div className='book-details-panel-toolbar'>
-            <BookToolbar bookPageHref={bookPagePath(book.id)} />
+            <BookToolbar
+              bookId={book.id}
+              bookPageHref={bookPagePath(book.id)}
+              read={Boolean(book.read)}
+            />
           </div>
 
           { links.length > 0 ? <BookDetailsLinks links={links} /> : null }

@@ -45,6 +45,14 @@ export const slice = createSlice({
     setRequestedBookId: (state, action) => {
       state.requestedBookId = action.payload
     },
+
+    setBookRead: (state, action) => {
+      const { bookId, read } = action.payload
+      if (state.bookDetailsCurrent?.id === bookId) state.bookDetailsCurrent.read = read
+
+      const stored = state.bookDetailsById[bookId]
+      if (stored) stored.read = read
+    },
   }
 })
 

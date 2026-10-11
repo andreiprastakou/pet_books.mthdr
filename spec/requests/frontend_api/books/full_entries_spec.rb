@@ -81,6 +81,7 @@ RSpec.describe '/api/books/full_entries' do
       expect(json_response).to eq(
         id: book.id,
         title: book.title,
+        read: false,
         original_title: book.original_title,
         author_ids: book.author_ids,
         tag_ids: tags.map(&:id),
@@ -100,6 +101,21 @@ RSpec.describe '/api/books/full_entries' do
         },
         public_lists: expected_public_lists
       )
+    end
+
+    context 'when the signed-in user has read the book' do
+      let(:reader) { create(:user) }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_book_read, user: reader, book: book)
+      end
+
+      it 'reports the book as read' do
+        send_request
+
+        expect(json_response[:read]).to be(true)
+      end
     end
 
     context 'when the primary description has no source_label but an Open Library source' do

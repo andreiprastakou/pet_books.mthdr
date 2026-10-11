@@ -18,6 +18,7 @@ const {
   addBooksRefs,
   clearBooksRefs,
   setBookDetails,
+  setBookRead,
   setCurrentBookDetails,
   setRequestedBookId,
 } = slice.actions
@@ -66,6 +67,15 @@ describe('books slice', () => {
     expect(state.bookDetailsCurrent).toEqual({ id: 9, title: 'Now' })
     expect(state.bookDetailsById[4]).toEqual({ id: 4, title: 'Stored' })
     expect(state.requestedBookId).toBe(9)
+  })
+
+  it('updates read on the current details and a stored copy of the same book', () => {
+    let state = reducer(undefined, setCurrentBookDetails({ id: 9, read: false }))
+    state = reducer(state, setBookDetails({ id: 9, read: false }))
+    state = reducer(state, setBookRead({ bookId: 9, read: true }))
+
+    expect(state.bookDetailsCurrent.read).toBe(true)
+    expect(state.bookDetailsById[9].read).toBe(true)
   })
 })
 

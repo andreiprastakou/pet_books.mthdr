@@ -3,6 +3,7 @@
 book = @book
 json.id book.id
 json.title book.title
+json.read UserBookRead.read?(current_user, book)
 json.original_title book.original_title
 json.author_ids book.author_ids
 json.year_published book.year_published

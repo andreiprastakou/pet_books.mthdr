@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_11_223000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_003000) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -320,6 +320,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_223000) do
     t.index ["name"], name: "index_tags_on_name", unique: true
   end
 
+  create_table "user_book_reads", force: :cascade do |t|
+    t.integer "book_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["book_id"], name: "index_user_book_reads_on_book_id"
+    t.index ["user_id", "book_id"], name: "index_user_book_reads_on_user_id_and_book_id", unique: true
+  end
+
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "email", null: false
@@ -368,4 +377,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_11_223000) do
   add_foreign_key "external_identities", "external_links", on_delete: :nullify
   add_foreign_key "genres", "cover_designs"
   add_foreign_key "public_lists", "public_list_types"
+  add_foreign_key "user_book_reads", "books"
+  add_foreign_key "user_book_reads", "users"
 end

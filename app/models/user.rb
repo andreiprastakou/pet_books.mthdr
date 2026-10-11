@@ -18,6 +18,9 @@
 class User < ApplicationRecord
   has_secure_password
 
+  has_many :user_book_reads, dependent: :delete_all
+  has_many :read_books, through: :user_book_reads, source: :book
+
   before_validation :normalize_email
 
   validates :email,

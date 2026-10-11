@@ -5,6 +5,8 @@ import BookIndexEntry from 'store/books/api/BookIndexEntry'
 import BookRefEntry from 'store/books/api/BookRefEntry'
 import BookSearchEntry from 'store/books/api/BookSearchEntry'
 
+const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+
 class ApiClient {
   static getBooksYears({ authorId, tagIds } = {}) {
     const query = {
@@ -53,6 +55,14 @@ class ApiClient {
     return jQuery.ajax({
       url: `/api/books/ref_entries/${id}.json`
     }).then(entry => BookRefEntry.parse(entry))
+  }
+
+  static setBookRead(bookId, read) {
+    return jQuery.ajax({
+      url: `/api/books/reads/${bookId}.json`,
+      method: read ? 'PUT' : 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken() },
+    })
   }
 
   static getBookFull(id) {
