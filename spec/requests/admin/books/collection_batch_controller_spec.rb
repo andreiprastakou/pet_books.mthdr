@@ -49,6 +49,18 @@ RSpec.describe Admin::Books::CollectionBatchController do
       expect(response.body).not_to include('ensure_author_id')
     end
 
+    it 'does not prefill new rows when the collection has more than two authors' do
+      authors = create_list(:author, 3)
+      anthology = create(:book, title: 'Anthology', literary_form: 'collection', authors: authors)
+
+      get edit_admin_book_collection_batch_path(anthology), headers: authorization_header
+
+      template = response.body[%r{<template[^>]*bookTemplate[\s\S]*?</template>}]
+      expect(template).to include('data-values="[]"')
+      expect(template).to include(%(data-autocomplete-author-ids-value="#{authors.map(&:id).to_json}"))
+      authors.each { |item| expect(template).not_to include(item.fullname) }
+    end
+
     it 'does not render for a book that is not a collection' do
       get edit_admin_book_collection_batch_path(included_work), headers: authorization_header
 

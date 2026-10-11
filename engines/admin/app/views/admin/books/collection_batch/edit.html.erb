@@ -8,10 +8,12 @@
   </div>
 
   <div class="card-body">
+    <% new_work_authors = @book.authors.size > 2 ? [] : @book.authors %>
     <%= render 'admin/books/batch_edit',
       books: @books,
       target: admin_book_collection_batch_path(@book),
-      initial_authors: @book.authors,
+      initial_authors: new_work_authors,
+      autocomplete_author_ids: @book.authors.map(&:id),
       initial_literary_form: 'short' %>
   </div>
 </div>
