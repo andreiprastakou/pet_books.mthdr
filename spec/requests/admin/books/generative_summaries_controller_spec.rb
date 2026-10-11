@@ -83,7 +83,6 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
           year_published: '2026',
           author_ids: book.author_ids,
           literary_form: 'UPDATED_LITERARY_FORM',
-          data_filled: true,
           tag_names: %w[tag_a tag_b],
           genre_names: %w[genre_a genre_b]
         },
@@ -110,7 +109,7 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
         expect(book.literary_form).to eq('UPDATED_LITERARY_FORM')
         expect(book.genres.map(&:genre_name)).to eq(%w[genre_a genre_b])
         expect(book.tags.map(&:name)).to eq(%w[tag_a tag_b])
-        expect(book.data_filled).to be true
+        expect(book.data_filled).to be false
       end
     end
 
