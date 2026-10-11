@@ -78,6 +78,7 @@ RSpec.describe Admin::BooksBatchUpdater do
         expect(updater.books).to contain_exactly(book_a, kind_of(Book), kind_of(Book))
         expect(updater.books[1].errors).to be_present
         expect(updater.books[1].errors[:title]).to include("can't be blank")
+        expect(updater.collect_errors).to eq("New book: Title can't be blank")
       end
     end
   end

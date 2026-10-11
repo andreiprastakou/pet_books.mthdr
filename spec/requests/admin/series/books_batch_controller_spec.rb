@@ -114,23 +114,55 @@ RSpec.describe Admin::Series::BooksBatchController do
     end
 
     context 'with invalid params' do
+      let(:blank_title_work) { create(:book, title: 'The Final Empire', authors: [author], year_published: 2006) }
       let(:params) do
         {
           batch: {
             0 => {
+              title: '11',
+              year_published: 2000,
+              author_ids: [author.id],
+              series_ids: [series.id]
+            },
+            1 => {
+              id: included_work.id,
+              title: 'Included Worksss',
+              year_published: included_work.year_published,
+              author_ids: [author.id],
+              series_ids: [series.id]
+            },
+            2 => {
+              id: blank_title_work.id,
               title: '',
-              year_published: 2024,
-              author_ids: [author.id]
+              year_published: blank_title_work.year_published,
+              author_ids: [author.id],
+              series_ids: [series.id]
             }
           }
         }
       end
 
-      it 'renders the form again without creating a work' do
+      before { create(:book_series, series: series, book: blank_title_work) }
+
+      it 'renders the submitted rows and explains which book failed' do
         expect { send_request }.not_to change(Book, :count)
+        expect(included_work.reload.title).to eq 'Included Work'
+        expect(blank_title_work.reload.title).to eq 'The Final Empire'
+
         expect(response).to render_template 'admin/series/books_batch/edit'
         expect(response).to have_http_status(:unprocessable_content)
-        expect(flash[:error]).to include("Title can't be blank")
+        expect(flash[:error]).to eq(
+          %(Failed to apply updates: Book #{blank_title_work.id}: Title can't be blank.)
+        )
+        expect(response.body).to include(ERB::Util.html_escape(flash[:error]))
+        expect(response.body).to include('value="Included Worksss"')
+        expect(response.body).to include('value="11"')
+
+        new_row = response.body.split('data-name="book-row"').find { |row| row.include?('value="11"') }
+        author_json = ERB::Util.html_escape([{ label: author.fullname, id: author.id }].to_json)
+        series_json = ERB::Util.html_escape([{ label: series.name, id: series.id }].to_json)
+        expect(new_row).to include(%(data-values="#{author_json}"))
+        expect(new_row).to include(%(data-values="#{series_json}"))
       end
     end
   end

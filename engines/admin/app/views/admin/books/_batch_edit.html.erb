@@ -19,7 +19,14 @@
   <% initial_literary_form = local_assigns[:initial_literary_form] %>
   <% initial_year_published = local_assigns[:initial_year_published] %>
   <%= form_tag target, method: method do %>
-    <div data-books-batch-form-target="notices"></div>
+    <div data-books-batch-form-target="notices">
+      <% if flash[:error].present? %>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+          <%= flash[:error] %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      <% end %>
+    </div>
 
     <div class="row b-books-batch-row b-books-batch-header fw-bold text-muted">
       <div class="col-1">ID</div>
@@ -36,7 +43,9 @@
     </div>
 
     <div data-books-batch-form-target="booksList">
-      <% books.sort_by { |b| b.year_published.to_i }.each_with_index do |book, index| %>
+      <% sorted_books = books.sort_by { |b| b.year_published.to_i } %>
+      <% prepare_batch_association_badges!(sorted_books) %>
+      <% sorted_books.each_with_index do |book, index| %>
         <%= render 'admin/books/batch_row',
           book: book,
           index: index,

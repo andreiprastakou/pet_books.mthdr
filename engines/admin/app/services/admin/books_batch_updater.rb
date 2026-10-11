@@ -22,7 +22,7 @@ module Admin
     end
 
     def collect_errors
-      @books.flat_map(&:errors).map(&:full_messages).compact_blank.join(', ')
+      @books.filter_map { |book| error_summary_for(book) }.join('; ')
     end
 
     private
@@ -55,6 +55,19 @@ module Admin
       return {} if ids.empty?
 
       Admin::Book.where(id: ids).preload(*PRELOADS).index_by { |book| book.id.to_s }
+    end
+
+    def error_summary_for(book)
+      return if book.errors.empty?
+
+      "#{error_label_for(book)}: #{book.errors.full_messages.to_sentence}"
+    end
+
+    def error_label_for(book)
+      return "Book #{book.id}" if book.persisted?
+
+      title = book.title.to_s.strip
+      title.present? ? %(New book "#{title}") : 'New book'
     end
 
     def params_for_book(book_params)

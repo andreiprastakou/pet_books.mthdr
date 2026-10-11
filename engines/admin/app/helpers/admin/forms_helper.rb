@@ -58,6 +58,12 @@ module Admin
       safe_join(unknown.map { |value| admin_literary_form_warning_tag(value) })
     end
 
+    # Through-associations read the database, so unsaved batch joins would render as empty badges.
+    def prepare_batch_association_badges!(books)
+      replace_association_from_joins!(books, :book_authors, :author, :authors)
+      replace_association_from_joins!(books, :book_series, :series, :series)
+    end
+
     def authors_to_badges_entries(authors)
       authors.map do |author|
         { label: author.fullname, id: author.id }
@@ -102,6 +108,46 @@ module Admin
     end
 
     private
+
+    def replace_association_from_joins!(books, joins_name, record_name, target_name)
+      books_with_joins = books.select { |book| book.association(joins_name).loaded? }
+      return if books_with_joins.empty?
+
+      found = records_for_unloaded_joins(books_with_joins, joins_name, record_name)
+      books_with_joins.each do |book|
+        assign_join_target(book, joins_name, record_name, target_name, found)
+      end
+    end
+
+    def records_for_unloaded_joins(books, joins_name, record_name)
+      missing_ids = books.flat_map { |book| active_joins(book, joins_name) }.filter_map do |join|
+        join.public_send(:"#{record_name}_id") unless join.association(record_name).loaded?
+      end
+      return {} if missing_ids.empty?
+
+      model_for_join_record(record_name).where(id: missing_ids.uniq).index_by(&:id)
+    end
+
+    def assign_join_target(book, joins_name, record_name, target_name, found)
+      records = active_joins(book, joins_name).filter_map { |join| join_record(join, record_name, found) }
+      association = book.association(target_name)
+      association.target = records
+      association.loaded!
+    end
+
+    def active_joins(book, joins_name)
+      book.association(joins_name).target.reject(&:marked_for_destruction?)
+    end
+
+    def join_record(join, record_name, found)
+      return join.public_send(record_name) if join.association(record_name).loaded?
+
+      found[join.public_send(:"#{record_name}_id")]
+    end
+
+    def model_for_join_record(record_name)
+      record_name == :author ? Admin::Author : Admin::Series
+    end
 
     def admin_literary_form_warning_tag(value)
       content_tag(:div, class: 'form-text text-warning') do

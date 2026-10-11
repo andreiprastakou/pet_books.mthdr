@@ -5,13 +5,6 @@
       <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     </div>
   <% end %>
-  <% if flash[:error].present? %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <%= flash[:error] %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-  <% end %>
-
   <%= render 'admin/common/parental_references', record: @task.author, card_class: 'mt-2' %>
 
   <div class="card mt-2">

@@ -25,28 +25,30 @@
   </div>
   <!-- Author input -->
   <div class="col-2" data-controller="association-input">
-    <% entries = authors_to_badges_entries(book.authors) %>
+    <% authors = book.authors %>
+    <% entries = authors_to_badges_entries(authors) %>
     <% ensured_entries = authors_to_badges_entries(
-         Array(local_assigns[:ensure_authors]).reject { |item| book.authors.any? { |existing| existing.id == item.id } }
+         Array(local_assigns[:ensure_authors]).reject { |item| authors.any? { |existing| existing.id == item.id } }
        ) %>
     <%= render "admin/books/form/association_badges_input_mini",
       name: "batch[#{index}][author_ids][]",
       autocomplete_url: admin_api_authors_search_path(format: :json),
-      old_values: entries,
+      old_values: book.new_record? ? [] : entries,
       values: entries + ensured_entries %>
   </div>
   <!-- Series input -->
   <% series_column_class = local_assigns[:membership_column].to_s == 'public_list_role' ? 'col-1' : 'col-2' %>
   <div class="<%= series_column_class %>" data-controller="association-input">
-    <% entries = series_to_badges_entries(book.series) %>
+    <% series = book.series %>
+    <% entries = series_to_badges_entries(series) %>
     <% ensured_entries = series_to_badges_entries(
-         Array(local_assigns[:ensure_series]).reject { |item| book.series.any? { |existing| existing.id == item.id } }
+         Array(local_assigns[:ensure_series]).reject { |item| series.any? { |existing| existing.id == item.id } }
        ) %>
     <% preselected_entries = series_to_badges_entries(Array(book.preselected_series)) %>
     <%= render "admin/books/form/association_badges_input_mini",
       name: "batch[#{index}][series_ids][]",
       autocomplete_url: admin_api_series_search_path(format: :json),
-      old_values: entries,
+      old_values: book.new_record? ? [] : entries,
       values: entries + ensured_entries + preselected_entries %>
   </div>
   <!-- Year input -->
