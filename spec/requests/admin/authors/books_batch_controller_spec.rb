@@ -31,6 +31,7 @@ RSpec.describe Admin::Authors::BooksBatchController do
 
       template = response.body[%r{<template[^>]*bookTemplate[\s\S]*?</template>}]
       expect(template).to include(author.id.to_s)
+      expect(template).to include(%(data-autocomplete-author-ids-value="[#{author.id}]"))
       expect(template).to include('Title Author')
       expect(template).not_to include('Other Author')
       expect(response.body).to include("ensure_author_id=#{author.id}")
