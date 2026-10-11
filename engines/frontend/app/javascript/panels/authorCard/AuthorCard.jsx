@@ -146,6 +146,12 @@ const AuthorCard = ({
             <p>
               { description }
             </p>
+
+            { authorFull.descriptionSource ? (
+              <div className='description-source'>
+                { `(source: ${authorFull.descriptionSource})` }
+              </div>
+            ) : null }
           </div>
         ) : null }
       </Card.Body>

@@ -9,6 +9,7 @@ class AuthorFull {
       birthYear: data['birth_year'],
       deathYear: data['death_year'],
       description: data['description'] || null,
+      descriptionSource: data['description_source'] || null,
       tagIds: data['tag_ids'],
       popularity: data['popularity'],
       rank: data['rank'],

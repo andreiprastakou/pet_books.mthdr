@@ -81,7 +81,11 @@ describe('AuthorCard', () => {
   })
 
   it('renders the description across the appended part of the card', () => {
-    const withDescription = { ...authorFull, description: 'First bio.\nSecond line.' }
+    const withDescription = {
+      ...authorFull,
+      description: 'First bio.\nSecond line.',
+      descriptionSource: 'Wikipedia',
+    }
 
     renderWithProviders(
       <AuthorCardWrap showDescription />,
@@ -98,6 +102,7 @@ describe('AuthorCard', () => {
 
     expect(document.querySelector('.author-card--with-description')).toBeInTheDocument()
     expect(document.querySelector('.author-card-description')).toHaveTextContent('First bio.')
+    expect(screen.getByText('(source: Wikipedia)')).toBeInTheDocument()
     expect(document.querySelector('.author-card-main .author-name')).toHaveTextContent('Ada Lovelace')
   })
 

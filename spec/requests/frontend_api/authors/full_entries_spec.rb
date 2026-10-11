@@ -31,6 +31,7 @@ RSpec.describe '/api/authors/full_entries' do
         birth_year: 1900,
         death_year: 2000,
         description: nil,
+        description_source: nil,
         tag_ids: [tag.id],
         books_count: 1,
         popularity: 10_000,
@@ -65,6 +66,27 @@ RSpec.describe '/api/authors/full_entries' do
 
         expect(response).to be_successful
         expect(json_response[:description]).to eq('First bio')
+        expect(json_response[:description_source]).to be_nil
+      end
+    end
+
+    context 'when the primary description has a source' do
+      before do
+        create(
+          :description,
+          owner: author,
+          text: 'Sourced bio',
+          priority: 0,
+          source_label: 'Wikipedia'
+        )
+      end
+
+      it 'returns that source label' do
+        send_request
+
+        expect(response).to be_successful
+        expect(json_response[:description]).to eq('Sourced bio')
+        expect(json_response[:description_source]).to eq('Wikipedia')
       end
     end
   end
