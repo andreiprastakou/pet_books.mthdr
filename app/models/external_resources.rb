@@ -23,6 +23,7 @@ module ExternalResources
 
   # Stored for admin tooling; omitted from frontend_api responses.
   INTERNAL = [
+    OPEN_LIBRARY,
     WIKIDATA
   ].freeze
 
