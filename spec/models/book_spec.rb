@@ -67,16 +67,18 @@ RSpec.describe Book do
       expect(build(:book)).to be_valid
     end
 
-    it 'validates uniqueness of title per author' do
+    it 'validates uniqueness of title per author and literary form' do
       authors = create_list(:author, 3)
-      create(:book, title: 'TITLE_A', authors: authors[0..1])
+      create(:book, title: 'TITLE_A', literary_form: 'novel', authors: authors[0..1])
       variants = [
-        build(:book, title: 'TITLE_A', authors: authors[2..2]),
-        build(:book, title: 'TITLE_A', authors: authors[1..1]),
-        build(:book, title: 'TITLE_B', authors: authors[1..1])
+        build(:book, title: 'TITLE_A', literary_form: 'novel', authors: authors[2..2]),
+        build(:book, title: 'TITLE_A', literary_form: 'novel', authors: authors[1..1]),
+        build(:book, title: 'TITLE_B', literary_form: 'novel', authors: authors[1..1]),
+        build(:book, title: 'TITLE_A', literary_form: 'novella', authors: authors[1..1]),
+        build(:book, title: 'title_a', literary_form: 'novel', authors: authors[0..0])
       ]
-      expect(variants.map(&:valid?)).to eq([true, false, true])
-      expect(variants[1].errors[:title]).to include('must be unique per author')
+      expect(variants.map(&:valid?)).to eq([true, false, true, true, false])
+      expect(variants[1].errors[:title]).to include('must be unique per author and literary form')
     end
   end
 

@@ -62,7 +62,7 @@ class Book < ApplicationRecord
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true }
   validates :wiki_popularity, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validate :validate_unique_title_per_author
+  validate :validate_unique_title_per_author_and_form
 
   before_validation :strip_title
 
@@ -120,14 +120,16 @@ class Book < ApplicationRecord
 
   protected
 
-  def validate_unique_title_per_author
+  def validate_unique_title_per_author_and_form
     return if title.blank?
 
     author_ids = book_authors.map(&:author_id)
-    siblings = Book.by_author(author_ids).where.not(id: id)
+    return if author_ids.empty?
+
+    siblings = Book.by_author(author_ids).where.not(id: id).where(literary_form: literary_form)
     return unless siblings.pluck(:title).map(&:downcase).include?(title.downcase)
 
-    errors.add(:title, 'must be unique per author')
+    errors.add(:title, 'must be unique per author and literary form')
   end
 
   def strip_title
