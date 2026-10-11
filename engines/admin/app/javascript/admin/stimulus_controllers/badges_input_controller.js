@@ -41,9 +41,21 @@ export default class extends Controller {
   onAddClicked(event) {
     event.preventDefault()
     const names = this.badgeNewNameInputTarget.value.trim()
+    this.clearNewNameInput()
+    this.addNames(names)
+  }
+
+  // ACTION
+  onEntrySelected(event) {
+    const name = (event.detail.entry.label || '').trim()
+    this.clearNewNameInput()
+    if (name)
+      this.addNames(name)
+  }
+
+  clearNewNameInput() {
     this.badgeNewNameInputTarget.value = ''
     this.badgeNewNameInputTarget.dispatchEvent(new Event('input', { bubbles: true }))
-    this.addNames(names)
   }
 
   addNames(namesString) {

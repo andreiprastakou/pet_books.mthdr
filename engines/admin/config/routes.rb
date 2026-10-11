@@ -199,6 +199,10 @@ Admin::Engine.routes.draw do
         namespace :series do
           resource :search, only: :show, controller: 'search'
         end
+
+        namespace :tags do
+          resource :search, only: :show, controller: 'search'
+        end
       end
     end
 

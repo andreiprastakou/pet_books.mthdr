@@ -14,8 +14,22 @@
   </template>
 </div>
 <div class="col-md-4">
-  <%= text_field nil, nil, class: "form-control", placeholder: 'enter...',
-    data: { action: "input->badges-input#updateBadgeAddButton", badges_input_target: "badgeNewNameInput" } %>
+  <% if local_assigns[:autocomplete_url].present? %>
+    <div class="b-autocomplete-container" data-controller="autocomplete"
+      data-autocomplete-url-value="<%= autocomplete_url %>"
+      data-action="autocomplete:selected->badges-input#onEntrySelected">
+      <%= text_field nil, nil, class: "form-control", placeholder: 'search or create...', autocomplete: 'off',
+        data: {
+          badges_input_target: "badgeNewNameInput",
+          autocomplete_target: "input",
+          action: "input->badges-input#updateBadgeAddButton input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus"
+        } %>
+      <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
+    </div>
+  <% else %>
+    <%= text_field nil, nil, class: "form-control", placeholder: 'enter...',
+      data: { action: "input->badges-input#updateBadgeAddButton", badges_input_target: "badgeNewNameInput" } %>
+  <% end %>
 </div>
 <div class="col-md-2">
   <%= button_tag "Add", class: "btn btn-success",
