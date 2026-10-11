@@ -19,6 +19,13 @@
 require 'rails_helper'
 
 RSpec.describe User do
+  describe 'associations' do
+    subject { build(:user) }
+
+    it { is_expected.to have_many(:user_book_reads).dependent(:delete_all) }
+    it { is_expected.to have_many(:read_books).through(:user_book_reads) }
+  end
+
   describe 'validations' do
     subject { build(:user) }
 

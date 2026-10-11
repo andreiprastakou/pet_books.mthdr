@@ -58,6 +58,7 @@ class Book < ApplicationRecord
   has_many :book_public_lists, class_name: 'Joins::BookPublicList', dependent: :destroy, inverse_of: :book
   has_many :public_lists, through: :book_public_lists, class_name: 'PublicList'
   has_many :external_links, class_name: 'ExternalLink', as: :owner, dependent: :destroy, inverse_of: :owner
+  has_many :user_book_reads, dependent: :delete_all
 
   validates :title, presence: true
   validates :year_published, presence: true, numericality: { only_integer: true }
