@@ -26,5 +26,21 @@ module Admin
     def sorting_params
       @sorting_params ||= { sort_by: params[:sort_by], sort_order: params[:sort_order] }.compact
     end
+
+    def destroy_record(record, success_path:, failure_path:, notice:)
+      if record.destroy
+        redirect_to success_path, status: :see_other, notice: notice
+      else
+        redirect_to failure_path, status: :see_other, alert: destroy_failure_message(record)
+      end
+    rescue ActiveRecord::RecordNotDestroyed => exception
+      redirect_to failure_path, status: :see_other, alert: destroy_failure_message(exception.record)
+    rescue ActiveRecord::InvalidForeignKey
+      redirect_to failure_path, status: :see_other, alert: t('notices.admin.destroy.restricted')
+    end
+
+    def destroy_failure_message(record)
+      record.errors.full_messages.to_sentence.presence || t('notices.admin.destroy.restricted')
+    end
   end
 end

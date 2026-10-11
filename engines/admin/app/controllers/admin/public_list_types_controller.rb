@@ -63,8 +63,12 @@ module Admin
     end
 
     def destroy
-      @public_list_type.destroy!
-      redirect_to admin_public_list_types_path, notice: t('notices.admin.public_list_types.destroy.success')
+      destroy_record(
+        @public_list_type,
+        success_path: admin_public_list_types_path,
+        failure_path: admin_public_list_type_path(@public_list_type),
+        notice: t('notices.admin.public_list_types.destroy.success')
+      )
     end
 
     private

@@ -138,5 +138,15 @@ RSpec.describe Admin::Covers::CoverDesignsController do
       expect(response).to redirect_to(admin_covers_cover_designs_path)
       expect(flash[:notice]).to eq('Cover design was successfully destroyed.')
     end
+
+    context 'when a genre still uses the design' do
+      before { create(:genre, cover_design: cover_design) }
+
+      it 'keeps the design and explains why' do
+        expect { send_request }.not_to change(CoverDesign, :count)
+        expect(response).to redirect_to(edit_admin_covers_cover_design_path(cover_design))
+        expect(flash[:alert]).to eq('Cannot delete this record because other records still depend on it.')
+      end
+    end
   end
 end

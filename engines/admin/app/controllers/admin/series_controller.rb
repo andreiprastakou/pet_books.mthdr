@@ -67,13 +67,12 @@ module Admin
     end
 
     def destroy
-      if @series.destroy
-        redirect_to admin_series_index_path, status: :see_other, notice: t('notices.admin.series.destroy.success')
-      else
-        errors = @series.errors.full_messages.join(', ')
-        redirect_to admin_series_path(@series),
-                    status: :see_other, alert: t('notices.admin.series.destroy.failure', errors: errors)
-      end
+      destroy_record(
+        @series,
+        success_path: admin_series_index_path,
+        failure_path: admin_series_path(@series),
+        notice: t('notices.admin.series.destroy.success')
+      )
     end
 
     private

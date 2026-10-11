@@ -71,13 +71,12 @@ module Admin
     end
 
     def destroy
-      @genre.destroy!
-
-      respond_to do |format|
-        format.html do
-          redirect_to admin_genres_path, status: :see_other, notice: t('notices.admin.genres.destroy.success')
-        end
-      end
+      destroy_record(
+        @genre,
+        success_path: admin_genres_path,
+        failure_path: admin_genre_path(@genre),
+        notice: t('notices.admin.genres.destroy.success')
+      )
     end
 
     private
