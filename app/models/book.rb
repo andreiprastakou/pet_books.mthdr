@@ -125,11 +125,14 @@ class Book < ApplicationRecord
 
     author_ids = book_authors.map(&:author_id)
     return if author_ids.empty?
-
-    siblings = Book.by_author(author_ids).where.not(id: id).where(literary_form: literary_form)
-    return unless siblings.pluck(:title).map(&:downcase).include?(title.downcase)
+    return unless duplicate_title_for_authors?(author_ids)
 
     errors.add(:title, 'must be unique per author and literary form')
+  end
+
+  def duplicate_title_for_authors?(author_ids)
+    Book.by_author(author_ids).where.not(id: id).where(literary_form: literary_form)
+        .pluck(:title).map(&:downcase).include?(title.downcase)
   end
 
   def strip_title

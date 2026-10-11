@@ -38,7 +38,8 @@ RSpec.describe Admin::Books::BatchRowsController do
       expect(response.body).to include("href=\"#{admin_book_path(book)}\"")
       expect(response.body).to include('target="_blank"')
       expect(response.body).to include(">#{book.id}</a>")
-      expect(response.body).not_to include('disabled="disabled"')
+      expect(response.body).to include('b-association-new-button')
+      expect(response.body).not_to match(/<(?:input|select|textarea)\b[^>]*\bdisabled="disabled"/)
     end
 
     it 'includes an ensured series the book does not have yet' do
