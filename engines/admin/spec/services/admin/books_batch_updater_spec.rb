@@ -61,6 +61,28 @@ RSpec.describe Admin::BooksBatchUpdater do
       expect(updater.books.last.title).to eq 'TITLE_B'
     end
 
+    context 'when every author and series is cleared' do
+      let(:series) { create(:series) }
+      let(:book_a) { create(:book, authors: [author], series: [series], title: 'TITLE_A') }
+      let(:batch_params) do
+        {
+          0 => {
+            id: book_a.id,
+            title: book_a.title,
+            year_published: book_a.year_published,
+            author_ids: [''],
+            series_ids: ['']
+          }
+        }
+      end
+
+      it 'removes the associations' do
+        expect(update).to be true
+        expect(book_a.reload.authors).to be_empty
+        expect(book_a.series).to be_empty
+      end
+    end
+
     context 'with invalid params' do
       before do
         batch_params[2] = batch_params[1].dup
