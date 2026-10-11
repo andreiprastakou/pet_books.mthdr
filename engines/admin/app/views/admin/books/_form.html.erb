@@ -8,17 +8,6 @@
 
   <%= render "admin/common/form_errors", form_record: book %>
 
-  <div class="row mb-3" data-controller="association-input"
-    data-association-input-association-value="authors"
-    data-action="association-input:association-changed->book-form#onAssociationChanged">
-    <%= label_tag nil, "Authors", class: "form-label" %>
-    <%= render "admin/books/form/association_badges_input_wide",
-      name: "book[author_ids][]",
-      autocomplete_url: admin_api_authors_search_path(format: :json),
-      old_values: authors_to_badges_entries(book.authors),
-      values: authors_to_badges_entries(book.authors) %>
-  </div>
-
   <div class="mb-3">
     <%= form.label :title, class: "form-label" %>
     <%= admin_reversible_input(old_value: book.title_was) do %>
@@ -61,6 +50,18 @@
     <div data-book-form-target="literaryFormWarning">
       <%= admin_literary_form_warning(book.literary_form, book.literary_form_in_database) %>
     </div>
+  </div>
+
+  <div class="row mb-3" data-controller="association-input"
+    data-association-input-association-value="authors"
+    data-action="association-input:association-changed->book-form#onAssociationChanged">
+    <%= label_tag nil, "Authors", class: "form-label" %>
+    <%= hidden_field_tag "book[author_ids][]", "" %>
+    <%= render "admin/books/form/association_badges_input_wide",
+      name: "book[author_ids][]",
+      autocomplete_url: admin_api_authors_search_path(format: :json),
+      old_values: authors_to_badges_entries(book.authors),
+      values: authors_to_badges_entries(book.authors) %>
   </div>
 
   <div class="row mb-3" data-controller="badges-input" data-action="book-form:addGenres@window->badges-input#onNamesAdded">

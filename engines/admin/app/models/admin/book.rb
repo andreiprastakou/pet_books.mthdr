@@ -99,11 +99,19 @@ module Admin
     end
 
     def author_ids=(ids)
-      sync_join_ids!(ids, association: :book_authors, foreign_key: :author_id)
+      sync_join_ids!(
+        resolve_association_ids(ids, model: Author, column: :fullname),
+        association: :book_authors,
+        foreign_key: :author_id
+      )
     end
 
     def series_ids=(ids)
-      sync_join_ids!(ids, association: :book_series, foreign_key: :series_id)
+      sync_join_ids!(
+        resolve_association_ids(ids, model: Series, column: :name),
+        association: :book_series,
+        foreign_key: :series_id
+      )
     end
 
     def collected_work_ids=(ids)
@@ -126,6 +134,19 @@ module Admin
     end
 
     private
+
+    def resolve_association_ids(values, model:, column:)
+      prepare_input_values(Array(values)).filter_map do |value|
+        string = value.to_s.strip
+        next if string.blank?
+
+        if string.match?(/\A\d+\z/)
+          Integer(string)
+        else
+          model.where(column => string).first_or_create!.id
+        end
+      end.uniq
+    end
 
     def sync_join_ids!(ids, association:, foreign_key:)
       join_records = public_send(association)
