@@ -142,6 +142,12 @@ const BookDetailsMainInfo = ({
           <p>
             { book.summary }
           </p>
+
+          { book.summarySource ? (
+            <div className='description-source'>
+              { `(source: ${book.summarySource})` }
+            </div>
+          ) : null }
         </div>
       ) : null }
     </div>

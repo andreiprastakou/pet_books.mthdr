@@ -9,6 +9,7 @@ json.external_links ExternalLink.frontend_payload(author.external_links)
 json.birth_year author.birth_year
 json.death_year author.death_year
 json.description author.descriptions.first&.text
+json.description_source author.descriptions.first&.display_source_label
 json.tag_ids author.tag_ids
 json.books_count author.books.count
 json.popularity author.popularity

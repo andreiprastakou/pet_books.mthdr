@@ -223,6 +223,12 @@
     font-style: italic;
     padding: 18px 0;
     white-space: pre-line;
+
+    .description-source {
+      color: $color-icon-grey;
+      margin-top: 6px;
+      text-align: right;
+    }
   }
 
   h3 {

@@ -17,6 +17,7 @@ describe('books API models', () => {
       series_ids: [4],
       form_label: 'a fantasy novel',
       collected_work_ids: [3, 4],
+      summary_source: 'Open Library',
       external_links: [{ url: 'https://x', label: 'Official' }],
       public_lists: [{
         public_list_id: 10,
@@ -35,6 +36,7 @@ describe('books API models', () => {
       seriesIds: [4],
       formLabel: 'a fantasy novel',
       collectedWorkIds: [3, 4],
+      summarySource: 'Open Library',
       externalLinks: [{ url: 'https://x', label: 'Official' }],
       publicLists: [{
         publicListId: 10,
