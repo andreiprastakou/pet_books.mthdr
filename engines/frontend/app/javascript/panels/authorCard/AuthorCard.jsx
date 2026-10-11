@@ -10,7 +10,7 @@ import InternalLink from 'components/InternalLink'
 import TagBadge from 'components/TagBadge'
 
 import { selectCurrentAuthorId } from 'store/axis/selectors'
-import { selectAuthorFull, selectAuthorDefaultImageUrl } from 'store/authors/selectors'
+import { selectAuthorFull } from 'store/authors/selectors'
 import { fetchAuthorFull } from 'store/authors/actions'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
 import { setImageSrc } from 'modals/imageFullShow/actions'
@@ -66,7 +66,6 @@ const AuthorCard = ({
   const dispatch = useDispatch()
   const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds), shallowEqual)
   const sortedTags = sortBy(tags, tag => tag.connectionsCount)
-  const defaultPhotoUrl = useSelector(selectAuthorDefaultImageUrl())
 
   const handleImageClick = useCallback(() => {
     dispatch(setImageSrc(authorFull.imageUrl))
@@ -77,11 +76,11 @@ const AuthorCard = ({
   const description = showDescription ? authorFull.description : null
   const identity = (
     <>
-      { showPicture ? (
+      { showPicture && authorFull.thumbUrl ? (
         <ImageContainer
           classes='author-image'
           onClick={handleImageClick}
-          url={authorFull.thumbUrl || defaultPhotoUrl}
+          url={authorFull.thumbUrl}
         />
       ) : null }
 
