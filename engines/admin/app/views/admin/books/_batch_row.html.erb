@@ -1,4 +1,4 @@
-<div class="row b-books-batch-row align-items-center" data-name="book-row" data-books-batch-form-target="bookEntry">
+<div class="row b-books-batch-row align-items-center" data-name="book-row">
   <div class="col-1">
     <% if book.persisted? %>
       <%= admin_link_to book.id, admin_book_path(book), target: '_blank' %>
@@ -8,19 +8,11 @@
     <% end %>
   </div>
   <!-- Title input -->
-  <div class="col-2">
+  <div class="col-3">
     <%= admin_reversible_input(old_value: book.title_was) do %>
       <%= text_field_tag "batch[#{index}][title]", book.title,
         class: 'form-control form-control-sm',
         data: { name: "title", input_changes_target: "input" } %>
-    <% end %>
-  </div>
-  <!-- Original title input -->
-  <div class="col-1">
-    <%= admin_reversible_input(old_value: book.original_title_was) do %>
-      <%= text_field_tag "batch[#{index}][original_title]", book.original_title,
-        class: 'form-control form-control-sm',
-        data: { name: "original_title", input_changes_target: "input" } %>
     <% end %>
   </div>
   <!-- Literary form input -->

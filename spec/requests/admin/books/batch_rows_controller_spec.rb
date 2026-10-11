@@ -7,7 +7,6 @@ RSpec.describe Admin::Books::BatchRowsController do
     let(:book) do
       create(:book,
              title: 'Persisted Story',
-             original_title: 'Histoire',
              literary_form: 'short',
              year_published: 1977,
              authors: [author],
@@ -29,13 +28,12 @@ RSpec.describe Admin::Books::BatchRowsController do
       expect(response.body).to include('name="batch[171000][id]"')
       expect(response.body).to include("value=\"#{book.id}\"")
       expect(response.body).to include('Persisted Story')
-      expect(response.body).to include('Histoire')
+      expect(response.body).not_to include('name="batch[171000][original_title]"')
       expect(response.body).to include('value="short"')
       expect(response.body).to include('value="1977"')
       expect(response.body).to include('Row Author')
       expect(response.body).to include('Row Series')
       expect(response.body).to include('https://en.wikipedia.org/wiki/Persisted_Story')
-      expect(response.body).to include('data-books-batch-form-target="bookEntry"')
       expect(response.body).to include("href=\"#{admin_book_path(book)}\"")
       expect(response.body).to include('target="_blank"')
       expect(response.body).to include(">#{book.id}</a>")
