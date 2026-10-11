@@ -64,7 +64,9 @@
           </div>
         </div>
         <div class="col-1">
-          <%= text_field_tag "batch[#{index}][literary_form]", initial_literary_form, class: 'form-control form-control-sm' %>
+          <%= admin_literary_form_select_tag "batch[#{index}][literary_form]", initial_literary_form,
+            class: 'form-select form-select-sm' %>
+          <%= admin_literary_form_warning(initial_literary_form) %>
         </div>
         <!-- Author input -->
         <div class="col-2" data-controller="association-input">

@@ -68,6 +68,11 @@ RSpec.describe Admin::Authors::ListParsingController do
         [nil, 'TITLE_3', 2023, 'TYPE_3']
       ]
       expect(assigns(:books).map { |b| [b.id, b.title, b.year_published, b.literary_form] }).to eq(expected_books)
+      expect(response.body).to include("Current value 'TYPE_1' will be replaced!")
+      expect(response.body).to include("Current value 'TYPE_2' will be replaced!")
+      expect(response.body).to include("Current value 'TYPE_3' will be replaced!")
+      expect(response.body).to include('<option value="novel">Novel</option>')
+      expect(response.body).not_to include('<option value="TYPE_1"')
     end
   end
 

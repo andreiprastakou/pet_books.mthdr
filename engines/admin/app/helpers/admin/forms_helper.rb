@@ -43,6 +43,21 @@ module Admin
       end
     end
 
+    def admin_literary_form_choices
+      LiteraryForm::DEFAULTS.map { |form| [form.humanize, form] }
+    end
+
+    def admin_literary_form_select_tag(name, selected, **)
+      selected_value = LiteraryForm::DEFAULTS.include?(selected.to_s) ? selected : nil
+      select_tag(name, options_for_select(admin_literary_form_choices, selected_value), include_blank: true, **)
+    end
+
+    def admin_literary_form_warning(*values)
+      unknown = values.flatten.filter_map { |value| value.to_s.strip.presence }.uniq
+                      .reject { |value| LiteraryForm::DEFAULTS.include?(value) }
+      safe_join(unknown.map { |value| admin_literary_form_warning_tag(value) })
+    end
+
     def authors_to_badges_entries(authors)
       authors.map do |author|
         { label: author.fullname, id: author.id }
@@ -87,6 +102,12 @@ module Admin
     end
 
     private
+
+    def admin_literary_form_warning_tag(value)
+      content_tag(:div, class: 'form-text text-warning') do
+        safe_join(["Current value '".html_safe, value, "' will be replaced!".html_safe])
+      end
+    end
 
     def map_external_records_to_input_entries(records, value_key)
       records.map do |record|

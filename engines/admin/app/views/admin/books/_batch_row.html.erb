@@ -18,9 +18,10 @@
   <!-- Literary form input -->
   <div class="col-1">
     <%= admin_reversible_input(old_value: book.new_record? ? nil : book.literary_form_was) do %>
-      <%= text_field_tag "batch[#{index}][literary_form]", book.literary_form,
-        class: 'form-control form-control-sm', data: { input_changes_target: "input" } %>
+      <%= admin_literary_form_select_tag "batch[#{index}][literary_form]", book.literary_form,
+        class: 'form-select form-select-sm', data: { input_changes_target: "input" } %>
     <% end %>
+    <%= admin_literary_form_warning(book.literary_form, (book.literary_form_in_database unless book.new_record?)) %>
   </div>
   <!-- Author input -->
   <div class="col-2" data-controller="association-input">
