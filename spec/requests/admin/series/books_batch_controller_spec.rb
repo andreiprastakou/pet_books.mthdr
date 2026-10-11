@@ -29,6 +29,10 @@ RSpec.describe Admin::Series::BooksBatchController do
 
       expect(response.body).to include('Included Work')
       expect(response.body).not_to include('Unrelated Work')
+      expect(response.body).to include('type="hidden" name="batch[0][author_ids][]"')
+      expect(response.body).to include('type="hidden" name="batch[0][series_ids][]"')
+      expect(response.body).to include('type="hidden" name="batch[ENTRY_INDEX][author_ids][]"')
+      expect(response.body).to include('type="hidden" name="batch[ENTRY_INDEX][series_ids][]"')
     end
 
     it 'prefills new rows with the series and asks autocomplete rows to include it' do
