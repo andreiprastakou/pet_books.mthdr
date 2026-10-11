@@ -1,22 +1,28 @@
 <% default_cover = design.cover_image == 'default' %>
 <% apply_palette = default_cover && local_assigns[:palette_id].present? %>
+<% author_names = Array(local_assigns[:author_names]).map { |name| name.to_s.strip }.reject(&:blank?) %>
+<% author_names = [author_name.to_s.strip] if author_names.empty? && local_assigns[:author_name].present? %>
+<% author = CoverLayout.author_line(author_names, format: Book::FORMAT_SMALL) %>
+<% displayed_title = CoverLayout.title(title, format: Book::FORMAT_SMALL) %>
 <div class="b-cover-standard b-standard-cover--<%= Book::FORMAT_SMALL %>"
   <% if apply_palette %>style="<%= cover_background_style(palette_id, Book::FORMAT_SMALL) %>"<% end %>
-  title="<%= "\"#{title}\" by #{author_name}" %>">
+  title="<%= "\"#{title}\" by #{author_names.join(', ')}" %>">
 
   <div class="b-cover-texture"></div>
 
   <div class="b-standard-cover-small-text-container">
-    <div class="b-standard-cover-author"
-      data-font="special_elite">
-      <%= author_name %>
-    </div>
+    <% if author %>
+      <div class="b-standard-cover-author<%= ' b-tight' if author[:tight] %>"
+        data-font="special_elite">
+        <%= author[:text] %>
+      </div>
 
-    <div class="b-small-cover-separator"></div>
+      <div class="b-small-cover-separator"></div>
+    <% end %>
 
-    <div class="b-standard-cover-title"
+    <div class="b-standard-cover-title<%= ' b-long' if title.to_s.length > CoverLayout::TITLE_LENGTH_LONG %>"
       data-font="special_elite">
-      <%= title %>
+      <%= displayed_title %>
     </div>
   </div>
 </div>

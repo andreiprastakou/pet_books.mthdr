@@ -10,7 +10,6 @@ $b-cover-sizes: (
     small-text-font: 9px,
     title-font: 13px,
     title-font-long: 11px,
-    title-min-height: 119px,
     width: 100px,
   ),
   'sm': (
@@ -21,7 +20,6 @@ $b-cover-sizes: (
     small-text-font: 10px,
     title-font: 15px,
     title-font-long: 12px,
-    title-min-height: 142px,
     width: 120px,
   ),
   'md': (
@@ -32,7 +30,6 @@ $b-cover-sizes: (
     small-text-font: 11px,
     title-font: 18px,
     title-font-long: 14px,
-    title-min-height: 166px,
     width: 140px,
   ),
   'lg': (
@@ -43,11 +40,15 @@ $b-cover-sizes: (
     small-text-font: 12px,
     title-font: 20px,
     title-font-long: 16px,
-    title-min-height: 190px,
     width: 160px,
   ),
 );
 $b-cover-default-size: 'lg';
+// Room held under the title for the byline. CoverLayout / coverCopy.js use the same figures.
+$b-cover-author-max-lines: 4;
+$b-cover-author-line-height: 1.1;
+$b-cover-author-gap: 4px;
+$b-cover-author-fudge: 2px;
 
 @function b-cover-value($size, $key) {
   @return map-get(map-get($b-cover-sizes, $size), $key);
@@ -78,15 +79,22 @@ $b-cover-default-size: 'lg';
 @mixin b-cover-geometry($size) {
   $padding: b-cover-value($size, padding);
   $text-width: b-cover-value($size, width) - ($padding * 2);
+  $inner-height: b-cover-value($size, height) - ($padding * 2);
+  $author-max: (b-cover-value($size, author-font) * $b-cover-author-line-height * $b-cover-author-max-lines) + $b-cover-author-fudge;
+  // Title box ends above the byline, so a long title cannot paint over the names.
+  $title-limit: $inner-height - $author-max - $b-cover-author-gap;
 
   @include b-cover-box($size);
 
   padding: $padding;
 
   .b-standard-cover-title {
+    box-sizing: border-box;
     font-size: b-cover-value($size, title-font);
+    max-height: $title-limit;
     max-width: $text-width;
-    min-height: b-cover-value($size, title-min-height);
+    min-height: $title-limit;
+    overflow: hidden;
     padding: $padding 0;
 
     &.b-long {
@@ -95,8 +103,16 @@ $b-cover-default-size: 'lg';
   }
 
   .b-standard-cover-author {
-    max-width: $text-width;
+    box-sizing: border-box;
+    flex-shrink: 0;
     font-size: b-cover-value($size, author-font);
+    max-height: $author-max;
+    max-width: $text-width;
+    overflow: hidden;
+
+    &.b-tight {
+      font-size: b-cover-value($size, author-font) * 0.7;
+    }
   }
 
   &.b-standard-cover--small {
@@ -109,7 +125,16 @@ $b-cover-default-size: 'lg';
     .b-standard-cover-author,
     .b-standard-cover-title {
       font-size: b-cover-value($size, small-text-font);
-      min-height: auto;
+      max-height: none;
+      min-height: 0;
+    }
+
+    .b-standard-cover-author {
+      max-height: (b-cover-value($size, small-text-font) * $b-cover-author-line-height * $b-cover-author-max-lines) + $b-cover-author-fudge;
+
+      &.b-tight {
+        font-size: b-cover-value($size, small-text-font) * 0.7;
+      }
     }
   }
 }
@@ -215,6 +240,7 @@ $b-cover-shadow-small: (
     text-align: center;
     font-family: LibreBaskerville, sans-serif;
     word-wrap: break-word;
+    overflow-wrap: anywhere;
     line-height: 1.1;
     text-transform: uppercase;
   }
@@ -251,6 +277,9 @@ $b-cover-shadow-small: (
     background-color: rgba(255, 252, 245, 0.92);
     border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 1px;
+    box-sizing: border-box;
+    max-height: 100%;
+    overflow: hidden;
     text-align: center;
     width: 100%;
     word-wrap: break-word;

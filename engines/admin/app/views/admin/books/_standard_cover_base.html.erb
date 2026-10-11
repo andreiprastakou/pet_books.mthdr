@@ -2,22 +2,28 @@
 <% cover_format = local_assigns.fetch(:format, Book::FORMAT_NORMAL) %>
 <% collection_cover = cover_format == Book::FORMAT_COLLECTION %>
 <% apply_palette = local_assigns[:palette_id].present? && (default_cover || collection_cover) %>
+<% author_names = Array(local_assigns[:author_names]).map { |name| name.to_s.strip }.reject(&:blank?) %>
+<% author_names = [author_name.to_s.strip] if author_names.empty? && local_assigns[:author_name].present? %>
+<% author = CoverLayout.author_line(author_names, format: cover_format) %>
+<% displayed_title = CoverLayout.title(title, format: cover_format) %>
 <div class="b-cover-standard b-standard-cover--<%= cover_format %>"
   data-cover-image="<%= collection_cover ? 'default' : design.cover_image %>"
   <% if apply_palette %>style="<%= cover_background_style(palette_id, cover_format) %>"<% end %>
-  title="<%= "\"#{title}\" by #{author_name}" %>">
+  title="<%= "\"#{title}\" by #{author_names.join(', ')}" %>">
 
   <div class="b-cover-texture<%= ' b-cover-texture--on-image' unless default_cover || collection_cover %>"></div>
 
-  <div class="b-standard-cover-title"
+  <div class="b-standard-cover-title<%= ' b-long' if title.to_s.length > CoverLayout::TITLE_LENGTH_LONG %>"
     data-text-color="<%= design.title_color %>"
     data-font="<%= design.title_font %>">
-    <%= title %>
+    <%= displayed_title %>
   </div>
 
-  <span class="b-standard-cover-author align-bottom"
-    data-text-color="<%= design.author_name_color %>"
-    data-font="<%= design.author_name_font %>">
-    <%= author_name %>
-  </span>
+  <% if author %>
+    <span class="b-standard-cover-author align-bottom<%= ' b-tight' if author[:tight] %>"
+      data-text-color="<%= design.author_name_color %>"
+      data-font="<%= design.author_name_font %>">
+      <%= author[:text] %>
+    </span>
+  <% end %>
 </div>

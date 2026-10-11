@@ -7,6 +7,7 @@ import { selectCurrentBookId } from 'store/axis/selectors'
 import { selectCoverDesign } from 'store/coverDesigns/selectors'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { coverAuthorLine, coverTitle, TITLE_LENGTH_LONG } from 'utils/coverCopy'
 import { DEFAULT_COVER_SIZE, coverSizeClass, coverSizeType } from 'utils/coverSizes'
 import {
   FORMAT_COLLECTION,
@@ -15,8 +16,6 @@ import {
   coverBackgroundStyle,
   coverPaletteForId,
 } from 'utils/coverPalettes'
-
-const TITLE_LENGTH_LONG = 25
 
 const Book = ({
   bookIndexEntry,
@@ -62,12 +61,14 @@ const Book = ({
         <BookSmall
           authorRefs={authorRefs}
           bookIndexEntry={bookIndexEntry}
+          size={size}
         />
       ) : (
         <BookStandard
           authorRefs={authorRefs}
           bookIndexEntry={bookIndexEntry}
           coverDesign={coverDesign}
+          size={size}
         />
       ) }
 
@@ -100,10 +101,20 @@ Book.propTypes = {
   style: PropTypes.object,
 }
 
-const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => {
+const coverCopyFor = (bookIndexEntry, authorRefs, format, size) => {
+  const names = authorRefs.map(authorRef => authorRef?.fullname)
+  return {
+    author: coverAuthorLine(names, { format, size }),
+    longTitle: bookIndexEntry.title.length > TITLE_LENGTH_LONG,
+    title: coverTitle(bookIndexEntry.title, { format, size }),
+  }
+}
+
+const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry, size }) => {
   const format = bookIndexEntry.format || FORMAT_NORMAL
   const isCollection = format === FORMAT_COLLECTION
   const isDefaultCover = isCollection || coverDesign.coverImage === 'default'
+  const copy = coverCopyFor(bookIndexEntry, authorRefs, format, size)
 
   return (
     <div
@@ -120,20 +131,22 @@ const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry }) => {
       />
 
       <div
-        className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
+        className={classnames('b-standard-cover-title', { 'b-long': copy.longTitle })}
         data-font={coverDesign.titleFont}
         data-text-color={coverDesign.titleColor}
       >
-        { bookIndexEntry.title }
+        { copy.title }
       </div>
 
-      <div
-        className='b-standard-cover-author'
-        data-font={coverDesign.authorNameFont}
-        data-text-color={coverDesign.authorNameColor}
-      >
-        { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
-      </div>
+      { copy.author ? (
+        <div
+          className={classnames('b-standard-cover-author', { 'b-tight': copy.author.tight })}
+          data-font={coverDesign.authorNameFont}
+          data-text-color={coverDesign.authorNameColor}
+        >
+          { copy.author.text }
+        </div>
+      ) : null }
     </div>
   )
 }
@@ -142,38 +155,48 @@ BookStandard.propTypes = {
   authorRefs: PropTypes.array.isRequired,
   bookIndexEntry: PropTypes.object.isRequired,
   coverDesign: PropTypes.object.isRequired,
+  size: coverSizeType.isRequired,
 }
 
-const BookSmall = ({ authorRefs, bookIndexEntry }) => (
-  <div
-    className={`b-cover-standard b-standard-cover--${FORMAT_SMALL}`}
-    style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, FORMAT_SMALL), { flat: true })}
-  >
-    <div className='b-cover-texture' />
+const BookSmall = ({ authorRefs, bookIndexEntry, size }) => {
+  const copy = coverCopyFor(bookIndexEntry, authorRefs, FORMAT_SMALL, size)
 
-    <div className="b-standard-cover-small-text-container">
-      <div
-        className='b-standard-cover-author'
-        data-font='special_elite'
-      >
-        { authorRefs.map(authorRef => authorRef.fullname).join(', ') }
-      </div>
+  return (
+    <div
+      className={`b-cover-standard b-standard-cover--${FORMAT_SMALL}`}
+      style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, FORMAT_SMALL), { flat: true })}
+    >
+      <div className='b-cover-texture' />
 
-      <div className='b-small-cover-separator' />
+      <div className="b-standard-cover-small-text-container">
+        { copy.author ? (
+          <>
+            <div
+              className={classnames('b-standard-cover-author', { 'b-tight': copy.author.tight })}
+              data-font='special_elite'
+            >
+              { copy.author.text }
+            </div>
 
-      <div
-        className={classnames('b-standard-cover-title', { 'b-long': bookIndexEntry.title.length > TITLE_LENGTH_LONG })}
-        data-font='special_elite'
-      >
-        { bookIndexEntry.title }
+            <div className='b-small-cover-separator' />
+          </>
+        ) : null }
+
+        <div
+          className={classnames('b-standard-cover-title', { 'b-long': copy.longTitle })}
+          data-font='special_elite'
+        >
+          { copy.title }
+        </div>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 BookSmall.propTypes = {
   authorRefs: PropTypes.array.isRequired,
   bookIndexEntry: PropTypes.object.isRequired,
+  size: coverSizeType.isRequired,
 }
 
 export default Book

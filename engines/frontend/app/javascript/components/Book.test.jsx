@@ -57,8 +57,68 @@ describe('Book', () => {
     expect(screen.getByTitle('Dune')).toBeInTheDocument()
     expect(screen.getByText('Dune')).toBeInTheDocument()
     expect(screen.getByText('Frank Herbert')).toBeInTheDocument()
+    expect(document.querySelector('.b-standard-cover-author')).not.toHaveClass('b-tight')
     expect(document.querySelector('.b-cover-standard')).not.toHaveClass('b-standard-cover--small')
     expect(document.querySelector('.b-cover-standard')).toHaveClass('b-standard-cover--normal')
+  })
+
+  it('omits a byline that cannot fit', () => {
+    const crowdedAuthors = {
+      1: { id: 1, fullname: 'Adrian Tchaikovsky' },
+      2: { id: 2, fullname: 'Hal Wilson' },
+      3: { id: 3, fullname: 'Christopher Allen' },
+      4: { id: 4, fullname: 'Liane Merciel' },
+      5: { id: 5, fullname: 'Noah Van Nguyen' },
+      6: { id: 6, fullname: 'Nick Horth' },
+      7: { id: 7, fullname: 'Anna Stephens' },
+      8: { id: 8, fullname: 'Matt Keefe' },
+    }
+    const crowdedState = {
+      ...preloadedState,
+      storeAuthors: {
+        ...preloadedState.storeAuthors,
+        authorsRefs: crowdedAuthors,
+      },
+    }
+
+    renderWithProviders(
+      <Book
+        bookIndexEntry={{
+          ...bookIndexEntry,
+          title: 'On the Shoulders of Giants and Other StoriesOn the Shoulders of Giants',
+          authorIds: [1, 2, 3, 4, 5, 6, 7, 8],
+        }}
+        scrollIntoView={false}
+      />,
+      { preloadedState: crowdedState }
+    )
+
+    expect(document.querySelector('.b-standard-cover-title')).toHaveClass('b-long')
+    expect(document.querySelector('.b-standard-cover-author')).not.toBeInTheDocument()
+    expect(screen.queryByText('Adrian Tchaikovsky')).not.toBeInTheDocument()
+  })
+
+  it('shrinks a single author name instead of leaving it off the cover', () => {
+    const longName = `Tchaikovsky${'E'.repeat(80)}`
+
+    renderWithProviders(
+      <Book
+        bookIndexEntry={bookIndexEntry}
+        scrollIntoView={false}
+      />,
+      {
+        preloadedState: {
+          ...preloadedState,
+          storeAuthors: {
+            ...preloadedState.storeAuthors,
+            authorsRefs: { 1: { id: 1, fullname: longName } },
+          },
+        },
+      }
+    )
+
+    expect(screen.getByText(longName)).toBeInTheDocument()
+    expect(document.querySelector('.b-standard-cover-author')).toHaveClass('b-tight')
   })
 
   it('renders the small cover variant with year or label', () => {
