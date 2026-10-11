@@ -35,6 +35,14 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
   config.include AuthHelper, type: :request
+
+  config.before(:each, type: :request) do |example|
+    path = example.metadata[:file_path].to_s
+    next unless path.include?('spec/requests/frontend')
+    next if example.metadata[:frontend_session] == false
+
+    sign_in_frontend_user!
+  end
   config.include ApiRequestsHelper, type: :request
   config.include Admin::Engine.routes.url_helpers
 

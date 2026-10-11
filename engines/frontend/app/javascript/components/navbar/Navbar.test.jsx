@@ -38,6 +38,17 @@ describe('PageNavbar', () => {
     expect(screen.getByText('Public lists')).toBeInTheDocument()
   })
 
+  it('shows the signed-in email and a logout action', async() => {
+    const user = userEvent.setup()
+
+    renderWithProviders(<PageNavbar currentUserEmail='reader@example.com' />)
+
+    await user.click(screen.getByRole('button', { name: 'Account' }))
+
+    expect(screen.getByText('reader@example.com')).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Log out' }).closest('form')).toHaveAttribute('action', '/logout')
+  })
+
   it('triggers BOOKS_NAV_CLICKED when the Books dropdown is opened', async() => {
     const user = userEvent.setup()
     const triggerEvent = vi.fn()

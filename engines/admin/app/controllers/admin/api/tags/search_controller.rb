@@ -1,7 +1,7 @@
 module Admin
   module Api
     module Tags
-      class SearchController < ::ApplicationController
+      class SearchController < Admin::ApplicationController
         def show
           query = params[:q].to_s.strip
           @tags = if query.present?

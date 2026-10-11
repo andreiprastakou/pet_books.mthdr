@@ -1,7 +1,7 @@
 module Admin
   module Api
     module Authors
-      class SearchController < ::ApplicationController
+      class SearchController < Admin::ApplicationController
         def show
           query = params[:q].to_s.strip
           @authors = if query.present?

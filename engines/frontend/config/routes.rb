@@ -1,6 +1,10 @@
 Frontend::Engine.routes.draw do
   root to: 'home#index'
 
+  get 'login', to: 'sessions#new', as: :login
+  post 'login', to: 'sessions#create'
+  delete 'logout', to: 'sessions#destroy', as: :logout
+
   # Keep asset requests out of the SPA fallback. If the Shakapacker dev server is
   # unreachable, /packs/* falls through to Rails; matching it here answered with the SPA
   # document and a 200, which the browser rejects as a MIME type mismatch. Declining the

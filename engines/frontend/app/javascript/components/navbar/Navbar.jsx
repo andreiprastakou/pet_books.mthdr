@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from 'react'
+import PropTypes from 'prop-types'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 
 import InternalLink from 'components/InternalLink'
@@ -10,7 +11,7 @@ import PublicListsNavList from 'components/navbar/ListsNavList'
 import EventsContext from 'store/events/Context'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const PageNavbar = () => {
+const PageNavbar = ({ currentUserEmail }) => {
   const { routesReady } = useContext(UrlStoreContext)
 
   if (!routesReady) return null
@@ -18,24 +19,81 @@ const PageNavbar = () => {
   return (
     <Navbar
       bg='dark'
+      className='page-navbar'
       expand
       fixed='top'
       variant='dark'
     >
-      <Nav className='mr-auto'>
-        <RootNavLink />
+      <div className='page-navbar-inner'>
+        <Nav className='page-navbar-brand'>
+          <RootNavLink />
+        </Nav>
 
-        <BooksNavDropdown />
+        <Nav className='page-navbar-sections'>
+          <BooksNavDropdown />
 
-        <AuthorsNavDropdown />
+          <AuthorsNavDropdown />
 
-        <TagsNavDropdown />
+          <TagsNavDropdown />
 
-        <SeriesNavDropdown />
+          <SeriesNavDropdown />
 
-        <PublicListsNavDropdown />
-      </Nav>
+          <PublicListsNavDropdown />
+        </Nav>
+
+        { currentUserEmail && <AccountNav email={ currentUserEmail } /> }
+      </div>
     </Navbar>
+  )
+}
+
+PageNavbar.propTypes = {
+  currentUserEmail: PropTypes.string,
+}
+
+const AccountNav = ({ email }) => (
+  <Nav className='page-navbar-account'>
+    <NavDropdown
+      align='end'
+      id='account-menu'
+      title={ (
+        <>
+          <ProfileIcon />
+          <span className='page-navbar-account-label'>Account</span>
+        </>
+      ) }
+    >
+      <NavDropdown.ItemText>{ email }</NavDropdown.ItemText>
+      <NavDropdown.Divider />
+      <LogoutForm />
+    </NavDropdown>
+  </Nav>
+)
+
+AccountNav.propTypes = {
+  email: PropTypes.string.isRequired,
+}
+
+const ProfileIcon = () => (
+  <svg
+    aria-hidden='true'
+    className='page-navbar-account-icon'
+    fill='currentColor'
+    viewBox='0 0 16 16'
+  >
+    <path d='M8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6m4 1.5a.5.5 0 0 0-.5-.5h-7a.5.5 0 0 0-.5.5V11c0 1.7 2 3 4 3s4-1.3 4-3z' />
+  </svg>
+)
+
+const LogoutForm = () => {
+  const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+
+  return (
+    <form action='/logout' data-turbo='false' method='post'>
+      <input name='_method' type='hidden' value='delete' />
+      <input name='authenticity_token' type='hidden' value={ token || '' } />
+      <button className='dropdown-item' type='submit'>Log out</button>
+    </form>
   )
 }
 

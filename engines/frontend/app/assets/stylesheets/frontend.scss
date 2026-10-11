@@ -3,6 +3,7 @@
 @import 'fonts';
 @import 'frontend/palette';
 @import 'frontend/books-list-linear';
+@import 'frontend/login';
 @import 'frontend/navbar';
 @import 'frontend/panels';
 @import 'frontend/scaffolds';
@@ -34,16 +35,79 @@ body {
     max-width: 1400px;
     width: 100%;
 
-    // Fixed elements are removed from the container's layout, so constrain
-    // the navbar explicitly to keep it aligned with the page content.
+    // The bar stays viewport-wide. Its contents use this container's width and
+    // horizontal padding so the title, section links, and profile sit in the page column.
     > .navbar {
-      left: 50%;
-      right: auto;
-      transform: translateX(-50%);
-      width: 100%;
+      left: 0;
+      padding: 0;
+      right: 0;
+      transform: none;
+      width: auto;
+
+      .page-navbar-inner {
+        align-items: center;
+        box-sizing: border-box;
+        display: flex;
+        height: 56px;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 1400px;
+        padding-left: 15px;
+        padding-right: 15px;
+        position: relative;
+        width: 100%;
+      }
 
       .navbar-nav {
-        margin: 0 auto;
+        align-items: center;
+        flex-direction: row;
+        margin: 0;
+      }
+
+      .page-navbar-sections {
+        height: 100%;
+        left: 50%;
+        position: absolute;
+        top: 0;
+        transform: translateX(-50%);
+      }
+
+      .page-navbar-account {
+        margin-left: auto;
+      }
+
+      .page-navbar-brand .nav-link {
+        color: #fff;
+
+        &,
+        &:visited,
+        &:hover,
+        &:focus,
+        &:active,
+        &.show,
+        &:focus-visible {
+          color: #fff;
+          text-shadow: none;
+        }
+      }
+
+      .nav-link {
+        background-color: transparent;
+        box-shadow: none;
+        outline: 0;
+        text-decoration: none;
+
+        &:hover,
+        &:focus,
+        &:active,
+        &.show,
+        &:focus-visible {
+          background-color: transparent;
+          box-shadow: none;
+          color: #fff;
+          outline: 0;
+          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+        }
       }
     }
   }
