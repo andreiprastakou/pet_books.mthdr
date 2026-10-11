@@ -6,6 +6,7 @@ import PropTypes from 'prop-types'
 
 import Toolbar from 'panels/authorCard/Toolbar'
 import ImageContainer from 'components/ImageContainer'
+import useScrollToTop from 'hooks/useScrollToTop'
 import InternalLink from 'components/InternalLink'
 import TagBadge from 'components/TagBadge'
 
@@ -63,6 +64,7 @@ const AuthorCard = ({
   header = null,
 }) => {
   const { routes: { authorsPagePath }, routesReady } = useContext(UrlStoreContext)
+  const bodyRef = useScrollToTop(authorFull.id)
   const dispatch = useDispatch()
   const tags = useSelector(selectTagsRefsByIds(authorFull.tagIds), shallowEqual)
   const sortedTags = sortBy(tags, tag => tag.connectionsCount)
@@ -129,7 +131,10 @@ const AuthorCard = ({
         />
       </Card.Header>
 
-      <Card.Body className='panel--body'>
+      <Card.Body
+        className='panel--body'
+        ref={bodyRef}
+      >
         { description ? (
           <div className='author-card-main'>
             { identity }
