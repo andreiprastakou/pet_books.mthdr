@@ -91,6 +91,27 @@
       </div>
 
       <div class="bg-light border p-3 mt-3">
+        <h5 class="mb-3">HISTORY</h5>
+        <% if @history_tasks.present? %>
+          <ul class="list-unstyled mb-0">
+            <% @history_tasks.each do |task| %>
+              <li class="mb-2">
+                <%= link_to admin_data_fetch_task_path(task) do %>
+                  <%= task.model_name.human %>
+                  updated <%= admin_timestamp(task.updated_at) %>
+                  (<%= task.status.humanize %>)
+                <% end %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted mb-0">No tasks yet.</p>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="container col-md-6">
+      <div class="bg-light border p-3">
         <h5 class="mb-3">LINKS</h5>
 
         <% if @author.external_links.present? %>
@@ -161,54 +182,31 @@
         </div>
       </div>
 
-      <div class="bg-light border p-3 mt-3">
-        <h5 class="mb-3">HISTORY</h5>
-        <% if @history_tasks.present? %>
-          <ul class="list-unstyled mb-0">
-            <% @history_tasks.each do |task| %>
-              <li class="mb-2">
-                <%= link_to admin_data_fetch_task_path(task) do %>
-                  <%= task.model_name.human %>
-                  updated <%= admin_timestamp(task.updated_at) %>
-                  (<%= task.status.humanize %>)
-                <% end %>
-              </li>
-            <% end %>
-          </ul>
-        <% else %>
-          <p class="text-muted mb-0">No tasks yet.</p>
-        <% end %>
-      </div>
-    </div>
+      <% descriptions = @author.descriptions.select { |d| d.text.present? } %>
+      <% if @author.photo_thumb_url.present? %>
+        <div class="bg-light border p-3 mt-3">
+          <h5 class="mb-3">PHOTO</h5>
+          <%= image_tag @author.photo_thumb_url, class: "b-author-photo" %>
+        </div>
+      <% end %>
 
-    <% descriptions = @author.descriptions.select { |d| d.text.present? } %>
-    <% if @author.photo_thumb_url.present? || descriptions.any? %>
-      <div class="container col-md-6">
-        <% if @author.photo_thumb_url.present? %>
-          <div class="bg-light border p-3">
-            <h5 class="mb-3">PHOTO</h5>
-            <%= image_tag @author.photo_thumb_url, class: "b-author-photo" %>
-          </div>
-        <% end %>
-
-        <% if descriptions.any? %>
-          <div class="bg-light border p-3 <%= 'mt-3' if @author.photo_thumb_url.present? %>">
-            <h5 class="mb-3">DESCRIPTIONS</h5>
-            <div class="b-book-summary">
-              <% descriptions.each_with_index do |description, index| %>
-                <%= tag.br + tag.br if index.positive? %>
-                <%= simple_format(description.text) %>
-                <% if description.display_source_label.present? %>
-                  <div class="b-book-summary-src text-end">
-                    (source: <%= description.display_source_label %>)
-                  </div>
-                <% end %>
+      <% if descriptions.any? %>
+        <div class="bg-light border p-3 mt-3">
+          <h5 class="mb-3">DESCRIPTIONS</h5>
+          <div class="b-book-summary">
+            <% descriptions.each_with_index do |description, index| %>
+              <%= tag.br + tag.br if index.positive? %>
+              <%= simple_format(description.text) %>
+              <% if description.display_source_label.present? %>
+                <div class="b-book-summary-src text-end">
+                  (source: <%= description.display_source_label %>)
+                </div>
               <% end %>
-            </div>
+            <% end %>
           </div>
-        <% end %>
-      </div>
-    <% end %>
+        </div>
+      <% end %>
+    </div>
   </div>
 
   <%= render "admin/books/works_table", books: @books %>
