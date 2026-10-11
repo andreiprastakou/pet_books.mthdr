@@ -232,11 +232,11 @@ const BookDetailsCard = ({
             seriesRefs={seriesRefs}
           />
 
-          { links.length > 0 ? <BookDetailsLinks links={links} /> : null }
-
           <div className='book-details-panel-toolbar'>
             <BookToolbar bookPageHref={bookPagePath(book.id)} />
           </div>
+
+          { links.length > 0 ? <BookDetailsLinks links={links} /> : null }
 
           { showPublicLists && book.publicLists?.length > 0 ? (
             <BookPublicLists

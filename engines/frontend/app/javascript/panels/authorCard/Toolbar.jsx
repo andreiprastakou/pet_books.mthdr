@@ -28,14 +28,6 @@ const Toolbar = props => {
 
   return (
     <div className='author-toolbar'>
-      { (authorFull.externalLinks || []).map(link => (
-        <ExternalTextLink
-          href={link.url}
-          key={link.url}
-          label={link.label}
-        />
-      )) }
-
       { linkToAuthorPage && authorFull.booksCount > 0 ? (
         <Button
           as={InternalLink}
@@ -68,6 +60,14 @@ const Toolbar = props => {
           <FontAwesomeIcon icon={faBookmarkEmpty} />
         </Button>
       ) }
+
+      { (authorFull.externalLinks || []).map(link => (
+        <ExternalTextLink
+          href={link.url}
+          key={link.url}
+          label={link.label}
+        />
+      )) }
     </div>
   )
 }
