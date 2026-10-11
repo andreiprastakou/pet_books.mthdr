@@ -5,6 +5,33 @@ RSpec.describe Admin::FormsHelper do
     helper.extend(Admin::BooksHelper)
   end
 
+  describe '#admin_literary_form_warning' do
+    it 'warns for persisted and suggested values that are not predefined' do
+      warning = helper.admin_literary_form_warning('audio_drama', 'short story', 'novel', 'audio_drama', nil)
+
+      expect(warning).to include("Current value 'audio_drama' will be replaced!")
+      expect(warning).to include("Current value 'short story' will be replaced!")
+      expect(warning).not_to include('novel')
+    end
+  end
+
+  describe '#admin_literary_form_select_tag' do
+    it 'renders predefined options and omits an unknown selected value' do
+      html = helper.admin_literary_form_select_tag('book[literary_form]', 'audio_drama')
+
+      expect(html).to include('<option value="novel">Novel</option>')
+      expect(html).to include('<option value=""')
+      expect(html).not_to include('audio_drama')
+      expect(html).not_to include('selected="selected"')
+    end
+
+    it 'selects a predefined value' do
+      html = helper.admin_literary_form_select_tag('book[literary_form]', 'short')
+
+      expect(html).to include('selected="selected" value="short"')
+    end
+  end
+
   describe '#authors_to_badges_entries' do
     let(:authors) { [build_stubbed(:author, fullname: 'AUTHOR_A')] }
 

@@ -44,9 +44,11 @@ RSpec.describe Admin::PublicLists::BooksBatchController do
       send_request
 
       expect(response.body).to include(
-        '<input type="text" name="batch[ENTRY_INDEX][literary_form]" id="batch_ENTRY_INDEX_literary_form" ' \
-        'class="form-control form-control-sm" />'
+        'name="batch[ENTRY_INDEX][literary_form]" id="batch_ENTRY_INDEX_literary_form" ' \
+        'class="form-select form-select-sm"'
       )
+      expect(response.body).to include('<option value="novel">Novel</option>')
+      expect(response.body).not_to include('type="text" name="batch[ENTRY_INDEX][literary_form]"')
       expect(response.body).to include(
         'name="batch[ENTRY_INDEX][year_published]" id="batch_ENTRY_INDEX_year_published" value="1983"'
       )

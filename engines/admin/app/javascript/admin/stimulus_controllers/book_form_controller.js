@@ -5,6 +5,7 @@ export default class extends Controller {
     'goodreadsQueryLink',
     'genreSelect',
     'literaryFormInput',
+    'literaryFormWarning',
     'oldValueViewTemplate',
     'submitButton',
     'descriptionTextInput',
@@ -58,9 +59,40 @@ export default class extends Controller {
     this.dispatch('addGenres', { detail: { names: genres } })
     this.descriptionTextInputTarget.value = summary
     this.descriptionSourceLabelInputTarget.value = src
-    this.literaryFormInputTarget.value = form
+    this.applyLiteraryForm(form)
 
     this.submitButtonTarget.scrollIntoView()
+  }
+
+  applyLiteraryForm(form) {
+    const input = this.literaryFormInputTarget
+    const raw = (form ?? '').trim()
+    const option = this.matchingLiteraryFormOption(raw)
+    input.value = option ? option.value : ''
+    input.dispatchEvent(new Event('input', { bubbles: true }))
+    this.renderSuggestedLiteraryFormWarning(option || raw === '' ? null : raw)
+  }
+
+  matchingLiteraryFormOption(raw) {
+    if (!raw) return null
+
+    const needle = raw.toLowerCase()
+    return Array.from(this.literaryFormInputTarget.options).find(option =>
+      option.value === raw || option.value === needle || option.text.trim().toLowerCase() === needle
+    ) || null
+  }
+
+  renderSuggestedLiteraryFormWarning(value) {
+    if (!this.hasLiteraryFormWarningTarget) return
+
+    this.literaryFormWarningTarget.querySelectorAll('[data-suggested-literary-form]').forEach(node => node.remove())
+    if (!value) return
+
+    const node = document.createElement('div')
+    node.className = 'form-text text-warning'
+    node.dataset.suggestedLiteraryForm = 'true'
+    node.textContent = `Current value '${value}' will be replaced!`
+    this.literaryFormWarningTarget.appendChild(node)
   }
 
   // ACTION

@@ -28,6 +28,15 @@ RSpec.describe Admin::Books::GenerativeSummariesController do
       ]
     end
 
+    it 'renders literary form as a dropdown and warns about unknown values' do
+      book.update!(literary_form: 'audio_drama')
+      send_request
+      expect(response.body).to include('name="book[literary_form]"')
+      expect(response.body).to include('<option value="novel">Novel</option>')
+      expect(response.body).to include("Current value 'audio_drama' will be replaced!")
+      expect(response.body).not_to include('<option value="audio_drama"')
+    end
+
     it 'renders the template' do
       send_request
       expect(response).to render_template('admin/books/generative_summaries/edit')

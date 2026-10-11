@@ -51,9 +51,15 @@
     <div class="mb-3 col-md-6">
       <%= form.label :literary_form, class: "form-label" %>
       <%= admin_reversible_input(old_value: book.literary_form_was) do %>
-        <%= form.text_field :literary_form, class: "form-control",
+        <%= form.select :literary_form,
+          admin_literary_form_choices,
+          { include_blank: true },
+          class: "form-select",
           data: { book_form_target: "literaryFormInput", input_changes_target: "input" } %>
       <% end %>
+      <div data-book-form-target="literaryFormWarning">
+        <%= admin_literary_form_warning(book.literary_form, book.literary_form_in_database) %>
+      </div>
     </div>
   </div>
 
