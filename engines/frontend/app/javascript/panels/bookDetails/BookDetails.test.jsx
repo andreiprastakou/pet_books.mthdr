@@ -1,10 +1,11 @@
 import React from 'react'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import BookDetails from 'panels/bookDetails/BookDetails'
-import { fetchBookDetails } from 'store/books/actions'
+import { setCurrentBookId } from 'store/axis/actions'
+import { addBooks, fetchBookDetails, setCurrentBookDetails } from 'store/books/actions'
 import { renderWithProviders } from 'test/renderWithProviders'
 import { buildPath } from 'store/urlStore/RootStoreProvider'
 
@@ -18,8 +19,11 @@ vi.mock('store/books/actions', async() => {
 })
 
 vi.mock('components/Book', () => ({
-  default: ({ bookIndexEntry }) => (
-    <div data-testid='book-cover'>
+  default: ({ bookIndexEntry, scrollIntoView = true }) => (
+    <div
+      data-scroll-into-view={scrollIntoView ? 'yes' : 'no'}
+      data-testid='book-cover'
+    >
       { bookIndexEntry.title }
     </div>
   ),
@@ -179,6 +183,7 @@ describe('BookDetails', () => {
     })
 
     expect(document.querySelector('.panel--book-details--collection')).toBeInTheDocument()
+    expect(screen.getByTestId('book-cover')).toHaveAttribute('data-scroll-into-view', 'no')
   })
 
   it('shows another book in a compact panel and clears it from the header', async() => {
@@ -231,6 +236,84 @@ describe('BookDetails', () => {
 
     await user.click(screen.getByRole('button', { name: 'Clear selected included work' }))
     expect(onClose).toHaveBeenCalledTimes(1)
+  })
+
+  it('scrolls the details panel to the top when the book changes', () => {
+    const nextBook = {
+      ...bookIndexEntry,
+      id: 6,
+      title: 'Messiah',
+      year: 1969,
+    }
+    const nextDetails = {
+      ...bookDetails,
+      id: 6,
+      title: 'Messiah',
+      yearPublished: 1969,
+      summary: 'A sequel long enough to overflow the panel.',
+    }
+    const { store } = renderWithProviders(<BookDetails />, {
+      preloadedState: baseState,
+      urlStore: {
+        routes: {
+          authorPagePath: id => `/authors/${id}`,
+          booksPagePath: () => '/books',
+          bookPagePath: id => `/books/${id}`,
+          listPagePath: id => `/public-lists/${id}`,
+          seriesPagePath: id => `/series/${id}`,
+        },
+      },
+    })
+    const body = document.querySelector('.panel--book-details .panel--body')
+    body.scrollTop = 140
+    expect(body.scrollTop).toBe(140)
+
+    act(() => {
+      store.dispatch(setCurrentBookId(6))
+      store.dispatch(addBooks([nextBook]))
+      store.dispatch(setCurrentBookDetails(nextDetails))
+    })
+
+    expect(screen.getByRole('heading', { name: 'Messiah' })).toBeInTheDocument()
+    expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(0)
+  })
+
+  it('scrolls the included-work panel to the top when that work changes', () => {
+    const included = (id, title) => ({
+      details: { ...bookDetails, id, title, summary: `${title} summary` },
+      index: { ...bookIndexEntry, id, title },
+    })
+    const first = included(8, 'Hell')
+    const second = included(9, 'Heaven')
+    const { rerender } = renderWithProviders(<BookDetails bookId={8} />, {
+      urlStore: {
+        routes: {
+          authorPagePath: id => `/authors/${id}`,
+          booksPagePath: () => '/books',
+          bookPagePath: id => `/books/${id}`,
+          listPagePath: id => `/public-lists/${id}`,
+          seriesPagePath: id => `/series/${id}`,
+        },
+      },
+      preloadedState: {
+        ...baseState,
+        storeBooks: {
+          ...baseState.storeBooks,
+          bookDetailsById: { 8: first.details, 9: second.details },
+          booksIndex: {
+            ...baseState.storeBooks.booksIndex,
+            8: first.index,
+            9: second.index,
+          },
+        },
+      },
+    })
+    document.querySelector('.panel--book-details .panel--body').scrollTop = 90
+
+    rerender(<BookDetails bookId={9} />)
+
+    expect(screen.getByRole('heading', { name: 'Heaven' })).toBeInTheDocument()
+    expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(0)
   })
 
   it('loads details for the requested book', () => {

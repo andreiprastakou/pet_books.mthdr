@@ -59,7 +59,10 @@ const BookWithBackCover = ({ bookIndexEntry }) => {
         />
       ) : null }
 
-      <Book bookIndexEntry={bookIndexEntry} />
+      <Book
+        bookIndexEntry={bookIndexEntry}
+        scrollIntoView={false}
+      />
     </>
   )
 }

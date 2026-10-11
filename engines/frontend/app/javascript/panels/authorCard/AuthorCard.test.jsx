@@ -1,9 +1,10 @@
 import React from 'react'
-import { screen } from '@testing-library/react'
+import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe, expect, it, vi } from 'vitest'
 
 import AuthorCardWrap from 'panels/authorCard/AuthorCard'
+import { setCurrentAuthorId } from 'store/axis/actions'
 import { renderWithProviders } from 'test/renderWithProviders'
 
 vi.mock('panels/authorCard/Toolbar', () => ({
@@ -98,6 +99,29 @@ describe('AuthorCard', () => {
     expect(document.querySelector('.author-card--with-description')).toBeInTheDocument()
     expect(document.querySelector('.author-card-description')).toHaveTextContent('First bio.')
     expect(document.querySelector('.author-card-main .author-name')).toHaveTextContent('Ada Lovelace')
+  })
+
+  it('scrolls the author panel to the top when the author changes', () => {
+    const nextAuthor = { ...authorFull, id: 8, fullname: 'Grace Hopper', birthYear: 1906, deathYear: 1992 }
+    const { store } = renderWithProviders(<AuthorCardWrap />, {
+      preloadedState: {
+        ...baseState,
+        storeAuthors: {
+          ...baseState.storeAuthors,
+          authorsFull: { 7: authorFull, 8: nextAuthor },
+        },
+      },
+    })
+    const body = document.querySelector('.panel--author-card .panel--body')
+    body.scrollTop = 80
+    expect(body.scrollTop).toBe(80)
+
+    act(() => {
+      store.dispatch(setCurrentAuthorId(8))
+    })
+
+    expect(screen.getAllByText('Grace Hopper').length).toBeGreaterThan(0)
+    expect(document.querySelector('.panel--author-card .panel--body').scrollTop).toBe(0)
   })
 
   it('shows living age and opens the image modal on click', async() => {

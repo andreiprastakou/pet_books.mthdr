@@ -3,6 +3,7 @@ import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 import BookToolbar from 'components/BookToolbar'
+import useScrollToTop from 'hooks/useScrollToTop'
 import ExternalTextLink from 'components/ExternalTextLink'
 import InternalLink from 'components/InternalLink'
 import TagBadge from 'components/TagBadge'
@@ -208,6 +209,7 @@ const BookDetailsCard = ({
   tags,
 }) => {
   const links = bookDetailsLinks(book)
+  const bodyRef = useScrollToTop(book.id)
 
   return (
     <Card className={bookDetailsClassName(book, reducedHeight)}>
@@ -221,7 +223,10 @@ const BookDetailsCard = ({
         { onClose ? <BookDetailsClose onClose={onClose} /> : null }
       </Card.Header>
 
-      <Card.Body className='panel--body'>
+      <Card.Body
+        className='panel--body'
+        ref={bodyRef}
+      >
         <div className='book-details-panel-content'>
           <BookDetailsMainInfo
             authorPagePath={authorPagePath}
