@@ -94,13 +94,12 @@ describe('CollectionWorks', () => {
     expect(fetchMissingBookIndexEntries).toHaveBeenCalledWith([8, 9])
   })
 
-  it('shows an empty list for a collection with no works', () => {
-    renderWithProviders(<CollectionWorks />, {
+  it('renders nothing for a collection with no works', () => {
+    const { container } = renderWithProviders(<CollectionWorks />, {
       preloadedState: stateFor({ id: 5, format: 'collection', collectedWorkIds: [] }),
     })
 
-    expect(screen.getByText('Included works')).toBeInTheDocument()
-    expect(screen.getByText('No books')).toBeInTheDocument()
+    expect(container).toBeEmptyDOMElement()
     expect(fetchMissingBookIndexEntries).not.toHaveBeenCalled()
   })
 

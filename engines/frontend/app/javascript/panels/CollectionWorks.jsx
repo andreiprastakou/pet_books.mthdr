@@ -33,7 +33,7 @@ const CollectionWorks = () => {
     dispatch(fetchMissingBookIndexEntries(workIds))
   }, [dispatch, workIds])
 
-  if (!workIds) return null
+  if (!workIds?.length) return null
 
   return (
     <BooksListCovers
