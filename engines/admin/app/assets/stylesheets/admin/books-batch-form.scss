@@ -63,6 +63,20 @@
   }
 
   .b-association-badges-input {
+    align-items: flex-start;
+    display: flex;
+    gap: 0.25rem;
     width: 100%;
+
+    .b-autocomplete-container {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .b-association-new-button {
+      flex: 0 0 auto;
+      line-height: 1.2;
+      padding: 0.15rem 0.35rem;
+    }
   }
 }

@@ -15,7 +15,7 @@
 </div>
 
 <div class="b-association-badges-input">
-  <div class="col-12 b-autocomplete-container" data-controller="autocomplete"
+  <div class="b-autocomplete-container" data-controller="autocomplete"
     data-autocomplete-url-value="<%= autocomplete_url %>"
     data-action="autocomplete:selected->association-input#onEntrySelected">
     <%= text_field_tag nil, nil,
@@ -23,8 +23,11 @@
       placeholder: 'search...',
       data: {
         autocomplete_target: "input",
-        action: "input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus"
+        association_input_target: "newNameInput",
+        action: "input->association-input#updateAddButton input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus"
       }.merge(local_assigns.fetch(:label_input_data, {})) %>
     <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
   </div>
+  <%= button_tag "new", type: "button", class: "btn btn-success btn-sm b-association-new-button", disabled: true,
+    data: { action: "click->association-input#onAddClicked", association_input_target: "addButton" } %>
 </div>
