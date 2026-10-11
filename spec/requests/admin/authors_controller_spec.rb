@@ -190,5 +190,15 @@ RSpec.describe Admin::AuthorsController do
       expect(response).to redirect_to(admin_authors_path)
       expect(flash[:notice]).to eq('Author was successfully destroyed.')
     end
+
+    context 'when the author is linked to a book' do
+      before { create(:book_author, author: author) }
+
+      it 'keeps the author and explains why' do
+        expect { send_request }.not_to change(Author, :count)
+        expect(response).to redirect_to(admin_author_path(author))
+        expect(flash[:alert]).to eq('Cannot delete this record because related books still exist.')
+      end
+    end
   end
 end

@@ -81,13 +81,12 @@ module Admin
     end
 
     def destroy
-      @author.destroy!
-
-      respond_to do |format|
-        format.html do
-          redirect_to admin_authors_path, status: :see_other, notice: t('notices.admin.authors.destroy.success')
-        end
-      end
+      destroy_record(
+        @author,
+        success_path: admin_authors_path,
+        failure_path: admin_author_path(@author),
+        notice: t('notices.admin.authors.destroy.success')
+      )
     end
 
     private

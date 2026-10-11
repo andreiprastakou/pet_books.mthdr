@@ -108,13 +108,12 @@ module Admin
     end
 
     def destroy
-      @book.destroy!
-
-      respond_to do |format|
-        format.html do
-          redirect_to admin_books_path, status: :see_other, notice: t('notices.admin.books.destroy.success')
-        end
-      end
+      destroy_record(
+        @book,
+        success_path: admin_books_path,
+        failure_path: admin_book_path(@book),
+        notice: t('notices.admin.books.destroy.success')
+      )
     end
 
     private

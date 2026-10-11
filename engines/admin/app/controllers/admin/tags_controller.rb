@@ -56,13 +56,12 @@ module Admin
     end
 
     def destroy
-      @tag.destroy!
-
-      respond_to do |format|
-        format.html do
-          redirect_to admin_tags_path, status: :see_other, notice: t('notices.admin.tags.destroy.success')
-        end
-      end
+      destroy_record(
+        @tag,
+        success_path: admin_tags_path,
+        failure_path: admin_tag_path(@tag),
+        notice: t('notices.admin.tags.destroy.success')
+      )
     end
 
     private

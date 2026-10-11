@@ -145,5 +145,15 @@ RSpec.describe Admin::GenresController do
       expect(response).to redirect_to(admin_genres_path)
       expect(flash[:notice]).to eq('Genre was successfully destroyed.')
     end
+
+    context 'when the genre is linked to a book' do
+      before { create(:book_genre, genre: genre, book: create(:book)) }
+
+      it 'keeps the genre and explains why' do
+        expect { send_request }.not_to change(Genre, :count)
+        expect(response).to redirect_to(admin_genre_path(genre))
+        expect(flash[:alert]).to eq('Cannot delete this record because related books still exist.')
+      end
+    end
   end
 end

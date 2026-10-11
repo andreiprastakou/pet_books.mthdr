@@ -150,5 +150,15 @@ RSpec.describe Admin::PublicListTypesController do
       expect(response).to redirect_to(admin_public_list_types_path)
       expect(flash[:notice]).to eq('Public list type was successfully destroyed.')
     end
+
+    context 'when the type still has a public list' do
+      before { create(:public_list, public_list_type: public_list_type) }
+
+      it 'keeps the type and explains why' do
+        expect { send_request }.not_to change(PublicListType, :count)
+        expect(response).to redirect_to(admin_public_list_type_path(public_list_type))
+        expect(flash[:alert]).to eq('Cannot delete this record because related public lists still exist.')
+      end
+    end
   end
 end

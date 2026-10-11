@@ -40,14 +40,12 @@ module Admin
       end
 
       def destroy
-        @design.destroy!
-
-        respond_to do |format|
-          format.html do
-            redirect_to admin_covers_cover_designs_path, status: :see_other,
-                                                         notice: t('notices.admin.cover_designs.destroy.success')
-          end
-        end
+        destroy_record(
+          @design,
+          success_path: admin_covers_cover_designs_path,
+          failure_path: edit_admin_covers_cover_design_path(@design),
+          notice: t('notices.admin.cover_designs.destroy.success')
+        )
       end
 
       private
