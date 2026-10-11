@@ -38,6 +38,7 @@ RSpec.describe Admin::Books::CollectionBatchController do
 
       template = response.body[%r{<template[^>]*bookTemplate[\s\S]*?</template>}]
       expect(template).to include(author.id.to_s)
+      expect(template).to include(%(data-autocomplete-author-ids-value="[#{author.id}]"))
       expect(template).to include('Title Author')
       expect(template).to include('value="short"')
       expect(template).to include(admin_api_books_search_path(format: :json))

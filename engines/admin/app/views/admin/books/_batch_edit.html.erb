@@ -13,7 +13,9 @@
   data-books-batch-form-batch-row-url-value="<%= admin_books_batch_row_path('BOOK_ID', row_url_params) %>">
   <% target = local_assigns.fetch(:target) %>
   <% method = local_assigns.fetch(:method, :put) %>
-  <% initial_author_entries = authors_to_badges_entries(Array(local_assigns[:initial_authors])) %>
+  <% initial_authors = Array(local_assigns[:initial_authors]) %>
+  <% initial_author_entries = authors_to_badges_entries(initial_authors) %>
+  <% initial_author_ids = initial_authors.map(&:id) %>
   <% initial_literary_form = local_assigns[:initial_literary_form] %>
   <% initial_year_published = local_assigns[:initial_year_published] %>
   <%= form_tag target, method: method do %>
@@ -52,6 +54,9 @@
         <div class="col-3">
           <div class="b-autocomplete-container b-book-title-autocomplete" data-controller="autocomplete"
             data-autocomplete-url-value="<%= admin_api_books_search_path(format: :json) %>"
+            <% if initial_author_ids.present? %>
+            data-autocomplete-author-ids-value="<%= initial_author_ids.to_json %>"
+            <% end %>
             data-action="autocomplete:selected->books-batch-form#onExistingBookSelected">
             <%= text_field_tag "batch[#{index}][title]", nil,
               class: 'form-control form-control-sm', autocomplete: 'off',
