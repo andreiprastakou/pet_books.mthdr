@@ -44,11 +44,16 @@ $b-cover-sizes: (
   ),
 );
 $b-cover-default-size: 'lg';
+
 // Room held under the title for the byline. CoverLayout / coverCopy.js use the same figures.
 $b-cover-author-max-lines: 4;
 $b-cover-author-line-height: 1.1;
 $b-cover-author-gap: 4px;
 $b-cover-author-fudge: 2px;
+
+@function b-cover-author-max($font-size) {
+  @return ($font-size * $b-cover-author-line-height * $b-cover-author-max-lines) + $b-cover-author-fudge;
+}
 
 @function b-cover-value($size, $key) {
   @return map-get(map-get($b-cover-sizes, $size), $key);
@@ -80,7 +85,8 @@ $b-cover-author-fudge: 2px;
   $padding: b-cover-value($size, padding);
   $text-width: b-cover-value($size, width) - ($padding * 2);
   $inner-height: b-cover-value($size, height) - ($padding * 2);
-  $author-max: (b-cover-value($size, author-font) * $b-cover-author-line-height * $b-cover-author-max-lines) + $b-cover-author-fudge;
+  $author-max: b-cover-author-max(b-cover-value($size, author-font));
+
   // Title box ends above the byline, so a long title cannot paint over the names.
   $title-limit: $inner-height - $author-max - $b-cover-author-gap;
 
@@ -130,7 +136,7 @@ $b-cover-author-fudge: 2px;
     }
 
     .b-standard-cover-author {
-      max-height: (b-cover-value($size, small-text-font) * $b-cover-author-line-height * $b-cover-author-max-lines) + $b-cover-author-fudge;
+      max-height: b-cover-author-max(b-cover-value($size, small-text-font));
 
       &.b-tight {
         font-size: b-cover-value($size, small-text-font) * 0.7;

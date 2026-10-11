@@ -30,17 +30,11 @@ vi.mock('components/Book', () => ({
 }))
 
 const bookIndexEntry = {
-  id: 5,
-  title: 'Dune',
-  authorIds: [1],
-  coverDesignId: 9,
-  year: 1965,
+  authorIds: [1], coverDesignId: 9, id: 5, title: 'Dune', year: 1965,
 }
 
 const bookDetails = {
-  id: 5,
-  title: 'Dune',
-  yearPublished: 1965,
+  id: 5, title: 'Dune', yearPublished: 1965,
   formLabel: 'a science fiction novel',
   summary: 'Sandworms.',
   summarySource: 'warhammer.com',
@@ -65,6 +59,15 @@ const bookDetails = {
       bookRole: 'winner',
     },
   ],
+}
+
+const routes = {
+  authorPagePath: id => `/authors/${id}`,
+  booksPagePath: ({ bookId } = {}) => (bookId ? `/books/${bookId}` : '/books'),
+  bookPagePath: id => `/books/${id}`,
+  listPagePath: (id, { bookId, listId } = {}) =>
+    buildPath({ path: `/public-lists/${id}`, params: { 'book_id': bookId, 'list_id': listId } }),
+  seriesPagePath: id => `/series/${id}`,
 }
 
 const baseState = {
@@ -133,15 +136,7 @@ describe('BookDetails', () => {
   it('renders details, links, tags, and can hide the cover', () => {
     renderWithProviders(<BookDetails showCover={false} />, {
       preloadedState: baseState,
-      urlStore: {
-        routes: {
-          authorPagePath: id => `/authors/${id}`,
-          booksPagePath: ({ bookId } = {}) => (bookId ? `/books/${bookId}` : '/books'),
-          bookPagePath: id => `/books/${id}`,
-          listPagePath: (id, { bookId, listId } = {}) =>
-            buildPath({ path: `/public-lists/${id}`, params: { 'book_id': bookId, 'list_id': listId } }),
-        },
-      },
+      urlStore: { routes },
     })
 
     expect(screen.getByRole('heading', { name: 'Dune' })).toBeInTheDocument()
@@ -173,15 +168,7 @@ describe('BookDetails', () => {
           booksIndex: { 5: { ...bookIndexEntry, format: 'collection' } },
         },
       },
-      urlStore: {
-        routes: {
-          authorPagePath: id => `/authors/${id}`,
-          booksPagePath: () => '/books',
-          bookPagePath: id => `/books/${id}`,
-          listPagePath: id => `/public-lists/${id}`,
-          seriesPagePath: id => `/series/${id}`,
-        },
-      },
+      urlStore: { routes },
     })
 
     expect(document.querySelector('.panel--book-details--collection')).toBeInTheDocument()
@@ -218,15 +205,7 @@ describe('BookDetails', () => {
             },
           },
         },
-        urlStore: {
-          routes: {
-            authorPagePath: id => `/authors/${id}`,
-            booksPagePath: () => '/books',
-            bookPagePath: id => `/books/${id}`,
-            listPagePath: id => `/public-lists/${id}`,
-            seriesPagePath: id => `/series/${id}`,
-          },
-        },
+        urlStore: { routes },
       }
     )
 
@@ -256,15 +235,7 @@ describe('BookDetails', () => {
     }
     const { store } = renderWithProviders(<BookDetails />, {
       preloadedState: baseState,
-      urlStore: {
-        routes: {
-          authorPagePath: id => `/authors/${id}`,
-          booksPagePath: () => '/books',
-          bookPagePath: id => `/books/${id}`,
-          listPagePath: id => `/public-lists/${id}`,
-          seriesPagePath: id => `/series/${id}`,
-        },
-      },
+      urlStore: { routes },
     })
     const body = document.querySelector('.panel--book-details .panel--body')
     body.scrollTop = 140
@@ -288,15 +259,7 @@ describe('BookDetails', () => {
     const first = included(8, 'Hell')
     const second = included(9, 'Heaven')
     const { rerender } = renderWithProviders(<BookDetails bookId={8} />, {
-      urlStore: {
-        routes: {
-          authorPagePath: id => `/authors/${id}`,
-          booksPagePath: () => '/books',
-          bookPagePath: id => `/books/${id}`,
-          listPagePath: id => `/public-lists/${id}`,
-          seriesPagePath: id => `/series/${id}`,
-        },
-      },
+      urlStore: { routes },
       preloadedState: {
         ...baseState,
         storeBooks: {

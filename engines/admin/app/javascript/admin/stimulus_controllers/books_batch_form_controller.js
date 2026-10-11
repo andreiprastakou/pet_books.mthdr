@@ -20,6 +20,11 @@ export default class extends Controller {
     event.preventDefault()
     const button = event.currentTarget
     const buttonTop = button.getBoundingClientRect().top
+    this.appendBookFromTemplate()
+    this.keepAddButtonInView(button, buttonTop)
+  }
+
+  appendBookFromTemplate() {
     const booksList = this.booksListTarget
     const bookTemplate = this.bookTemplateTarget
     const newBook = bookTemplate.content.cloneNode(true)
@@ -28,7 +33,10 @@ export default class extends Controller {
     const index = Date.now()
     tempWorkbench.innerHTML = tempWorkbench.innerHTML.replaceAll('ENTRY_INDEX', index)
     booksList.appendChild(tempWorkbench.firstElementChild)
-    // Badges render after the row is connected, so measure once that layout has settled.
+  }
+
+  // Badges render after the row is connected, so measure once that layout has settled.
+  keepAddButtonInView(button, buttonTop) {
     requestAnimationFrame(() => {
       const shift = button.getBoundingClientRect().top - buttonTop
       if (shift > 0) window.scrollBy(0, Math.ceil(shift))

@@ -33,8 +33,8 @@ module Admin
       else
         redirect_to failure_path, status: :see_other, alert: destroy_failure_message(record)
       end
-    rescue ActiveRecord::RecordNotDestroyed => exception
-      redirect_to failure_path, status: :see_other, alert: destroy_failure_message(exception.record)
+    rescue ActiveRecord::RecordNotDestroyed => e
+      redirect_to failure_path, status: :see_other, alert: destroy_failure_message(e.record)
     rescue ActiveRecord::InvalidForeignKey
       redirect_to failure_path, status: :see_other, alert: t('notices.admin.destroy.restricted')
     end

@@ -153,7 +153,7 @@ export default class extends Controller {
     const labelElement = badge.querySelector('[data-name="label"]')
     const valueInput = badge.querySelector('[data-name="badgeValueInput"]')
     return {
-      id: /^\d+$/.test(valueInput.value) ? parseInt(valueInput.value, 10) : null,
+      id: /^\d+$/u.test(valueInput.value) ? parseInt(valueInput.value, 10) : null,
       label: labelElement.textContent.trim()
     }
   }

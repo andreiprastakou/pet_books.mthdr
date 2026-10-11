@@ -56,6 +56,53 @@ const AuthorCardWrap = ({ linkToAuthorPage, showDescription, showPicture, header
   )
 }
 
+const AuthorIdentity = ({
+  authorFull,
+  handleImageClick,
+  linkToAuthorPage,
+  showPicture,
+  sortedTags,
+}) => (
+  <>
+    { showPicture && authorFull.thumbUrl ? (
+      <ImageContainer
+        classes='author-image'
+        onClick={handleImageClick}
+        url={authorFull.thumbUrl}
+      />
+    ) : null }
+
+    <div className='details-right'>
+      <div className='author-name'>
+        { authorFull.fullname }
+      </div>
+
+      <div className='author-card-text'>
+        { authorFull.birthYear ? (
+          <div>
+            { renderLifetime(authorFull) }
+          </div>
+        ) : null}
+      </div>
+
+      <div className='author-tags'>
+        { sortedTags.map(tag =>
+          (<TagBadge
+            id={tag.id}
+            key={tag.id}
+            text={tag.name}
+           />)
+        ) }
+      </div>
+
+      <Toolbar
+        authorFull={authorFull}
+        linkToAuthorPage={linkToAuthorPage}
+      />
+    </div>
+  </>
+)
+
 const AuthorCard = ({
   authorFull,
   linkToAuthorPage = true,
@@ -77,44 +124,13 @@ const AuthorCard = ({
 
   const description = showDescription ? authorFull.description : null
   const identity = (
-    <>
-      { showPicture && authorFull.thumbUrl ? (
-        <ImageContainer
-          classes='author-image'
-          onClick={handleImageClick}
-          url={authorFull.thumbUrl}
-        />
-      ) : null }
-
-      <div className='details-right'>
-        <div className='author-name'>
-          { authorFull.fullname }
-        </div>
-
-        <div className='author-card-text'>
-          { authorFull.birthYear ? (
-            <div>
-              { renderLifetime(authorFull) }
-            </div>
-          ) : null}
-        </div>
-
-        <div className='author-tags'>
-          { sortedTags.map(tag =>
-            (<TagBadge
-              id={tag.id}
-              key={tag.id}
-              text={tag.name}
-             />)
-          ) }
-        </div>
-
-        <Toolbar
-          authorFull={authorFull}
-          linkToAuthorPage={linkToAuthorPage}
-        />
-      </div>
-    </>
+    <AuthorIdentity
+      authorFull={authorFull}
+      handleImageClick={handleImageClick}
+      linkToAuthorPage={linkToAuthorPage}
+      showPicture={showPicture}
+      sortedTags={sortedTags}
+    />
   )
 
   return (
@@ -164,6 +180,14 @@ AuthorCardWrap.propTypes = {
   linkToAuthorPage: PropTypes.bool,
   showDescription: PropTypes.bool,
   showPicture: PropTypes.bool,
+}
+
+AuthorIdentity.propTypes = {
+  authorFull: PropTypes.object.isRequired,
+  handleImageClick: PropTypes.func.isRequired,
+  linkToAuthorPage: PropTypes.bool,
+  showPicture: PropTypes.bool,
+  sortedTags: PropTypes.array.isRequired,
 }
 
 AuthorCardHeader.propTypes = {

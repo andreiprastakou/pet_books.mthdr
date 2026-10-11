@@ -39,7 +39,10 @@ RSpec.describe ExternalResources do
 
   describe 'INTERNAL' do
     it 'lists resources reserved for admin use' do
-      expect(described_class::INTERNAL).to contain_exactly(described_class::WIKIDATA)
+      expect(described_class::INTERNAL).to contain_exactly(
+        described_class::OPEN_LIBRARY,
+        described_class::WIKIDATA
+      )
       expect(described_class::INTERNAL - described_class::ALL).to be_empty
     end
   end
