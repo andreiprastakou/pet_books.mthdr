@@ -19,7 +19,7 @@
   </template>
 </div>
 
-<div class="col-md-6<%= " #{input_class}" if input_class.present? %>"
+<div class="col-md-4<%= " #{input_class}" if input_class.present? %>"
   <% if input_hidden %>hidden<% end %>
   <% if input_target.present? %>data-book-form-target="<%= input_target %>"<% end %>>
   <div class="col-12 b-autocomplete-container" data-controller="autocomplete"
@@ -33,11 +33,16 @@
     data-action="autocomplete:selected->association-input#onEntrySelected">
     <%= text_field_tag nil, nil,
       class: 'form-control', autocomplete: 'off',
-      placeholder: 'search...',
+      placeholder: 'search or create...',
       data: {
         autocomplete_target: "input",
-        action: "input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus"
+        association_input_target: "newNameInput",
+        action: "input->association-input#updateAddButton input->autocomplete#search blur->autocomplete#handleBlur focus->autocomplete#handleFocus"
       } %>
     <div class="list-group b-autocomplete-results" data-autocomplete-target="results"></div>
   </div>
+</div>
+<div class="col-md-2">
+  <%= button_tag "Add", class: "btn btn-success", disabled: true,
+    data: { action: "click->association-input#onAddClicked", association_input_target: "addButton" } %>
 </div>

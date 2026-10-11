@@ -62,7 +62,7 @@ module Admin
       def admin_book_params
         params.fetch(:book).permit(:title, :original_title, :year_published,
                                    :literary_form,
-                                   tag_names: [], genre_names: [], author_ids: [])
+                                   tag_names: [], genre_names: [], author_ids: [], series_ids: [])
       end
 
       def description_params

@@ -237,6 +237,23 @@ RSpec.describe Admin::Book do
       expect(book.book_authors.map(&:marked_for_destruction?)).to eq([true, false, false])
       expect(book.book_authors.map(&:new_record?)).to eq([false, false, true])
     end
+
+    it 'creates an author when given a new name' do
+      book
+      expect { book.author_ids = [authors[1].id, 'New Author', sentinel] }.to change(Author, :count).by(1)
+
+      assigned = book.book_authors.reject(&:marked_for_destruction?)
+      expect(assigned.map { |book_author| book_author.author.fullname }).to contain_exactly(
+        authors[1].fullname, 'New Author'
+      )
+    end
+
+    it 'reuses an author when given an existing fullname' do
+      book.author_ids = [authors[0].fullname]
+
+      assigned = book.book_authors.reject(&:marked_for_destruction?)
+      expect(assigned.map(&:author_id)).to eq([authors[0].id])
+    end
   end
 
   describe '#collected_work_ids=' do
@@ -274,6 +291,21 @@ RSpec.describe Admin::Book do
       expect(book.book_series.map(&:series_id)).to eq(series[0..2].map(&:id))
       expect(book.book_series.map(&:marked_for_destruction?)).to eq([true, false, false])
       expect(book.book_series.map(&:new_record?)).to eq([false, false, true])
+    end
+
+    it 'creates a series when given a new name' do
+      book
+      expect { book.series_ids = [series[1].id, 'New Series', sentinel] }.to change(Series, :count).by(1)
+
+      assigned = book.book_series.reject(&:marked_for_destruction?)
+      expect(assigned.map { |book_series| book_series.series.name }).to contain_exactly(series[1].name, 'New Series')
+    end
+
+    it 'reuses a series when given an existing name' do
+      book.series_ids = [series[0].name]
+
+      assigned = book.book_series.reject(&:marked_for_destruction?)
+      expect(assigned.map(&:series_id)).to eq([series[0].id])
     end
   end
 
