@@ -59,3 +59,37 @@
     @include b-cover-box($b-cover-size);
   }
 }
+
+// Ribbon tucked into the bottom of a cover the signed-in user has read.
+.book-read-mark {
+  background: linear-gradient(
+    to right,
+    $color-read-mark-fold 0%,
+    $color-read-mark 22% 100%
+  );
+  bottom: -9px;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 68%, 0 100%);
+  filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.28));
+  height: 22px;
+  left: 25px;
+  pointer-events: none;
+  position: absolute;
+  transform: translate(-50%, 62%);
+  width: 14px;
+  z-index: 4;
+}
+
+.b-cover-size-xs .book-read-mark {
+  height: 14px;
+  width: 9px;
+}
+
+.b-cover-size-sm .book-read-mark {
+  height: 16px;
+  width: 10px;
+}
+
+.b-cover-size-md .book-read-mark {
+  height: 18px;
+  width: 12px;
+}

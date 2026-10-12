@@ -11,6 +11,7 @@ module FrontendApi
           :genres,
           :tag_connections
         )
+        @read_book_ids = UserBookRead.read_ids_among(current_user, @books.map(&:id))
       end
 
       def show; end

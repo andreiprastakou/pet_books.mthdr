@@ -26,7 +26,8 @@ RSpec.describe '/api/books/index_entries' do
         popularity: 20_000,
         global_rank: 0,
         cover_design_id: default_cover_design.id,
-        format: 'normal'
+        format: 'normal',
+        read: false
       }.to_json)
     end
 
@@ -44,6 +45,21 @@ RSpec.describe '/api/books/index_entries' do
         send_request
 
         expect(json_response[:collected_work_ids]).to eq([newer_work.id, older_work.id])
+      end
+    end
+
+    context 'when the signed-in user has read the book' do
+      let(:reader) { create(:user) }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_book_read, user: reader, book: book)
+      end
+
+      it 'reports the book as read' do
+        send_request
+
+        expect(json_response[:read]).to be(true)
       end
     end
   end
@@ -72,7 +88,8 @@ RSpec.describe '/api/books/index_entries' do
         popularity: 20_000,
         global_rank: 0,
         cover_design_id: default_cover_design.id,
-        format: 'normal'
+        format: 'normal',
+        read: false
       }].to_json)
     end
 
@@ -94,6 +111,24 @@ RSpec.describe '/api/books/index_entries' do
         work = json_response.find { |entry| entry[:id] == newer_work.id }
         expect(collection[:collected_work_ids]).to eq([newer_work.id, older_work.id])
         expect(work).not_to have_key(:collected_work_ids)
+      end
+    end
+
+    context 'when the signed-in user has read one of the books' do
+      let(:reader) { create(:user) }
+      let(:other) { create(:book, year_published: 1999) }
+      let(:params) { { ids: [book.id, other.id] } }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_book_read, user: reader, book: book)
+      end
+
+      it 'marks only that book as read' do
+        send_request
+
+        read_flags = json_response.to_h { |entry| [entry[:id], entry[:read]] }
+        expect(read_flags).to eq(book.id => true, other.id => false)
       end
     end
   end

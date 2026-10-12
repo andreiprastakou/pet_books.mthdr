@@ -57,6 +57,7 @@ describe('books API models', () => {
       cover_design_id: 7,
       collected_work_ids: [3, 4],
       format: 'small',
+      read: true,
     })).toMatchObject({
       id: 2,
       authorIds: [1],
@@ -66,6 +67,7 @@ describe('books API models', () => {
       coverDesignId: 7,
       collectedWorkIds: [3, 4],
       format: 'small',
+      read: true,
     })
   })
 

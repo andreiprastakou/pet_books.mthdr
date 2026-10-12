@@ -91,6 +91,10 @@
         margin-right: auto;
       }
 
+      .b-cover-standard:has(.book-read-mark) {
+        margin-bottom: 16px;
+      }
+
       .year {
         font-size: 12px;
         text-align: center;

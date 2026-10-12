@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLink } from '@fortawesome/free-solid-svg-icons/faLink'
 import PropTypes from 'prop-types'
 import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
-import { faBookOpen } from '@fortawesome/free-solid-svg-icons/faBookOpen'
+import { faBook } from '@fortawesome/free-solid-svg-icons/faBook'
 import { faBookOpenReader } from '@fortawesome/free-solid-svg-icons/faBookOpenReader'
 import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons/faBookmark'
 
@@ -54,7 +54,10 @@ const ReadButton = ({ bookId, read: savedRead }) => {
       type='button'
       variant='outline-warning'
     >
-      <FontAwesomeIcon icon={showReadIcon ? faBookOpenReader : faBookOpen} />
+      <FontAwesomeIcon
+        icon={showReadIcon ? faBookOpenReader : faBook}
+        transform='shrink-2'
+      />
     </Button>
   )
 }

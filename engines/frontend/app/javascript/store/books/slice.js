@@ -52,6 +52,9 @@ export const slice = createSlice({
 
       const stored = state.bookDetailsById[bookId]
       if (stored) stored.read = read
+
+      const indexed = state.booksIndex[bookId]
+      if (indexed) indexed.read = read
     },
   }
 })
