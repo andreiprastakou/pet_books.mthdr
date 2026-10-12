@@ -18,9 +18,15 @@ module FrontendApi
 
       def books_scope
         scope = Book.preload(:authors)
-        return scope unless ActiveModel::Type::Boolean.new.cast(params[:read])
+        return shared_reads_scope(scope) if params[:reads_code].present?
+        return scope.read_by(current_user) if ActiveModel::Type::Boolean.new.cast(params[:read])
 
-        scope.read_by(current_user)
+        scope
+      end
+
+      def shared_reads_scope(scope)
+        user = UserReadsSharing.find_by(code: params[:reads_code].to_s.downcase)&.user
+        user ? scope.read_by(user) : scope.none
       end
 
       def apply_sort(books_scope)

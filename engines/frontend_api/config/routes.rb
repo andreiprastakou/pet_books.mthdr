@@ -16,6 +16,13 @@ FrontendApi::Engine.routes.draw do
       resource :search, only: :show, controller: 'search'
     end
 
+    resources :user_reads_sharings, only: %i[create show], param: :code do
+      collection do
+        get :current
+        delete :current, action: :destroy
+      end
+    end
+
     resources :public_list_types, only: %i[index show]
     resources :public_lists, only: :show
 

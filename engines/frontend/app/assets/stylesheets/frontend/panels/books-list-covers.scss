@@ -19,11 +19,31 @@
     text-align: center;
   }
 
-  .panel--header .list-sort-dropdown {
+  .books-list-header-sort {
     align-items: center;
     display: flex;
     flex: 1 1 auto;
+    gap: 8px;
+    justify-content: flex-end;
     margin-left: auto;
+    min-width: 0;
+  }
+
+  .share-reads-buttons {
+    flex: 0 0 auto;
+
+    .btn {
+      font-size: 1rem;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+  }
+
+  .panel--header .list-sort-dropdown {
+    align-items: center;
+    display: flex;
+    flex: 0 1 125px;
+    margin-left: 0;
     max-width: 125px;
 
     button {
