@@ -25,8 +25,14 @@ module FrontendApi
       end
 
       def shared_reads_scope(scope)
-        user = UserReadsSharing.find_by(code: params[:reads_code].to_s.downcase)&.user
+        user = shared_reads_user
         user ? scope.read_by(user) : scope.none
+      end
+
+      def shared_reads_user
+        return @shared_reads_user if defined?(@shared_reads_user)
+
+        @shared_reads_user = UserReadsSharing.find_by(code: params[:reads_code].to_s.downcase)&.user
       end
 
       def apply_sort(books_scope)
@@ -35,8 +41,25 @@ module FrontendApi
         when 'year' then books_scope.order(year_published: :desc)
         when 'popularity' then books_scope.order(popularity: :desc)
         when 'random' then books_scope.order(Arel.sql('RANDOM()'))
+        when 'latest' then order_by_latest_read(books_scope)
         else books_scope
         end
+      end
+
+      def order_by_latest_read(books_scope)
+        user = reads_owner
+        return books_scope unless user
+
+        books_scope.joins(:user_book_reads)
+                   .where(user_book_reads: { user_id: user.id })
+                   .order(user_book_reads: { created_at: :desc })
+      end
+
+      def reads_owner
+        return shared_reads_user if params[:reads_code].present?
+        return current_user if ActiveModel::Type::Boolean.new.cast(params[:read])
+
+        nil
       end
 
       def paginate(books_scope)

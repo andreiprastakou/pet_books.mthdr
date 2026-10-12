@@ -1,7 +1,7 @@
 import React from 'react'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
-import BooksListCovers from 'panels/BooksListCovers'
+import BooksListCovers, { READS_SORT_OPTIONS } from 'panels/BooksListCovers'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import PageConfigurer from 'pages/readsPage/PageConfigurer'
 import ShareReadsButton from 'pages/readsPage/ShareReadsButton'
@@ -16,6 +16,7 @@ const ReadsPage = () => (
           <BooksListCovers
             header='YOUR READS'
             headerAction={<ShareReadsButton />}
+            sortOptions={READS_SORT_OPTIONS}
           />
         </Slot>
       </Column>
