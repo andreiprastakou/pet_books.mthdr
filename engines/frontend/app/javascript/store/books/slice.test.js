@@ -69,13 +69,15 @@ describe('books slice', () => {
     expect(state.requestedBookId).toBe(9)
   })
 
-  it('updates read on the current details and a stored copy of the same book', () => {
+  it('updates read on the current details, a stored copy, and the index entry', () => {
     let state = reducer(undefined, setCurrentBookDetails({ id: 9, read: false }))
     state = reducer(state, setBookDetails({ id: 9, read: false }))
+    state = reducer(state, addBooks([{ id: 9, title: 'Listed', read: false }]))
     state = reducer(state, setBookRead({ bookId: 9, read: true }))
 
     expect(state.bookDetailsCurrent.read).toBe(true)
     expect(state.bookDetailsById[9].read).toBe(true)
+    expect(state.booksIndex[9].read).toBe(true)
   })
 })
 

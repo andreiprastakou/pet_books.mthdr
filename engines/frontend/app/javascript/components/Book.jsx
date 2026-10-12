@@ -101,6 +101,22 @@ Book.propTypes = {
   style: PropTypes.object,
 }
 
+const ReadMark = ({ read }) => {
+  if (!read) return null
+
+  return (
+    <span
+      aria-label='Read'
+      className='book-read-mark'
+      role='img'
+    />
+  )
+}
+
+ReadMark.propTypes = {
+  read: PropTypes.bool,
+}
+
 const coverCopyFor = (bookIndexEntry, authorRefs, format, size) => {
   const names = authorRefs.map(authorRef => authorRef?.fullname)
   return {
@@ -129,6 +145,8 @@ const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry, size }) => {
           'b-cover-texture--on-image': !isDefaultCover,
         })}
       />
+
+      <ReadMark read={bookIndexEntry.read} />
 
       <div
         className={classnames('b-standard-cover-title', { 'b-long': copy.longTitle })}
@@ -167,6 +185,8 @@ const BookSmall = ({ authorRefs, bookIndexEntry, size }) => {
       style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, FORMAT_SMALL), { flat: true })}
     >
       <div className='b-cover-texture' />
+
+      <ReadMark read={bookIndexEntry.read} />
 
       <div className="b-standard-cover-small-text-container">
         { copy.author ? (

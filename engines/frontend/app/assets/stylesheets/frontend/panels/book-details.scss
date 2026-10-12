@@ -81,6 +81,14 @@
       z-index: 1;
     }
 
+    &:has(.book-read-mark) {
+      padding-bottom: 16px;
+    }
+
+    .book-read-mark {
+      bottom: -8px;
+    }
+
     .b-cover-standard {
       margin: 0;
 

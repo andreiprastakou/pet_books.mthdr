@@ -60,6 +60,19 @@ describe('Book', () => {
     expect(document.querySelector('.b-standard-cover-author')).not.toHaveClass('b-tight')
     expect(document.querySelector('.b-cover-standard')).not.toHaveClass('b-standard-cover--small')
     expect(document.querySelector('.b-cover-standard')).toHaveClass('b-standard-cover--normal')
+    expect(document.querySelector('.book-read-mark')).not.toBeInTheDocument()
+  })
+
+  it('marks a read cover with a bookmark', () => {
+    renderWithProviders(
+      <Book
+        bookIndexEntry={{ ...bookIndexEntry, read: true }}
+        scrollIntoView={false}
+      />,
+      { preloadedState }
+    )
+
+    expect(screen.getByRole('img', { name: 'Read' })).toHaveClass('book-read-mark')
   })
 
   it('omits a byline that cannot fit', () => {

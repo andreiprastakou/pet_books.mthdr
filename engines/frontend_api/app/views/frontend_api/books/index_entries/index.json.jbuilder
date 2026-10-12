@@ -10,5 +10,6 @@ json.array! @books do |book|
   json.global_rank 0
   json.cover_design_id book_cover_design(book).id
   json.format book.format
+  json.read @read_book_ids.include?(book.id)
   json.collected_work_ids book.collected_work_ids_newest_first if book.collection?
 end
