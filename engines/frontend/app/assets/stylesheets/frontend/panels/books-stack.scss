@@ -182,13 +182,37 @@
   user-select: none;
   width: calc(100% - 20px);
 
+  // The spine background is painted under its children, so this face repeats it
+  // above the ribbon. Every face shares that layer and covers any ribbon it crosses.
+  &::before {
+    background: inherit;
+    border-radius: inherit;
+    content: '';
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+  }
+
   &:hover:not(.selected) {
     transform: translateX(4px);
   }
 
   &.selected {
     transform: translateX(14px);
-    z-index: 2;
+  }
+
+  // Same swallowtail as a cover, turned so a narrower tail clears the right edge.
+  .book-read-mark {
+    bottom: 2px;
+    clip-path: none;
+    filter: drop-shadow(1px 0 1px rgba(0, 0, 0, 0.28));
+    height: 7px;
+    left: auto;
+    right: -5px;
+    transform: translateY(-50%) rotateZ(10deg);
+    width: 8px;
+    z-index: 0;
   }
 
   &.book-spine-placeholder {
@@ -304,6 +328,12 @@
       box-shadow: none;
       height: 2px;
       width: 2px;
+    }
+
+    .book-read-mark {
+      height: 5px;
+      right: -4px;
+      width: 7px;
     }
 
     &.selected {

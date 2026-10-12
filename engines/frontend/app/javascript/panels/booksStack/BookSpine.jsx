@@ -49,6 +49,14 @@ const BookSpine = ({ id, scrollEpoch = 0 }) => {
       tabIndex={-1}
       title={bookIndexEntry.title}
     >
+      { bookIndexEntry.read ? (
+        <span
+          aria-label='Read'
+          className='book-read-mark'
+          role='img'
+        />
+      ) : null }
+
       <div className='book-spine-body'>
         <span className='book-spine-title'>
           { bookIndexEntry.title }

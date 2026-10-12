@@ -140,6 +140,8 @@ const BookStandard = ({ authorRefs, coverDesign, bookIndexEntry, size }) => {
         ? coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, format))
         : null}
     >
+      <div className='b-cover-face' />
+
       <div
         className={classnames('b-cover-texture', {
           'b-cover-texture--on-image': !isDefaultCover,
@@ -184,6 +186,8 @@ const BookSmall = ({ authorRefs, bookIndexEntry, size }) => {
       className={`b-cover-standard b-standard-cover--${FORMAT_SMALL}`}
       style={coverBackgroundStyle(coverPaletteForId(bookIndexEntry.id, FORMAT_SMALL), { flat: true })}
     >
+      <div className='b-cover-face' />
+
       <div className='b-cover-texture' />
 
       <ReadMark read={bookIndexEntry.read} />
