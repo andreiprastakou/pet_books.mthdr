@@ -30,6 +30,8 @@ import {
 } from 'utils/paginatedGridNavigation'
 
 export const PANEL_ID = 'books-list-covers'
+export const BOOK_SORT_OPTIONS = ['popularity', 'year', 'random', 'name']
+export const READS_SORT_OPTIONS = ['latest', ...BOOK_SORT_OPTIONS]
 
 // Both match .books-list-row: its `gap`, and the padding .book-case puts
 // around the cover it centers.
@@ -48,6 +50,7 @@ const BooksListCovers = ({
   panelId = PANEL_ID,
   selectedBookId = null,
   showControls = true,
+  sortOptions = BOOK_SORT_OPTIONS,
 }) => {
   const usesStoreList = bookIdsProp === null
   const dispatch = useDispatch()
@@ -206,7 +209,7 @@ const BooksListCovers = ({
 
               <SortingDropdown
                 selectSortBy={selectSortBy}
-                sortOptions={['popularity', 'year', 'random', 'name']}
+                sortOptions={sortOptions}
               />
             </div>
 
@@ -246,6 +249,7 @@ BooksListCovers.propTypes = {
   panelId: PropTypes.string,
   selectedBookId: PropTypes.number,
   showControls: PropTypes.bool,
+  sortOptions: PropTypes.arrayOf(PropTypes.string),
 }
 
 const BooksGrid = ({ bookIds, bookLabels, coverSize, gridRef, onSelectBook, selectedBookId }) => {

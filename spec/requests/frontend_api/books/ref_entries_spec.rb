@@ -51,6 +51,22 @@ RSpec.describe '/api/books/ref_entries' do
         expect(ids).to eq([read_book.id])
         expect(json_response[:total]).to eq(1)
       end
+
+      it 'sorts by the newest read' do
+        earlier_book = create(:book, year_published: 2020)
+        later_book = create(:book, year_published: 1900)
+        UserBookRead.find_by!(user: reader, book: read_book).update!(created_at: 3.days.ago)
+        create(:user_book_read, user: reader, book: earlier_book, created_at: 2.days.ago)
+        create(:user_book_read, user: reader, book: later_book, created_at: 1.hour.ago)
+        create(:user_book_read, user: create(:user), book: earlier_book, created_at: Time.current)
+
+        get '/api/books/ref_entries.json',
+            params: { read: true, sort_by: 'latest' },
+            headers: authorization_header
+
+        expect(response).to be_successful
+        expect(json_response[:list].pluck(:id)).to eq([later_book.id, earlier_book.id, read_book.id])
+      end
     end
 
     context 'with reads_code' do
@@ -73,6 +89,20 @@ RSpec.describe '/api/books/ref_entries' do
         ids = json_response[:list].pluck(:id)
         expect(ids).to eq([shared_book.id])
         expect(json_response[:total]).to eq(1)
+      end
+
+      it 'sorts by the sharing owner reads, newest first' do
+        earlier_book = create(:book)
+        create(:user_book_read, user: owner, book: earlier_book, created_at: 2.days.ago)
+        UserBookRead.find_by!(user: owner, book: shared_book).update!(created_at: 1.hour.ago)
+        UserBookRead.find_by!(user: reader, book: private_book).update!(created_at: Time.current)
+
+        get '/api/books/ref_entries.json',
+            params: { reads_code: sharing.code, sort_by: 'latest' },
+            headers: authorization_header
+
+        expect(response).to be_successful
+        expect(json_response[:list].pluck(:id)).to eq([shared_book.id, earlier_book.id])
       end
 
       it 'returns no books for an unknown code' do

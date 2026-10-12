@@ -3,7 +3,7 @@ import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
-import BooksListCovers from 'panels/BooksListCovers'
+import BooksListCovers, { READS_SORT_OPTIONS } from 'panels/BooksListCovers'
 import BookDetails from 'panels/bookDetails/BookDetails'
 
 const UserReadsPage = ({ status }) => {
@@ -14,7 +14,10 @@ const UserReadsPage = ({ status }) => {
     <PageFrame className='user-reads-page'>
       <Column span={2}>
         <Slot>
-          <BooksListCovers header='shared reads' />
+          <BooksListCovers
+            header='shared reads'
+            sortOptions={READS_SORT_OPTIONS}
+          />
         </Slot>
       </Column>
 
