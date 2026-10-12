@@ -32,11 +32,12 @@ class ApiClient {
     }).then(entry => BookIndexEntry.parse(entry))
   }
 
-  static getBooksRefs({ ids, years, authorId, tagIds, seriesId, page, perPage, sortBy } = {}) {
+  static getBooksRefs({ ids, years, authorId, tagIds, seriesId, read, page, perPage, sortBy } = {}) {
     const params = {
       ids,
       years,
       page,
+      read,
       'author_id': authorId,
       'tag_ids': tagIds,
       'series_id': seriesId,

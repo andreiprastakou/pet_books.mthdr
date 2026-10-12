@@ -51,24 +51,34 @@ PageNavbar.propTypes = {
   currentUserEmail: PropTypes.string,
 }
 
-const AccountNav = ({ email }) => (
-  <Nav className='page-navbar-account'>
-    <NavDropdown
-      align='end'
-      id='account-menu'
-      title={ (
-        <>
-          <ProfileIcon />
-          <span className='page-navbar-account-label'>Account</span>
-        </>
-      ) }
-    >
-      <NavDropdown.ItemText>{ email }</NavDropdown.ItemText>
-      <NavDropdown.Divider />
-      <LogoutForm />
-    </NavDropdown>
-  </Nav>
-)
+const AccountNav = ({ email }) => {
+  const { routes: { readsPagePath } } = useContext(UrlStoreContext)
+
+  return (
+    <Nav className='page-navbar-account'>
+      <NavDropdown
+        align='end'
+        id='account-menu'
+        title={ (
+          <>
+            <ProfileIcon />
+            <span className='page-navbar-account-label'>Account</span>
+          </>
+        ) }
+      >
+        <NavDropdown.ItemText>{ email }</NavDropdown.ItemText>
+        <NavDropdown.Divider />
+        <NavDropdown.Item
+          as={InternalLink}
+          href={readsPagePath()}
+        >
+          { 'Your reads' }
+        </NavDropdown.Item>
+        <LogoutForm />
+      </NavDropdown>
+    </Nav>
+  )
+}
 
 AccountNav.propTypes = {
   email: PropTypes.string.isRequired,

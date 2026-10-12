@@ -45,8 +45,14 @@ describe('PageNavbar', () => {
 
     await user.click(screen.getByRole('button', { name: 'Account' }))
 
-    expect(screen.getByText('reader@example.com')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Log out' }).closest('form')).toHaveAttribute('action', '/logout')
+    const email = screen.getByText('reader@example.com')
+    const myRead = screen.getByRole('link', { name: 'Your reads' })
+    const logout = screen.getByRole('button', { name: 'Log out' })
+
+    expect(myRead).toHaveAttribute('href', '/reads')
+    expect(email.compareDocumentPosition(myRead) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(myRead.compareDocumentPosition(logout) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(logout.closest('form')).toHaveAttribute('action', '/logout')
   })
 
   it('triggers BOOKS_NAV_CLICKED when the Books dropdown is opened', async() => {
