@@ -61,11 +61,12 @@ describe('books apiClient', () => {
         author_ids: [1],
       }])
 
-    const refs = await apiClient.getBooksRefs({ page: 1, perPage: 16, sortBy: 'name' })
+    const refs = await apiClient.getBooksRefs({ page: 1, perPage: 16, sortBy: 'title' })
     const ref = await apiClient.getBookRefEntry(5)
     const full = await apiClient.getBookFull(5)
     const search = await apiClient.search('five')
 
+    expect(jQuery.ajax.mock.calls[0][0].url).toContain('sort_by=title')
     expect(refs).toEqual({
       total: 1,
       books: [{ id: 5, year: 1910, authorIds: [1] }],

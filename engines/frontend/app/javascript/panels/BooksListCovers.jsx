@@ -30,7 +30,7 @@ import {
 } from 'utils/paginatedGridNavigation'
 
 export const PANEL_ID = 'books-list-covers'
-export const BOOK_SORT_OPTIONS = ['popularity', 'year', 'random', 'name']
+export const BOOK_SORT_OPTIONS = ['popularity', 'year', 'random', 'title']
 export const READS_SORT_OPTIONS = ['latest', ...BOOK_SORT_OPTIONS]
 
 // Both match .books-list-row: its `gap`, and the padding .book-case puts

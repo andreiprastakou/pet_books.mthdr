@@ -26,7 +26,7 @@ describe('booksList slice', () => {
       bookIds: [],
       booksTotal: 0,
       listFilter: {},
-      sortBy: 'name',
+      sortBy: 'title',
       page: 1,
       perPage: 16,
     })

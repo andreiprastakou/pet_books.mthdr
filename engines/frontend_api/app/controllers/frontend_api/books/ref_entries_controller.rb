@@ -37,7 +37,7 @@ module FrontendApi
 
       def apply_sort(books_scope)
         case params[:sort_by]
-        when 'name' then books_scope.order(:title)
+        when 'title' then books_scope.order(:title)
         when 'year' then books_scope.order(year_published: :desc)
         when 'popularity' then books_scope.order(popularity: :desc)
         when 'random' then books_scope.order(Arel.sql('RANDOM()'))

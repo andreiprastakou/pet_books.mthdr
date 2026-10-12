@@ -5,7 +5,7 @@ import { Dropdown } from 'react-bootstrap'
 import { selectSortBy } from 'store/booksList/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 
-const SORT_OPTIONS = ['popularity', 'year', 'random', 'name']
+const SORT_OPTIONS = ['popularity', 'year', 'random', 'title']
 
 const SortingDropdown = () => {
   const currentValue = useSelector(selectSortBy())

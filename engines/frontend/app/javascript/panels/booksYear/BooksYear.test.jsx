@@ -82,7 +82,7 @@ describe('BooksYear', () => {
             listFilter: { years: [2000] },
             page: 1,
             perPage: 16,
-            sortBy: 'name',
+            sortBy: 'title',
           },
           booksYears: {
             years: [1990, 2000, 2010],
