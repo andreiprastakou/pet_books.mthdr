@@ -3,6 +3,7 @@ import AuthorsPageRoute from 'pages/authorsPage/Route'
 import BookPageRoute from 'pages/bookPage/Route'
 import BooksPageRoute from 'pages/booksPage/Route'
 import PublicListsPageRoute from 'pages/publicListsPage/Route'
+import ReadsPageRoute from 'pages/readsPage/Route'
 import SeriesIndexPageRoute from 'pages/seriesIndexPage/Route'
 import SeriesPageRoute from 'pages/seriesPage/Route'
 import TagPageRoute from 'pages/tagPage/Route'
@@ -14,6 +15,7 @@ export default [
   BookPageRoute,
   BooksPageRoute,
   PublicListsPageRoute,
+  ReadsPageRoute,
   SeriesPageRoute,
   SeriesIndexPageRoute,
   TagPageRoute,

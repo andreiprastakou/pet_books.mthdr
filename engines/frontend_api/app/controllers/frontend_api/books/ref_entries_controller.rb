@@ -6,7 +6,7 @@ module FrontendApi
       before_action :fetch_book, only: :show
 
       def index
-        books = BooksFilter.filtered_scope(params, Book.preload(:authors))
+        books = BooksFilter.filtered_scope(params, books_scope)
         books = apply_sort(books)
         @count = books.count
         @books = paginate(books)
@@ -15,6 +15,13 @@ module FrontendApi
       def show; end
 
       private
+
+      def books_scope
+        scope = Book.preload(:authors)
+        return scope unless ActiveModel::Type::Boolean.new.cast(params[:read])
+
+        scope.read_by(current_user)
+      end
 
       def apply_sort(books_scope)
         case params[:sort_by]

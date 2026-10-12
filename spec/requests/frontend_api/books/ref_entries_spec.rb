@@ -31,5 +31,26 @@ RSpec.describe '/api/books/ref_entries' do
       expect(response).to be_successful
       expect(json_response).to match(list: [hash_including(id: book.id)], total: 1)
     end
+
+    context 'with read=true' do
+      let(:reader) { create(:user) }
+      let(:read_book) { create(:book) }
+      let(:other_book) { create(:book) }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_book_read, user: reader, book: read_book)
+        create(:user_book_read, user: create(:user), book: other_book)
+      end
+
+      it 'returns only books the current user has read' do
+        get '/api/books/ref_entries.json', params: { read: true }, headers: authorization_header
+
+        expect(response).to be_successful
+        ids = json_response[:list].map { |entry| entry[:id] }
+        expect(ids).to eq([read_book.id])
+        expect(json_response[:total]).to eq(1)
+      end
+    end
   end
 end

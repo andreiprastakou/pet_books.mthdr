@@ -72,6 +72,7 @@ class Book < ApplicationRecord
   }
   scope :by_author, ->(author) { joins(:book_authors).where(book_authors: { author_id: author }) }
   scope :by_series, ->(series) { joins(:book_series).where(book_series: { series_id: series }) }
+  scope :read_by, ->(user) { where(id: UserBookRead.where(user_id: user.id).select(:book_id)) }
   scope :search_by_title, ->(key) { where('title LIKE ?', "%#{key}%") }
 
   def readonly?
