@@ -3,11 +3,12 @@ import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
+import PageLoading from 'components/pageFrame/PageLoading'
 import { PinBoardFrame } from 'pages/pinBoardPage/Page'
 
 const UserPinsPage = ({ status }) => {
   if (status === 'missing') return <MissingSharedPinBoard />
-  if (status !== 'ready') return 'Wait...'
+  if (status !== 'ready') return <PageLoading />
 
   return <PinBoardFrame />
 }
