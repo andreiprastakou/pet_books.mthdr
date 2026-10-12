@@ -99,6 +99,25 @@ describe('books apiClient', () => {
     expect(entry.id).toBe(8)
   })
 
+  it('pins and unpins a book with the csrf token', async() => {
+    document.head.innerHTML = '<meta name="csrf-token" content="tok">'
+    jQuery.ajax.mockResolvedValue({ book_id: 4, pinned: true })
+
+    await apiClient.setBookPin(4, true)
+    await apiClient.setBookPin(4, false)
+
+    expect(jQuery.ajax).toHaveBeenNthCalledWith(1, {
+      url: '/api/books/pins/4.json',
+      method: 'PUT',
+      headers: { 'X-CSRF-Token': 'tok' },
+    })
+    expect(jQuery.ajax).toHaveBeenNthCalledWith(2, {
+      url: '/api/books/pins/4.json',
+      method: 'DELETE',
+      headers: { 'X-CSRF-Token': 'tok' },
+    })
+  })
+
   it('marks and unmarks a book read with the csrf token', async() => {
     document.head.innerHTML = '<meta name="csrf-token" content="tok">'
     jQuery.ajax.mockResolvedValue({ book_id: 4, read: true })

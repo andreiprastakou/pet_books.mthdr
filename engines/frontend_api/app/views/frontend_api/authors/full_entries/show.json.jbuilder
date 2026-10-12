@@ -14,3 +14,4 @@ json.tag_ids author.tag_ids
 json.books_count author.books.count
 json.popularity author.popularity
 json.rank 0
+json.pinned UserPin.pinned?(current_user, author)

@@ -13,6 +13,7 @@ class AuthorFull {
       tagIds: data['tag_ids'],
       popularity: data['popularity'],
       rank: data['rank'],
+      pinned: Boolean(data['pinned']),
       externalLinks: data['external_links'] || [],
     }
   }

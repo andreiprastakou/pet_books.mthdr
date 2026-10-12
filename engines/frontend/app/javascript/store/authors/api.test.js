@@ -20,6 +20,7 @@ describe('authors API models', () => {
       tag_ids: [1, 2],
       popularity: 9,
       rank: 2,
+      pinned: true,
       external_links: [{ external_resource: 'wikipedia', label: 'Wikipedia', url: 'https://wiki' }],
     })).toEqual({
       id: 1,
@@ -34,6 +35,7 @@ describe('authors API models', () => {
       tagIds: [1, 2],
       popularity: 9,
       rank: 2,
+      pinned: true,
       externalLinks: [{ external_resource: 'wikipedia', label: 'Wikipedia', url: 'https://wiki' }],
     })
   })

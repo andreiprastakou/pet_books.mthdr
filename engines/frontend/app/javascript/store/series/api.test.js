@@ -9,10 +9,12 @@ describe('series API models', () => {
     expect(SeriesIndexEntry.parse({
       id: 1,
       name: 'Earthsea',
+      pinned: true,
       external_links: [{ external_resource: 'official', label: 'Official', url: 'https://x' }],
     })).toEqual({
       id: 1,
       name: 'Earthsea',
+      pinned: true,
       externalLinks: [{ external_resource: 'official', label: 'Official', url: 'https://x' }],
     })
 

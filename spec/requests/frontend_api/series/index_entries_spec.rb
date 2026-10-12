@@ -29,6 +29,7 @@ RSpec.describe '/api/series/index_entries' do
       expect(json_response).to eq(
         id: series.id,
         name: series.name,
+        pinned: false,
         external_links: frontend_external_links.map { |link|
           {
             external_resource: link.external_resource,
@@ -37,6 +38,21 @@ RSpec.describe '/api/series/index_entries' do
           }
         }
       )
+    end
+
+    context 'when the signed-in user has pinned the series' do
+      let(:reader) { create(:user) }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_pin, user: reader, entity: series)
+      end
+
+      it 'reports the series as pinned' do
+        send_request
+
+        expect(json_response[:pinned]).to be(true)
+      end
     end
   end
 

@@ -1,4 +1,6 @@
 import jQuery from 'jquery'
+
+const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
 import { objectToParams } from 'utils/objectToParams'
 import AuthorFull from 'store/authors/api/AuthorFull'
 import AuthorIndexEntry from 'store/authors/api/AuthorIndexEntry'
@@ -21,6 +23,14 @@ class ApiClient {
     return jQuery.ajax({
       url: `/api/authors/index_entries.json${ objectToParams(params) }`
     }).then(({ list, total }) => ({ total, list: list.map(entry => AuthorIndexEntry.parse(entry)) }))
+  }
+
+  static setAuthorPin(authorId, pinned) {
+    return jQuery.ajax({
+      url: `/api/authors/pins/${authorId}.json`,
+      method: pinned ? 'PUT' : 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken() },
+    })
   }
 
   static getAuthorFull(id) {

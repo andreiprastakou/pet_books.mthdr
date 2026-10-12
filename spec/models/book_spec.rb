@@ -43,6 +43,7 @@ RSpec.describe Book do
 
     it { is_expected.to have_many(:book_public_lists).class_name(Joins::BookPublicList.name) }
     it { is_expected.to have_many(:public_lists).class_name(PublicList.name).through(:book_public_lists) }
+    it { is_expected.to have_many(:user_pins).dependent(:delete_all) }
   end
 
   describe '#collected_works' do

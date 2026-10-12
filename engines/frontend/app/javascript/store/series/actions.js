@@ -5,11 +5,17 @@ export const {
   addSeriesIndexEntry,
   assignSeriesIndex,
   assignSeriesRefs,
+  setSeriesPin,
 } = slice.actions
 
 export const fetchSeriesIndex = () => async dispatch => {
   const entries = await apiClient.getSeriesIndex()
   dispatch(assignSeriesIndex(entries))
+}
+
+export const saveSeriesPin = (seriesId, pinned) => async dispatch => {
+  const payload = await apiClient.setSeriesPin(seriesId, pinned)
+  dispatch(setSeriesPin({ seriesId: payload.series_id, pinned: payload.pinned }))
 }
 
 export const fetchSeriesIndexEntry = id => async dispatch => {

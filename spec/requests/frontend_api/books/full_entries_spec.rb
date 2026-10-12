@@ -82,6 +82,7 @@ RSpec.describe '/api/books/full_entries' do
         id: book.id,
         title: book.title,
         read: false,
+        pinned: false,
         original_title: book.original_title,
         author_ids: book.author_ids,
         tag_ids: tags.map(&:id),
@@ -115,6 +116,21 @@ RSpec.describe '/api/books/full_entries' do
         send_request
 
         expect(json_response[:read]).to be(true)
+      end
+    end
+
+    context 'when the signed-in user has pinned the book' do
+      let(:reader) { create(:user) }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_pin, user: reader, entity: book)
+      end
+
+      it 'reports the book as pinned' do
+        send_request
+
+        expect(json_response[:pinned]).to be(true)
       end
     end
 

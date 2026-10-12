@@ -28,6 +28,7 @@ RSpec.describe Author do
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_authors) }
     it { is_expected.to have_many(:tag_connections).class_name(Joins::TagConnection.name) }
     it { is_expected.to have_many(:tags).class_name(Tag.name).through(:tag_connections) }
+    it { is_expected.to have_many(:user_pins).dependent(:delete_all) }
   end
 
   describe 'validation' do

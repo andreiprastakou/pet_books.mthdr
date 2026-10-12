@@ -1,13 +1,21 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
+import { useDispatch } from 'react-redux'
 import { ButtonGroup, Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 import ExternalTextLink from 'components/ExternalTextLink'
 import InternalLink from 'components/InternalLink'
+import PinButton from 'components/PinButton'
+import { saveSeriesPin } from 'store/series/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const SeriesIntro = ({ series }) => {
+  const dispatch = useDispatch()
   const { routes: { seriesIndexPagePath }, routesReady } = useContext(UrlStoreContext)
+  const savePin = useCallback(
+    nextPinned => dispatch(saveSeriesPin(series && series.id, nextPinned)),
+    [dispatch, series]
+  )
 
   if (!series || !routesReady) return null
 
@@ -30,19 +38,22 @@ const SeriesIntro = ({ series }) => {
         </span>
       </Card.Header>
 
-      { links.length > 0 ? (
-        <Card.Body className='panel--body'>
-          <ButtonGroup>
-            { links.map(link => (
-              <ExternalTextLink
-                href={link.url}
-                key={link.url}
-                label={link.label}
-              />
-            )) }
-          </ButtonGroup>
-        </Card.Body>
-      ) : null }
+      <Card.Body className='panel--body'>
+        <ButtonGroup>
+          <PinButton
+            onChange={savePin}
+            pinned={Boolean(series.pinned)}
+          />
+
+          { links.map(link => (
+            <ExternalTextLink
+              href={link.url}
+              key={link.url}
+              label={link.label}
+            />
+          )) }
+        </ButtonGroup>
+      </Card.Body>
     </Card>
   )
 }

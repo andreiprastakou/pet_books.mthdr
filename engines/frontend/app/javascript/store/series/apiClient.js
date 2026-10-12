@@ -1,4 +1,6 @@
 import jQuery from 'jquery'
+
+const csrfToken = () => document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
 import { objectToParams } from 'utils/objectToParams'
 import SeriesIndexEntry from 'store/series/api/SeriesIndexEntry'
 import SeriesRef from 'store/series/api/SeriesRef'
@@ -9,6 +11,14 @@ class ApiClient {
     return jQuery.ajax({
       url: '/api/series/index_entries.json'
     }).then(list => list.map(entry => SeriesIndexEntry.parse(entry)))
+  }
+
+  static setSeriesPin(seriesId, pinned) {
+    return jQuery.ajax({
+      url: `/api/series/pins/${seriesId}.json`,
+      method: pinned ? 'PUT' : 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken() },
+    })
   }
 
   static getSeriesIndexEntry(id) {

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_12_093000) do
+ActiveRecord::Schema[8.1].define(version: 2026_10_12_131100) do
   create_table "admin_data_fetch_tasks", force: :cascade do |t|
     t.integer "chat_id"
     t.datetime "created_at", null: false
@@ -329,6 +329,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_093000) do
     t.index ["user_id", "book_id"], name: "index_user_book_reads_on_user_id_and_book_id", unique: true
   end
 
+  create_table "user_pins", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "entity_id", null: false
+    t.string "entity_type", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["entity_type", "entity_id"], name: "index_user_pins_on_entity_type_and_entity_id"
+    t.index ["user_id", "entity_type", "entity_id"], name: "index_user_pins_on_user_id_and_entity_type_and_entity_id", unique: true
+  end
+
   create_table "user_reads_sharings", force: :cascade do |t|
     t.string "code", null: false
     t.datetime "created_at", null: false
@@ -388,5 +398,6 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_12_093000) do
   add_foreign_key "public_lists", "public_list_types"
   add_foreign_key "user_book_reads", "books"
   add_foreign_key "user_book_reads", "users"
+  add_foreign_key "user_pins", "users"
   add_foreign_key "user_reads_sharings", "users"
 end

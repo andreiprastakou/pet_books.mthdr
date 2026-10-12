@@ -18,6 +18,7 @@ const {
   addBooksRefs,
   clearBooksRefs,
   setBookDetails,
+  setBookPin,
   setBookRead,
   setCurrentBookDetails,
   setRequestedBookId,
@@ -67,6 +68,15 @@ describe('books slice', () => {
     expect(state.bookDetailsCurrent).toEqual({ id: 9, title: 'Now' })
     expect(state.bookDetailsById[4]).toEqual({ id: 4, title: 'Stored' })
     expect(state.requestedBookId).toBe(9)
+  })
+
+  it('updates pinned on the current details and a stored copy', () => {
+    let state = reducer(undefined, setCurrentBookDetails({ id: 9, pinned: false }))
+    state = reducer(state, setBookDetails({ id: 9, pinned: false }))
+    state = reducer(state, setBookPin({ bookId: 9, pinned: true }))
+
+    expect(state.bookDetailsCurrent.pinned).toBe(true)
+    expect(state.bookDetailsById[9].pinned).toBe(true)
   })
 
   it('updates read on the current details, a stored copy, and the index entry', () => {

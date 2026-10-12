@@ -39,6 +39,12 @@ export const slice = createSlice({
       state.refsLoaded = true
     },
 
+    setAuthorPin: (state, action) => {
+      const { authorId, pinned } = action.payload
+      const author = state.authorsFull[authorId]
+      if (author) author.pinned = pinned
+    },
+
     setDefaultAuthorImageUrl: (state, action) => {
       state.defaultPhotoUrl = action.payload
     },

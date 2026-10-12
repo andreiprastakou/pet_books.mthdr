@@ -3,13 +3,12 @@ import { useDispatch } from 'react-redux'
 import { Button } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook'
-import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
-import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons/faBookmark'
 import PropTypes from 'prop-types'
 
 import ExternalTextLink from 'components/ExternalTextLink'
 import InternalLink from 'components/InternalLink'
-import { addSuccessMessage } from 'store/notifications/actions'
+import PinButton from 'components/PinButton'
+import { saveAuthorPin } from 'store/authors/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const Toolbar = props => {
@@ -17,12 +16,10 @@ const Toolbar = props => {
   const { routes: { authorPagePath },
     routesReady } = useContext(UrlStoreContext)
   const dispatch = useDispatch()
-
-  const isBookmarked = false
-
-  const handleBookmark = useCallback(() => {
-    dispatch(addSuccessMessage('Dev note: not implemented!'))
-  }, [dispatch])
+  const savePin = useCallback(
+    nextPinned => dispatch(saveAuthorPin(authorFull.id, nextPinned)),
+    [authorFull.id, dispatch]
+  )
 
   if (!routesReady) return null
 
@@ -41,25 +38,10 @@ const Toolbar = props => {
         </Button>
       ) : null }
 
-      { isBookmarked ? (
-        <Button
-          onClick={handleBookmark}
-          title='Remove bookmark'
-          type='button'
-          variant='outline-warning'
-        >
-          <FontAwesomeIcon icon={faBookmark} />
-        </Button>
-      ) : (
-        <Button
-          onClick={handleBookmark}
-          title='Bookmark'
-          type='button'
-          variant='outline-warning'
-        >
-          <FontAwesomeIcon icon={faBookmarkEmpty} />
-        </Button>
-      ) }
+      <PinButton
+        onChange={savePin}
+        pinned={Boolean(authorFull.pinned)}
+      />
 
       { (authorFull.externalLinks || []).map(link => (
         <ExternalTextLink

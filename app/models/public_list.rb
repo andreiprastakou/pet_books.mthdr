@@ -27,6 +27,7 @@ class PublicList < ApplicationRecord
   belongs_to :public_list_type, class_name: 'PublicListType', inverse_of: :public_lists
   has_many :book_public_lists, class_name: 'Joins::BookPublicList', dependent: :destroy
   has_many :books, class_name: 'Book', through: :book_public_lists
+  has_many :user_pins, as: :entity, dependent: :delete_all
 
   validates :year, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :public_list_type_id, uniqueness: { scope: :year }
