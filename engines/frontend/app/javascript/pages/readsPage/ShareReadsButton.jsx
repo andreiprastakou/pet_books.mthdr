@@ -84,7 +84,7 @@ const ShareReadsButton = () => {
           onClick={handleUnshareClick}
           title='Unshare'
           type='button'
-          variant='outline-primary'
+          variant='outline-warning'
         >
           <FontAwesomeIcon icon={faLinkSlash} />
         </Button>
