@@ -33,6 +33,30 @@ RSpec.describe '/api/books/reads' do
 
       expect(response).to have_http_status(:not_found)
     end
+
+    context 'when the book is a collection with included works' do
+      let(:book) { create(:book, literary_form: 'collection') }
+      let(:already_read) { create(:book) }
+      let(:unread_work) { create(:book) }
+
+      before do
+        create(:book_collection, collection: book, book: already_read)
+        create(:book_collection, collection: book, book: unread_work)
+        create(:user_book_read, user: reader, book: already_read)
+      end
+
+      it 'marks the collection and the included works that were not already read' do
+        send_request
+
+        expect(response).to be_successful
+        expect(json_response).to include(book_id: book.id, read: true)
+        expect(json_response[:included_work_ids]).to contain_exactly(already_read.id, unread_work.id)
+        expect(UserBookRead.where(user: reader).pluck(:book_id)).to contain_exactly(
+          book.id, already_read.id, unread_work.id
+        )
+        expect(UserBookRead.where(user: reader, book: already_read).count).to eq(1)
+      end
+    end
   end
 
   describe 'DELETE /:id' do
@@ -56,6 +80,21 @@ RSpec.describe '/api/books/reads' do
 
       expect(response).to be_successful
       expect(json_response).to eq(book_id: book.id, read: false)
+    end
+
+    it 'unmarks a collection without changing its included works' do
+      collection = create(:book, literary_form: 'collection')
+      included_work = create(:book)
+      create(:book_collection, collection: collection, book: included_work)
+      create(:user_book_read, user: reader, book: collection)
+      create(:user_book_read, user: reader, book: included_work)
+
+      delete "/api/books/reads/#{collection.id}.json"
+
+      expect(response).to be_successful
+      expect(json_response).to eq(book_id: collection.id, read: false)
+      expect(UserBookRead.exists?(user: reader, book: collection)).to be(false)
+      expect(UserBookRead.exists?(user: reader, book: included_work)).to be(true)
     end
   end
 end
