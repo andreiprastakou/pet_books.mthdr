@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-const DEFAULT_SORT_BY = 'name'
+const DEFAULT_SORT_BY = 'title'
 const DEFAULT_PAGE = 1
 const DEFAULT_PER_PAGE = 16
 

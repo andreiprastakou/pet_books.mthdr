@@ -43,7 +43,7 @@ describe('BooksStack', () => {
           listFilter: {},
           page: 1,
           perPage: 16,
-          sortBy: 'name',
+          sortBy: 'title',
         },
         storeBooks: {
           bookDetailsCurrent: {},
@@ -94,7 +94,7 @@ describe('BooksStack', () => {
         listFilter: {},
         page: 1,
         perPage: 16,
-        sortBy: 'name',
+        sortBy: 'title',
       },
       storeBooks: {
         bookDetailsCurrent: {},

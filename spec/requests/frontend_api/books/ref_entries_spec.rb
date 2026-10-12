@@ -32,6 +32,16 @@ RSpec.describe '/api/books/ref_entries' do
       expect(json_response).to match(list: [hash_including(id: book.id)], total: 1)
     end
 
+    it 'sorts by title' do
+      zebra = create(:book, title: 'Zebra')
+      alpha = create(:book, title: 'Alpha')
+
+      get '/api/books/ref_entries.json', params: { sort_by: 'title' }, headers: authorization_header
+
+      expect(response).to be_successful
+      expect(json_response[:list].pluck(:id)).to eq([alpha.id, book.id, zebra.id])
+    end
+
     context 'with read=true' do
       let(:reader) { create(:user) }
       let(:read_book) { create(:book) }
