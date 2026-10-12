@@ -4,11 +4,18 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import PinBoardPage from 'pages/pinBoardPage/Page'
 import apiClient from 'store/pinBoard/apiClient'
+import sharingsApiClient from 'store/userPinsSharings/apiClient'
 import { renderWithProviders } from 'test/renderWithProviders'
 
 vi.mock('store/pinBoard/apiClient', () => ({
   default: {
     getPinBoard: vi.fn(),
+  },
+}))
+
+vi.mock('store/userPinsSharings/apiClient', () => ({
+  default: {
+    current: vi.fn(),
   },
 }))
 
@@ -25,6 +32,8 @@ describe('PinBoardPage', () => {
   beforeEach(() => {
     apiClient.getPinBoard.mockReset()
     apiClient.getPinBoard.mockResolvedValue(board)
+    sharingsApiClient.current.mockReset()
+    sharingsApiClient.current.mockRejectedValue({ status: 404 })
   })
 
   it('shows a title-only pin board and the three pinned lists', async() => {
@@ -36,6 +45,8 @@ describe('PinBoardPage', () => {
     const series = screen.getByRole('region', { name: 'Series' })
 
     expect(pinBoard.querySelector('.panel--body')).not.toBeInTheDocument()
+    expect(within(pinBoard).getByRole('button', { name: 'Copy shared pin board link' })).toBeInTheDocument()
+    expect(within(pinBoard).queryByRole('button', { name: 'Unshare' })).not.toBeInTheDocument()
     expect(within(authors).getByText('1')).toBeInTheDocument()
     expect(within(authors).getByRole('link', { name: 'Ada Lovelace' })).toHaveAttribute('href', '/authors/1')
     expect(within(authors).getByRole('link', { name: 'Ada Lovelace' })).toHaveAttribute('title', 'Ada Lovelace')

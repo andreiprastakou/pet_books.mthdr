@@ -1,3 +1,16 @@
+.panel--pin-board {
+  .share-pins-buttons {
+    flex: 0 0 auto;
+    margin-left: auto;
+
+    .btn {
+      font-size: 1rem;
+      line-height: 1;
+      padding: 4px 8px;
+    }
+  }
+}
+
 .pin-board-page {
   .pin-board-lists {
     display: grid;

@@ -58,5 +58,29 @@ RSpec.describe '/api/user_pins' do
       expect(response).to be_successful
       expect(json_response).to eq(authors: [], books: [], series: [])
     end
+
+    context 'with pins_code' do
+      let(:owner) { create(:user) }
+      let(:sharing) { create(:user_pins_sharing, user: owner) }
+      let(:author) { create(:author, fullname: 'Shared Author') }
+
+      before { create(:user_pin, user: owner, entity: author) }
+
+      it 'returns the shared user pins' do
+        create(:user_pin, user: reader, entity: create(:author, fullname: 'Mine'))
+
+        get '/api/user_pins.json', params: { pins_code: sharing.code }, headers: authorization_header
+
+        expect(response).to be_successful
+        expect(json_response[:authors].pluck(:fullname)).to eq(['Shared Author'])
+      end
+
+      it 'returns empty lists for an unknown code' do
+        get '/api/user_pins.json', params: { pins_code: 'f' * 16 }, headers: authorization_header
+
+        expect(response).to be_successful
+        expect(json_response).to eq(authors: [], books: [], series: [])
+      end
+    end
   end
 end
