@@ -3,12 +3,13 @@ import { Card } from 'react-bootstrap'
 import PropTypes from 'prop-types'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
+import PageLoading from 'components/pageFrame/PageLoading'
 import BooksListCovers, { READS_SORT_OPTIONS } from 'panels/BooksListCovers'
 import BookDetails from 'panels/bookDetails/BookDetails'
 
 const UserReadsPage = ({ status }) => {
   if (status === 'missing') return <MissingSharedReads />
-  if (status !== 'ready') return 'Wait...'
+  if (status !== 'ready') return <PageLoading />
 
   return (
     <PageFrame className='user-reads-page'>

@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
+import PageLoading from 'components/pageFrame/PageLoading'
 import { selectPageIsLoading } from 'store/metadata/selectors'
 
 // The frame is the only box that is sized to the viewport. Columns share its
@@ -9,7 +10,7 @@ import { selectPageIsLoading } from 'store/metadata/selectors'
 // fills its slot and scrolls inside; it does not set a viewport height.
 const PageFrame = ({ children, className = '' }) => {
   const pageIsLoading = useSelector(selectPageIsLoading())
-  if (pageIsLoading) return 'Wait...'
+  if (pageIsLoading) return <PageLoading />
 
   const classes = ['page-frame', className].filter(Boolean).join(' ')
 

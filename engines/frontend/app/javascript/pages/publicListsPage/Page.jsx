@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
+import PageLoading from 'components/pageFrame/PageLoading'
 import BookDetails from 'panels/bookDetails/BookDetails'
 import BooksListCovers from 'panels/BooksListCovers'
 import PublicListIntro from 'panels/publicListIntro/ListIntro'
@@ -57,7 +58,7 @@ const PublicListsPage = () => {
     }
   }, [bookIds.length, dispatch, listId, listIdReady, selectedList])
 
-  if (!listType) return 'Wait...'
+  if (!listType) return <PageLoading />
 
   return (
     <>
