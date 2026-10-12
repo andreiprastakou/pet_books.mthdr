@@ -52,7 +52,7 @@ PageNavbar.propTypes = {
 }
 
 const AccountNav = ({ email }) => {
-  const { routes: { readsPagePath } } = useContext(UrlStoreContext)
+  const { routes: { pinBoardPagePath, readsPagePath } } = useContext(UrlStoreContext)
 
   return (
     <Nav className='page-navbar-account'>
@@ -68,6 +68,12 @@ const AccountNav = ({ email }) => {
       >
         <NavDropdown.ItemText>{ email }</NavDropdown.ItemText>
         <NavDropdown.Divider />
+        <NavDropdown.Item
+          as={InternalLink}
+          href={pinBoardPagePath()}
+        >
+          { 'Pin board' }
+        </NavDropdown.Item>
         <NavDropdown.Item
           as={InternalLink}
           href={readsPagePath()}
