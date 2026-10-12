@@ -35,6 +35,9 @@ export const saveBookPin = (bookId, pinned) => async dispatch => {
 export const saveBookRead = (bookId, read) => async dispatch => {
   const payload = await apiClient.setBookRead(bookId, read)
   dispatch(setBookRead({ bookId: payload.book_id, read: payload.read }))
+  ;(payload.included_work_ids || []).forEach(includedWorkId => {
+    dispatch(setBookRead({ bookId: includedWorkId, read: true }))
+  })
 }
 
 export const fetchBookDetails = bookId => async dispatch => {

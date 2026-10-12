@@ -8,6 +8,7 @@ import {
   fetchBookDetails,
   fetchCurrentBookDetails,
   fetchMissingBookIndexEntries,
+  saveBookRead,
   showBook,
 } from 'store/books/actions'
 import apiClient from 'store/books/apiClient'
@@ -16,6 +17,7 @@ vi.mock('store/books/apiClient', () => ({
   default: {
     getBookFull: vi.fn(),
     getBooksIndex: vi.fn(),
+    setBookRead: vi.fn(),
   },
 }))
 
@@ -31,6 +33,7 @@ describe('books actions', () => {
   beforeEach(() => {
     apiClient.getBookFull.mockReset()
     apiClient.getBooksIndex.mockReset()
+    apiClient.setBookRead.mockReset()
   })
 
   it('skips fetching details when there is no current book', async() => {
@@ -122,6 +125,37 @@ describe('books actions', () => {
     expect(apiClient.getBooksIndex.mock.calls[1][0].ids).toEqual([52])
     expect(store.getState().storeBooks.booksIndex[52]).toEqual({ id: 52, title: 'Book 52' })
     expect(existingIds).toEqual([1])
+  })
+
+  it('marks included works read when a collection is marked read', async() => {
+    apiClient.setBookRead.mockResolvedValue({
+      book_id: 1,
+      read: true,
+      included_work_ids: [2, 3],
+    })
+
+    const store = makeStore({
+      storeBooks: {
+        booksIndex: {
+          1: { id: 1, read: false },
+          2: { id: 2, read: false },
+          3: { id: 3, read: true },
+        },
+        booksRefs: {},
+        bookDetailsById: { 2: { id: 2, read: false } },
+        bookDetailsCurrent: { id: 1, read: false },
+        requestedBookId: null,
+      },
+    })
+
+    await store.dispatch(saveBookRead(1, true))
+
+    const { booksIndex, bookDetailsById, bookDetailsCurrent } = store.getState().storeBooks
+    expect(bookDetailsCurrent.read).toBe(true)
+    expect(booksIndex[1].read).toBe(true)
+    expect(booksIndex[2].read).toBe(true)
+    expect(booksIndex[3].read).toBe(true)
+    expect(bookDetailsById[2].read).toBe(true)
   })
 
   it('skips the API when all requested index entries are loaded', async() => {
