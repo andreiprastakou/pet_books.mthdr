@@ -20,6 +20,13 @@ FrontendApi::Engine.routes.draw do
 
     resources :user_pins, only: :index
 
+    resources :user_pins_sharings, only: %i[create show], param: :code do
+      collection do
+        get :current
+        delete :current, action: :destroy
+      end
+    end
+
     resources :user_reads_sharings, only: %i[create show], param: :code do
       collection do
         get :current

@@ -11,7 +11,20 @@ module FrontendApi
     private
 
     def pinned(model)
-      model.where(id: UserPin.where(user: current_user, entity_type: model.name).select(:entity_id))
+      owner = pins_owner
+      return model.none unless owner
+
+      model.where(id: UserPin.where(user: owner, entity_type: model.name).select(:entity_id))
+    end
+
+    def pins_owner
+      return shared_pins_user if params[:pins_code].present?
+
+      current_user
+    end
+
+    def shared_pins_user
+      UserPinsSharing.find_by(code: params[:pins_code].to_s.downcase)&.user
     end
   end
 end

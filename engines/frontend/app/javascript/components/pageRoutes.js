@@ -9,6 +9,7 @@ import SeriesIndexPageRoute from 'pages/seriesIndexPage/Route'
 import SeriesPageRoute from 'pages/seriesPage/Route'
 import TagPageRoute from 'pages/tagPage/Route'
 import TagsPageRoute from 'pages/tagsPage/Route'
+import UserPinsPageRoute from 'pages/userPinsPage/Route'
 import UserReadsPageRoute from 'pages/userReadsPage/Route'
 
 export default [
@@ -18,6 +19,7 @@ export default [
   BooksPageRoute,
   PublicListsPageRoute,
   UserReadsPageRoute,
+  UserPinsPageRoute,
   PinBoardPageRoute,
   ReadsPageRoute,
   SeriesPageRoute,
