@@ -42,6 +42,7 @@ const BooksListCovers = ({
   bookLabels = null,
   className = '',
   header = null,
+  headerAction = null,
   label = 'Books',
   onSelectBook = null,
   panelId = PANEL_ID,
@@ -200,10 +201,14 @@ const BooksListCovers = ({
 
         { showControls ? (
           <>
-            <SortingDropdown
-              selectSortBy={selectSortBy}
-              sortOptions={['popularity', 'year', 'random', 'name']}
-            />
+            <div className='books-list-header-sort'>
+              { headerAction }
+
+              <SortingDropdown
+                selectSortBy={selectSortBy}
+                sortOptions={['popularity', 'year', 'random', 'name']}
+              />
+            </div>
 
             <Pagination
               selectPage={selectPage}
@@ -235,6 +240,7 @@ BooksListCovers.propTypes = {
   bookLabels: PropTypes.object,
   className: PropTypes.string,
   header: PropTypes.node,
+  headerAction: PropTypes.node,
   label: PropTypes.string,
   onSelectBook: PropTypes.func,
   panelId: PropTypes.string,

@@ -47,9 +47,39 @@ RSpec.describe '/api/books/ref_entries' do
         get '/api/books/ref_entries.json', params: { read: true }, headers: authorization_header
 
         expect(response).to be_successful
-        ids = json_response[:list].map { |entry| entry[:id] }
+        ids = json_response[:list].pluck(:id)
         expect(ids).to eq([read_book.id])
         expect(json_response[:total]).to eq(1)
+      end
+    end
+
+    context 'with reads_code' do
+      let(:owner) { create(:user) }
+      let(:reader) { create(:user) }
+      let(:shared_book) { create(:book) }
+      let(:private_book) { create(:book) }
+      let(:sharing) { create(:user_reads_sharing, user: owner) }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_book_read, user: owner, book: shared_book)
+        create(:user_book_read, user: reader, book: private_book)
+      end
+
+      it 'returns books read by the sharing owner' do
+        get '/api/books/ref_entries.json', params: { reads_code: sharing.code }, headers: authorization_header
+
+        expect(response).to be_successful
+        ids = json_response[:list].pluck(:id)
+        expect(ids).to eq([shared_book.id])
+        expect(json_response[:total]).to eq(1)
+      end
+
+      it 'returns no books for an unknown code' do
+        get '/api/books/ref_entries.json', params: { reads_code: 'f' * 16 }, headers: authorization_header
+
+        expect(response).to be_successful
+        expect(json_response).to eq(list: [], total: 0)
       end
     end
   end

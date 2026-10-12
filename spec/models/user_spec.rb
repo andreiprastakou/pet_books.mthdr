@@ -24,6 +24,7 @@ RSpec.describe User do
 
     it { is_expected.to have_many(:user_book_reads).dependent(:delete_all) }
     it { is_expected.to have_many(:read_books).through(:user_book_reads) }
+    it { is_expected.to have_one(:user_reads_sharing).dependent(:destroy) }
   end
 
   describe 'validations' do
