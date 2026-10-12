@@ -247,6 +247,7 @@ const BookDetailsCard = ({
             <BookToolbar
               bookId={book.id}
               bookPageHref={bookPagePath(book.id)}
+              pinned={Boolean(book.pinned)}
               read={Boolean(book.read)}
             />
           </div>

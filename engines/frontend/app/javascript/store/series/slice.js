@@ -21,6 +21,12 @@ export const slice = createSlice({
       })
     },
 
+    setSeriesPin: (state, action) => {
+      const { seriesId, pinned } = action.payload
+      const entry = state.seriesIndex[seriesId]
+      if (entry) entry.pinned = pinned
+    },
+
     assignSeriesRefs: (state, action) => {
       const seriesRefs = action.payload
       state.seriesRefs = {}

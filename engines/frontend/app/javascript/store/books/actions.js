@@ -11,6 +11,7 @@ export const {
   addBooksRefs,
   clearBooksRefs,
   setBookDetails,
+  setBookPin,
   setBookRead,
   setCurrentBookDetails,
   setRequestedBookId,
@@ -24,6 +25,11 @@ export const fetchCurrentBookDetails = () => async(dispatch, getState) => {
 
   const details = await apiClient.getBookFull(currentId)
   dispatch(setCurrentBookDetails(details))
+}
+
+export const saveBookPin = (bookId, pinned) => async dispatch => {
+  const payload = await apiClient.setBookPin(bookId, pinned)
+  dispatch(setBookPin({ bookId: payload.book_id, pinned: payload.pinned }))
 }
 
 export const saveBookRead = (bookId, read) => async dispatch => {

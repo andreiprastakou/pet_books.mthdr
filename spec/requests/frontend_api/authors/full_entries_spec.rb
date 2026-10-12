@@ -35,7 +35,8 @@ RSpec.describe '/api/authors/full_entries' do
         tag_ids: [tag.id],
         books_count: 1,
         popularity: 10_000,
-        rank: 0
+        rank: 0,
+        pinned: false
       }
     end
 
@@ -87,6 +88,21 @@ RSpec.describe '/api/authors/full_entries' do
         expect(response).to be_successful
         expect(json_response[:description]).to eq('Sourced bio')
         expect(json_response[:description_source]).to eq('Wikipedia')
+      end
+    end
+
+    context 'when the signed-in user has pinned the author' do
+      let(:reader) { create(:user) }
+
+      before do
+        sign_in_frontend_user!(reader)
+        create(:user_pin, user: reader, entity: author)
+      end
+
+      it 'reports the author as pinned' do
+        send_request
+
+        expect(json_response[:pinned]).to be(true)
       end
     end
   end

@@ -3,6 +3,7 @@ FrontendApi::Engine.routes.draw do
     namespace :authors do
       resources :full_entries, only: %i[show create update destroy]
       resources :index_entries, only: %i[show index]
+      resources :pins, only: %i[update destroy]
       resources :ref_entries, only: %i[show index]
       resource :search, only: :show, controller: 'search'
     end
@@ -11,6 +12,7 @@ FrontendApi::Engine.routes.draw do
       resources :full_entries, only: %i[show]
       resources :index_entries, only: %i[show index]
       resources :ref_entries, only: %i[show index]
+      resources :pins, only: %i[update destroy]
       resources :reads, only: %i[update destroy]
       resources :years, only: :index
       resource :search, only: :show, controller: 'search'
@@ -37,6 +39,7 @@ FrontendApi::Engine.routes.draw do
 
     namespace :series do
       resources :index_entries, only: %i[show index]
+      resources :pins, only: %i[update destroy]
       resources :ref_entries, only: %i[show index]
       resource :search, only: :show, controller: 'search'
     end

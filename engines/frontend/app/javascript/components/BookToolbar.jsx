@@ -4,12 +4,11 @@ import { Button, ButtonGroup } from 'react-bootstrap'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLink } from '@fortawesome/free-solid-svg-icons/faLink'
 import PropTypes from 'prop-types'
-import { faBookmark } from '@fortawesome/free-solid-svg-icons/faBookmark'
 import { faBook } from '@fortawesome/free-solid-svg-icons/faBook'
 import { faBookOpenReader } from '@fortawesome/free-solid-svg-icons/faBookOpenReader'
-import { faBookmark as faBookmarkEmpty } from '@fortawesome/free-regular-svg-icons/faBookmark'
 
-import { saveBookRead } from 'store/books/actions'
+import PinButton from 'components/PinButton'
+import { saveBookPin, saveBookRead } from 'store/books/actions'
 import { addErrorMessage, addSuccessMessage } from 'store/notifications/actions'
 import UrlStoreContext from 'store/urlStore/Context'
 
@@ -28,12 +27,12 @@ const ReadButton = ({ bookId, read: savedRead }) => {
   const handleMouseEnter = useCallback(() => setHovered(true), [])
   const handleMouseLeave = useCallback(() => setHovered(false), [])
   const handleClick = useCallback(() => {
-    if (pending.current) return undefined
+    if (pending.current) return
 
     const nextRead = !read
     pending.current = true
     setRead(nextRead)
-    return dispatch(saveBookRead(bookId, nextRead))
+    dispatch(saveBookRead(bookId, nextRead))
       .catch(() => {
         setRead(savedRead)
         dispatch(addErrorMessage('Could not update read status. Please try again.'))
@@ -67,15 +66,14 @@ ReadButton.propTypes = {
   read: PropTypes.bool.isRequired,
 }
 
-const BookToolbar = ({ bookId, bookPageHref, read }) => {
+const BookToolbar = ({ bookId, bookPageHref, pinned, read }) => {
   const dispatch = useDispatch()
   const { routesReady } = useContext(UrlStoreContext)
+  const savePin = useCallback(
+    nextPinned => dispatch(saveBookPin(bookId, nextPinned)),
+    [bookId, dispatch]
+  )
 
-  const isBookmarked = false
-
-  const handleBookmarkClick = useCallback(() => {
-    dispatch(addSuccessMessage('Dev note: not implemented!'))
-  }, [dispatch])
   const copyBookPageLink = useCallback(event => {
     event.preventDefault()
     const absoluteBookPageHref = new URL(bookPageHref, window.location.origin).href
@@ -88,26 +86,15 @@ const BookToolbar = ({ bookId, bookPageHref, read }) => {
   return (
     <div>
       <ButtonGroup className='book-toolbar'>
-        { isBookmarked ?
-          <Button
-            onClick={handleBookmarkClick}
-            title='Remove bookmark'
-            type='button'
-            variant='outline-warning'
-          >
-            <FontAwesomeIcon icon={faBookmark} />
-          </Button>
-          :
-          <Button
-            onClick={handleBookmarkClick}
-            title='Bookmark'
-            type='button'
-            variant='outline-warning'
-          >
-            <FontAwesomeIcon icon={faBookmarkEmpty} />
-          </Button>}
+        <PinButton
+          onChange={savePin}
+          pinned={pinned}
+        />
 
-        <ReadButton bookId={bookId} read={read} />
+        <ReadButton
+          bookId={bookId}
+          read={read}
+        />
 
         <Button
           as='a'
@@ -128,6 +115,7 @@ const BookToolbar = ({ bookId, bookPageHref, read }) => {
 BookToolbar.propTypes = {
   bookId: PropTypes.number.isRequired,
   bookPageHref: PropTypes.string.isRequired,
+  pinned: PropTypes.bool.isRequired,
   read: PropTypes.bool.isRequired,
 }
 

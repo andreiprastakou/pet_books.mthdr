@@ -20,6 +20,7 @@ RSpec.describe Series do
   describe 'associations' do
     it { is_expected.to have_many(:book_series).class_name(Joins::BookSeries.name) }
     it { is_expected.to have_many(:books).class_name(Book.name).through(:book_series) }
+    it { is_expected.to have_many(:user_pins).dependent(:delete_all) }
   end
 
   describe 'validation' do

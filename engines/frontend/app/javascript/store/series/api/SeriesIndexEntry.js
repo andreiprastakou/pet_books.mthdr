@@ -3,6 +3,7 @@ class SeriesIndexEntry {
     return {
       id: data['id'],
       name: data['name'],
+      pinned: Boolean(data['pinned']),
       externalLinks: data['external_links'],
     }
   }

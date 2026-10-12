@@ -29,6 +29,7 @@ class Author < ApplicationRecord
   has_many :book_authors, class_name: 'Joins::BookAuthor', dependent: :restrict_with_error
   has_many :books, class_name: 'Book', through: :book_authors
   has_many :tag_connections, class_name: 'Joins::TagConnection', as: :entity, dependent: :destroy
+  has_many :user_pins, as: :entity, dependent: :delete_all
   has_many :tags, through: :tag_connections, class_name: 'Tag'
 
   mount_base64_uploader :aws_photos, Uploaders::AwsAuthorPhotoUploader

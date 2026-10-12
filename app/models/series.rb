@@ -20,6 +20,7 @@ class Series < ApplicationRecord
 
   has_many :book_series, class_name: 'Joins::BookSeries', dependent: :destroy
   has_many :books, class_name: 'Book', through: :book_series
+  has_many :user_pins, as: :entity, dependent: :delete_all
 
   validates :name, presence: true
 

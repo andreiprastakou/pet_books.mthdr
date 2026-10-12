@@ -20,6 +20,7 @@ class User < ApplicationRecord
 
   has_many :user_book_reads, dependent: :delete_all
   has_many :read_books, through: :user_book_reads, source: :book
+  has_many :user_pins, dependent: :delete_all
   has_one :user_reads_sharing, dependent: :destroy
 
   before_validation :normalize_email

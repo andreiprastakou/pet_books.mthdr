@@ -61,6 +61,14 @@ class ApiClient {
     }).then(entry => BookRefEntry.parse(entry))
   }
 
+  static setBookPin(bookId, pinned) {
+    return jQuery.ajax({
+      url: `/api/books/pins/${bookId}.json`,
+      method: pinned ? 'PUT' : 'DELETE',
+      headers: { 'X-CSRF-Token': csrfToken() },
+    })
+  }
+
   static setBookRead(bookId, read) {
     return jQuery.ajax({
       url: `/api/books/reads/${bookId}.json`,

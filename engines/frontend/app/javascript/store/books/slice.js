@@ -46,6 +46,14 @@ export const slice = createSlice({
       state.requestedBookId = action.payload
     },
 
+    setBookPin: (state, action) => {
+      const { bookId, pinned } = action.payload
+      if (state.bookDetailsCurrent?.id === bookId) state.bookDetailsCurrent.pinned = pinned
+
+      const stored = state.bookDetailsById[bookId]
+      if (stored) stored.pinned = pinned
+    },
+
     setBookRead: (state, action) => {
       const { bookId, read } = action.payload
       if (state.bookDetailsCurrent?.id === bookId) state.bookDetailsCurrent.read = read
