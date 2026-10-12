@@ -184,6 +184,20 @@ $b-cover-shadow-small: (
   position: relative;
   white-space: normal;
 
+  // Repeats the cover above the read ribbon, so the ribbon only shows past the edge.
+  .b-cover-face {
+    background: inherit;
+    border-radius: inherit;
+    inset: 0;
+    pointer-events: none;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .book-read-mark {
+    z-index: 0;
+  }
+
   // The joint where the hardcover meets the spine.
   &::after {
     background:
