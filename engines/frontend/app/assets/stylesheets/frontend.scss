@@ -162,11 +162,23 @@ body .internal-link a:hover {
 }
 
 .notifications {
+  // Hug the alerts. A fixed box with only the top and end edges set otherwise
+  // stretches across the viewport and covers controls under its empty padding.
+  height: max-content;
+  max-width: 100%;
+  pointer-events: none;
+  width: max-content;
   z-index: 1100;
 
   .alert {
+    margin-bottom: 0.75rem;
     padding-bottom: 17px;
     padding-top: 17px;
+    pointer-events: auto;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 

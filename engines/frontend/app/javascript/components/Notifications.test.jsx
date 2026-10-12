@@ -10,7 +10,10 @@ describe('Notifications', () => {
   it('renders nothing visible when there are no messages', () => {
     const { container } = renderWithProviders(<Notifications />)
 
-    expect(container.querySelector('.notifications')).toBeInTheDocument()
+    const notifications = container.querySelector('.notifications')
+
+    expect(notifications).toBeInTheDocument()
+    expect(notifications).toHaveClass('pe-none')
     expect(screen.queryByRole('alert')).not.toBeInTheDocument()
   })
 
@@ -30,6 +33,7 @@ describe('Notifications', () => {
 
     expect(screen.getByText('Saved')).toBeInTheDocument()
     expect(screen.getByText('Failed')).toBeInTheDocument()
+    expect(screen.getAllByRole('alert').every(alert => alert.classList.contains('pe-auto'))).toBe(true)
 
     const dismissButtons = screen.getAllByRole('button', { name: /close/iu })
     await user.click(dismissButtons[0])
