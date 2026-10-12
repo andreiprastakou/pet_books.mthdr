@@ -13,6 +13,7 @@ const NotificationAlert = ({ message, onDismiss }) => {
 
   return (
     <Alert
+      className='pe-auto'
       dismissible
       onClose={handleDismiss}
       variant={message.type}
@@ -53,7 +54,7 @@ class Notifications extends React.Component {
     const { messages } = this.props
 
     return (
-      <div className='notifications position-fixed top-0 end-0 p-3'>
+      <div className='notifications position-fixed top-0 end-0 p-3 pe-none'>
         { messages.map(message => (
           <NotificationAlert
             key={message.id}
