@@ -10,6 +10,7 @@ import storeTagsReducer from 'store/tags/slice'
 import booksListReducer from 'store/booksList/slice'
 import booksYearsReducer from 'store/booksYears/slice'
 import notificationsReducer from 'store/notifications/slice'
+import storePinBoardReducer from 'store/pinBoard/slice'
 
 import imageModalReducer from 'modals/imageFullShow/slice'
 
@@ -26,6 +27,7 @@ export const rootReducer = {
   storeAuthors: storeAuthorsReducer,
   storeBooks: storeBooksReducer,
   storeCoverDesigns: storeCoverDesignsReducer,
+  storePinBoard: storePinBoardReducer,
   storeSeries: storeSeriesReducer,
   storeTags: storeTagsReducer,
 }

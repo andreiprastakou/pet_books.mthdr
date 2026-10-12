@@ -1,0 +1,61 @@
+.pin-board-page {
+  .pin-board-lists {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    height: 100%;
+    min-height: 0;
+    min-width: 0;
+  }
+}
+
+.panel--pin-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  min-width: 0;
+
+  .pin-board-count-badge {
+    background-color: #e8e8e8;
+    border-radius: 50%;
+    color: #555;
+    flex: 0 0 auto;
+    font-size: 12px;
+    font-weight: 600;
+    height: 26px;
+    line-height: 26px;
+    min-width: 26px;
+    padding: 0 6px;
+    text-align: center;
+  }
+
+  .panel--body {
+    flex: 1 1 auto;
+    min-height: 0;
+    min-width: 0;
+    overflow: hidden;
+    padding: 10px 20px;
+  }
+
+  .pin-board-entries {
+    height: 100%;
+    min-width: 0;
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .pin-board-entry {
+    margin-bottom: 6px;
+    min-width: 0;
+
+    .internal-link {
+      display: block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+}

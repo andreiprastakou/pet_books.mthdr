@@ -21,8 +21,10 @@ export const createUrlStoreValue = (overrides = {}) => {
   const routes = {
     authorPagePath: id => `/authors/${id}`,
     authorsPagePath: () => '/authors',
+    bookPagePath: id => `/books/${id}`,
     booksPagePath: ({ bookId } = {}) => (bookId ? `/books/${bookId}` : '/books'),
     listPagePath: id => `/lists/${id}`,
+    pinBoardPagePath: () => '/pins',
     readsPagePath: () => '/reads',
     userReadsPagePath: code => `/reads/${code}`,
     seriesIndexPagePath: () => '/series',

@@ -46,11 +46,14 @@ describe('PageNavbar', () => {
     await user.click(screen.getByRole('button', { name: 'Account' }))
 
     const email = screen.getByText('reader@example.com')
+    const pinBoard = screen.getByRole('link', { name: 'Pin board' })
     const myRead = screen.getByRole('link', { name: 'Your reads' })
     const logout = screen.getByRole('button', { name: 'Log out' })
 
+    expect(pinBoard).toHaveAttribute('href', '/pins')
     expect(myRead).toHaveAttribute('href', '/reads')
-    expect(email.compareDocumentPosition(myRead) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(email.compareDocumentPosition(pinBoard) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(pinBoard.compareDocumentPosition(myRead) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(myRead.compareDocumentPosition(logout) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
     expect(logout.closest('form')).toHaveAttribute('action', '/logout')
   })
