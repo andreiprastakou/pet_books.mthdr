@@ -6,6 +6,7 @@
 # Database name: primary
 #
 #  id                 :integer          not null, primary key
+#  cache_ttl          :string
 #  cache_until_here   :boolean          default(FALSE), not null
 #  citations          :json
 #  content            :text

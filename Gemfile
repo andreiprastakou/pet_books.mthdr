@@ -46,7 +46,7 @@ gem 'tzinfo-data', platforms: %i[mingw mswin x64_mingw jruby]
 
 # admin site
 gem 'pagy', '~> 43.5'
-gem 'ruby_llm', '~> 2.0'
+gem 'ruby_llm', '~> 2.1.0'
 
 # tools
 gem 'benchmark'
