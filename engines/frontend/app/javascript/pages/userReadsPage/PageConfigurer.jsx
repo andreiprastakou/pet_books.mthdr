@@ -17,13 +17,14 @@ import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'store/navbar/actions'
 import apiClient from 'store/userReadsSharings/apiClient'
 import UrlStoreContext from 'store/urlStore/Context'
+import { notNullish } from 'utils/nullish'
 
 const BOOKS_PER_PAGE = 40
 
 const Configurer = ({ code, onStatus }) => {
   const dispatch = useDispatch()
   const { pageState: { page, sortBy }, routesReady } = useContext(UrlStoreContext)
-  const listStateReady = page !== undefined && sortBy !== undefined
+  const listStateReady = notNullish(page) && notNullish(sortBy)
   const loadedKey = useRef(null)
   const verifiedCode = useRef(null)
   const activeCode = useRef(code)

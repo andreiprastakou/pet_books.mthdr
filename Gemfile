@@ -10,8 +10,6 @@ gem 'rails', '~> 8.1'
 
 # data storage
 gem 'sqlite3', '~> 2.9'
-
-# frontend accounts; admin stays on HTTP Basic until it has its own persisted auth
 gem 'bcrypt', '~> 3.1'
 
 # integrations

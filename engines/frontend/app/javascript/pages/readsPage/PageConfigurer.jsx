@@ -15,13 +15,14 @@ import {
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'store/navbar/actions'
 import UrlStoreContext from 'store/urlStore/Context'
+import { notNullish } from 'utils/nullish'
 
 const BOOKS_PER_PAGE = 40
 
 const Configurer = () => {
   const dispatch = useDispatch()
   const { pageState: { page, sortBy }, routesReady } = useContext(UrlStoreContext)
-  const listStateReady = page !== undefined && sortBy !== undefined
+  const listStateReady = notNullish(page) && notNullish(sortBy)
   const loadedKey = useRef(null)
 
   useEffect(() => {

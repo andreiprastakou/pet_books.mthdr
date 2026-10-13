@@ -41,7 +41,7 @@ const PageNavbar = ({ currentUserEmail }) => {
           <PublicListsNavDropdown />
         </Nav>
 
-        { currentUserEmail && <AccountNav email={ currentUserEmail } /> }
+        { currentUserEmail ? <AccountNav email={currentUserEmail} /> : null }
       </div>
     </Navbar>
   )
@@ -59,27 +59,36 @@ const AccountNav = ({ email }) => {
       <NavDropdown
         align='end'
         id='account-menu'
-        title={ (
+        title={(
           <>
             <ProfileIcon />
-            <span className='page-navbar-account-label'>Account</span>
+
+            <span className='page-navbar-account-label'>
+              { 'Account' }
+            </span>
           </>
-        ) }
+        )}
       >
-        <NavDropdown.ItemText>{ email }</NavDropdown.ItemText>
+        <NavDropdown.ItemText>
+          { email }
+        </NavDropdown.ItemText>
+
         <NavDropdown.Divider />
+
         <NavDropdown.Item
           as={InternalLink}
           href={pinBoardPagePath()}
         >
           { 'Pin board' }
         </NavDropdown.Item>
+
         <NavDropdown.Item
           as={InternalLink}
           href={readsPagePath()}
         >
           { 'Your reads' }
         </NavDropdown.Item>
+
         <LogoutForm />
       </NavDropdown>
     </Nav>
@@ -105,10 +114,29 @@ const LogoutForm = () => {
   const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
 
   return (
-    <form action='/logout' data-turbo='false' method='post'>
-      <input name='_method' type='hidden' value='delete' />
-      <input name='authenticity_token' type='hidden' value={ token || '' } />
-      <button className='dropdown-item' type='submit'>Log out</button>
+    <form
+      action='/logout'
+      data-turbo='false'
+      method='post'
+    >
+      <input
+        name='_method'
+        type='hidden'
+        value='delete'
+      />
+
+      <input
+        name='authenticity_token'
+        type='hidden'
+        value={token || ''}
+      />
+
+      <button
+        className='dropdown-item'
+        type='submit'
+      >
+        { 'Log out' }
+      </button>
     </form>
   )
 }
