@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest'
 import BookSpine from 'panels/booksStack/BookSpine'
 import { renderWithProviders } from 'test/renderWithProviders'
 
-const renderSpine = (book) => renderWithProviders(<BookSpine id={book.id} />, {
+const renderSpine = book => renderWithProviders(<BookSpine id={book.id} />, {
   preloadedState: {
     axis: { currentBookId: null },
     storeBooks: {

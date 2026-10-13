@@ -1,5 +1,8 @@
 $color-book-action-text: #666;
 $color-read-mark: $danger;
+
+// libsass (sassc-rails) has no Sass module namespace, so the global function stays.
+// stylelint-disable-next-line scss/no-global-function-names
 $color-read-mark-fold: mix(#000, $danger, 18%);
 $color-goodreads: #f4f2e9;
 $color-icon-grey: #777;

@@ -29,7 +29,7 @@ const Page = ({ current_user_email, default_author_image_url }) => {
             <Notifications />
 
             <Container className='page f-page-content-container'>
-              <Navbar currentUserEmail={ current_user_email } />
+              <Navbar currentUserEmail={current_user_email} />
 
               <PageContent />
             </Container>

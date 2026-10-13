@@ -113,7 +113,9 @@
         "**/pages/authorsPage/Route.jsx",
         "**/pages/publicListsPage/Route.jsx",
         "**/store/urlStore/BooksListConfigurer.jsx",
-        "**/panels/includedWorkSelection.js"
+        "**/panels/includedWorkSelection.js",
+        "**/components/BookToolbar.test.jsx",
+        "**/store/books/actions.test.js"
       ],
       "rules": {
         "camelcase": ["off"]

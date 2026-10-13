@@ -17,7 +17,7 @@ const ShareReadsButton = () => {
   const generation = useRef(0)
 
   useEffect(() => {
-    if (!routesReady) return undefined
+    if (!routesReady) return
 
     const requestId = generation.current
     apiClient.current()
@@ -28,12 +28,10 @@ const ShareReadsButton = () => {
         if (generation.current !== requestId || error?.status === 404) return
         dispatch(addErrorMessage('Could not check whether your reads are shared.'))
       })
-
-    return undefined
   }, [dispatch, routesReady])
 
   const run = useCallback(action => {
-    if (pending.current) return undefined
+    if (pending.current) return null
 
     pending.current = true
     generation.current += 1
@@ -45,7 +43,7 @@ const ShareReadsButton = () => {
   const handleShareClick = useCallback(() => run(() => apiClient.create()
     .then(({ code }) => {
       setShared(true)
-      const href = new URL(userReadsPagePath(code), window.location.origin).href
+      const { href } = new URL(userReadsPagePath(code), window.location.origin)
       return navigator.clipboard.writeText(href)
     })
     .then(() => {

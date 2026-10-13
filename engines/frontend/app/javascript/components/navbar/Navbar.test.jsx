@@ -52,9 +52,9 @@ describe('PageNavbar', () => {
 
     expect(pinBoard).toHaveAttribute('href', '/pins')
     expect(myRead).toHaveAttribute('href', '/reads')
-    expect(email.compareDocumentPosition(pinBoard) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(pinBoard.compareDocumentPosition(myRead) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(myRead.compareDocumentPosition(logout) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(email.compareDocumentPosition(pinBoard)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(pinBoard.compareDocumentPosition(myRead)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(myRead.compareDocumentPosition(logout)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
     expect(logout.closest('form')).toHaveAttribute('action', '/logout')
   })
 

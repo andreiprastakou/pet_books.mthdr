@@ -46,6 +46,7 @@ const MissingSharedReads = () => (
           <Card.Header className='panel--header'>
             { 'shared reads' }
           </Card.Header>
+
           <Card.Body>
             { 'This shared reads link is not valid.' }
           </Card.Body>

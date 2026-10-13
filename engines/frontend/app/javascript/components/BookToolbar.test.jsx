@@ -23,7 +23,12 @@ describe('BookToolbar', () => {
 
   it('renders nothing when routes are not ready', () => {
     const { container } = renderWithProviders(
-      <BookToolbar bookId={1} bookPageHref='/books/1' pinned={false} read={false} />,
+      <BookToolbar
+        bookId={1}
+        bookPageHref='/books/1'
+        pinned={false}
+        read={false}
+      />,
       { urlStore: { routesReady: false } }
     )
 
@@ -36,7 +41,12 @@ describe('BookToolbar', () => {
     vi.stubGlobal('navigator', { clipboard: { writeText } })
 
     const { store } = renderWithProviders(
-      <BookToolbar bookId={42} bookPageHref='/books/42' pinned={false} read={false} />
+      <BookToolbar
+        bookId={42}
+        bookPageHref='/books/42'
+        pinned={false}
+        read={false}
+      />
     )
 
     await user.click(screen.getByTitle('Copy book page link'))
@@ -53,7 +63,12 @@ describe('BookToolbar', () => {
   it('shows a thumbtack while offering to pin', async() => {
     const user = userEvent.setup()
     renderWithProviders(
-      <BookToolbar bookId={1} bookPageHref='/books/1' pinned={false} read={false} />
+      <BookToolbar
+        bookId={1}
+        bookPageHref='/books/1'
+        pinned={false}
+        read={false}
+      />
     )
     const button = screen.getByRole('button', { name: 'Pin' })
 
@@ -69,7 +84,12 @@ describe('BookToolbar', () => {
   it('shows a circle, and previews a slashed thumbtack while offering to unpin', async() => {
     const user = userEvent.setup()
     renderWithProviders(
-      <BookToolbar bookId={1} bookPageHref='/books/1' pinned read={false} />
+      <BookToolbar
+        bookId={1}
+        bookPageHref='/books/1'
+        pinned
+        read={false}
+      />
     )
     const button = screen.getByRole('button', { name: 'Pin' })
 
@@ -86,7 +106,12 @@ describe('BookToolbar', () => {
     apiClient.setBookPin.mockResolvedValue({ book_id: 7, pinned: true })
 
     const { store } = renderWithProviders(
-      <BookToolbar bookId={7} bookPageHref='/books/7' pinned={false} read={false} />,
+      <BookToolbar
+        bookId={7}
+        bookPageHref='/books/7'
+        pinned={false}
+        read={false}
+      />,
       {
         preloadedState: {
           storeBooks: {
@@ -113,7 +138,12 @@ describe('BookToolbar', () => {
     apiClient.setBookPin.mockRejectedValue(new Error('nope'))
 
     const { store } = renderWithProviders(
-      <BookToolbar bookId={7} bookPageHref='/books/7' pinned read={false} />
+      <BookToolbar
+        bookId={7}
+        bookPageHref='/books/7'
+        pinned
+        read={false}
+      />
     )
 
     await user.hover(screen.getByRole('button', { name: 'Pin' }))
@@ -132,7 +162,12 @@ describe('BookToolbar', () => {
   it('shows an open book, and previews the held book while offering to mark it read', async() => {
     const user = userEvent.setup()
     renderWithProviders(
-      <BookToolbar bookId={1} bookPageHref='/books/1' pinned={false} read={false} />
+      <BookToolbar
+        bookId={1}
+        bookPageHref='/books/1'
+        pinned={false}
+        read={false}
+      />
     )
     const button = screen.getByRole('button', { name: 'Mark as read' })
 
@@ -147,7 +182,12 @@ describe('BookToolbar', () => {
   it('shows a held book, and previews the open book while offering to unmark it', async() => {
     const user = userEvent.setup()
     renderWithProviders(
-      <BookToolbar bookId={1} bookPageHref='/books/1' pinned={false} read />
+      <BookToolbar
+        bookId={1}
+        bookPageHref='/books/1'
+        pinned={false}
+        read
+      />
     )
     const button = screen.getByRole('button', { name: 'Mark as not read' })
 
@@ -163,7 +203,12 @@ describe('BookToolbar', () => {
     apiClient.setBookRead.mockResolvedValue({ book_id: 7, read: true })
 
     const { store } = renderWithProviders(
-      <BookToolbar bookId={7} bookPageHref='/books/7' pinned={false} read={false} />,
+      <BookToolbar
+        bookId={7}
+        bookPageHref='/books/7'
+        pinned={false}
+        read={false}
+      />,
       {
         preloadedState: {
           storeBooks: {
@@ -190,7 +235,12 @@ describe('BookToolbar', () => {
     apiClient.setBookRead.mockRejectedValue(new Error('nope'))
 
     const { store } = renderWithProviders(
-      <BookToolbar bookId={7} bookPageHref='/books/7' pinned={false} read />
+      <BookToolbar
+        bookId={7}
+        bookPageHref='/books/7'
+        pinned={false}
+        read
+      />
     )
 
     await user.click(screen.getByRole('button', { name: 'Mark as not read' }))
