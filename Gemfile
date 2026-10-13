@@ -9,8 +9,8 @@ gem 'puma', '~> 7.2'
 gem 'rails', '~> 8.1'
 
 # data storage
-gem 'sqlite3', '~> 2.9'
 gem 'bcrypt', '~> 3.1'
+gem 'sqlite3', '~> 2.9'
 
 # integrations
 gem 'foreman'
