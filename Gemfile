@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '4.0.6'
+ruby '4.0.7'
 
 # runners
 gem 'bootsnap', '>= 1.4.4', require: false
