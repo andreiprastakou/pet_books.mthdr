@@ -15,14 +15,15 @@ import {
 import { fetchCoverDesigns } from 'store/coverDesigns/actions'
 import { prepareNavRefs } from 'store/navbar/actions'
 import UrlStoreContext from 'store/urlStore/Context'
-import { notNullish } from 'utils/nullish'
 
 const BOOKS_PER_PAGE = 40
 
 const Configurer = () => {
   const dispatch = useDispatch()
-  const { pageState: { page, sortBy }, routesReady } = useContext(UrlStoreContext)
-  const listStateReady = notNullish(page) && notNullish(sortBy)
+  const { pageState, routesReady } = useContext(UrlStoreContext)
+  const { page, sortBy } = pageState
+  // null means the query param is absent; undefined means it is not registered yet
+  const listStateReady = Object.hasOwn(pageState, 'page') && Object.hasOwn(pageState, 'sortBy')
   const loadedKey = useRef(null)
 
   useEffect(() => {
