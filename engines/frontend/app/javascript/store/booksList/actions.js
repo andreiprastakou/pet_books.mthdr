@@ -23,7 +23,15 @@ export const {
   clearState: clearListInnerState,
 } = slice.actions
 
+let activeFetchId = 0
+
+const startListFetch = () => {
+  activeFetchId += 1
+  return activeFetchId
+}
+
 export const fetchBooks = () => (dispatch, getState) => {
+  const fetchId = startListFetch()
   const state = getState()
   const query = {
     ...selectFilter()(state),
@@ -32,6 +40,8 @@ export const fetchBooks = () => (dispatch, getState) => {
     sortBy: selectSortBy()(state),
   }
   return apiClient.getBooksRefs(query).then(({ books, total }) => {
+    if (fetchId !== activeFetchId) return
+
     dispatch(addBooksRefs(books))
     dispatch(assignBookIds(books.map(book => book.id)))
     dispatch(assignBooksTotal(total))
@@ -91,5 +101,6 @@ export const switchToFirstBook = () => (dispatch, getState) => {
 }
 
 export const clearListState = () => dispatch => {
+  startListFetch()
   dispatch(clearListInnerState())
 }

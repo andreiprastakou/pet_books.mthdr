@@ -230,4 +230,26 @@ describe('booksList actions', () => {
     store.dispatch(clearListState())
     expect(store.getState().booksList.bookIds).toEqual([])
   })
+
+  it('ignores a response that arrives after the list is cleared', async() => {
+    let resolveStale = null
+    apiClient.getBooksRefs.mockReturnValueOnce(new Promise(resolve => {
+      resolveStale = resolve
+    }))
+    apiClient.getBooksRefs.mockResolvedValueOnce({
+      books: [{ id: 9, year: 2001 }],
+      total: 1,
+    })
+    apiClient.getBooksIndex.mockResolvedValue([])
+
+    const store = makeStore()
+    const staleFetch = store.dispatch(fetchBooks())
+    store.dispatch(clearListState())
+    await store.dispatch(fetchBooks())
+    resolveStale({ books: [{ id: 4, year: 1900 }], total: 1 })
+    await staleFetch
+
+    expect(store.getState().booksList.bookIds).toEqual([9])
+    expect(store.getState().booksList.booksTotal).toBe(1)
+  })
 })
