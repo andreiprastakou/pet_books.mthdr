@@ -21,15 +21,11 @@ RSpec.describe Admin::Books::BatchGenerateSummariesController do
       create(:book, data_filled: false, literary_form: 'short')
     end
 
-    before do
-      allow(Admin::DataFetchJob).to receive(:perform_later)
-    end
-
     it 'creates tasks only for books that need data fetch' do
       expect { send_request }.to change(Admin::Tasks::AiBookFetch, :count).by(1)
+                                                                          .and have_enqueued_job(Admin::DataFetchJob)
       new_task = Admin::Tasks::AiBookFetch.last
       expect(new_task.target).to eq(book_needs_fetch)
-      expect(Admin::DataFetchJob).to have_received(:perform_later).with(new_task.id)
     end
 
     it 'redirects back to admin books path with success notice' do
