@@ -76,6 +76,18 @@
   }
 }
 
+@include on-author-page-compact {
+  .panel--books-stack .list-sort-dropdown {
+    flex: 0 0 auto;
+    max-width: none;
+    width: auto;
+
+    button {
+      width: auto;
+    }
+  }
+}
+
 .books-spine-stack-wrap {
   max-height: 520px;
   overflow: hidden;

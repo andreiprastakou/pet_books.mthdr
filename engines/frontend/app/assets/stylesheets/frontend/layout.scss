@@ -1,0 +1,13 @@
+// Desktop layout floor. Compact author layout starts one pixel below it.
+// Keep $compact-max-width in step with COMPACT_LAYOUT_MEDIA in
+// app/javascript/hooks/useCompactAuthorLayout.js.
+$layout-min-width: 900px;
+$compact-max-width: $layout-min-width - 1px;
+
+@mixin on-author-page-compact {
+  @media (max-width: $compact-max-width) {
+    body.is-author-page {
+      @content;
+    }
+  }
+}

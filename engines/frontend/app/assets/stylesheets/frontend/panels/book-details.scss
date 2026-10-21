@@ -276,3 +276,27 @@
     }
   }
 }
+
+@include on-author-page-compact {
+  .panel--book-details {
+    .book-details-panel-cover {
+      align-self: center;
+      flex-basis: auto;
+      order: -1;
+    }
+
+    .book-details-panel-heading h2 {
+      font-size: 20px;
+    }
+
+    .panel--body {
+      flex-direction: column;
+      padding: 12px;
+    }
+
+    p {
+      font-size: 12px;
+      line-height: 1.35;
+    }
+  }
+}

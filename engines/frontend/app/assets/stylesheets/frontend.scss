@@ -2,6 +2,7 @@
 @import 'cover_designs';
 @import 'fonts';
 @import 'frontend/palette';
+@import 'frontend/layout';
 @import 'frontend/books-list-linear';
 @import 'frontend/login';
 @import 'frontend/navbar';
@@ -28,7 +29,9 @@
 
 body {
   margin: 0;
-  min-width: 900px;
+
+  // Desktop floor. Author pages drop it below this width via on-author-page-compact.
+  min-width: $layout-min-width;
 
   .f-page-content-container {
     margin-left: auto;

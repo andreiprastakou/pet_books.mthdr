@@ -155,3 +155,116 @@
 .page-column-span-3 {
   grid-column: span 3;
 }
+
+// The page scrolls. Each panel caps its own height and scrolls inside.
+@include on-author-page-compact {
+  min-width: 0;
+  overflow-x: clip;
+
+  .page {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .page:has(.page-frame) {
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+
+  .page:has(.page-loading) {
+    height: auto;
+    min-height: calc(100dvh - 56px);
+    overflow: visible;
+  }
+
+  .page-loading {
+    min-height: calc(100dvh - 56px);
+  }
+
+  .page-frame {
+    flex: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    height: auto;
+
+    .page-column {
+      grid-column: 1 / -1;
+      height: auto;
+    }
+
+    .author-page-rest {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      height: auto;
+
+      > .page-column {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .selected-works-split {
+      flex-direction: column;
+      height: auto;
+    }
+
+    .selected-works-split-pane {
+      flex: none;
+      height: auto;
+
+      > * {
+        height: auto;
+        max-height: none;
+      }
+    }
+
+    .panel-slot {
+      flex: none;
+      height: auto;
+      max-height: none;
+
+      > * {
+        flex: none;
+        height: auto;
+      }
+    }
+
+    .panel-slot[data-grow='0'] {
+      max-height: none;
+      min-height: 0;
+
+      > * {
+        height: auto;
+      }
+    }
+
+    .panel--author-card,
+    .panel--book-details,
+    .panel--books-list-covers,
+    .panel--books-stack,
+    .panel--included-works {
+      height: auto;
+      overflow: hidden;
+    }
+
+    .panel--author-card {
+      /* stylelint-disable-next-line function-name-case */
+      max-height: Min(50dvh, 420px);
+    }
+
+    .panel--book-details,
+    .panel--books-list-covers,
+    .panel--books-stack,
+    .panel--included-works {
+      /* stylelint-disable-next-line function-name-case */
+      max-height: Min(70dvh, 640px);
+    }
+
+    .books-spine-stack,
+    .books-spine-stack-wrap {
+      max-height: #{'min(520px, calc(70dvh - 48px))'};
+    }
+
+    .panel--books-list-covers .books-list {
+      height: auto;
+      max-height: #{'min(calc(70dvh - 48px), 592px)'};
+    }
+  }
+}

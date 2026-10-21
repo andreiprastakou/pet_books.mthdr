@@ -1,18 +1,29 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback, useContext, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap'
 
 import InternalLink from 'components/InternalLink'
+import { CompactNavDrawer, CompactNavToggle } from 'components/navbar/CompactNav'
 import AuthorsNavList from 'components/navbar/AuthorsNavList'
 import BooksNavList from 'components/navbar/BooksNavList'
+import LogoutForm from 'components/navbar/LogoutForm'
 import TagsNavList from 'components/navbar/TagsNavList'
 import SeriesNavList from 'components/navbar/SeriesNavList'
 import PublicListsNavList from 'components/navbar/ListsNavList'
+import useCompactAuthorLayout from 'hooks/useCompactAuthorLayout'
 import EventsContext from 'store/events/Context'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const PageNavbar = ({ currentUserEmail }) => {
   const { routesReady } = useContext(UrlStoreContext)
+  const compact = useCompactAuthorLayout()
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const closeDrawer = useCallback(() => setDrawerOpen(false), [])
+  const toggleDrawer = useCallback(() => setDrawerOpen(open => !open), [])
+
+  useEffect(() => {
+    if (!compact) setDrawerOpen(false)
+  }, [compact])
 
   if (!routesReady) return null
 
@@ -29,20 +40,23 @@ const PageNavbar = ({ currentUserEmail }) => {
           <RootNavLink />
         </Nav>
 
-        <Nav className='page-navbar-sections'>
-          <BooksNavDropdown />
-
-          <AuthorsNavDropdown />
-
-          <TagsNavDropdown />
-
-          <SeriesNavDropdown />
-
-          <PublicListsNavDropdown />
-        </Nav>
-
-        { currentUserEmail ? <AccountNav email={currentUserEmail} /> : null }
+        { compact ? (
+          <CompactNavToggle
+            expanded={drawerOpen}
+            onClick={toggleDrawer}
+          />
+        ) : (
+          <DesktopNav currentUserEmail={currentUserEmail} />
+        ) }
       </div>
+
+      { compact ? (
+        <CompactNavDrawer
+          currentUserEmail={currentUserEmail}
+          onHide={closeDrawer}
+          show={drawerOpen}
+        />
+      ) : null }
     </Navbar>
   )
 }
@@ -110,35 +124,26 @@ const ProfileIcon = () => (
   </svg>
 )
 
-const LogoutForm = () => {
-  const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+const DesktopNav = ({ currentUserEmail }) => (
+  <>
+    <Nav className='page-navbar-sections'>
+      <BooksNavDropdown />
 
-  return (
-    <form
-      action='/logout'
-      data-turbo='false'
-      method='post'
-    >
-      <input
-        name='_method'
-        type='hidden'
-        value='delete'
-      />
+      <AuthorsNavDropdown />
 
-      <input
-        name='authenticity_token'
-        type='hidden'
-        value={token || ''}
-      />
+      <TagsNavDropdown />
 
-      <button
-        className='dropdown-item'
-        type='submit'
-      >
-        { 'Log out' }
-      </button>
-    </form>
-  )
+      <SeriesNavDropdown />
+
+      <PublicListsNavDropdown />
+    </Nav>
+
+    { currentUserEmail ? <AccountNav email={currentUserEmail} /> : null }
+  </>
+)
+
+DesktopNav.propTypes = {
+  currentUserEmail: PropTypes.string,
 }
 
 const RootNavLink = () => {
