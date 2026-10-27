@@ -1,3 +1,4 @@
+/* eslint-disable max-lines */
 import React, {
   useCallback, useContext, useEffect, useLayoutEffect, useMemo, useRef, useState,
 } from 'react'
@@ -26,7 +27,7 @@ import { selectYears } from 'store/booksYears/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
 import useCompactLayout from 'hooks/useCompactLayout'
 import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
-import { COVER_SIZES, coverSizeForWidth } from 'utils/coverSizes'
+import { COVER_SIZES, DEFAULT_COVER_SIZE, coverSizeForWidth } from 'utils/coverSizes'
 import { notNullish } from 'utils/nullish'
 
 export const PANEL_ID = 'books-list-yearly'
@@ -110,7 +111,7 @@ export const buildBookMatrix = (bookIds, selectedId) => {
   return { coordinatesById, idsByCoordinate, orderedBookIds }
 }
 
-// eslint-disable-next-line max-lines-per-function, max-statements
+// eslint-disable-next-line complexity, max-lines-per-function, max-statements
 const BooksYear = ({ title = defaultTitle }) => {
   const dispatch = useDispatch()
   const bookIds = useSelector(selectBookIds())
@@ -302,7 +303,7 @@ const BooksYear = ({ title = defaultTitle }) => {
             '--year-book-width': `${metrics.bookWidth}px`,
             '--year-cover-height': `${metrics.coverHeight}px`,
             '--year-cover-width': `${metrics.coverWidth}px`,
-          } : undefined}
+          } : null}
         >
           <GhostBooks
             cellPosition={cellPosition}
@@ -318,7 +319,7 @@ const BooksYear = ({ title = defaultTitle }) => {
               key={bookId}
               scrollIntoView={false}
               showYear={false}
-              size={coverSize || undefined}
+              size={coverSize || DEFAULT_COVER_SIZE}
               style={bookPositions[bookId]}
             />
             ))}

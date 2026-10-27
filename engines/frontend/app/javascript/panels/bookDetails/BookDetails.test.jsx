@@ -324,13 +324,15 @@ describe('BookDetails', () => {
     expect(screen.getByRole('heading', { name: 'Messiah' })).toBeInTheDocument()
     expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(140)
     expect(screen.getByTestId('book-cover')).toHaveAttribute('data-size', 'xs')
-    expect(document.querySelector('.book-details-panel-main-info .book-details-panel-annotation')).not.toBeInTheDocument()
+    expect(
+      document.querySelector('.book-details-panel-main-info .book-details-panel-annotation')
+    ).not.toBeInTheDocument()
 
     const cover = document.querySelector('.book-details-panel-cover')
     const annotation = document.querySelector('.book-details-panel-annotation')
     const supplement = document.querySelector('.book-details-panel-supplement')
-    expect(cover.compareDocumentPosition(annotation) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(annotation.compareDocumentPosition(supplement) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(cover.compareDocumentPosition(annotation)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(annotation.compareDocumentPosition(supplement)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
   })
 
   it('scrolls the included-work panel to the top when that work changes', () => {
