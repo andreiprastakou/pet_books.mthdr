@@ -336,12 +336,30 @@
       justify-self: end;
     }
 
-    .book-details-panel-heading {
-      flex-wrap: wrap;
+    // The summary sits under the info/cover row so it does not leave a gap under the book.
+    .book-details-panel-annotation,
+    .book-details-panel-supplement {
+      grid-column: 1 / -1;
+    }
 
+    .book-details-panel-annotation {
+      padding-top: 6px;
+    }
+
+    .book-details-panel-main-info {
+      margin-bottom: 0;
+    }
+
+    .book-details-panel-heading {
       h2 {
+        flex: 1 1 auto;
         font-size: 20px;
         min-width: 0;
+      }
+
+      span {
+        flex: 0 0 auto;
+        white-space: nowrap;
       }
     }
 

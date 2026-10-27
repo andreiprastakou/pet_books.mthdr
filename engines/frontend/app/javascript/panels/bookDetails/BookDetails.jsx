@@ -80,6 +80,7 @@ const BookDetails = ({
       bookIndexEntry={bookIndexEntry}
       bookPagePath={bookPagePath}
       booksPagePath={booksPagePath}
+      compact={compact}
       coverSize={compact ? SMALLEST_COVER_SIZE : DEFAULT_COVER_SIZE}
       header={header}
       listPagePath={listPagePath}

@@ -147,6 +147,7 @@ describe('BookDetails', () => {
     expect(screen.getByRole('heading', { name: 'Dune' })).toBeInTheDocument()
     expect(screen.getByText('a science fiction novel')).toBeInTheDocument()
     expect(screen.getByText('Sandworms.')).toBeInTheDocument()
+    expect(document.querySelector('.book-details-panel-main-info .book-details-panel-annotation')).toBeInTheDocument()
     expect(screen.getByText('(source: warhammer.com)')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: 'Frank Herbert' })).toHaveAttribute('href', '/authors/1')
     expect(screen.getByRole('button', { name: /wikipedia/iu })).toBeInTheDocument()
@@ -323,6 +324,13 @@ describe('BookDetails', () => {
     expect(screen.getByRole('heading', { name: 'Messiah' })).toBeInTheDocument()
     expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(140)
     expect(screen.getByTestId('book-cover')).toHaveAttribute('data-size', 'xs')
+    expect(document.querySelector('.book-details-panel-main-info .book-details-panel-annotation')).not.toBeInTheDocument()
+
+    const cover = document.querySelector('.book-details-panel-cover')
+    const annotation = document.querySelector('.book-details-panel-annotation')
+    const supplement = document.querySelector('.book-details-panel-supplement')
+    expect(cover.compareDocumentPosition(annotation) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(annotation.compareDocumentPosition(supplement) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
   it('scrolls the included-work panel to the top when that work changes', () => {

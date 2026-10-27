@@ -88,6 +88,28 @@ BookDetailsHeading.propTypes = {
   booksPagePath: PropTypes.func.isRequired,
 }
 
+const BookDetailsAnnotation = ({ book }) => {
+  if (!book.summary) return null
+
+  return (
+    <div className='book-details-panel-annotation'>
+      <p>
+        { book.summary }
+      </p>
+
+      { book.summarySource ? (
+        <div className='description-source'>
+          { `(source: ${book.summarySource})` }
+        </div>
+      ) : null }
+    </div>
+  )
+}
+
+BookDetailsAnnotation.propTypes = {
+  book: PropTypes.object.isRequired,
+}
+
 const BookDetailsMainInfo = ({
   authorPagePath,
   authorRefs,
@@ -95,6 +117,7 @@ const BookDetailsMainInfo = ({
   booksPagePath,
   seriesPagePath,
   seriesRefs,
+  showSummary,
 }) => {
   const authorHref = useCallback(
     author => authorPagePath(author.id, { bookId: book.id }),
@@ -138,19 +161,7 @@ const BookDetailsMainInfo = ({
         </div>
       ) : null }
 
-      { book.summary ? (
-        <div className='book-details-panel-annotation'>
-          <p>
-            { book.summary }
-          </p>
-
-          { book.summarySource ? (
-            <div className='description-source'>
-              { `(source: ${book.summarySource})` }
-            </div>
-          ) : null }
-        </div>
-      ) : null }
+      { showSummary ? <BookDetailsAnnotation book={book} /> : null }
     </div>
   )
 }
@@ -162,6 +173,7 @@ BookDetailsMainInfo.propTypes = {
   booksPagePath: PropTypes.func.isRequired,
   seriesPagePath: PropTypes.func.isRequired,
   seriesRefs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  showSummary: PropTypes.bool.isRequired,
 }
 
 const BookDetailsLinks = ({ links }) => (
@@ -198,6 +210,47 @@ BookDetailsTags.propTypes = {
 
 const bookDetailsLinks = book => book.externalLinks || []
 
+const BookDetailsSupplement = ({
+  book,
+  bookPagePath,
+  links,
+  listPagePath,
+  showPublicLists,
+  tags,
+}) => (
+  <div className='book-details-panel-supplement'>
+    <div className='book-details-panel-toolbar'>
+      <BookToolbar
+        bookId={book.id}
+        bookPageHref={bookPagePath(book.id)}
+        pinned={Boolean(book.pinned)}
+        read={Boolean(book.read)}
+      />
+    </div>
+
+    { links.length > 0 ? <BookDetailsLinks links={links} /> : null }
+
+    { showPublicLists && book.publicLists?.length > 0 ? (
+      <BookPublicLists
+        bookId={book.id}
+        listPagePath={listPagePath}
+        publicLists={book.publicLists}
+      />
+    ) : null }
+
+    { tags.length > 0 ? <BookDetailsTags tags={tags} /> : null }
+  </div>
+)
+
+BookDetailsSupplement.propTypes = {
+  book: PropTypes.object.isRequired,
+  bookPagePath: PropTypes.func.isRequired,
+  links: PropTypes.arrayOf(PropTypes.object).isRequired,
+  listPagePath: PropTypes.func.isRequired,
+  showPublicLists: PropTypes.bool.isRequired,
+  tags: PropTypes.arrayOf(PropTypes.object).isRequired,
+}
+
 const BookDetailsCard = ({
   authorPagePath,
   authorRefs,
@@ -205,6 +258,7 @@ const BookDetailsCard = ({
   bookIndexEntry,
   bookPagePath,
   booksPagePath,
+  compact,
   coverSize,
   header,
   listPagePath,
@@ -218,6 +272,17 @@ const BookDetailsCard = ({
 }) => {
   const links = bookDetailsLinks(book)
   const bodyRef = useScrollToTop(book.id)
+  const summaryBelow = compact
+  const supplement = (
+    <BookDetailsSupplement
+      book={book}
+      bookPagePath={bookPagePath}
+      links={links}
+      listPagePath={listPagePath}
+      showPublicLists={showPublicLists}
+      tags={tags}
+    />
+  )
 
   return (
     <Card className={bookDetailsClassName(book, reducedHeight)}>
@@ -243,28 +308,10 @@ const BookDetailsCard = ({
             booksPagePath={booksPagePath}
             seriesPagePath={seriesPagePath}
             seriesRefs={seriesRefs}
+            showSummary={!summaryBelow}
           />
 
-          <div className='book-details-panel-toolbar'>
-            <BookToolbar
-              bookId={book.id}
-              bookPageHref={bookPagePath(book.id)}
-              pinned={Boolean(book.pinned)}
-              read={Boolean(book.read)}
-            />
-          </div>
-
-          { links.length > 0 ? <BookDetailsLinks links={links} /> : null }
-
-          { showPublicLists && book.publicLists?.length > 0 ? (
-            <BookPublicLists
-              bookId={book.id}
-              listPagePath={listPagePath}
-              publicLists={book.publicLists}
-            />
-          ) : null }
-
-          { tags.length > 0 ? <BookDetailsTags tags={tags} /> : null }
+          { summaryBelow ? null : supplement }
         </div>
 
         { showCover ? (
@@ -275,6 +322,10 @@ const BookDetailsCard = ({
             />
           </div>
         ) : null }
+
+        { summaryBelow ? <BookDetailsAnnotation book={book} /> : null }
+
+        { summaryBelow ? supplement : null }
       </Card.Body>
     </Card>
   )
@@ -287,6 +338,7 @@ BookDetailsCard.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
   bookPagePath: PropTypes.func.isRequired,
   booksPagePath: PropTypes.func.isRequired,
+  compact: PropTypes.bool.isRequired,
   coverSize: coverSizeType.isRequired,
   header: PropTypes.node,
   listPagePath: PropTypes.func.isRequired,
