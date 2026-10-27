@@ -118,6 +118,7 @@
       .year {
         font-size: 12px;
         text-align: center;
+        width: 100%;
       }
 
       .book-label {
@@ -163,5 +164,17 @@
   .books-list-empty {
     text-align: center;
     padding: 20px;
+  }
+}
+
+@include on-compact-layout {
+  .panel--books-list-covers .books-list-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    .book-case {
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+    }
   }
 }

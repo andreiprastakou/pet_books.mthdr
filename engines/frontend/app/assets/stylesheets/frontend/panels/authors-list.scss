@@ -193,3 +193,26 @@ $author-default-size: 'lg';
     }
   }
 }
+
+@include on-compact-layout {
+  .panel--authors-list {
+    height: auto;
+    max-height: 500px;
+    overflow: hidden;
+
+    .panel--body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .authors-list {
+      flex: 1 1 auto;
+      height: auto;
+      min-height: 0;
+    }
+
+    .authors-list-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+}

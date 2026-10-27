@@ -74,6 +74,35 @@ describe('handleAuthorsKeyDown', () => {
     expect(pending).toEqual({ index: 0, page: 2 })
   })
 
+  it('moves down by three places in the compact grid', () => {
+    const showAuthor = vi.fn()
+    const compactAuthors = [
+      { id: 1, fullname: 'A' },
+      { id: 2, fullname: 'B' },
+      { id: 3, fullname: 'C' },
+      { id: 4, fullname: 'D' },
+    ]
+    const event = {
+      key: 'ArrowDown',
+      preventDefault: vi.fn(),
+      stopPropagation: vi.fn(),
+    }
+
+    handleAuthorsKeyDown(event, {
+      authors: compactAuthors,
+      authorPagePath: id => `/authors/${id}`,
+      page: 1,
+      perPage: 16,
+      rowSize: 3,
+      selectedAuthorId: 1,
+      showAuthor,
+      switchToIndexPage: vi.fn(),
+      totalCount: 4,
+    })
+
+    expect(showAuthor).toHaveBeenCalledWith(4)
+  })
+
   it('navigates to the author page on Enter', () => {
     const assign = vi.fn()
     vi.stubGlobal('location', { assign })

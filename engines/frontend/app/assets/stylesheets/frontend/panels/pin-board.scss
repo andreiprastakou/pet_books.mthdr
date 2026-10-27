@@ -72,3 +72,29 @@
     }
   }
 }
+
+@include on-compact-layout {
+  .pin-board-page {
+    .pin-board-lists {
+      grid-template-columns: minmax(0, 1fr);
+      height: auto;
+    }
+
+    .panel--pin-list {
+      height: auto;
+      max-height: 1000px;
+
+      &:not(:has(.pin-board-entry)) {
+        display: none;
+      }
+
+      .panel--body {
+        overflow-y: auto;
+      }
+
+      .pin-board-entries {
+        height: auto;
+      }
+    }
+  }
+}

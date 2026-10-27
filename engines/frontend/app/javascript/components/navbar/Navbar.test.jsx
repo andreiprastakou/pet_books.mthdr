@@ -2,6 +2,7 @@ import React from 'react'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { MemoryRouter } from 'react-router-dom'
 
 import PageNavbar from 'components/navbar/Navbar'
 import publicListsApiClient from 'store/publicLists/apiClient'
@@ -13,14 +14,39 @@ vi.mock('store/publicLists/apiClient', () => ({
   },
 }))
 
+const stubNarrowViewport = () => {
+  window.matchMedia = vi.fn().mockImplementation(query => ({
+    addEventListener: vi.fn(),
+    addListener: vi.fn(),
+    matches: query === '(max-width: 899px)',
+    media: query,
+    removeEventListener: vi.fn(),
+    removeListener: vi.fn(),
+  }))
+}
+
+const renderNavbar = (ui, options = {}) => {
+  const { route = '/books', ...rest } = options
+
+  return renderWithProviders(
+    <MemoryRouter initialEntries={[route]}>
+      { ui }
+    </MemoryRouter>,
+    rest
+  )
+}
+
 describe('PageNavbar', () => {
+  const { matchMedia } = window
+
   beforeEach(() => {
     publicListsApiClient.getTypes.mockReset()
     publicListsApiClient.getTypes.mockResolvedValue([])
+    window.matchMedia = matchMedia
   })
 
   it('renders nothing when routes are not ready', () => {
-    const { container } = renderWithProviders(<PageNavbar />, {
+    const { container } = renderNavbar(<PageNavbar />, {
       urlStore: { routesReady: false },
     })
 
@@ -28,7 +54,7 @@ describe('PageNavbar', () => {
   })
 
   it('renders brand and section dropdowns when routes are ready', () => {
-    renderWithProviders(<PageNavbar />)
+    renderNavbar(<PageNavbar />)
 
     expect(screen.getByRole('link', { name: /Artspace \| Literature/u })).toHaveAttribute('href', '/books')
     expect(screen.getByText('Books')).toBeInTheDocument()
@@ -41,7 +67,7 @@ describe('PageNavbar', () => {
   it('shows the signed-in email and a logout action', async() => {
     const user = userEvent.setup()
 
-    renderWithProviders(<PageNavbar currentUserEmail='reader@example.com' />)
+    renderNavbar(<PageNavbar currentUserEmail='reader@example.com' />)
 
     await user.click(screen.getByRole('button', { name: 'Account' }))
 
@@ -62,11 +88,136 @@ describe('PageNavbar', () => {
     const user = userEvent.setup()
     const triggerEvent = vi.fn()
 
-    renderWithProviders(<PageNavbar />, {
+    renderNavbar(<PageNavbar />, {
       events: { triggerEvent },
     })
 
     await user.click(screen.getByText('Books'))
     expect(triggerEvent).toHaveBeenCalledWith('BOOKS_NAV_CLICKED')
+  })
+
+  it('opens a compact drawer of collapsed sections on a narrow author page', async() => {
+    const user = userEvent.setup()
+    const triggerEvent = vi.fn()
+
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar currentUserEmail='reader@example.com' />, {
+      events: { triggerEvent },
+      route: '/authors/64',
+    })
+
+    const burger = screen.getByRole('button', { name: 'Open menu' })
+
+    expect(burger).toHaveAttribute('aria-expanded', 'false')
+    expect(burger).toHaveAttribute('aria-controls', 'page-nav-drawer')
+    expect(screen.queryByRole('link', { name: 'List all' })).not.toBeInTheDocument()
+    expect(screen.queryByText('reader@example.com')).not.toBeInTheDocument()
+
+    await user.click(burger)
+
+    expect(burger).toHaveAttribute('aria-expanded', 'true')
+    expect(screen.getByRole('button', { name: 'Books' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Authors' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Tags' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Series' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Public lists' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Account' })).toBeInTheDocument()
+    expect(screen.queryByRole('link', { name: 'List all' })).not.toBeInTheDocument()
+
+    await user.click(screen.getByRole('button', { name: 'Books' }))
+
+    expect(triggerEvent).toHaveBeenCalledWith('BOOKS_NAV_CLICKED')
+    expect(screen.getByRole('link', { name: 'List all' })).toHaveAttribute('href', '/books')
+  })
+
+  it('uses the compact menu on any narrow page', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/books/5' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow reads page', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/reads' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow pin board', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/pins' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow books index', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/books' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow public lists page', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/public-lists/7' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow series page', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/series/11' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow series index', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/series' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow tag page', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/tags/11' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow tags index', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/tags' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow authors index', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/authors' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
   })
 })

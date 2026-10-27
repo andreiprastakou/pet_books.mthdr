@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 
 import { setCurrentBookId } from 'store/axis/actions'
 import { selectCurrentBookId } from 'store/axis/selectors'
-import BookIndexEntry from 'components/books/BookIndexEntry'
+import BooksListCoversGrid from 'panels/booksListCovers/BooksListCoversGrid'
 import {
   selectBookIds,
   selectBooksTotal,
@@ -17,10 +17,11 @@ import { setRequestedBookId } from 'store/books/actions'
 import Pagination from 'components/Pagination'
 import SortingDropdown from 'components/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
+import useCompactLayout from 'hooks/useCompactLayout'
 import useFittedSize from 'hooks/useFittedSize'
 import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
 import { notNullish } from 'utils/nullish'
-import { coverSizeForWidth, coverSizeType } from 'utils/coverSizes'
+import { coverSizeForWidth } from 'utils/coverSizes'
 import {
   GRID_ROW_SIZE,
   isBlocked,
@@ -28,6 +29,8 @@ import {
   pageSelection,
   targetSelection,
 } from 'utils/paginatedGridNavigation'
+
+const COMPACT_ROW_SIZE = 3
 
 export const PANEL_ID = 'books-list-covers'
 export const BOOK_SORT_OPTIONS = ['popularity', 'year', 'random', 'title']
@@ -48,6 +51,7 @@ const BooksListCovers = ({
   label = 'Books',
   onSelectBook = null,
   panelId = PANEL_ID,
+  rowSize = GRID_ROW_SIZE,
   selectedBookId = null,
   showControls = true,
   sortOptions = BOOK_SORT_OPTIONS,
@@ -61,9 +65,11 @@ const BooksListCovers = ({
   const page = useSelector(selectPage())
   const perPage = useSelector(selectPerPage())
   const currentBookId = useSelector(selectCurrentBookId())
+  const compact = useCompactLayout()
+  const columns = compact ? Math.min(rowSize, COMPACT_ROW_SIZE) : rowSize
   const ref = useRef(null)
   const [gridRef, coverSize] = useFittedSize({
-    columns: GRID_ROW_SIZE, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: coverSizeForWidth,
+    columns, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: coverSizeForWidth,
   })
   const hasActivated = useRef(false)
   const {
@@ -151,7 +157,7 @@ const BooksListCovers = ({
     const lastIndex = bookIds.length - 1
     const lastPage = Math.ceil(totalCount / perPage)
     if (!usesStoreList || !isActive || index < 0 || !type ||
-      isBlocked({ type, index, lastIndex, page, lastPage })) return
+      isBlocked({ type, index, lastIndex, page, lastPage, rowSize: columns })) return
 
     event.preventDefault()
     event.stopPropagation()
@@ -167,7 +173,7 @@ const BooksListCovers = ({
     }
 
     const target = targetSelection({
-      type, index, page, perPage, totalCount,
+      type, index, page, perPage, rowSize: columns, totalCount,
     })
     if (target.page !== page) {
       pendingPageSelection.current = { booksKey, ...target }
@@ -177,7 +183,7 @@ const BooksListCovers = ({
 
     dispatch(setRequestedBookId(bookIds[target.index]))
   }, [
-    bookIds, booksKey, currentBookId, dispatch, isActive, page, perPage,
+    bookIds, booksKey, columns, currentBookId, dispatch, isActive, page, perPage,
     switchToIndexPage, totalCount, usesStoreList,
   ])
 
@@ -224,12 +230,13 @@ const BooksListCovers = ({
 
       <Card.Body className='panel--body'>
         <div className='books-list'>
-          <BooksGrid
+          <BooksListCoversGrid
             bookIds={bookIds}
             bookLabels={bookLabels}
             coverSize={coverSize}
             gridRef={gridRef}
             onSelectBook={onSelectBook}
+            rowSize={columns}
             selectedBookId={selectedBookId}
           />
         </div>
@@ -247,53 +254,10 @@ BooksListCovers.propTypes = {
   label: PropTypes.string,
   onSelectBook: PropTypes.func,
   panelId: PropTypes.string,
+  rowSize: PropTypes.number,
   selectedBookId: PropTypes.number,
   showControls: PropTypes.bool,
   sortOptions: PropTypes.arrayOf(PropTypes.string),
-}
-
-const BooksGrid = ({ bookIds, bookLabels, coverSize, gridRef, onSelectBook, selectedBookId }) => {
-  const rows = [...Array(Math.ceil(bookIds.length / GRID_ROW_SIZE)).keys()]
-    .map(index => bookIds.slice(index * GRID_ROW_SIZE, (index + 1) * GRID_ROW_SIZE))
-
-  return (
-    <div
-      className='books-list-rows'
-      ref={gridRef}
-    >
-      { bookIds.length === 0 ? (
-        <div className='books-list-empty'>
-          { 'No books' }
-        </div>
-      ) : rows.map(row => (
-        <div
-          className='books-list-row'
-          key={row.join('-')}
-        >
-          { row.map(bookId => (
-            <BookIndexEntry
-              id={bookId}
-              key={bookId}
-              label={bookLabels ? bookLabels[bookId] || '' : null}
-              onSelect={onSelectBook}
-              selectedId={onSelectBook ? selectedBookId : null}
-              showYear={!bookLabels}
-              size={coverSize}
-            />
-            )) }
-        </div>
-        )) }
-    </div>
-  )
-}
-
-BooksGrid.propTypes = {
-  bookIds: PropTypes.array.isRequired,
-  bookLabels: PropTypes.object,
-  coverSize: coverSizeType.isRequired,
-  gridRef: PropTypes.object.isRequired,
-  onSelectBook: PropTypes.func,
-  selectedBookId: PropTypes.number,
 }
 
 export default BooksListCovers

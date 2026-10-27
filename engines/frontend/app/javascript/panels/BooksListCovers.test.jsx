@@ -2,6 +2,7 @@ import React from 'react'
 import { screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { MemoryRouter } from 'react-router-dom'
 
 import BooksListCovers from 'panels/BooksListCovers'
 import { renderWithProviders } from 'test/renderWithProviders'
@@ -37,8 +38,28 @@ const panelUrlStore = (overrides = {}) => ({
   ...overrides,
 })
 
+const booksListState = bookIds => ({
+  axis: {
+    currentAuthorId: null,
+    currentBookId: bookIds[0] ?? null,
+    currentTagId: null,
+    seed: null,
+  },
+  booksList: {
+    bookIds,
+    booksTotal: bookIds.length,
+    listFilter: {},
+    page: 1,
+    perPage: 16,
+    sortBy: 'title',
+  },
+})
+
 describe('BooksListCovers', () => {
+  const { matchMedia } = window
+
   beforeEach(() => {
+    window.matchMedia = matchMedia
     vi.stubGlobal('ResizeObserver', vi.fn(() => ({
       observe: vi.fn(),
       disconnect: vi.fn(),
@@ -99,6 +120,37 @@ describe('BooksListCovers', () => {
     await user.keyboard('{ArrowRight}')
 
     expect(store.getState().storeBooks.requestedBookId).toBe(2)
+  })
+
+  it('lays three covers per row and moves down by that many in the compact layout', async() => {
+    window.matchMedia = vi.fn().mockImplementation(query => ({
+      addEventListener: vi.fn(),
+      addListener: vi.fn(),
+      matches: query === '(max-width: 899px)',
+      media: query,
+      removeEventListener: vi.fn(),
+      removeListener: vi.fn(),
+    }))
+    const user = userEvent.setup()
+    const { store } = renderWithProviders(
+      <MemoryRouter initialEntries={['/tags/11']}>
+        <BooksListCovers header='Books' />
+      </MemoryRouter>,
+      {
+        preloadedState: booksListState([1, 2, 3, 4, 5, 6]),
+        urlStore: panelUrlStore(),
+      }
+    )
+
+    const rows = document.querySelectorAll('.books-list-row')
+
+    expect(rows).toHaveLength(2)
+    expect(rows[0].querySelectorAll('[data-testid^="book-"]')).toHaveLength(3)
+
+    screen.getByLabelText('Books').focus()
+    await user.keyboard('{ArrowDown}')
+
+    expect(store.getState().storeBooks.requestedBookId).toBe(4)
   })
 
   it('renders a provided book list instead of the page list', () => {

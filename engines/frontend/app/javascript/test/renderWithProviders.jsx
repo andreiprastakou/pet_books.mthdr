@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Provider as ReduxProvider } from 'react-redux'
 import { cleanup, render } from '@testing-library/react'
 import { afterEach, vi } from 'vitest'
+import { MemoryRouter } from 'react-router-dom'
 
 import EventsContext from 'store/events/Context'
 import EventsProvider from 'store/events/Provider'
@@ -63,11 +64,13 @@ export const createEventsValue = (overrides = {}) => ({
 
 const Providers = ({ children, store, urlStoreValue, eventsValue }) => {
   const content = (
-    <ReduxProvider store={store}>
-      <UrlStoreContext.Provider value={urlStoreValue}>
-        { children }
-      </UrlStoreContext.Provider>
-    </ReduxProvider>
+    <MemoryRouter>
+      <ReduxProvider store={store}>
+        <UrlStoreContext.Provider value={urlStoreValue}>
+          { children }
+        </UrlStoreContext.Provider>
+      </ReduxProvider>
+    </MemoryRouter>
   )
 
   if (eventsValue)

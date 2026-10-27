@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import useCompactLayout from 'hooks/useCompactLayout'
 import BookDetailsCard from 'panels/bookDetails/BookDetailsCard'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { fetchBookDetails, fetchCurrentBookDetails } from 'store/books/actions'
@@ -14,6 +15,7 @@ import {
 import { selectSeriesRefsByIds } from 'store/series/selectors'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { DEFAULT_COVER_SIZE, SMALLEST_COVER_SIZE } from 'utils/coverSizes'
 
 const useDisplayedBook = bookId => {
   const dispatch = useDispatch()
@@ -21,8 +23,11 @@ const useDisplayedBook = bookId => {
   const indexedEntry = useSelector(selectBooksIndexEntry(bookId))
   const currentDetails = useSelector(selectCurrentBookDetails())
   const storedDetails = useSelector(selectBookDetails(bookId))
-  const bookIndexEntry = bookId ? indexedEntry : currentIndexEntry
+  const requestedIndexEntry = bookId ? indexedEntry : currentIndexEntry
+  // Current details stay put until the next fetch replaces them. Keep showing
+  // that book so the panel does not unmount and collapse the page.
   const bookDetails = (bookId ? storedDetails : currentDetails) || {}
+  const displayedIndexEntry = useSelector(selectBooksIndexEntry(bookDetails.id))
 
   useEffect(() => {
     if (bookId) {
@@ -30,15 +35,15 @@ const useDisplayedBook = bookId => {
       return
     }
 
-    if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
+    if (requestedIndexEntry && bookDetails.id !== requestedIndexEntry.id)
       dispatch(fetchCurrentBookDetails())
-  }, [bookDetails.id, bookId, bookIndexEntry, dispatch])
+  }, [bookDetails.id, bookId, requestedIndexEntry, dispatch])
 
-  const book = bookIndexEntry && bookDetails.id === bookIndexEntry.id
+  const book = displayedIndexEntry && bookDetails.id === displayedIndexEntry.id
     ? bookDetails
     : null
 
-  return { book, bookIndexEntry }
+  return { book, bookIndexEntry: book ? displayedIndexEntry : null }
 }
 
 const BookDetails = ({
@@ -50,6 +55,7 @@ const BookDetails = ({
   showPublicLists = true,
 }) => {
   const { book, bookIndexEntry } = useDisplayedBook(bookId)
+  const compact = useCompactLayout()
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
   const seriesRefs = useSelector(selectSeriesRefsByIds(book?.seriesIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(book?.tagIds || []), shallowEqual)
@@ -74,6 +80,8 @@ const BookDetails = ({
       bookIndexEntry={bookIndexEntry}
       bookPagePath={bookPagePath}
       booksPagePath={booksPagePath}
+      compact={compact}
+      coverSize={compact ? SMALLEST_COVER_SIZE : DEFAULT_COVER_SIZE}
       header={header}
       listPagePath={listPagePath}
       onClose={onClose}

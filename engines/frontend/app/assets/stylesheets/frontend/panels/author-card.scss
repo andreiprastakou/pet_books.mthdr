@@ -123,3 +123,42 @@
     }
   }
 }
+
+@include on-compact-layout {
+  .panel--author-card {
+    .author-card-panel-title {
+      line-height: 1.25;
+      max-height: 2.5em;
+      overflow: hidden;
+      white-space: normal;
+    }
+
+    .author-image {
+      border-radius: 50%;
+      flex-basis: 96px;
+      height: 96px;
+      width: 96px;
+    }
+
+    &.author-card--with-description {
+      .author-card-description,
+      .author-card-main {
+        grid-column: auto;
+      }
+
+      .author-card-description {
+        padding-bottom: 0;
+        padding-top: 8px;
+
+        p {
+          font-size: 12px;
+          line-height: 1.35;
+        }
+      }
+
+      .panel--body {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  }
+}

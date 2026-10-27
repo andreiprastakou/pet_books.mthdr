@@ -14,6 +14,7 @@ import SortingDropdown from 'components/SortingDropdown'
 import AuthorsListItem from 'panels/authorsList/AuthorsListItem'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import useCompactLayout from 'hooks/useCompactLayout'
 import useFittedSize from 'hooks/useFittedSize'
 import { authorSizeForWidth } from 'utils/authorSizes'
 import {
@@ -57,8 +58,8 @@ const useInitialSelection = ({ authors, selectedAuthorId, showAuthor }) => {
 }
 
 export const handleAuthorsKeyDown = (event, {
-  authors, authorPagePath, page, perPage, selectedAuthorId, showAuthor,
-  switchToIndexPage, totalCount,
+  authors, authorPagePath, page, perPage, rowSize = GRID_ROW_SIZE, selectedAuthorId,
+  showAuthor, switchToIndexPage, totalCount,
 }) => {
   const type = keyType(event.key)
   const index = authors.findIndex(author => author.id === selectedAuthorId)
@@ -66,7 +67,7 @@ export const handleAuthorsKeyDown = (event, {
   const lastPage = Math.ceil(totalCount / perPage)
 
   if (index < 0 || !type ||
-      (type !== 'enter' && isBlocked({ type, index, lastIndex, page, lastPage }))) return null
+      (type !== 'enter' && isBlocked({ type, index, lastIndex, page, lastPage, rowSize }))) return null
 
   event.preventDefault()
   event.stopPropagation()
@@ -83,7 +84,7 @@ export const handleAuthorsKeyDown = (event, {
   }
 
   const target = targetSelection({
-    type, index, page, perPage, totalCount,
+    type, index, page, perPage, rowSize, totalCount,
   })
   if (target.page !== page) {
     switchToIndexPage(target.page, perPage)
@@ -115,9 +116,11 @@ const AuthorsList = () => {
   const page = useSelector(selectPage())
   const perPage = useSelector(selectPerPage())
   const selectedAuthorId = useSelector(selectCurrentAuthorId())
+  const compact = useCompactLayout()
+  const rowSize = compact ? 3 : GRID_ROW_SIZE
   const ref = useRef(null)
   const [gridRef, authorSize] = useFittedSize({
-    columns: GRID_ROW_SIZE, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: authorSizeForWidth,
+    columns: rowSize, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: authorSizeForWidth,
   })
   const pendingPageSelection = useRef(null)
   const hasActivated = useRef(false)
@@ -164,13 +167,13 @@ const AuthorsList = () => {
   const handleKeyDown = useCallback(event => {
     if (!isActive || !routesReady || authors.length === 0) return null
     const pending = handleAuthorsKeyDown(event, {
-      authors, authorPagePath, page, perPage, selectedAuthorId, showAuthor,
+      authors, authorPagePath, page, perPage, rowSize, selectedAuthorId, showAuthor,
       switchToIndexPage, totalCount,
     })
     if (pending) pendingPageSelection.current = { ...pending, authorsKey }
     return null
   }, [
-    authorPagePath, authors, isActive, page, perPage, selectedAuthorId, showAuthor,
+    authorPagePath, authors, isActive, page, perPage, rowSize, selectedAuthorId, showAuthor,
     routesReady, switchToIndexPage, totalCount,
   ])
   return (

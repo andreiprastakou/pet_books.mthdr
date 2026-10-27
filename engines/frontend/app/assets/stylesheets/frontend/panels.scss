@@ -40,6 +40,15 @@
   text-transform: uppercase;
 }
 
+@include on-compact-layout {
+  .panel--header {
+    flex-wrap: wrap;
+    font-size: 16px;
+    line-height: 1.25;
+    min-height: 40px;
+  }
+}
+
 // Stands in for a cover while its book is still loading, so the slot it will
 // occupy does not change size once the data arrives.
 .b-cover-placeholder {

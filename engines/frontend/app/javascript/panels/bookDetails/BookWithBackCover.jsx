@@ -5,6 +5,7 @@ import classnames from 'classnames'
 
 import Book from 'components/Book'
 import { selectCoverDesign } from 'store/coverDesigns/selectors'
+import { DEFAULT_COVER_SIZE, coverSizeType } from 'utils/coverSizes'
 import {
   FORMAT_COLLECTION,
   FORMAT_NORMAL,
@@ -44,7 +45,7 @@ BookBackCover.propTypes = {
   format: PropTypes.string.isRequired,
 }
 
-const BookWithBackCover = ({ bookIndexEntry }) => {
+const BookWithBackCover = ({ bookIndexEntry, size = DEFAULT_COVER_SIZE }) => {
   const coverDesign = useSelector(selectCoverDesign(bookIndexEntry.coverDesignId))
   const format = bookIndexEntry.format || FORMAT_NORMAL
   const isSmall = format === FORMAT_SMALL
@@ -62,6 +63,7 @@ const BookWithBackCover = ({ bookIndexEntry }) => {
       <Book
         bookIndexEntry={bookIndexEntry}
         scrollIntoView={false}
+        size={size}
       />
     </>
   )
@@ -69,6 +71,7 @@ const BookWithBackCover = ({ bookIndexEntry }) => {
 
 BookWithBackCover.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
+  size: coverSizeType,
 }
 
 export default BookWithBackCover

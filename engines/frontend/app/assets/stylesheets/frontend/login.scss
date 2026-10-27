@@ -33,3 +33,10 @@
     }
   }
 }
+
+@include on-compact-layout {
+  .login-page-panel {
+    max-width: none;
+    width: 100%;
+  }
+}
