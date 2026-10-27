@@ -251,10 +251,14 @@
 
     .panel--book-details,
     .panel--books-list-covers,
-    .panel--books-stack,
     .panel--included-works {
       /* stylelint-disable-next-line function-name-case */
       max-height: Min(70dvh, 640px);
+    }
+
+    .panel--books-stack {
+      /* stylelint-disable-next-line function-name-case */
+      max-height: Min(70dvh, 320px);
     }
 
     .books-spine-stack,

@@ -21,8 +21,11 @@ const useDisplayedBook = bookId => {
   const indexedEntry = useSelector(selectBooksIndexEntry(bookId))
   const currentDetails = useSelector(selectCurrentBookDetails())
   const storedDetails = useSelector(selectBookDetails(bookId))
-  const bookIndexEntry = bookId ? indexedEntry : currentIndexEntry
+  const requestedIndexEntry = bookId ? indexedEntry : currentIndexEntry
+  // Current details stay put until the next fetch replaces them. Keep showing
+  // that book so the panel does not unmount and collapse the page.
   const bookDetails = (bookId ? storedDetails : currentDetails) || {}
+  const displayedIndexEntry = useSelector(selectBooksIndexEntry(bookDetails.id))
 
   useEffect(() => {
     if (bookId) {
@@ -30,15 +33,15 @@ const useDisplayedBook = bookId => {
       return
     }
 
-    if (bookIndexEntry && bookDetails.id !== bookIndexEntry.id)
+    if (requestedIndexEntry && bookDetails.id !== requestedIndexEntry.id)
       dispatch(fetchCurrentBookDetails())
-  }, [bookDetails.id, bookId, bookIndexEntry, dispatch])
+  }, [bookDetails.id, bookId, requestedIndexEntry, dispatch])
 
-  const book = bookIndexEntry && bookDetails.id === bookIndexEntry.id
+  const book = displayedIndexEntry && bookDetails.id === displayedIndexEntry.id
     ? bookDetails
     : null
 
-  return { book, bookIndexEntry }
+  return { book, bookIndexEntry: book ? displayedIndexEntry : null }
 }
 
 const BookDetails = ({

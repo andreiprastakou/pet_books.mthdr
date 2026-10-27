@@ -2,10 +2,11 @@ import React from 'react'
 import { act, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { MemoryRouter } from 'react-router-dom'
 
 import BookDetails from 'panels/bookDetails/BookDetails'
 import { setCurrentBookId } from 'store/axis/actions'
-import { addBooks, fetchBookDetails, setCurrentBookDetails } from 'store/books/actions'
+import { addBooks, fetchBookDetails, fetchCurrentBookDetails, setCurrentBookDetails } from 'store/books/actions'
 import { renderWithProviders } from 'test/renderWithProviders'
 import { buildPath } from 'store/urlStore/RootStoreProvider'
 
@@ -113,8 +114,11 @@ const baseState = {
 }
 
 describe('BookDetails', () => {
+  const { matchMedia } = window
+
   beforeEach(() => {
     vi.clearAllMocks()
+    window.matchMedia = matchMedia
   })
 
   it('renders nothing when details are missing or routes are not ready', () => {
@@ -219,6 +223,27 @@ describe('BookDetails', () => {
     expect(onClose).toHaveBeenCalledTimes(1)
   })
 
+  it('keeps the previous details visible until the next book loads', () => {
+    const { store } = renderWithProviders(<BookDetails />, {
+      preloadedState: baseState,
+      urlStore: { routes },
+    })
+
+    act(() => {
+      store.dispatch(setCurrentBookId(6))
+      store.dispatch(addBooks([{
+        ...bookIndexEntry,
+        id: 6,
+        title: 'Messiah',
+        year: 1969,
+      }]))
+    })
+
+    expect(screen.getByRole('heading', { name: 'Dune' })).toBeInTheDocument()
+    expect(screen.queryByRole('heading', { name: 'Messiah' })).not.toBeInTheDocument()
+    expect(fetchCurrentBookDetails).toHaveBeenCalled()
+  })
+
   it('scrolls the details panel to the top when the book changes', () => {
     const nextBook = {
       ...bookIndexEntry,
@@ -249,6 +274,52 @@ describe('BookDetails', () => {
 
     expect(screen.getByRole('heading', { name: 'Messiah' })).toBeInTheDocument()
     expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(0)
+  })
+
+  it('leaves the details panel scroll when the book changes in the compact author layout', () => {
+    window.matchMedia = vi.fn().mockImplementation(query => ({
+      addEventListener: vi.fn(),
+      addListener: vi.fn(),
+      matches: query === '(max-width: 899px)',
+      media: query,
+      removeEventListener: vi.fn(),
+      removeListener: vi.fn(),
+    }))
+
+    const nextBook = {
+      ...bookIndexEntry,
+      id: 6,
+      title: 'Messiah',
+      year: 1969,
+    }
+    const nextDetails = {
+      ...bookDetails,
+      id: 6,
+      title: 'Messiah',
+      yearPublished: 1969,
+      summary: 'A sequel long enough to overflow the panel.',
+    }
+    const { store } = renderWithProviders(
+      <MemoryRouter initialEntries={['/authors/64']}>
+        <BookDetails />
+      </MemoryRouter>,
+      {
+        preloadedState: baseState,
+        urlStore: { routes },
+      }
+    )
+    const body = document.querySelector('.panel--book-details .panel--body')
+    body.scrollTop = 140
+    expect(body.scrollTop).toBe(140)
+
+    act(() => {
+      store.dispatch(setCurrentBookId(6))
+      store.dispatch(addBooks([nextBook]))
+      store.dispatch(setCurrentBookDetails(nextDetails))
+    })
+
+    expect(screen.getByRole('heading', { name: 'Messiah' })).toBeInTheDocument()
+    expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(140)
   })
 
   it('scrolls the included-work panel to the top when that work changes', () => {
