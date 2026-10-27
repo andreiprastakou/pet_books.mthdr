@@ -64,4 +64,25 @@ describe('SelectedWork', () => {
     await user.click(screen.getByRole('button', { name: 'clear' }))
     expect(showIncludedWork).toHaveBeenCalledWith(null)
   })
+
+  it('can render the collection and the included work apart', () => {
+    const { rerender } = renderWithProviders(
+      <SelectedWork
+        header='Selected Work'
+        included='omit'
+      />,
+      { urlStore: { pageState: { includedWorkId: 8 } } }
+    )
+
+    expect(screen.getByTestId('selected-work')).toHaveTextContent('Selected Work')
+    expect(screen.queryByTestId('included-8')).not.toBeInTheDocument()
+    expect(document.querySelector('.selected-works-split')).not.toBeInTheDocument()
+
+    rerender(
+      <SelectedWork included='only' />
+    )
+
+    expect(screen.queryByTestId('selected-work')).not.toBeInTheDocument()
+    expect(screen.getByTestId('included-8')).toHaveTextContent('Selected included work')
+  })
 })

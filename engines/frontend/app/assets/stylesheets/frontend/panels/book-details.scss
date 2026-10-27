@@ -160,18 +160,16 @@
     }
 
     // The back board, peeking out above, below and to the right of the front cover.
+    // Width and height follow the cover size class; see the loop below.
     .b-cover-standard.book-back-cover {
       border-radius: 2px 4px 4px 2px;
       box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.3);
       filter: brightness(0.62);
-      height: 238px;
       margin: 0;
       overflow: hidden;
       pointer-events: none;
       position: absolute;
-      right: -6px;
       top: 1px;
-      width: 160px;
       z-index: 0;
 
       &::before,
@@ -190,6 +188,44 @@
 
       &.book-back-cover--collection {
         filter: brightness(0.97);
+      }
+    }
+  }
+
+  // Back board and page block track the front cover. Offsets are tuned for lg (160px).
+  @each $b-cover-size in map-keys($b-cover-sizes) {
+    $cover-width: b-cover-value($b-cover-size, width);
+    $cover-height: b-cover-value($b-cover-size, height);
+    $cover-scale: $cover-width / 160px;
+
+    .book-details-panel-cover.b-cover-size-#{$b-cover-size} {
+      flex-basis: $cover-width + 18px;
+      width: $cover-width + 18px;
+
+      .b-cover-standard.book-back-cover {
+        height: $cover-height - 2px;
+        right: -6px * $cover-scale;
+        width: $cover-width;
+
+        &.book-back-cover--small {
+          right: 5px * $cover-scale;
+        }
+      }
+
+      .b-standard-cover--big::before,
+      .b-standard-cover--collection::before {
+        right: -12px * $cover-scale;
+        width: 13px * $cover-scale;
+      }
+
+      .b-standard-cover--normal::before {
+        right: -7px * $cover-scale;
+        width: 8px * $cover-scale;
+      }
+
+      .b-standard-cover--small::before {
+        right: -3px * $cover-scale;
+        width: 3px * $cover-scale;
       }
     }
   }
@@ -279,19 +315,34 @@
 
 @include on-author-page-compact {
   .panel--book-details {
-    .book-details-panel-cover {
-      align-self: center;
-      flex-basis: auto;
-      order: -1;
-    }
-
-    .book-details-panel-heading h2 {
-      font-size: 20px;
-    }
-
     .panel--body {
-      flex-direction: column;
+      align-items: start;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: minmax(0, 1fr) auto;
       padding: 12px;
+    }
+
+    .book-details-panel-content {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .book-details-panel-cover {
+      align-self: start;
+      grid-column: 2;
+      grid-row: 1;
+      justify-content: flex-end;
+      justify-self: end;
+    }
+
+    .book-details-panel-heading {
+      flex-wrap: wrap;
+
+      h2 {
+        font-size: 20px;
+        min-width: 0;
+      }
     }
 
     p {

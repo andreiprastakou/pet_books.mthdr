@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
+import useCompactAuthorLayout from 'hooks/useCompactAuthorLayout'
 import BookDetailsCard from 'panels/bookDetails/BookDetailsCard'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { fetchBookDetails, fetchCurrentBookDetails } from 'store/books/actions'
@@ -14,6 +15,7 @@ import {
 import { selectSeriesRefsByIds } from 'store/series/selectors'
 import { selectTagsRefsByIds } from 'store/tags/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import { DEFAULT_COVER_SIZE, SMALLEST_COVER_SIZE } from 'utils/coverSizes'
 
 const useDisplayedBook = bookId => {
   const dispatch = useDispatch()
@@ -53,6 +55,7 @@ const BookDetails = ({
   showPublicLists = true,
 }) => {
   const { book, bookIndexEntry } = useDisplayedBook(bookId)
+  const compact = useCompactAuthorLayout()
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
   const seriesRefs = useSelector(selectSeriesRefsByIds(book?.seriesIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(book?.tagIds || []), shallowEqual)
@@ -77,6 +80,7 @@ const BookDetails = ({
       bookIndexEntry={bookIndexEntry}
       bookPagePath={bookPagePath}
       booksPagePath={booksPagePath}
+      coverSize={compact ? SMALLEST_COVER_SIZE : DEFAULT_COVER_SIZE}
       header={header}
       listPagePath={listPagePath}
       onClose={onClose}

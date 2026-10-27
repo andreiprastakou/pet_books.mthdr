@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
+import useCompactAuthorLayout from 'hooks/useCompactAuthorLayout'
 import useIncludedWorkSelection from 'panels/includedWorkSelection'
 import BooksListCovers from 'panels/BooksListCovers'
 import { fetchMissingBookIndexEntries } from 'store/books/actions'
@@ -21,6 +22,7 @@ const CollectionWorks = () => {
   const book = bookIndexEntry && bookDetails.id === bookIndexEntry.id
     ? bookDetails
     : null
+  const compact = useCompactAuthorLayout()
   const includedWorkId = useIncludedWorkSelection(book)
   const workIds = book?.format === FORMAT_COLLECTION ? book.collectedWorkIds || [] : null
   const selectIncludedWork = useCallback(id => {
@@ -43,6 +45,7 @@ const CollectionWorks = () => {
       label='Included works'
       onSelectBook={selectIncludedWork}
       panelId={PANEL_ID}
+      rowSize={compact ? 3 : undefined}
       selectedBookId={includedWorkId}
       showControls={false}
     />

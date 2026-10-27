@@ -13,6 +13,7 @@ import {
   bookDetailsClassName,
 } from 'panels/bookDetails/BookDetailsFrame'
 import BookWithBackCover from 'panels/bookDetails/BookWithBackCover'
+import { coverSizeClass, coverSizeType } from 'utils/coverSizes'
 
 const LinkedNames = ({ entries, buildHref }) => (
   <>
@@ -204,6 +205,7 @@ const BookDetailsCard = ({
   bookIndexEntry,
   bookPagePath,
   booksPagePath,
+  coverSize,
   header,
   listPagePath,
   onClose,
@@ -266,8 +268,11 @@ const BookDetailsCard = ({
         </div>
 
         { showCover ? (
-          <div className='book-details-panel-cover'>
-            <BookWithBackCover bookIndexEntry={bookIndexEntry} />
+          <div className={`book-details-panel-cover ${coverSizeClass(coverSize)}`}>
+            <BookWithBackCover
+              bookIndexEntry={bookIndexEntry}
+              size={coverSize}
+            />
           </div>
         ) : null }
       </Card.Body>
@@ -282,6 +287,7 @@ BookDetailsCard.propTypes = {
   bookIndexEntry: PropTypes.object.isRequired,
   bookPagePath: PropTypes.func.isRequired,
   booksPagePath: PropTypes.func.isRequired,
+  coverSize: coverSizeType.isRequired,
   header: PropTypes.node,
   listPagePath: PropTypes.func.isRequired,
   onClose: PropTypes.func,

@@ -48,6 +48,7 @@ const BooksListCovers = ({
   label = 'Books',
   onSelectBook = null,
   panelId = PANEL_ID,
+  rowSize = GRID_ROW_SIZE,
   selectedBookId = null,
   showControls = true,
   sortOptions = BOOK_SORT_OPTIONS,
@@ -63,7 +64,7 @@ const BooksListCovers = ({
   const currentBookId = useSelector(selectCurrentBookId())
   const ref = useRef(null)
   const [gridRef, coverSize] = useFittedSize({
-    columns: GRID_ROW_SIZE, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: coverSizeForWidth,
+    columns: rowSize, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: coverSizeForWidth,
   })
   const hasActivated = useRef(false)
   const {
@@ -230,6 +231,7 @@ const BooksListCovers = ({
             coverSize={coverSize}
             gridRef={gridRef}
             onSelectBook={onSelectBook}
+            rowSize={rowSize}
             selectedBookId={selectedBookId}
           />
         </div>
@@ -247,14 +249,23 @@ BooksListCovers.propTypes = {
   label: PropTypes.string,
   onSelectBook: PropTypes.func,
   panelId: PropTypes.string,
+  rowSize: PropTypes.number,
   selectedBookId: PropTypes.number,
   showControls: PropTypes.bool,
   sortOptions: PropTypes.arrayOf(PropTypes.string),
 }
 
-const BooksGrid = ({ bookIds, bookLabels, coverSize, gridRef, onSelectBook, selectedBookId }) => {
-  const rows = [...Array(Math.ceil(bookIds.length / GRID_ROW_SIZE)).keys()]
-    .map(index => bookIds.slice(index * GRID_ROW_SIZE, (index + 1) * GRID_ROW_SIZE))
+const BooksGrid = ({
+  bookIds,
+  bookLabels,
+  coverSize,
+  gridRef,
+  onSelectBook,
+  rowSize,
+  selectedBookId,
+}) => {
+  const rows = [...Array(Math.ceil(bookIds.length / rowSize)).keys()]
+    .map(index => bookIds.slice(index * rowSize, (index + 1) * rowSize))
 
   return (
     <div
@@ -293,6 +304,7 @@ BooksGrid.propTypes = {
   coverSize: coverSizeType.isRequired,
   gridRef: PropTypes.object.isRequired,
   onSelectBook: PropTypes.func,
+  rowSize: PropTypes.number.isRequired,
   selectedBookId: PropTypes.number,
 }
 

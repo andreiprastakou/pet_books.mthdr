@@ -20,9 +20,10 @@ vi.mock('store/books/actions', async() => {
 })
 
 vi.mock('components/Book', () => ({
-  default: ({ bookIndexEntry, scrollIntoView = true }) => (
+  default: ({ bookIndexEntry, scrollIntoView = true, size = 'lg' }) => (
     <div
       data-scroll-into-view={scrollIntoView ? 'yes' : 'no'}
+      data-size={size}
       data-testid='book-cover'
     >
       { bookIndexEntry.title }
@@ -177,6 +178,7 @@ describe('BookDetails', () => {
 
     expect(document.querySelector('.panel--book-details--collection')).toBeInTheDocument()
     expect(screen.getByTestId('book-cover')).toHaveAttribute('data-scroll-into-view', 'no')
+    expect(screen.getByTestId('book-cover')).toHaveAttribute('data-size', 'lg')
   })
 
   it('shows another book in a compact panel and clears it from the header', async() => {
@@ -320,6 +322,7 @@ describe('BookDetails', () => {
 
     expect(screen.getByRole('heading', { name: 'Messiah' })).toBeInTheDocument()
     expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(140)
+    expect(screen.getByTestId('book-cover')).toHaveAttribute('data-size', 'xs')
   })
 
   it('scrolls the included-work panel to the top when that work changes', () => {
