@@ -17,6 +17,7 @@ import { setRequestedBookId } from 'store/books/actions'
 import Pagination from 'components/Pagination'
 import SortingDropdown from 'components/SortingDropdown'
 import UrlStoreContext from 'store/urlStore/Context'
+import useCompactLayout from 'hooks/useCompactLayout'
 import useFittedSize from 'hooks/useFittedSize'
 import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
 import { notNullish } from 'utils/nullish'
@@ -28,6 +29,8 @@ import {
   pageSelection,
   targetSelection,
 } from 'utils/paginatedGridNavigation'
+
+const COMPACT_ROW_SIZE = 3
 
 export const PANEL_ID = 'books-list-covers'
 export const BOOK_SORT_OPTIONS = ['popularity', 'year', 'random', 'title']
@@ -62,9 +65,11 @@ const BooksListCovers = ({
   const page = useSelector(selectPage())
   const perPage = useSelector(selectPerPage())
   const currentBookId = useSelector(selectCurrentBookId())
+  const compact = useCompactLayout()
+  const columns = compact ? Math.min(rowSize, COMPACT_ROW_SIZE) : rowSize
   const ref = useRef(null)
   const [gridRef, coverSize] = useFittedSize({
-    columns: rowSize, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: coverSizeForWidth,
+    columns, gap: GRID_GAP, inset: GRID_CELL_INSET, sizeForWidth: coverSizeForWidth,
   })
   const hasActivated = useRef(false)
   const {
@@ -152,7 +157,7 @@ const BooksListCovers = ({
     const lastIndex = bookIds.length - 1
     const lastPage = Math.ceil(totalCount / perPage)
     if (!usesStoreList || !isActive || index < 0 || !type ||
-      isBlocked({ type, index, lastIndex, page, lastPage })) return
+      isBlocked({ type, index, lastIndex, page, lastPage, rowSize: columns })) return
 
     event.preventDefault()
     event.stopPropagation()
@@ -168,7 +173,7 @@ const BooksListCovers = ({
     }
 
     const target = targetSelection({
-      type, index, page, perPage, totalCount,
+      type, index, page, perPage, rowSize: columns, totalCount,
     })
     if (target.page !== page) {
       pendingPageSelection.current = { booksKey, ...target }
@@ -178,7 +183,7 @@ const BooksListCovers = ({
 
     dispatch(setRequestedBookId(bookIds[target.index]))
   }, [
-    bookIds, booksKey, currentBookId, dispatch, isActive, page, perPage,
+    bookIds, booksKey, columns, currentBookId, dispatch, isActive, page, perPage,
     switchToIndexPage, totalCount, usesStoreList,
   ])
 
@@ -231,7 +236,7 @@ const BooksListCovers = ({
             coverSize={coverSize}
             gridRef={gridRef}
             onSelectBook={onSelectBook}
-            rowSize={rowSize}
+            rowSize={columns}
             selectedBookId={selectedBookId}
           />
         </div>

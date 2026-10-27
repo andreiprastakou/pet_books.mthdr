@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useLayoutEffect } from 'react'
 
 import UrlStoreContext from 'store/urlStore/Context'
 import TagsPage from 'pages/tagsPage/Page'
@@ -16,8 +16,14 @@ const Helper = () => {
 
 const path = '/tags'
 
-const Renderer = () => (
-  <TagsPage />
-)
+const Renderer = () => {
+  useLayoutEffect(() => {
+    document.body.classList.add('is-compact-layout')
+
+    return () => document.body.classList.remove('is-compact-layout')
+  }, [])
+
+  return <TagsPage />
+}
 
 export default { path, Renderer, Helper }

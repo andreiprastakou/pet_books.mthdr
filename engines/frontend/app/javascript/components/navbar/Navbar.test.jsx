@@ -127,6 +127,38 @@ describe('PageNavbar', () => {
     expect(screen.getByRole('link', { name: 'List all' })).toHaveAttribute('href', '/books')
   })
 
+  it('uses the compact menu on a narrow tag page', () => {
+    window.matchMedia = vi.fn().mockImplementation(query => ({
+      addEventListener: vi.fn(),
+      addListener: vi.fn(),
+      matches: query === '(max-width: 899px)',
+      media: query,
+      removeEventListener: vi.fn(),
+      removeListener: vi.fn(),
+    }))
+
+    renderNavbar(<PageNavbar />, { route: '/tags/11' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow tags index', () => {
+    window.matchMedia = vi.fn().mockImplementation(query => ({
+      addEventListener: vi.fn(),
+      addListener: vi.fn(),
+      matches: query === '(max-width: 899px)',
+      media: query,
+      removeEventListener: vi.fn(),
+      removeListener: vi.fn(),
+    }))
+
+    renderNavbar(<PageNavbar />, { route: '/tags' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
   it('uses the compact menu on a narrow authors index', () => {
     window.matchMedia = vi.fn().mockImplementation(query => ({
       addEventListener: vi.fn(),

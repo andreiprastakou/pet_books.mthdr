@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useLayoutEffect, useRef } from 'react'
 import { useDispatch } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
@@ -20,15 +20,23 @@ const Helper = () => {
 
 const path = '/tags/:tagId'
 
-const Renderer = () => (
-  <>
-    <BooksListConfigurer />
+const Renderer = () => {
+  useLayoutEffect(() => {
+    document.body.classList.add('is-compact-layout')
 
-    <LocalStoreConfigurer />
+    return () => document.body.classList.remove('is-compact-layout')
+  }, [])
 
-    <TagPage />
-  </>
-)
+  return (
+    <>
+      <BooksListConfigurer />
+
+      <LocalStoreConfigurer />
+
+      <TagPage />
+    </>
+  )
+}
 
 const LocalStoreConfigurer = () => {
   const params = useParams()
