@@ -13,6 +13,8 @@ const SERIES_INDEX_PATH = /^\/series\/?$/u
 const SERIES_PAGE_PATH = /^\/series\/\d+\/?$/u
 const PUBLIC_LISTS_PAGE_PATH = /^\/public-lists\/\d+\/?$/u
 const BOOKS_INDEX_PATH = /^\/books\/?$/u
+const READS_PAGE_PATH = /^\/reads\/?$/u
+const PIN_BOARD_PAGE_PATH = /^\/pins\/?$/u
 
 export const isAuthorPagePath = pathname => AUTHOR_PAGE_PATH.test(pathname || '')
 
@@ -30,6 +32,10 @@ export const isPublicListsPagePath = pathname => PUBLIC_LISTS_PAGE_PATH.test(pat
 
 export const isBooksIndexPath = pathname => BOOKS_INDEX_PATH.test(pathname || '')
 
+export const isReadsPagePath = pathname => READS_PAGE_PATH.test(pathname || '')
+
+export const isPinBoardPagePath = pathname => PIN_BOARD_PAGE_PATH.test(pathname || '')
+
 const compactLayoutPath = pathname =>
   isAuthorPagePath(pathname) ||
   isAuthorsIndexPath(pathname) ||
@@ -38,7 +44,9 @@ const compactLayoutPath = pathname =>
   isSeriesIndexPath(pathname) ||
   isSeriesPagePath(pathname) ||
   isPublicListsPagePath(pathname) ||
-  isBooksIndexPath(pathname)
+  isBooksIndexPath(pathname) ||
+  isReadsPagePath(pathname) ||
+  isPinBoardPagePath(pathname)
 
 const narrowViewport = () => {
   if (typeof window.matchMedia !== 'function') return false

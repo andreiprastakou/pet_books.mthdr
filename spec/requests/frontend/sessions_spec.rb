@@ -11,6 +11,8 @@ RSpec.describe 'Frontend sessions', frontend_session: false do
 
       expect(response).to have_http_status(:ok)
       expect(response.body).to include('Log in')
+      expect(response.body).to include('<body class="is-compact-layout">')
+      expect(response.body).not_to include('Open menu')
     end
   end
 

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useLayoutEffect } from 'react'
 
 import PinBoardPage from 'pages/pinBoardPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -16,8 +16,14 @@ const Helper = () => {
 
 const path = '/pins'
 
-const Renderer = () => (
-  <PinBoardPage />
-)
+const Renderer = () => {
+  useLayoutEffect(() => {
+    document.body.classList.add('is-compact-layout')
+
+    return () => document.body.classList.remove('is-compact-layout')
+  }, [])
+
+  return <PinBoardPage />
+}
 
 export default { path, Renderer, Helper }

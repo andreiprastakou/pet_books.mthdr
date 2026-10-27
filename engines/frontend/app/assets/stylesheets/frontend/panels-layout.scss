@@ -262,19 +262,23 @@
     }
 
     .panel--books-year {
-      height: #{'min(42dvh, 320px)'};
-      max-height: #{'min(42dvh, 320px)'};
+      /* stylelint-disable-next-line function-name-case */
+      height: Min(42dvh, 320px);
+      /* stylelint-disable-next-line function-name-case */
+      max-height: Min(42dvh, 320px);
       overflow: hidden;
     }
 
     .books-spine-stack,
     .books-spine-stack-wrap {
-      max-height: #{'min(520px, calc(70dvh - 48px))'};
+      /* stylelint-disable-next-line function-name-case */
+      max-height: Min(520px, calc(70dvh - 48px));
     }
 
     .panel--books-list-covers .books-list {
       height: auto;
-      max-height: #{'min(calc(70dvh - 48px), 592px)'};
+      /* stylelint-disable-next-line function-name-case */
+      max-height: Min(calc(70dvh - 48px), 592px);
     }
   }
 }
