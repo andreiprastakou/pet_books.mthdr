@@ -171,3 +171,28 @@
     }
   }
 }
+
+@include on-compact-layout {
+  .panel--books-year {
+    .all-books-year {
+      flex: 1 1 160px;
+      min-width: 0;
+    }
+
+    .all-books-year-control {
+      max-width: 100%;
+      width: 100%;
+    }
+
+    .all-books-ghost,
+    .all-books-list .book-case {
+      height: var(--year-book-height);
+      width: var(--year-book-width);
+    }
+
+    .all-books-ghost-cover {
+      height: var(--year-cover-height);
+      width: var(--year-cover-width);
+    }
+  }
+}

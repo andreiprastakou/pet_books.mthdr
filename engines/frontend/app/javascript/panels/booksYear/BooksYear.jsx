@@ -24,7 +24,9 @@ import {
 } from 'store/booksList/selectors'
 import { selectYears } from 'store/booksYears/selectors'
 import UrlStoreContext from 'store/urlStore/Context'
+import useCompactLayout from 'hooks/useCompactLayout'
 import { bookIdFromWindowLocation } from 'utils/bookIdFromLocation'
+import { COVER_SIZES, coverSizeForWidth } from 'utils/coverSizes'
 import { notNullish } from 'utils/nullish'
 
 export const PANEL_ID = 'books-list-yearly'
@@ -33,6 +35,33 @@ const BOOK_WIDTH = 190
 const BOOK_HEIGHT = 270
 const CELL_WIDTH = 200
 const CELL_HEIGHT = 280
+// Matches the compact cover list: three columns, the same gap, and the padding
+// around each cover. The case is the cover plus that padding on every side.
+const COMPACT_COLUMNS = 3
+const COMPACT_GAP = 10
+const COMPACT_INSET = 10
+const CASE_PADDING = COMPACT_INSET * 2
+
+const compactCoverSize = width => {
+  const slot = (width - (COMPACT_GAP * (COMPACT_COLUMNS - 1))) / COMPACT_COLUMNS
+
+  return coverSizeForWidth(slot - COMPACT_INSET)
+}
+
+const coverMetrics = size => {
+  const cover = COVER_SIZES[size]
+  const bookWidth = cover.width + CASE_PADDING
+  const bookHeight = cover.height + CASE_PADDING
+
+  return {
+    bookHeight,
+    bookWidth,
+    cellHeight: bookHeight + COMPACT_GAP,
+    cellWidth: bookWidth + COMPACT_GAP,
+    coverHeight: cover.height,
+    coverWidth: cover.width,
+  }
+}
 const VISIBLE_COLUMN_RADIUS = 2
 const VISIBLE_ROW_RADIUS = 2
 const GHOST_COLUMN_MARGIN = 3
@@ -89,9 +118,16 @@ const BooksYear = ({ title = defaultTitle }) => {
   const filter = useSelector(selectFilter())
   const years = useSelector(selectYears(), shallowEqual)
   const currentBookId = useSelector(selectCurrentBookId())
+  const compact = useCompactLayout()
   const ref = useRef(null)
   const contentRef = useRef(null)
   const [contentSize, setContentSize] = useState({ height: 0, width: 0 })
+  const coverSize = compact && contentSize.width > 0 ? compactCoverSize(contentSize.width) : null
+  const metrics = coverSize ? coverMetrics(coverSize) : null
+  const bookWidth = metrics?.bookWidth ?? BOOK_WIDTH
+  const bookHeight = metrics?.bookHeight ?? BOOK_HEIGHT
+  const cellWidth = metrics?.cellWidth ?? CELL_WIDTH
+  const cellHeight = metrics?.cellHeight ?? CELL_HEIGHT
   const {
     pageState: { activePanelId, registeredPanelIds },
     actions: {
@@ -126,9 +162,9 @@ const BooksYear = ({ title = defaultTitle }) => {
   }), [coordinatesById, matrixBookIds, selectedCoordinate])
 
   const cellPosition = useCallback((column, row) => ({
-    left: (contentSize.width / 2) + ((column - selectedCoordinate[0]) * CELL_WIDTH) - (BOOK_WIDTH / 2),
-    top: (contentSize.height / 2) + ((row - selectedCoordinate[1]) * CELL_HEIGHT) - (BOOK_HEIGHT / 2),
-  }), [contentSize, selectedCoordinate])
+    left: (contentSize.width / 2) + ((column - selectedCoordinate[0]) * cellWidth) - (bookWidth / 2),
+    top: (contentSize.height / 2) + ((row - selectedCoordinate[1]) * cellHeight) - (bookHeight / 2),
+  }), [bookHeight, bookWidth, cellHeight, cellWidth, contentSize, selectedCoordinate])
 
   const bookPositions = useMemo(() => matrixBookIds.reduce((result, bookId) => {
     const [column, row] = coordinatesById[bookId]
@@ -248,7 +284,7 @@ const BooksYear = ({ title = defaultTitle }) => {
           { title(selectedYear) }
         </span>
 
-        <div>
+        <div className='all-books-year'>
           <YearControl
             onChange={selectYear}
             value={selectedYear}
@@ -261,6 +297,12 @@ const BooksYear = ({ title = defaultTitle }) => {
         <div
           className='all-books-list'
           ref={contentRef}
+          style={metrics ? {
+            '--year-book-height': `${metrics.bookHeight}px`,
+            '--year-book-width': `${metrics.bookWidth}px`,
+            '--year-cover-height': `${metrics.coverHeight}px`,
+            '--year-cover-width': `${metrics.coverWidth}px`,
+          } : undefined}
         >
           <GhostBooks
             cellPosition={cellPosition}
@@ -276,6 +318,7 @@ const BooksYear = ({ title = defaultTitle }) => {
               key={bookId}
               scrollIntoView={false}
               showYear={false}
+              size={coverSize || undefined}
               style={bookPositions[bookId]}
             />
             ))}

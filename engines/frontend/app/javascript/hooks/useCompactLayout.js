@@ -12,6 +12,7 @@ const TAG_PAGE_PATH = /^\/tags\/\d+\/?$/u
 const SERIES_INDEX_PATH = /^\/series\/?$/u
 const SERIES_PAGE_PATH = /^\/series\/\d+\/?$/u
 const PUBLIC_LISTS_PAGE_PATH = /^\/public-lists\/\d+\/?$/u
+const BOOKS_INDEX_PATH = /^\/books\/?$/u
 
 export const isAuthorPagePath = pathname => AUTHOR_PAGE_PATH.test(pathname || '')
 
@@ -27,6 +28,8 @@ export const isSeriesPagePath = pathname => SERIES_PAGE_PATH.test(pathname || ''
 
 export const isPublicListsPagePath = pathname => PUBLIC_LISTS_PAGE_PATH.test(pathname || '')
 
+export const isBooksIndexPath = pathname => BOOKS_INDEX_PATH.test(pathname || '')
+
 const compactLayoutPath = pathname =>
   isAuthorPagePath(pathname) ||
   isAuthorsIndexPath(pathname) ||
@@ -34,7 +37,8 @@ const compactLayoutPath = pathname =>
   isTagPagePath(pathname) ||
   isSeriesIndexPath(pathname) ||
   isSeriesPagePath(pathname) ||
-  isPublicListsPagePath(pathname)
+  isPublicListsPagePath(pathname) ||
+  isBooksIndexPath(pathname)
 
 const narrowViewport = () => {
   if (typeof window.matchMedia !== 'function') return false
