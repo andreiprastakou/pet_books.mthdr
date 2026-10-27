@@ -76,7 +76,7 @@
   }
 }
 
-@include on-author-page-compact {
+@include on-compact-layout {
   .panel--books-stack .list-sort-dropdown {
     flex: 0 0 auto;
     max-width: none;

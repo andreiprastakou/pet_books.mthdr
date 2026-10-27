@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
-import useCompactAuthorLayout from 'hooks/useCompactAuthorLayout'
+import useCompactLayout from 'hooks/useCompactLayout'
 import AuthorCard from 'panels/authorCard/AuthorCard'
 import BooksStack from 'panels/booksStack/BooksStack'
 import CollectionWorks from 'panels/CollectionWorks'
@@ -12,7 +12,7 @@ import { selectCurrentAuthorId } from 'store/axis/selectors'
 import { selectAuthorFull } from 'store/authors/selectors'
 
 const WorksColumn = () => {
-  const compact = useCompactAuthorLayout()
+  const compact = useCompactLayout()
 
   return (
     <Column span={2}>

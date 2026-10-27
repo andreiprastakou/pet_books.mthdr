@@ -278,7 +278,7 @@ describe('BookDetails', () => {
     expect(document.querySelector('.panel--book-details .panel--body').scrollTop).toBe(0)
   })
 
-  it('leaves the details panel scroll when the book changes in the compact author layout', () => {
+  it('leaves the details panel scroll when the book changes in the compact layout', () => {
     window.matchMedia = vi.fn().mockImplementation(query => ({
       addEventListener: vi.fn(),
       addListener: vi.fn(),

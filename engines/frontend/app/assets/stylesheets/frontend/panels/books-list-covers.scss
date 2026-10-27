@@ -167,7 +167,7 @@
   }
 }
 
-@include on-author-page-compact {
+@include on-compact-layout {
   .panel--included-works .books-list-row {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 

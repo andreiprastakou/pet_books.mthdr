@@ -30,7 +30,8 @@
 body {
   margin: 0;
 
-  // Desktop floor. Author pages drop it below this width via on-author-page-compact.
+  // Desktop floor. Pages that opt into compact layout drop it below this width
+  // via on-compact-layout.
   min-width: $layout-min-width;
 
   .f-page-content-container {

@@ -6,8 +6,14 @@ import { useLocation } from 'react-router-dom'
 export const COMPACT_LAYOUT_MEDIA = '(max-width: 899px)'
 
 const AUTHOR_PAGE_PATH = /^\/authors\/\d+\/?$/u
+const AUTHORS_INDEX_PATH = /^\/authors\/?$/u
 
 export const isAuthorPagePath = pathname => AUTHOR_PAGE_PATH.test(pathname || '')
+
+export const isAuthorsIndexPath = pathname => AUTHORS_INDEX_PATH.test(pathname || '')
+
+const compactLayoutPath = pathname =>
+  isAuthorPagePath(pathname) || isAuthorsIndexPath(pathname)
 
 const narrowViewport = () => {
   if (typeof window.matchMedia !== 'function') return false
@@ -26,7 +32,7 @@ const subscribe = (media, update) => {
 }
 
 // Missing matchMedia (jsdom) stays on the desktop layout.
-const useCompactAuthorLayout = () => {
+const useCompactLayout = () => {
   const { pathname } = useLocation()
   const [narrow, setNarrow] = useState(narrowViewport)
 
@@ -40,7 +46,7 @@ const useCompactAuthorLayout = () => {
     return subscribe(media, update)
   }, [])
 
-  return isAuthorPagePath(pathname) && narrow
+  return compactLayoutPath(pathname) && narrow
 }
 
-export default useCompactAuthorLayout
+export default useCompactLayout

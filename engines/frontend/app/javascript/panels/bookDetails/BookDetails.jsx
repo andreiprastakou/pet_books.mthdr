@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from 'react'
 import { shallowEqual, useDispatch, useSelector } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import useCompactAuthorLayout from 'hooks/useCompactAuthorLayout'
+import useCompactLayout from 'hooks/useCompactLayout'
 import BookDetailsCard from 'panels/bookDetails/BookDetailsCard'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
 import { fetchBookDetails, fetchCurrentBookDetails } from 'store/books/actions'
@@ -55,7 +55,7 @@ const BookDetails = ({
   showPublicLists = true,
 }) => {
   const { book, bookIndexEntry } = useDisplayedBook(bookId)
-  const compact = useCompactAuthorLayout()
+  const compact = useCompactLayout()
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
   const seriesRefs = useSelector(selectSeriesRefsByIds(book?.seriesIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(book?.tagIds || []), shallowEqual)

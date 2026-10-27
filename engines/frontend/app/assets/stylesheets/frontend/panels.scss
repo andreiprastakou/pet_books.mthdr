@@ -40,7 +40,7 @@
   text-transform: uppercase;
 }
 
-@include on-author-page-compact {
+@include on-compact-layout {
   .panel--header {
     flex-wrap: wrap;
     font-size: 16px;

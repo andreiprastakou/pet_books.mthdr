@@ -23,9 +23,9 @@ const path = '/authors/:authorId'
 
 const Renderer = () => {
   useLayoutEffect(() => {
-    document.body.classList.add('is-author-page')
+    document.body.classList.add('is-compact-layout')
 
-    return () => document.body.classList.remove('is-author-page')
+    return () => document.body.classList.remove('is-compact-layout')
   }, [])
 
   return (

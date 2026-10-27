@@ -10,13 +10,13 @@ import LogoutForm from 'components/navbar/LogoutForm'
 import TagsNavList from 'components/navbar/TagsNavList'
 import SeriesNavList from 'components/navbar/SeriesNavList'
 import PublicListsNavList from 'components/navbar/ListsNavList'
-import useCompactAuthorLayout from 'hooks/useCompactAuthorLayout'
+import useCompactLayout from 'hooks/useCompactLayout'
 import EventsContext from 'store/events/Context'
 import UrlStoreContext from 'store/urlStore/Context'
 
 const PageNavbar = ({ currentUserEmail }) => {
   const { routesReady } = useContext(UrlStoreContext)
-  const compact = useCompactAuthorLayout()
+  const compact = useCompactLayout()
   const [drawerOpen, setDrawerOpen] = useState(false)
   const closeDrawer = useCallback(() => setDrawerOpen(false), [])
   const toggleDrawer = useCallback(() => setDrawerOpen(open => !open), [])
