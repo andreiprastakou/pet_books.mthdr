@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import ReadsPage from 'pages/readsPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -16,20 +16,12 @@ const Helper = () => {
 
 const path = '/reads'
 
-const Renderer = () => {
-  useLayoutEffect(() => {
-    document.body.classList.add('is-compact-layout')
+const Renderer = () => (
+  <>
+    <BooksListConfigurer />
 
-    return () => document.body.classList.remove('is-compact-layout')
-  }, [])
-
-  return (
-    <>
-      <BooksListConfigurer />
-
-      <ReadsPage />
-    </>
-  )
-}
+    <ReadsPage />
+  </>
+)
 
 export default { path, Renderer, Helper }

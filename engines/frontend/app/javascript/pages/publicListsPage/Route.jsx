@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import PublicListsPage from 'pages/publicListsPage/Page'
 import UrlStoreContext from 'store/urlStore/Context'
@@ -18,23 +18,15 @@ const Helper = () => {
 
 const path = '/public-lists/:id'
 
-const Renderer = () => {
-  useLayoutEffect(() => {
-    document.body.classList.add('is-compact-layout')
+const Renderer = () => (
+  <>
+    <BooksListConfigurer />
 
-    return () => document.body.classList.remove('is-compact-layout')
-  }, [])
+    <LocalStoreConfigurer />
 
-  return (
-    <>
-      <BooksListConfigurer />
-
-      <LocalStoreConfigurer />
-
-      <PublicListsPage />
-    </>
-  )
-}
+    <PublicListsPage />
+  </>
+)
 
 const LocalStoreConfigurer = () => {
   const { actions: { addUrlAction, addUrlState, patch },

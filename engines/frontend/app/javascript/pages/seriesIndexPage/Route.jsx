@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import UrlStoreContext from 'store/urlStore/Context'
 import SeriesIndexPage from 'pages/seriesIndexPage/Page'
@@ -16,14 +16,8 @@ const Helper = () => {
 
 const path = '/series'
 
-const Renderer = () => {
-  useLayoutEffect(() => {
-    document.body.classList.add('is-compact-layout')
-
-    return () => document.body.classList.remove('is-compact-layout')
-  }, [])
-
-  return <SeriesIndexPage />
-}
+const Renderer = () => (
+  <SeriesIndexPage />
+)
 
 export default { path, Renderer, Helper }

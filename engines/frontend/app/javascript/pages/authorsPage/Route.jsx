@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useLayoutEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { setCurrentAuthorId } from 'store/axis/actions'
@@ -18,21 +18,13 @@ const Helper = () => {
 
 const path = '/authors'
 
-const Renderer = () => {
-  useLayoutEffect(() => {
-    document.body.classList.add('is-compact-layout')
+const Renderer = () => (
+  <>
+    <LocalStoreConfigurer />
 
-    return () => document.body.classList.remove('is-compact-layout')
-  }, [])
-
-  return (
-    <>
-      <LocalStoreConfigurer />
-
-      <AuthorsPage />
-    </>
-  )
-}
+    <AuthorsPage />
+  </>
+)
 
 const LocalStoreConfigurer = () => {
   const dispatch = useDispatch()

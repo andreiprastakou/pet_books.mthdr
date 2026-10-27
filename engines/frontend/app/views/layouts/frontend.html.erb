@@ -12,7 +12,7 @@
     <%= javascript_pack_tag 'frontend' %>
   </head>
 
-  <body<% if content_for?(:body_class) %> class="<%= yield :body_class %>"<% end %>>
+  <body class="is-compact-layout">
     <%= yield %>
   </body>
 </html>
