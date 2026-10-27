@@ -14,6 +14,17 @@ vi.mock('store/publicLists/apiClient', () => ({
   },
 }))
 
+const stubNarrowViewport = () => {
+  window.matchMedia = vi.fn().mockImplementation(query => ({
+    addEventListener: vi.fn(),
+    addListener: vi.fn(),
+    matches: query === '(max-width: 899px)',
+    media: query,
+    removeEventListener: vi.fn(),
+    removeListener: vi.fn(),
+  }))
+}
+
 const renderNavbar = (ui, options = {}) => {
   const { route = '/books', ...rest } = options
 
@@ -89,14 +100,7 @@ describe('PageNavbar', () => {
     const user = userEvent.setup()
     const triggerEvent = vi.fn()
 
-    window.matchMedia = vi.fn().mockImplementation(query => ({
-      addEventListener: vi.fn(),
-      addListener: vi.fn(),
-      matches: query === '(max-width: 899px)',
-      media: query,
-      removeEventListener: vi.fn(),
-      removeListener: vi.fn(),
-    }))
+    stubNarrowViewport()
 
     renderNavbar(<PageNavbar currentUserEmail='reader@example.com' />, {
       events: { triggerEvent },
@@ -127,15 +131,26 @@ describe('PageNavbar', () => {
     expect(screen.getByRole('link', { name: 'List all' })).toHaveAttribute('href', '/books')
   })
 
+  it('uses the compact menu on a narrow series page', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/series/11' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
+  it('uses the compact menu on a narrow series index', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/series' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
   it('uses the compact menu on a narrow tag page', () => {
-    window.matchMedia = vi.fn().mockImplementation(query => ({
-      addEventListener: vi.fn(),
-      addListener: vi.fn(),
-      matches: query === '(max-width: 899px)',
-      media: query,
-      removeEventListener: vi.fn(),
-      removeListener: vi.fn(),
-    }))
+    stubNarrowViewport()
 
     renderNavbar(<PageNavbar />, { route: '/tags/11' })
 
@@ -144,14 +159,7 @@ describe('PageNavbar', () => {
   })
 
   it('uses the compact menu on a narrow tags index', () => {
-    window.matchMedia = vi.fn().mockImplementation(query => ({
-      addEventListener: vi.fn(),
-      addListener: vi.fn(),
-      matches: query === '(max-width: 899px)',
-      media: query,
-      removeEventListener: vi.fn(),
-      removeListener: vi.fn(),
-    }))
+    stubNarrowViewport()
 
     renderNavbar(<PageNavbar />, { route: '/tags' })
 
@@ -160,14 +168,7 @@ describe('PageNavbar', () => {
   })
 
   it('uses the compact menu on a narrow authors index', () => {
-    window.matchMedia = vi.fn().mockImplementation(query => ({
-      addEventListener: vi.fn(),
-      addListener: vi.fn(),
-      matches: query === '(max-width: 899px)',
-      media: query,
-      removeEventListener: vi.fn(),
-      removeListener: vi.fn(),
-    }))
+    stubNarrowViewport()
 
     renderNavbar(<PageNavbar />, { route: '/authors' })
 

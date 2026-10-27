@@ -9,6 +9,8 @@ const AUTHOR_PAGE_PATH = /^\/authors\/\d+\/?$/u
 const AUTHORS_INDEX_PATH = /^\/authors\/?$/u
 const TAGS_INDEX_PATH = /^\/tags\/?$/u
 const TAG_PAGE_PATH = /^\/tags\/\d+\/?$/u
+const SERIES_INDEX_PATH = /^\/series\/?$/u
+const SERIES_PAGE_PATH = /^\/series\/\d+\/?$/u
 
 export const isAuthorPagePath = pathname => AUTHOR_PAGE_PATH.test(pathname || '')
 
@@ -18,11 +20,17 @@ export const isTagsIndexPath = pathname => TAGS_INDEX_PATH.test(pathname || '')
 
 export const isTagPagePath = pathname => TAG_PAGE_PATH.test(pathname || '')
 
+export const isSeriesIndexPath = pathname => SERIES_INDEX_PATH.test(pathname || '')
+
+export const isSeriesPagePath = pathname => SERIES_PAGE_PATH.test(pathname || '')
+
 const compactLayoutPath = pathname =>
   isAuthorPagePath(pathname) ||
   isAuthorsIndexPath(pathname) ||
   isTagsIndexPath(pathname) ||
-  isTagPagePath(pathname)
+  isTagPagePath(pathname) ||
+  isSeriesIndexPath(pathname) ||
+  isSeriesPagePath(pathname)
 
 const narrowViewport = () => {
   if (typeof window.matchMedia !== 'function') return false
