@@ -131,6 +131,15 @@ describe('PageNavbar', () => {
     expect(screen.getByRole('link', { name: 'List all' })).toHaveAttribute('href', '/books')
   })
 
+  it('uses the compact menu on a narrow public lists page', () => {
+    stubNarrowViewport()
+
+    renderNavbar(<PageNavbar />, { route: '/public-lists/7' })
+
+    expect(screen.getByRole('button', { name: 'Open menu' })).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Books' })).not.toBeInTheDocument()
+  })
+
   it('uses the compact menu on a narrow series page', () => {
     stubNarrowViewport()
 
