@@ -7,8 +7,6 @@ vi.mock('rsuite', () => ({
   Slider: () => null,
 }))
 
-vi.mock('rsuite/Slider/styles/index.css', () => ({}))
-
 import YearControl from 'panels/booksYear/YearControl'
 
 afterEach(cleanup)
