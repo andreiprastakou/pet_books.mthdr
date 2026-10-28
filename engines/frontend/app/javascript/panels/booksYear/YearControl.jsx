@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { Slider } from 'rsuite'
-import 'rsuite/Slider/styles/index.css'
 import PropTypes from 'prop-types'
 
 const YearControl = ({ years, value, onChange }) => {

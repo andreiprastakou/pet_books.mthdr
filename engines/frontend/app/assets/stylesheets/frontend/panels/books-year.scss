@@ -62,29 +62,50 @@
   .all-books-years-slider {
     flex: 1 1 auto;
     margin: 0 8px;
+    // The handle is a sibling of the bar. This box is its positioning context;
+    // otherwise left/top percentages resolve against the panel and the pin is clipped.
+    position: relative;
 
+    // Pin and year sit on the handle. rsuite's own sheet is not used: webpack
+    // injects it in development, but production extracts it and this layout
+    // only loads the Sprockets stylesheet.
     .rs-slider-bar {
       background-color: #b8c9de;
+      border-radius: 3px;
       height: 6px;
     }
 
-    .rs-slider-progress {
+    .rs-slider-progress-bar {
       background-color: #3f8fe8;
+      border-radius: 3px 0 0 3px;
       height: 6px;
+      left: 0;
+      position: absolute;
     }
 
     .rs-slider-handle {
       cursor: pointer;
-    }
+      left: var(--rs-slider-offset, 0%);
+      outline: none;
+      position: absolute;
+      top: 0;
+      z-index: 1;
 
-    .slider-handle {
-      cursor: pointer;
-      height: 12px;
-      width: 12px;
+      &::before {
+        background-color: #fff;
+        border: 2px solid #3498ff;
+        border-radius: 50%;
+        content: '';
+        height: 12px;
+        margin-left: -6px;
+        margin-top: -3px;
+        position: absolute;
+        width: 12px;
+      }
     }
 
     .slider-year-label {
-      bottom: 2px;
+      bottom: 4px;
       color: #1d5d9f;
       font-size: 10px;
       left: 50%;
