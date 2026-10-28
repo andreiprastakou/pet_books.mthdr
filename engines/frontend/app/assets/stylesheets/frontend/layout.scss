@@ -1,8 +1,10 @@
-// Desktop layout floor. Compact layout starts one pixel below it.
+// Desktop layout floor. Compact layout starts one pixel below it
+// and keeps its own floor so the page cannot shrink without limit.
 // Keep $compact-max-width in step with COMPACT_LAYOUT_MEDIA in
 // app/javascript/hooks/useCompactLayout.js.
 $layout-min-width: 900px;
 $compact-max-width: $layout-min-width - 1px;
+$compact-min-width: 450px;
 
 @mixin on-compact-layout {
   @media (max-width: $compact-max-width) {

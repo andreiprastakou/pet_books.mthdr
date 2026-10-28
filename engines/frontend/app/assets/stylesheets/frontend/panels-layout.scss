@@ -158,8 +158,8 @@
 
 // The page scrolls. Each panel caps its own height and scrolls inside.
 @include on-compact-layout {
-  min-width: 0;
-  overflow-x: clip;
+  min-width: $compact-min-width;
+  overflow-x: auto;
 
   .page {
     padding-bottom: env(safe-area-inset-bottom);

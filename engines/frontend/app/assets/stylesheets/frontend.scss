@@ -30,7 +30,7 @@
 body {
   margin: 0;
 
-  // Desktop floor. The frontend drops it below this width via on-compact-layout.
+  // Desktop floor. Below this width, on-compact-layout uses $compact-min-width.
   min-width: $layout-min-width;
 
   .f-page-content-container {
