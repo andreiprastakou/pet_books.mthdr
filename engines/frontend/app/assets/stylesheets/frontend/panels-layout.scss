@@ -73,26 +73,6 @@
   min-width: 0;
   padding: 10px;
 
-  .selected-works-split {
-    height: 100%;
-    min-height: 0;
-  }
-
-  .selected-works-split-pane {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
-    min-width: 0;
-
-    > * {
-      flex: 1 1 auto;
-      height: 100%;
-      max-height: 100%;
-      min-height: 0;
-      min-width: 0;
-    }
-  }
-
   .panel--books-stack .panel--body {
     display: flex;
     flex-direction: column;
@@ -127,7 +107,6 @@
   .panel--books-list-covers,
   .panel--books-stack,
   .panel--books-year,
-  .panel--included-works,
   .panel--series-list,
   .panel--tags-list {
     height: 100%;
@@ -200,21 +179,6 @@
       }
     }
 
-    .selected-works-split {
-      flex-direction: column;
-      height: auto;
-    }
-
-    .selected-works-split-pane {
-      flex: none;
-      height: auto;
-
-      > * {
-        height: auto;
-        max-height: none;
-      }
-    }
-
     .panel-slot {
       flex: none;
       height: auto;
@@ -238,8 +202,7 @@
     .panel--author-card,
     .panel--book-details,
     .panel--books-list-covers,
-    .panel--books-stack,
-    .panel--included-works {
+    .panel--books-stack {
       height: auto;
       overflow: hidden;
     }
@@ -250,8 +213,7 @@
     }
 
     .panel--book-details,
-    .panel--books-list-covers,
-    .panel--included-works {
+    .panel--books-list-covers {
       /* stylelint-disable-next-line function-name-case */
       max-height: Min(70dvh, 640px);
     }

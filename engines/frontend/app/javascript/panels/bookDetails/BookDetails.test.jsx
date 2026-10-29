@@ -1,12 +1,17 @@
 import React from 'react'
 import { act, screen } from '@testing-library/react'
-import userEvent from '@testing-library/user-event'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
 
 import BookDetails from 'panels/bookDetails/BookDetails'
 import { setCurrentBookId } from 'store/axis/actions'
-import { addBooks, fetchBookDetails, fetchCurrentBookDetails, setCurrentBookDetails } from 'store/books/actions'
+import {
+  addBooks,
+  fetchBookDetails,
+  fetchCurrentBookDetails,
+  fetchMissingBookIndexEntries,
+  setCurrentBookDetails,
+} from 'store/books/actions'
 import { renderWithProviders } from 'test/renderWithProviders'
 import { buildPath } from 'store/urlStore/RootStoreProvider'
 
@@ -16,6 +21,7 @@ vi.mock('store/books/actions', async() => {
     ...actual,
     fetchBookDetails: vi.fn(() => () => undefined),
     fetchCurrentBookDetails: vi.fn(() => () => undefined),
+    fetchMissingBookIndexEntries: vi.fn(() => () => undefined),
   }
 })
 
@@ -161,30 +167,101 @@ describe('BookDetails', () => {
     expect(publicLists).toHaveTextContent('1966: Hugo - winner')
     expect(publicLists).toHaveTextContent('1966: Nebula - nominee')
     expect(publicLists.textContent).toMatch(/1966: Hugo - winner.*1966: Nebula - nominee/u)
-    expect(document.querySelector('.panel--book-details--collection')).not.toBeInTheDocument()
   })
 
-  it('marks a collection so its details panel can share the page with included works', () => {
-    renderWithProviders(<BookDetails />, {
+  it('lists included works with authors when the works have mixed authors', () => {
+    renderWithProviders(<BookDetails showCover={false} />, {
       preloadedState: {
         ...baseState,
+        storeAuthors: {
+          ...baseState.storeAuthors,
+          authorsRefs: {
+            1: { id: 1, fullname: 'Frank Herbert' },
+            2: { id: 2, fullname: 'Clive Barker' },
+          },
+        },
         storeBooks: {
           ...baseState.storeBooks,
-          bookDetailsCurrent: { ...bookDetails, format: 'collection' },
-          booksIndex: { 5: { ...bookIndexEntry, format: 'collection' } },
+          bookDetailsCurrent: {
+            ...bookDetails,
+            format: 'collection',
+            collectedWorkIds: [8, 9],
+          },
+          booksIndex: {
+            5: { ...bookIndexEntry, format: 'collection', collectedWorkIds: [8, 9] },
+            8: {
+              id: 8, title: 'Hell', year: 2016, authorIds: [2], coverDesignId: 9,
+            },
+            9: {
+              id: 9, title: 'Heaven', year: 2017, authorIds: [1], coverDesignId: 9,
+            },
+          },
         },
       },
       urlStore: { routes },
     })
 
-    expect(document.querySelector('.panel--book-details--collection')).toBeInTheDocument()
-    expect(screen.getByTestId('book-cover')).toHaveAttribute('data-scroll-into-view', 'no')
-    expect(screen.getByTestId('book-cover')).toHaveAttribute('data-size', 'lg')
+    expect(fetchMissingBookIndexEntries).toHaveBeenCalledWith([8, 9])
+    expect(screen.getByText('Included works:')).toBeInTheDocument()
+    expect(document.querySelector('.book-details-panel-authors')).not.toBeInTheDocument()
+
+    const hell = screen.getByRole('link', { name: 'Hell (2016) by Clive Barker' })
+    const heaven = screen.getByRole('link', { name: 'Heaven (2017) by Frank Herbert' })
+    expect(hell).toHaveAttribute('href', '/books/8')
+    expect(heaven).toHaveAttribute('href', '/books/9')
+
+    const includedWorks = hell.closest('.book-details-panel-included-works')
+    const supplement = includedWorks.parentElement
+    const links = supplement.querySelector('.book-details-panel-links')
+    const tags = supplement.querySelector('.book-details-panel-tags')
+    expect(links.compareDocumentPosition(includedWorks) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    expect(includedWorks.compareDocumentPosition(tags) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
   })
 
-  it('shows another book in a compact panel and clears it from the header', async() => {
-    const user = userEvent.setup()
-    const onClose = vi.fn()
+  it('keeps shared included-work authors on the heading only', () => {
+    renderWithProviders(<BookDetails showCover={false} />, {
+      preloadedState: {
+        ...baseState,
+        storeAuthors: {
+          ...baseState.storeAuthors,
+          authorsRefs: {
+            1: { id: 1, fullname: 'Clive Barker' },
+          },
+        },
+        storeBooks: {
+          ...baseState.storeBooks,
+          bookDetailsCurrent: {
+            ...bookDetails,
+            format: 'collection',
+            collectedWorkIds: [8, 9],
+          },
+          booksIndex: {
+            5: {
+              ...bookIndexEntry,
+              format: 'collection',
+              collectedWorkIds: [8, 9],
+              authorIds: [1],
+            },
+            8: {
+              id: 8, title: 'Hell', year: 2016, authorIds: [1], coverDesignId: 9,
+            },
+            9: {
+              id: 9, title: 'Heaven', year: 2017, authorIds: [1], coverDesignId: 9,
+            },
+          },
+        },
+      },
+      urlStore: { routes },
+    })
+
+    expect(screen.getByRole('link', { name: 'Clive Barker' })).toBeInTheDocument()
+    expect(document.querySelector('.book-details-panel-authors')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Hell (2016)' })).toHaveAttribute('href', '/books/8')
+    expect(screen.getByRole('link', { name: 'Heaven (2017)' })).toHaveAttribute('href', '/books/9')
+    expect(screen.queryByRole('link', { name: /by Clive Barker$/u })).not.toBeInTheDocument()
+  })
+
+  it('shows a specific book by id without a cover', () => {
     const included = {
       ...bookDetails,
       id: 8,
@@ -195,9 +272,7 @@ describe('BookDetails', () => {
     renderWithProviders(
       <BookDetails
         bookId={8}
-        header='Selected included work'
-        onClose={onClose}
-        reducedHeight
+        header='Selected Work'
         showCover={false}
       />,
       {
@@ -219,11 +294,7 @@ describe('BookDetails', () => {
     expect(screen.getByRole('heading', { name: 'Hell' })).toBeInTheDocument()
     expect(screen.queryByRole('heading', { name: 'Dune' })).not.toBeInTheDocument()
     expect(screen.queryByTestId('book-cover')).not.toBeInTheDocument()
-    expect(document.querySelector('.book-details-panel--compact')).toBeInTheDocument()
     expect(fetchBookDetails).not.toHaveBeenCalled()
-
-    await user.click(screen.getByRole('button', { name: 'Clear selected included work' }))
-    expect(onClose).toHaveBeenCalledTimes(1)
   })
 
   it('keeps the previous details visible until the next book loads', () => {
@@ -335,7 +406,7 @@ describe('BookDetails', () => {
     expect(annotation.compareDocumentPosition(supplement)).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
   })
 
-  it('scrolls the included-work panel to the top when that work changes', () => {
+  it('scrolls to the top when the requested book id changes', () => {
     const included = (id, title) => ({
       details: { ...bookDetails, id, title, summary: `${title} summary` },
       index: { ...bookIndexEntry, id, title },

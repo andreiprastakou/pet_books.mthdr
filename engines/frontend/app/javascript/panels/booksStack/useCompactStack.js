@@ -55,7 +55,7 @@ const useRevealHiddenSelection = ({ compactStack, getActions, hiddenSelection })
     const { setCompactStack } = getActions()
     if (!setCompactStack) return
 
-    const key = `${hiddenSelection.book_id}:${hiddenSelection.included_work_id}`
+    const key = String(hiddenSelection.book_id)
     if (requestedKey.current === key) return
 
     requestedKey.current = key

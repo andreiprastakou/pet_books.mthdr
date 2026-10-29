@@ -12,6 +12,7 @@ const BookDetailsCardMainInfo = ({
   booksPagePath,
   seriesPagePath,
   seriesRefs,
+  showAuthors = true,
   showSummary,
 }) => {
   const authorHref = useCallback(
@@ -36,14 +37,16 @@ const BookDetailsCardMainInfo = ({
         </div>
       ) : null }
 
-      <div className='book-details-panel-authors'>
-        { 'by ' }
+      { showAuthors ? (
+        <div className='book-details-panel-authors'>
+          { 'by ' }
 
-        <BookDetailsCardLinkedNames
-          buildHref={authorHref}
-          entries={authorRefs}
-        />
-      </div>
+          <BookDetailsCardLinkedNames
+            buildHref={authorHref}
+            entries={authorRefs}
+          />
+        </div>
+      ) : null }
 
       { seriesRefs.length > 0 ? (
         <div className='book-details-panel-series'>
@@ -68,6 +71,7 @@ BookDetailsCardMainInfo.propTypes = {
   booksPagePath: PropTypes.func.isRequired,
   seriesPagePath: PropTypes.func.isRequired,
   seriesRefs: PropTypes.arrayOf(PropTypes.object).isRequired,
+  showAuthors: PropTypes.bool,
   showSummary: PropTypes.bool.isRequired,
 }
 

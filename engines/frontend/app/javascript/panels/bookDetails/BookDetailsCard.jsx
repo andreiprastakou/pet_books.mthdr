@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 
 import useScrollToTop from 'hooks/useScrollToTop'
 import {
-  BookDetailsClose,
   BookDetailsHeader,
   bookDetailsClassName,
 } from 'panels/bookDetails/BookDetailsFrame'
@@ -18,6 +17,7 @@ const bookDetailsLinks = book => book.externalLinks || []
 
 const BookDetailsCard = ({
   authorPagePath,
+  authorPlacement = null,
   authorRefs,
   book,
   bookIndexEntry,
@@ -26,9 +26,8 @@ const BookDetailsCard = ({
   compact,
   coverSize,
   header,
+  includedWorkIds = null,
   listPagePath,
-  onClose,
-  reducedHeight,
   seriesPagePath,
   seriesRefs,
   showCover,
@@ -38,27 +37,29 @@ const BookDetailsCard = ({
   const links = bookDetailsLinks(book)
   const bodyRef = useScrollToTop(book.id)
   const summaryBelow = compact
+  const showAuthorsInHeading = authorPlacement !== 'entries'
+  const showAuthorsInIncludedWorks = authorPlacement === 'entries'
   const supplement = (
     <BookDetailsCardSupplement
       book={book}
       bookPagePath={bookPagePath}
+      includedWorkIds={includedWorkIds}
       links={links}
       listPagePath={listPagePath}
+      showAuthorsInIncludedWorks={showAuthorsInIncludedWorks}
       showPublicLists={showPublicLists}
       tags={tags}
     />
   )
 
   return (
-    <Card className={bookDetailsClassName(book, reducedHeight)}>
+    <Card className={bookDetailsClassName()}>
       <Card.Header className='panel--header'>
         <BookDetailsHeader
           booksPagePath={booksPagePath}
           header={header}
           title={book.title}
         />
-
-        { onClose ? <BookDetailsClose onClose={onClose} /> : null }
       </Card.Header>
 
       <Card.Body
@@ -73,6 +74,7 @@ const BookDetailsCard = ({
             booksPagePath={booksPagePath}
             seriesPagePath={seriesPagePath}
             seriesRefs={seriesRefs}
+            showAuthors={showAuthorsInHeading}
             showSummary={!summaryBelow}
           />
 
@@ -98,6 +100,7 @@ const BookDetailsCard = ({
 
 BookDetailsCard.propTypes = {
   authorPagePath: PropTypes.func.isRequired,
+  authorPlacement: PropTypes.oneOf(['heading', 'entries']),
   authorRefs: PropTypes.arrayOf(PropTypes.object).isRequired,
   book: PropTypes.object.isRequired,
   bookIndexEntry: PropTypes.object.isRequired,
@@ -106,9 +109,8 @@ BookDetailsCard.propTypes = {
   compact: PropTypes.bool.isRequired,
   coverSize: coverSizeType.isRequired,
   header: PropTypes.node,
+  includedWorkIds: PropTypes.arrayOf(PropTypes.number),
   listPagePath: PropTypes.func.isRequired,
-  onClose: PropTypes.func,
-  reducedHeight: PropTypes.bool.isRequired,
   seriesPagePath: PropTypes.func.isRequired,
   seriesRefs: PropTypes.arrayOf(PropTypes.object).isRequired,
   showCover: PropTypes.bool.isRequired,

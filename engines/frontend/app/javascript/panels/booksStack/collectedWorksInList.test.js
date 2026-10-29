@@ -38,10 +38,7 @@ describe('collected works in the works list', () => {
   it('points a hidden book at the first shown collection', () => {
     const map = collectionIdsByWorkId([4, 1, 2], booksIndex)
 
-    expect(hiddenSelectionFor(map, 2)).toEqual({
-      'book_id': 4,
-      'included_work_id': 2,
-    })
+    expect(hiddenSelectionFor(map, 2)).toEqual({ 'book_id': 4 })
     expect(hiddenSelectionFor(map, 4)).toBeNull()
   })
 
