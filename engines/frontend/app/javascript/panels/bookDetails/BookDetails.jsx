@@ -4,8 +4,16 @@ import PropTypes from 'prop-types'
 
 import useCompactLayout from 'hooks/useCompactLayout'
 import BookDetailsCard from 'panels/bookDetails/BookDetailsCard'
+import {
+  includedWorkIdsFor,
+  includedWorksAuthorPlacement,
+} from 'panels/bookDetails/includedWorksAuthorPlacement'
 import { selectAuthorsRefsByIds } from 'store/authors/selectors'
-import { fetchBookDetails, fetchCurrentBookDetails } from 'store/books/actions'
+import {
+  fetchBookDetails,
+  fetchCurrentBookDetails,
+  fetchMissingBookIndexEntries,
+} from 'store/books/actions'
 import {
   selectBookDetails,
   selectBooksIndexEntry,
@@ -49,16 +57,18 @@ const useDisplayedBook = bookId => {
 const BookDetails = ({
   bookId = null,
   header = null,
-  onClose = null,
-  reducedHeight = false,
   showCover = true,
   showPublicLists = true,
 }) => {
+  const dispatch = useDispatch()
   const { book, bookIndexEntry } = useDisplayedBook(bookId)
   const compact = useCompactLayout()
   const authorRefs = useSelector(selectAuthorsRefsByIds(bookIndexEntry?.authorIds || []), shallowEqual)
   const seriesRefs = useSelector(selectSeriesRefsByIds(book?.seriesIds || []), shallowEqual)
   const tags = useSelector(selectTagsRefsByIds(book?.tagIds || []), shallowEqual)
+  const booksIndex = useSelector(state => state.storeBooks.booksIndex)
+  const includedWorkIds = includedWorkIdsFor(book)
+  const authorPlacement = includedWorksAuthorPlacement(includedWorkIds, booksIndex)
   const {
     routes: {
       authorPagePath,
@@ -70,11 +80,18 @@ const BookDetails = ({
     routesReady,
   } = useContext(UrlStoreContext)
 
+  useEffect(() => {
+    if (!includedWorkIds?.length) return
+
+    dispatch(fetchMissingBookIndexEntries(includedWorkIds))
+  }, [dispatch, includedWorkIds])
+
   if (!book || !bookIndexEntry || !routesReady) return null
 
   return (
     <BookDetailsCard
       authorPagePath={authorPagePath}
+      authorPlacement={authorPlacement}
       authorRefs={authorRefs}
       book={book}
       bookIndexEntry={bookIndexEntry}
@@ -83,9 +100,8 @@ const BookDetails = ({
       compact={compact}
       coverSize={compact ? SMALLEST_COVER_SIZE : DEFAULT_COVER_SIZE}
       header={header}
+      includedWorkIds={includedWorkIds}
       listPagePath={listPagePath}
-      onClose={onClose}
-      reducedHeight={reducedHeight}
       seriesPagePath={seriesPagePath}
       seriesRefs={seriesRefs}
       showCover={showCover}
@@ -98,8 +114,6 @@ const BookDetails = ({
 BookDetails.propTypes = {
   bookId: PropTypes.number,
   header: PropTypes.node,
-  onClose: PropTypes.func,
-  reducedHeight: PropTypes.bool,
   showCover: PropTypes.bool,
   showPublicLists: PropTypes.bool,
 }

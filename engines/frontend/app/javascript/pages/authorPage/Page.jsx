@@ -2,39 +2,20 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
-import useCompactLayout from 'hooks/useCompactLayout'
 import AuthorCard from 'panels/authorCard/AuthorCard'
+import BookDetails from 'panels/bookDetails/BookDetails'
 import BooksStack from 'panels/booksStack/BooksStack'
-import CollectionWorks from 'panels/CollectionWorks'
-import SelectedWork from 'panels/SelectedWork'
 import PageStoreConfigurer from 'pages/authorPage/PageStoreConfigurer'
 import { selectCurrentAuthorId } from 'store/axis/selectors'
 import { selectAuthorFull } from 'store/authors/selectors'
 
-const WorksColumn = () => {
-  const compact = useCompactLayout()
-
-  return (
-    <Column span={2}>
-      <Slot>
-        <SelectedWork
-          header='Selected Work'
-          included={compact ? 'omit' : 'inline'}
-        />
-      </Slot>
-
-      <Slot>
-        <CollectionWorks />
-      </Slot>
-
-      { compact ? (
-        <Slot>
-          <SelectedWork included='only' />
-        </Slot>
-      ) : null }
-    </Column>
-  )
-}
+const WorksColumn = () => (
+  <Column span={2}>
+    <Slot>
+      <BookDetails header='Selected Work' />
+    </Slot>
+  </Column>
+)
 
 const AuthorStackColumn = () => (
   <Column span={1}>

@@ -1,8 +1,7 @@
 import React from 'react'
 
 import PageFrame, { Column, Slot } from 'components/pageFrame/PageFrame'
-import CollectionWorks from 'panels/CollectionWorks'
-import SelectedWork from 'panels/SelectedWork'
+import BookDetails from 'panels/bookDetails/BookDetails'
 import PageConfigurer from 'pages/bookPage/PageConfigurer'
 
 const BookPage = () => (
@@ -12,11 +11,7 @@ const BookPage = () => (
     <PageFrame className='page--book'>
       <Column span={3}>
         <Slot>
-          <SelectedWork />
-        </Slot>
-
-        <Slot>
-          <CollectionWorks />
+          <BookDetails />
         </Slot>
       </Column>
     </PageFrame>

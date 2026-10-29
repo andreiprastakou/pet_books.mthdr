@@ -186,7 +186,6 @@ describe('BooksStack', () => {
 
     expect(urlStore.actions.setCompactStack).toHaveBeenCalledWith(true, {
       'book_id': 1,
-      'included_work_id': 2,
     })
   })
 
@@ -198,7 +197,6 @@ describe('BooksStack', () => {
 
     expect(urlStore.actions.setCompactStack).toHaveBeenCalledWith(true, {
       'book_id': 1,
-      'included_work_id': 2,
     })
   })
 

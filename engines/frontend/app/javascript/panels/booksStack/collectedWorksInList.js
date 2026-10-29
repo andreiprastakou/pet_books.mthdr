@@ -25,10 +25,7 @@ export const hiddenSelectionFor = (collectionsByWorkId, bookId) => {
   const collectionIds = collectionsByWorkId.get(bookId)
   if (!collectionIds || collectionIds.length === 0) return null
 
-  return {
-    'book_id': collectionIds[0],
-    'included_work_id': bookId,
-  }
+  return { 'book_id': collectionIds[0] }
 }
 
 export const compactStackFromUrl = url => url.queryParameter('compact_stack') !== '0'

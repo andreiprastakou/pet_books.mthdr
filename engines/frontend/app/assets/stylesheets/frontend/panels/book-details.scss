@@ -1,13 +1,3 @@
-.selected-works-split {
-  display: flex;
-  gap: 10px;
-
-  .selected-works-split-pane {
-    flex: 1 1 0;
-    min-width: 0;
-  }
-}
-
 .panel--book-details {
   display: flex;
   flex-direction: column;
@@ -30,30 +20,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-    }
-
-    .book-details-panel-close {
-      align-items: center;
-      align-self: center;
-      background: transparent;
-      border: 0;
-      border-radius: 50%;
-      color: #6c757d;
-      cursor: pointer;
-      display: inline-flex;
-      flex: 0 0 auto;
-      font-size: 18px;
-      height: 28px;
-      justify-content: center;
-      line-height: 1;
-      margin-left: auto;
-      padding: 0;
-      width: 28px;
-
-      &:hover {
-        background-color: rgba(0, 0, 0, 0.06);
-        color: #343a40;
-      }
     }
   }
 
@@ -257,10 +223,28 @@
   }
 
   .book-details-panel-tags,
-  .book-details-panel-public-lists {
+  .book-details-panel-public-lists,
+  .book-details-panel-included-works {
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     line-height: 20px;
     padding: 18px 0 12px;
+  }
+
+  .book-details-panel-included-works {
+    font-size: 13px;
+
+    .book-details-panel-included-works-label {
+      margin-bottom: 6px;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 1.25em;
+    }
+
+    li + li {
+      margin-top: 2px;
+    }
   }
 
   .book-details-panel-annotation {
