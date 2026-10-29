@@ -39,7 +39,7 @@ const BookDetailsCardIncludedWorks = ({ bookPagePath, showAuthors, workIds }) =>
   return (
     <div className='book-details-panel-included-works'>
       <div className='book-details-panel-included-works-label'>
-        Included works:
+        {'Included works:'}
       </div>
 
       <ul>
