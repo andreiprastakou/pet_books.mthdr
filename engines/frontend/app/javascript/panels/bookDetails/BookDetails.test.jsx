@@ -212,10 +212,13 @@ describe('BookDetails', () => {
 
     const includedWorks = hell.closest('.book-details-panel-included-works')
     const supplement = includedWorks.parentElement
-    const links = supplement.querySelector('.book-details-panel-links')
-    const tags = supplement.querySelector('.book-details-panel-tags')
-    expect(links.compareDocumentPosition(includedWorks) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-    expect(includedWorks.compareDocumentPosition(tags) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+    const order = [...supplement.children].map(node => node.className)
+    const linksIndex = order.indexOf('book-details-panel-links')
+    const worksIndex = order.indexOf('book-details-panel-included-works')
+    const tagsIndex = order.indexOf('book-details-panel-tags')
+    expect(linksIndex).toBeGreaterThanOrEqual(0)
+    expect(linksIndex).toBeLessThan(worksIndex)
+    expect(worksIndex).toBeLessThan(tagsIndex)
   })
 
   it('keeps shared included-work authors on the heading only', () => {
